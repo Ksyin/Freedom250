@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Freedom 250 | Digital Freedom Passport</title>
+  <!-- Tailwind + Google Fonts + Font Awesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background: linear-gradient(145deg, #0B1E33 0%, #0A0F1A 100%); }
+    /* USA color accents: red, white, blue */
+    .usa-flag-accent {
+      background: linear-gradient(135deg, #B22234 0%, #FFFFFF 40%, #3C3B6E 100%);
+    }
+    .btn-primary {
+      background: linear-gradient(95deg, #B22234 0%, #D43F40 100%);
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(178,34,52,0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -5px rgba(178,34,52,0.5);
+    }
+    .btn-outline-white {
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: all 0.2s;
+    }
+    .btn-outline-white:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: #FFFFFF;
+    }
+    .glass-card {
+      background: rgba(10, 20, 40, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 1.75rem;
+    }
+    .passport-card {
+      background: linear-gradient(145deg, #0A1428 0%, #03070F 100%);
+      border-left: 5px solid #B22234;
+      border-right: 1px solid rgba(60,59,110,0.5);
+    }
+    .badge-freedom {
+      background: rgba(178,34,52,0.2);
+      border: 1px solid rgba(178,34,52,0.6);
+      backdrop-filter: blur(4px);
+    }
+    .flag-stripe {
+      background: linear-gradient(90deg, #B22234 0%, #FFFFFF 50%, #3C3B6E 100%);
+      height: 3px;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0F1A2A; }
+    ::-webkit-scrollbar-thumb { background: #B22234; border-radius: 10px; }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0px); }
+    }
+    .float-animation { animation: float 3s ease-in-out infinite; }
+    .toast-slide {
+      animation: slideIn 0.3s ease forwards;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .digital-stamp {
+      background: rgba(60,59,110,0.3);
+      border-radius: 12px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid rgba(178,34,52,0.4);
+    }
+  </style>
+</head>
+<body class="text-white">
+
+  <!-- HEADER / NAVBAR with USA flair -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-black/70 backdrop-blur-xl border-b border-white/10 transition-all">
+    <div class="max-w-7xl mx-auto px-5 md:px-8 py-3 flex items-center justify-between flex-wrap">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-[#B22234] to-[#3C3B6E] rounded-xl flex items-center justify-center shadow-lg">
+          <i class="fas fa-passport text-white text-xl"></i>
+        </div>
+        <span class="text-2xl font-black tracking-tight"><span class="text-white">FREEDOM</span><span class="text-[#B22234]">250</span></span>
+        <div class="hidden md:block w-20 h-1 rounded-full bg-gradient-to-r from-[#B22234] via-white to-[#3C3B6E] ml-2"></div>
+      </div>
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+        <a href="#home" class="nav-link hover:text-red-400 transition">Home</a>
+        <a href="#experience" class="nav-link hover:text-red-400 transition">Journey</a>
+        <a href="#zones" class="nav-link hover:text-red-400 transition">Districts</a>
+        <a href="#dashboard-preview" class="nav-link hover:text-red-400 transition">Passport</a>
+        <a href="#footer" class="nav-link hover:text-red-400 transition">Connect</a>
+      </nav>
+      <div class="flex items-center gap-4">
+        <button id="loginNavBtn" class="px-5 py-2 rounded-full border border-red-500/60 text-red-400 font-semibold text-sm hover:bg-red-500/10 transition">Login / Sign Up</button>
+        <button id="dashboardNavBtn" class="btn-primary px-5 py-2 rounded-full text-white font-bold text-sm shadow-md hidden">My Passport</button>
+      </div>
+      <button id="mobileMenuBtn" class="md:hidden text-2xl text-white"><i class="fas fa-bars"></i></button>
+    </div>
+    <div id="mobileNav" class="md:hidden hidden bg-black/95 backdrop-blur-xl border-t border-white/10 py-4 px-6 flex flex-col gap-4 text-lg">
+      <a href="#home">Home</a><a href="#experience">Journey</a><a href="#zones">Districts</a><a href="#dashboard-preview">Passport</a><a href="#footer">Connect</a>
+    </div>
+  </header>
+
+  <main id="appContent" class="pt-28 pb-16">
+    <!-- LANDING PAGE (visible when not logged in) -->
+    <div id="homePage">
+      <!-- Hero with American flag theme -->
+      <section class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#0B1E33]/60 via-transparent to-[#3C3B6E]/20 pointer-events-none"></div>
+        <div class="max-w-6xl mx-auto px-6 text-center relative z-10">
+          <div class="inline-block mb-4 px-4 py-1 rounded-full bg-white/10 border border-red-500/40 text-red-300 text-sm font-medium backdrop-blur-sm">
+            <i class="fas fa-star-of-life mr-1"></i> U.S. Embassy Nairobi · Freedom & Innovation
+          </div>
+          <h1 class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">Your <span class="text-[#B22234]">Digital Freedom</span> <br> Passport Experience</h1>
+          <p class="text-gray-300 max-w-2xl mx-auto mt-6 text-lg">Explore 7+ immersive zones, earn Freedom Coins, collect stamps, and rise on the leaderboard. Gen Z meets America — gamified & data-powered.</p>
+          <div class="flex flex-wrap justify-center gap-5 mt-10">
+            <button id="heroGetStartedBtn" class="btn-primary px-8 py-3 rounded-full text-white font-bold text-lg shadow-xl">Activate Passport →</button>
+            <button id="heroExploreMapBtn" class="border border-white/40 px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition">Explore Zones <i class="fas fa-arrow-right ml-2"></i></button>
+          </div>
+          <div class="mt-16 flex justify-center">
+            <div class="rounded-3xl shadow-2xl border border-white/20 bg-black/40 p-2 backdrop-blur-sm">
+              <img src="https://placehold.co/1000x450/1A2A4A/B22234?text=FREEDOM+250+FESTIVAL+STAGE" alt="Freedom festival" class="rounded-2xl w-full max-w-4xl">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gamification Highlights -->
+      <section id="experience" class="max-w-7xl mx-auto px-6 py-20">
+        <div class="text-center mb-14">
+          <span class="text-red-400 uppercase tracking-wider text-sm font-semibold">the heart of engagement</span>
+          <h2 class="text-4xl md:text-5xl font-bold mt-3">Freedom Coins & Live Missions</h2>
+          <div class="w-24 h-1 bg-gradient-to-r from-red-600 via-white to-blue-800 mx-auto mt-4 rounded-full"></div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="glass-card p-6 text-center"><div class="w-16 h-16 bg-gradient-to-br from-red-600 to-blue-800 rounded-2xl flex items-center justify-center mx-auto mb-5"><i class="fas fa-qrcode text-white text-2xl"></i></div><h3 class="text-2xl font-bold">QR Check-in</h3><p class="text-gray-300 mt-2">Seamless entry, booth scanning — earn instantly.</p></div>
+          <div class="glass-card p-6 text-center"><div class="w-16 h-16 bg-gradient-to-br from-red-600 to-blue-800 rounded-2xl flex items-center justify-center mx-auto mb-5"><i class="fas fa-trophy text-white text-2xl"></i></div><h3 class="text-2xl font-bold">Leaderboards & Badges</h3><p class="text-gray-300 mt-2">Compete for top explorer & visionary ranks.</p></div>
+          <div class="glass-card p-6 text-center"><div class="w-16 h-16 bg-gradient-to-br from-red-600 to-blue-800 rounded-2xl flex items-center justify-center mx-auto mb-5"><i class="fas fa-map-marked-alt text-white text-2xl"></i></div><h3 class="text-2xl font-bold">Smart Navigation</h3><p class="text-gray-300 mt-2">Interactive venue map & hidden mission hotspots.</p></div>
+        </div>
+      </section>
+
+      <!-- FREEDOM DISTRICTS (Zones) -->
+      <section id="zones" class="bg-black/30 py-20 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="text-center mb-12"><h2 class="text-4xl font-bold">The Freedom Districts</h2><p class="text-gray-400 mt-2">7 zones — each with exclusive stamps & challenges</p></div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-microchip text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">THE GARAGE</h3><p class="text-gray-400 text-sm">Innovation, robotics & drone soccer</p></div>
+            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-chalkboard-user text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">THE LAUNCHPAD</h3><p class="text-gray-400 text-sm">Entrepreneurship & startups</p></div>
+            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-university text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">VARSITY LOUNGE</h3><p class="text-gray-400 text-sm">US university insights & VR</p></div>
+            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-landmark text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">TOWNHALL</h3><p class="text-gray-400 text-sm">Democracy mural & civic engagement</p></div>
+            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-basketball text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">THE ARENA</h3><p class="text-gray-400 text-sm">Sports, baseball & wellness</p></div>
+            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-utensils text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">TASTE OF AMERICA</h3><p class="text-gray-400 text-sm">Food court & cultural lounge</p></div>
+            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-music text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">CULTURE TENT</h3><p class="text-gray-400 text-sm">Music & poetry storytelling</p></div>
+            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-heartbeat text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">WELLNESS HUB</h3><p class="text-gray-400 text-sm">Yoga, chill & first aid</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Digital Passport Preview with register call -->
+      <section id="dashboard-preview" class="max-w-7xl mx-auto px-6 py-20">
+        <div class="glass-card p-8 md:p-12 rounded-3xl flex flex-col lg:flex-row gap-10 items-center">
+          <div class="flex-1">
+            <span class="text-red-400 text-sm font-semibold">✨ Your Living Identity</span>
+            <h2 class="text-3xl md:text-4xl font-bold mt-2">Digital Freedom Passport</h2>
+            <p class="text-gray-300 mt-4">Once you sign up, receive a personalized passport with dynamic stamps, Freedom Coins balance, live ranking & mission tracker. Compete with peers and unlock exclusive rewards.</p>
+            <ul class="mt-6 space-y-3"><li class="flex items-center gap-3"><i class="fas fa-check-circle text-red-400"></i> Booth-by-booth validation & scanning</li><li class="flex items-center gap-3"><i class="fas fa-chart-line text-red-400"></i> Real-time rank & heatmaps</li><li class="flex items-center gap-3"><i class="fas fa-bell text-red-400"></i> Challenge alerts & hidden missions</li></ul>
+            <button id="previewSignupBtn" class="mt-8 btn-primary px-6 py-2.5 rounded-full text-white font-bold">Create My Passport →</button>
+          </div>
+          <div class="flex-1 bg-black/50 rounded-2xl p-6 border border-red-500/30">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3"><i class="fas fa-passport text-red-400 text-xl"></i><span class="text-xs bg-red-900/40 px-2 py-0.5 rounded">FREEDOM RANK: EXPLORER</span></div>
+            <div class="mt-4 space-y-2"><p><i class="fas fa-user mr-2"></i> <strong>[Your Name]</strong> · ID: #FR250-...</p><div class="flex justify-between"><span>🔥 Freedom Coins: <strong class="text-red-400">0</strong></span><span>🏆 Rank #--</span></div><div class="w-full bg-gray-700 rounded-full h-2 mt-2"><div class="w-0 bg-red-500 h-2 rounded-full"></div></div>
+            <div class="flex gap-2 mt-4 flex-wrap"><span class="digital-stamp"><i class="fas fa-stamp"></i> No stamps yet</span><span class="digital-stamp">Join to unlock</span></div>
+            <button class="mt-4 w-full bg-red-500/20 border border-red-500/40 py-1.5 rounded-lg text-sm">Signup to unlock full passport</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Banner -->
+      <div class="max-w-7xl mx-auto px-6 mb-12"><div class="bg-gradient-to-r from-[#B22234] to-[#3C3B6E] rounded-3xl p-8 text-white text-center shadow-2xl"><h3 class="text-2xl font-black">Become a Freedom Champion</h3><p class="mt-1 font-medium">JKUAT · June 11-12 · Join 1000+ innovators</p><button id="ctaRegisterBtn" class="mt-4 bg-white text-[#B22234] px-8 py-2 rounded-full font-bold hover:bg-gray-100 transition">Register for Free →</button></div></div>
+    </div>
+
+    <!-- ========== USER DASHBOARD (personalized per account) ========== -->
+    <div id="userDashboard" class="hidden max-w-6xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
+        <div><h1 class="text-3xl font-bold"><i class="fas fa-passport text-red-400"></i> My Freedom Passport</h1><p id="dashboardUserName" class="text-gray-400">Welcome, Freedom Seeker</p></div>
+        <button id="logoutDashboardBtn" class="border border-red-500/50 text-red-400 px-5 py-2 rounded-full hover:bg-red-500/10 transition"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-5 mb-10">
+        <div class="glass-card p-5"><div class="text-red-400 text-xl"><i class="fas fa-coins"></i></div><p class="text-gray-400 text-sm">FREEDOM COINS</p><p id="dashCoins" class="text-3xl font-black">0</p></div>
+        <div class="glass-card p-5"><div class="text-red-400 text-xl"><i class="fas fa-medal"></i></div><p class="text-gray-400 text-sm">RANK</p><p id="dashRank" class="text-3xl font-black">#—</p></div>
+        <div class="glass-card p-5"><div class="text-red-400 text-xl"><i class="fas fa-stamp"></i></div><p class="text-gray-400 text-sm">DIGITAL STAMPS</p><p id="dashStamps" class="text-3xl font-black">0</p></div>
+        <div class="glass-card p-5"><div class="text-red-400 text-xl"><i class="fas fa-flag-usa"></i></div><p class="text-gray-400 text-sm">FREEDOM RANK</p><p id="dashLevel" class="text-xl font-bold">Explorer</p></div>
+      </div>
+      <!-- Profile & Digital Passport Extended -->
+      <div class="grid lg:grid-cols-3 gap-8 mb-8">
+        <div class="lg:col-span-1 bg-black/40 rounded-2xl border border-white/10 p-6">
+          <div class="flex items-center gap-4 border-b border-white/10 pb-4"><div class="w-16 h-16 rounded-full bg-gradient-to-tr from-red-600 to-blue-800 flex items-center justify-center text-2xl"><i class="fas fa-user-astronaut"></i></div><div><h3 id="profileNameDisplay" class="font-bold text-xl">Freedom Seeker</h3><p class="text-xs text-gray-400">ID: <span id="profileID">#FR250-001</span></p><button id="editProfileBtn" class="text-red-400 text-xs underline">Edit Profile</button></div></div>
+          <div class="mt-5"><p class="text-sm"><i class="fas fa-envelope mr-2 text-red-400"></i> <span id="profileEmail">user@example.com</span></p><p class="text-sm mt-2"><i class="fas fa-phone-alt mr-2 text-red-400"></i> +254 XXX XXX</p></div>
+          <div class="mt-6"><div class="flag-stripe w-full rounded-full"></div><p class="text-center text-xs text-gray-400 mt-3">"Freedom is participation"</p></div>
+        </div>
+        <div class="lg:col-span-2 bg-black/40 rounded-2xl border border-white/10 p-6">
+          <h3 class="text-xl font-semibold flex items-center gap-2"><i class="fas fa-passport text-red-400"></i> Digital Stamp Collection</h3>
+          <div id="stampsContainer" class="flex flex-wrap gap-2 mt-4"><span class="digital-stamp bg-white/5">✨ No stamps yet — scan booths!</span></div>
+          <div class="mt-6"><h4 class="font-semibold">Active Missions</h4><ul id="missionList" class="text-sm space-y-2 mt-2"><li>✅ Visit The Garage & Launchpad → +100 Coins</li><li>🎯 Complete Townhall mural → Visionary Stamp</li><li>📸 Share #Freedom250 → +75 Coins</li></ul></div>
+        </div>
+      </div>
+      <!-- Notifications & Scan Simulator -->
+      <div class="grid lg:grid-cols-2 gap-8">
+        <div class="bg-black/50 rounded-2xl border border-white/10 p-5"><h3 class="text-xl font-semibold"><i class="fas fa-bell text-red-400"></i> Live Notifications</h3><div id="notifList" class="mt-4 space-y-3 max-h-64 overflow-y-auto"><div class="bg-white/5 p-2 rounded text-sm">🎉 Welcome to Freedom 250! Scan booths to earn coins.</div></div><button id="simulateScanDashboardBtn" class="mt-4 w-full py-2 rounded-lg border border-red-500/40 hover:bg-red-500/10 text-sm">+ Simulate Booth Scan (Earn 45-75 Coins + Stamp)</button></div>
+        <div class="bg-black/50 rounded-2xl border border-white/10 p-5"><h3 class="text-xl font-semibold"><i class="fas fa-chart-line"></i> Leaderboard Snapshot</h3><div id="leaderboardPreview" class="mt-3 space-y-2 text-sm"><div class="flex justify-between"><span>1. Alex M.</span><span class="text-red-400">2,340 Coins</span></div><div class="flex justify-between"><span>2. Zuri K.</span><span class="text-red-400">1,980 Coins</span></div><div class="flex justify-between"><span>3. Brian O.</span><span class="text-red-400">1,720 Coins</span></div><div class="flex justify-between text-gray-400"><span>... you are rising</span><span></span></div></div><div class="mt-4 p-3 bg-red-500/10 rounded-xl border border-red-500/30 text-center text-xs">🏆 Next reward: Top 30 get VIP Lounge access</div></div>
+      </div>
+      <div class="mt-8 text-center text-sm text-gray-400 border-t border-white/10 pt-8"><i class="fas fa-laptop-code mr-1"></i> Full interactive map & prize redemption — Live during the festival.</div>
+    </div>
+  </main>
+
+  <footer id="footer" class="bg-black/60 border-t border-white/10 py-12 mt-10">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8"><div><span class="text-2xl font-bold">FREEDOM250</span><p class="text-gray-400 text-sm mt-2">U.S. Embassy Nairobi · American Spaces Kenya</p></div><div><h4 class="font-semibold">Quick Links</h4><ul class="text-gray-400 text-sm space-y-1 mt-2"><li>About Freedom 250</li><li>Partner Universities</li><li>Volunteer</li></ul></div><div><h4 class="font-semibold">Resources</h4><ul class="text-gray-400 text-sm space-y-1 mt-2"><li>Digital Passport Guide</li><li>Booth Operator Kit</li><li>Privacy & Security</li></ul></div><div><h4 class="font-semibold">Follow</h4><div class="flex gap-4 mt-2 text-red-400 text-xl"><i class="fab fa-twitter"></i><i class="fab fa-instagram"></i><i class="fab fa-linkedin"></i></div></div></div>
+    <div class="text-center text-gray-500 text-xs mt-10 border-t border-white/5 pt-6">© 2026 Freedom 250 Festival · Celebrating US-Kenya Innovation & Cultural Exchange</div>
+  </footer>
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+  <script>
+    // ------------------- MULTI-USER SYSTEM (mock accounts, each with own dashboard data) -------------------
+    let currentUser = null; // stores user object
+    let usersDB = [
+      { id: "FR250-001", name: "Jamie Okoth", email: "jamie@freedom.com", phone: "+254712345678", coins: 1250, rank: 42, stamps: 6, level: "Visionary", stampsList: ["Innovation Stamp", "Leadership Seal", "Culture Stamp", "Garage Badge"], notifications: ["Welcome Jamie! You earned 1250 coins already.", "New mission: Visit The Townhall"] },
+      { id: "FR250-002", name: "Zuri Makena", email: "zuri@freedom.com", phone: "+254723456789", coins: 870, rank: 68, stamps: 3, level: "Pathfinder", stampsList: ["Launchpad Badge", "Varsity Lounge Stamp"], notifications: ["Scan more booths to reach top 50"] },
+      { id: "FR250-003", name: "Brian Odhiambo", email: "brian@example.com", phone: "+254734567890", coins: 2040, rank: 11, stamps: 9, level: "Freedom Champion", stampsList: ["All zones pioneer", "Townhall Hero", "Arena MVP"], notifications: ["You're almost top 10!"] }
+    ];
+
+    // helper: show toast
+    function showToast(msg, type="info") {
+      const toast = document.createElement('div');
+      toast.className = `bg-black/80 backdrop-blur border-l-4 border-red-500 text-white px-4 py-2 rounded-lg shadow-xl text-sm flex items-center gap-2 toast-slide`;
+      toast.innerHTML = `<i class="fas fa-flag-usa text-red-400"></i> ${msg}`;
+      document.getElementById('toastContainer').appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+    function updateDashboardUI() {
+      if (!currentUser) return;
+      document.getElementById('dashCoins').innerText = currentUser.coins;
+      document.getElementById('dashRank').innerText = `#${currentUser.rank}`;
+      document.getElementById('dashStamps').innerText = currentUser.stamps;
+      document.getElementById('dashLevel').innerText = currentUser.level;
+      document.getElementById('dashboardUserName').innerHTML = `Welcome, ${currentUser.name}`;
+      document.getElementById('profileNameDisplay').innerText = currentUser.name;
+      document.getElementById('profileID').innerText = currentUser.id;
+      document.getElementById('profileEmail').innerText = currentUser.email;
+      // stamps display
+      const stampsDiv = document.getElementById('stampsContainer');
+      if (currentUser.stampsList && currentUser.stampsList.length) {
+        stampsDiv.innerHTML = currentUser.stampsList.map(s => `<span class="digital-stamp"><i class="fas fa-stamp"></i> ${s}</span>`).join('');
+      } else { stampsDiv.innerHTML = '<span class="digital-stamp bg-white/5">✉️ No stamps yet — scan booths to collect!</span>'; }
+      // notifications
+      const notifDiv = document.getElementById('notifList');
+      if(currentUser.notifications && currentUser.notifications.length){
+        notifDiv.innerHTML = currentUser.notifications.slice().reverse().map(n => `<div class="bg-white/5 p-2 rounded text-sm"><i class="fas fa-bell text-red-400 mr-2"></i> ${n}</div>`).join('');
+      } else { notifDiv.innerHTML = '<div class="bg-white/5 p-2 rounded text-sm">✨ Start your journey by scanning booths!</div>'; }
+    }
+
+    function addNotificationForUser(msg) {
+      if(!currentUser) return;
+      currentUser.notifications.unshift(msg);
+      if(currentUser.notifications.length > 10) currentUser.notifications.pop();
+      updateDashboardUI();
+      showToast(msg);
+    }
+
+    function simulateBoothScan() {
+      if(!currentUser) { showToast("Please login first to scan booths!"); return; }
+      let earned = 45 + Math.floor(Math.random() * 40);
+      currentUser.coins += earned;
+      currentUser.stamps += 1;
+      const newStamp = `Booth #${Math.floor(Math.random()*10)+1} Stamp`;
+      if (!currentUser.stampsList) currentUser.stampsList = [];
+      currentUser.stampsList.unshift(newStamp);
+      // update rank dynamically based on coins
+      let newRank = Math.max(5, 80 - Math.floor(currentUser.coins / 35));
+      currentUser.rank = newRank;
+      if(currentUser.coins > 1800) currentUser.level = "Freedom Champion";
+      else if(currentUser.coins > 1000) currentUser.level = "Visionary";
+      else if(currentUser.coins > 500) currentUser.level = "Pathfinder";
+      else currentUser.level = "Explorer";
+      updateDashboardUI();
+      addNotificationForUser(`✅ Booth scanned! +${earned} Freedom Coins & collected: ${newStamp}`);
+    }
+
+    // Login / Signup flow: Simulate account creation with custom name
+    function openSignupModal() {
+      let username = prompt("🎟️ Create your Freedom Passport!\nEnter your full name:", "Freedom Seeker");
+      if(!username) username = "Freedom Seeker";
+      let email = prompt("Enter your email address:", `${username.replace(/\s/g,'').toLowerCase()}@freedom250.com`);
+      if(!email) email = "user@freedom.com";
+      let newId = `FR250-${Math.floor(Math.random()*900+100)}`;
+      let newUser = {
+        id: newId, name: username, email: email, phone: "+254 700 000000",
+        coins: 100, rank: 99, stamps: 1, level: "Explorer",
+        stampsList: ["Freedom Passport Issued"],
+        notifications: [`🎉 Welcome ${username}! You've activated your Digital Freedom Passport. Start exploring zones to earn coins.`]
+      };
+      usersDB.push(newUser);
+      currentUser = newUser;
+      completeLoginUI();
+      showToast(`Welcome ${username}! Your Freedom Passport is ready. +100 starter coins.`);
+    }
+
+    function loginWithMock() {
+      // choose from existing mock accounts or create new via signup
+      let choice = confirm("Do you have an existing account? Press OK to pick a demo user, Cancel to create a new Passport.");
+      if(choice){
+        let userOptions = usersDB.map((u,idx)=> `${idx+1}. ${u.name} (${u.email})`).join("\n");
+        let selected = prompt(`Select a demo user:\n${userOptions}\n\nEnter number (1-${usersDB.length}):`, "1");
+        let idx = parseInt(selected) - 1;
+        if(!isNaN(idx) && usersDB[idx]) currentUser = JSON.parse(JSON.stringify(usersDB[idx]));
+        else { currentUser = JSON.parse(JSON.stringify(usersDB[0])); showToast("Using default Jamie account");}
+      } else {
+        openSignupModal();
+        return;
+      }
+      completeLoginUI();
+      showToast(`Welcome back ${currentUser.name}! Your Passport is live.`);
+    }
+
+    function completeLoginUI() {
+      document.getElementById('homePage').classList.add('hidden');
+      document.getElementById('userDashboard').classList.remove('hidden');
+      document.getElementById('loginNavBtn').classList.add('hidden');
+      document.getElementById('dashboardNavBtn').classList.remove('hidden');
+      updateDashboardUI();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function logout() {
+      currentUser = null;
+      document.getElementById('homePage').classList.remove('hidden');
+      document.getElementById('userDashboard').classList.add('hidden');
+      document.getElementById('loginNavBtn').classList.remove('hidden');
+      document.getElementById('dashboardNavBtn').classList.add('hidden');
+      showToast("You've been logged out. See you at the festival!");
+    }
+    
+    function editProfile() {
+      if(!currentUser) return;
+      let newName = prompt("Edit your display name:", currentUser.name);
+      if(newName && newName.trim()) currentUser.name = newName.trim();
+      let newEmail = prompt("Edit email:", currentUser.email);
+      if(newEmail && newEmail.includes('@')) currentUser.email = newEmail;
+      updateDashboardUI();
+      showToast("Profile updated!");
+    }
+
+    // Event listeners
+    document.getElementById('loginNavBtn').addEventListener('click', loginWithMock);
+    document.getElementById('dashboardNavBtn').addEventListener('click', () => { if(currentUser){ document.getElementById('homePage').classList.add('hidden'); document.getElementById('userDashboard').classList.remove('hidden'); window.scrollTo(0,0);} else loginWithMock();});
+    document.getElementById('logoutDashboardBtn').addEventListener('click', logout);
+    document.getElementById('heroGetStartedBtn').addEventListener('click', loginWithMock);
+    document.getElementById('previewSignupBtn').addEventListener('click', loginWithMock);
+    document.getElementById('ctaRegisterBtn').addEventListener('click', loginWithMock);
+    document.getElementById('simulateScanDashboardBtn').addEventListener('click', simulateBoothScan);
+    document.getElementById('editProfileBtn').addEventListener('click', editProfile);
+    document.getElementById('heroExploreMapBtn').addEventListener('click', () => document.getElementById('zones')?.scrollIntoView({behavior:'smooth'}));
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    mobileBtn.addEventListener('click', () => mobileNav.classList.toggle('hidden'));
+    document.querySelectorAll('#mobileNav a').forEach(a => a.addEventListener('click',()=>mobileNav.classList.add('hidden')));
+
+    // initial UI set
+    if(!currentUser) { /* nothing */ }
+    const styleAnim = document.createElement('style');
+    styleAnim.textContent = `.toast-slide{animation:slideIn 0.3s ease forwards;} @keyframes slideIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}`;
+    document.head.appendChild(styleAnim);
+  </script>
+</body>
+</html>
