@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,6 +62,13 @@
     /* Prevent horizontal drag */
     html, body { max-width: 100%; overflow-x: hidden; position: relative; }
     * { box-sizing: border-box; }
+    /* Logo styling */
+    .logo-img { height: 40px; width: auto; object-fit: contain; }
+    @media (max-width: 768px) { .logo-img { height: 32px; } }
+    /* Visual cards grid */
+    .visual-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+    .visual-card { overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .visual-card:hover { transform: translateY(-5px); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.3); }
   </style>
 </head>
 <body class="text-white">
@@ -69,11 +77,14 @@
   <nav class="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-xl border-b border-white/10 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 md:px-8 py-3 md:py-4 flex items-center justify-between">
       <div class="flex items-center gap-2 md:gap-3">
-        <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-[#f093fb] to-[#f5576c] rounded-xl flex items-center justify-center shadow-lg animate-pulse-slow">
-          <i class="fas fa-passport text-white text-sm md:text-xl"></i>
-        </div>
-        <span class="text-xl md:text-3xl font-black tracking-tight"><span class="text-white">FREEDOM</span><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#f093fb] to-[#f5576c]">250</span></span>
-      </div>
+  <!-- USA Flag Logo -->
+  <img src="https://res.cloudinary.com/dzghdog3m/image/upload/v1776930538/American_c0vlws.png" alt="USA Flag" class="logo-img w-10 h-6 md:w-12 md:h-8 rounded shadow-lg">
+  
+  <!-- Brand Text -->
+  <span class="text-xl md:text-3xl font-black tracking-tight">
+    <span class="text-white">FREEDOM</span><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#f093fb] to-[#f5576c]">250</span>
+  </span>
+</div>
       
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center gap-6 lg:gap-8">
@@ -87,7 +98,9 @@
       
       <div class="flex items-center gap-2 md:gap-3">
         <div id="loggedOutButtons" class="flex items-center gap-2 md:gap-3">
-          
+          <button id="navLoginBtn" class="px-3 md:px-5 py-1.5 md:py-2 rounded-full border border-white/30 text-white font-semibold text-xs md:text-sm hover:bg-white/10 transition backdrop-blur-sm">
+            <i class="fas fa-user mr-1 md:mr-2"></i>Sign In
+          </button>
           <button id="navRegisterBtn" class="btn-primary-glow px-4 md:px-6 py-1.5 md:py-2 rounded-full text-white font-bold text-xs md:text-sm shadow-md">
             <i class="fas fa-passport mr-1 md:mr-2"></i>Get Passport
           </button>
@@ -107,12 +120,12 @@
     
     <!-- Mobile Menu Panel - visible on click, not hidden by default -->
     <div id="mobileMenuPanel" class="mobile-menu hidden flex-col bg-black/95 backdrop-blur-xl border-b border-white/10 z-40 py-6 px-5 absolute left-0 right-0 top-[60px] md:top-[72px]">
-      <a href="#home" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base">🏠 Home</a>
-      <a href="#experience" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base">✨ Experience</a>
-      <a href="#zones" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base">🗺️ Freedom Zones</a>
-      <a href="#passport" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base">📘 Digital Passport</a>
-      <a href="#rewards" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base">🎁 Rewards</a>
-      <a href="#about" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base">ℹ️ About Freedom 250</a>
+      <a href="#home" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>🏠 Home</a>
+      <a href="#experience" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>✨ Experience</a>
+      <a href="#zones" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>🗺️ Freedom Zones</a>
+      <a href="#passport" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>📘 Digital Passport</a>
+      <a href="#rewards" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>🎁 Rewards</a>
+      <a href="#about" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>ℹ️ About Freedom 250</a>
       <div class="flex gap-5 pt-4">
         <i class="fab fa-twitter text-xl hover:text-pink-400 cursor-pointer transition"></i>
         <i class="fab fa-instagram text-xl hover:text-pink-400 cursor-pointer transition"></i>
@@ -163,6 +176,35 @@
             <div class="stat-card p-3 md:p-4 text-center"><i class="fas fa-coins text-2xl md:text-3xl text-yellow-400 mb-1 md:mb-2"></i><div class="counter-number text-2xl md:text-3xl" id="totalCoins">342.5K</div><p class="text-[10px] md:text-xs text-white/60">Freedom Coins</p></div>
             <div class="stat-card p-3 md:p-4 text-center"><i class="fas fa-stamp text-2xl md:text-3xl text-green-400 mb-1 md:mb-2"></i><div class="counter-number text-2xl md:text-3xl" id="totalStamps">12.4K</div><p class="text-[10px] md:text-xs text-white/60">Stamps</p></div>
             <div class="stat-card p-3 md:p-4 text-center"><i class="fas fa-trophy text-2xl md:text-3xl text-orange-400 mb-1 md:mb-2"></i><div class="counter-number text-2xl md:text-3xl" id="activeMissions">24</div><p class="text-[10px] md:text-xs text-white/60">Missions</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NEW VISUAL CARDS SECTION - Eye-catching image grid -->
+      <section class="py-12 md:py-16 px-5 md:px-6 bg-gradient-to-r from-purple-800/20 to-pink-800/20">
+        <div class="max-w-7xl mx-auto">
+          <div class="text-center mb-8 md:mb-12" data-aos="fade-up">
+            <span class="text-pink-400 uppercase tracking-wider text-xs md:text-sm font-semibold">Capture the Moment</span>
+            <h2 class="text-3xl md:text-4xl font-bold mt-2">Freedom 250 in Pictures</h2>
+            <div class="w-20 h-1 bg-gradient-to-r from-pink-500 to-purple-600 mx-auto mt-3 rounded-full"></div>
+          </div>
+          <div class="visual-grid" data-aos="fade-up" data-aos-delay="100">
+            <div class="glass-card-light visual-card cursor-pointer" onclick="showToast('🎉 Drone Soccer - The Garage Zone!')">
+              <img src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=400&h=250&fit=crop" alt="Drone Soccer" class="w-full h-48 object-cover rounded-t-xl">
+              <div class="p-4"><h3 class="font-bold text-lg">Drone Soccer Arena</h3><p class="text-white/70 text-sm">High-tech competition at The Garage</p></div>
+            </div>
+            <div class="glass-card-light visual-card cursor-pointer" onclick="showToast('🎤 Live music at Culture Tent!')">
+              <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=250&fit=crop" alt="Music" class="w-full h-48 object-cover rounded-t-xl">
+              <div class="p-4"><h3 class="font-bold text-lg">Live Performances</h3><p class="text-white/70 text-sm">Cultural tent featuring top artists</p></div>
+            </div>
+            <div class="glass-card-light visual-card cursor-pointer" onclick="showToast('🍔 Taste of America - Food Court!')">
+              <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=250&fit=crop" alt="Food" class="w-full h-48 object-cover rounded-t-xl">
+              <div class="p-4"><h3 class="font-bold text-lg">Taste of America</h3><p class="text-white/70 text-sm">Authentic American cuisine</p></div>
+            </div>
+            <div class="glass-card-light visual-card cursor-pointer" onclick="showToast('🏀 Sports challenges at The Arena!')">
+              <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&h=250&fit=crop" alt="Sports" class="w-full h-48 object-cover rounded-t-xl">
+              <div class="p-4"><h3 class="font-bold text-lg">Sports Arena</h3><p class="text-white/70 text-sm">Basketball, baseball & wellness</p></div>
+            </div>
           </div>
         </div>
       </section>
@@ -325,6 +367,7 @@
     <div class="max-w-7xl mx-auto px-5 md:px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
       <div>
         <div class="flex items-center gap-2 mb-3">
+          <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USA Flag" class="w-8 h-5 rounded shadow">
           <div class="w-8 h-8 bg-gradient-to-br from-[#f093fb] to-[#f5576c] rounded-lg flex items-center justify-center"><i class="fas fa-passport text-white text-sm"></i></div>
           <span class="text-lg md:text-xl font-bold">FREEDOM250</span>
         </div>
@@ -404,23 +447,15 @@
   <script>
     AOS.init({ duration: 800, once: true });
     
-    // ========== MOCK DATABASE ==========
+    // ========== MOCK DATABASE (completely preserved) ==========
     let currentUser = null;
     let scannedBooths = [];
     
     let participantData = {
-      id: "FR250-001",
-      name: "Alex Mwangi",
-      email: "alex@jkuat.ac.ke",
-      coins: 2450,
-      rank: 3,
-      stamps: 12,
-      level: "Freedom Champion",
+      id: "FR250-001", name: "Alex Mwangi", email: "alex@jkuat.ac.ke", coins: 2450, rank: 3, stamps: 12, level: "Freedom Champion",
       stampsList: ["Garage Innovator", "Launchpad Leader", "Townhall Hero", "Arena Slam", "Culture Beat", "Taste of America"],
       notifications: ["🎉 You won a VIP pass!", "🏆 You're in top 5 leaderboard!", "📍 New mission: Visit The Garage"],
-      missionsCompleted: ["Exploration Mission", "Networking Mission", "Visionary Mission"],
-      feedbacks: [],
-      attendanceHistory: ["Day 1 - 10:30 AM", "Day 1 - 2:00 PM", "Day 2 - 11:00 AM"]
+      missionsCompleted: ["Exploration Mission", "Networking Mission", "Visionary Mission"], feedbacks: [], attendanceHistory: ["Day 1 - 10:30 AM", "Day 1 - 2:00 PM", "Day 2 - 11:00 AM"]
     };
     
     let boothStats = {
@@ -434,12 +469,7 @@
       "Wellness Hub": { visitors: 167, leadsCollected: 28, engagementScore: 68, trafficLevel: 48, scans: [] }
     };
     
-    let attendanceDemographics = {
-      students: 2100, faculty: 347, visitors: 400,
-      hourlyData: [450, 780, 1200, 1847, 2100, 2400, 2600, 2847],
-      universities: { "JKUAT": 1250, "UoN": 580, "MKU": 320, "DKUT": 297, "Other": 400 }
-    };
-    
+    let attendanceDemographics = { students: 2100, faculty: 347, visitors: 400, hourlyData: [450, 780, 1200, 1847, 2100, 2400, 2600, 2847], universities: { "JKUAT": 1250, "UoN": 580, "MKU": 320, "DKUT": 297, "Other": 400 } };
     let globalNotifications = [];
     let allFeedbacks = [];
     
@@ -455,26 +485,8 @@
     function showQRScanModal(boothName, coinsEarned = 50, stampName = null) {
       const modal = document.createElement('div');
       modal.className = "fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-md";
-      modal.innerHTML = `
-        <div class="glass-card-light p-6 md:p-8 max-w-md w-full mx-4 text-center qr-modal">
-          <div class="w-24 h-24 md:w-32 md:h-32 mx-auto bg-white rounded-2xl flex items-center justify-center mb-3 md:mb-4">
-            <i class="fas fa-qrcode text-5xl md:text-6xl text-purple-600"></i>
-          </div>
-          <h3 class="text-xl md:text-2xl font-bold">Scan Booth QR</h3>
-          <p class="text-white/70 text-sm md:text-base mt-2">Position your camera over the QR code at <strong>${boothName}</strong></p>
-          <div class="mt-3 md:mt-4 p-3 bg-white/10 rounded-xl">
-            <p class="text-xs md:text-sm"><i class="fas fa-info-circle text-pink-400 mr-2"></i>Booth: ${boothName}</p>
-            <p class="text-xs md:text-sm mt-1"><i class="fas fa-coins text-yellow-400 mr-2"></i>Reward: ${coinsEarned} Freedom Coins</p>
-          </div>
-          <div class="flex gap-3 mt-5 md:mt-6">
-            <button id="qrScanConfirmBtn" class="btn-primary-glow flex-1 py-2 rounded-full text-xs md:text-sm font-bold"><i class="fas fa-camera mr-2"></i>Simulate Scan</button>
-            <button id="qrManualSyncBtn" class="bg-white/10 flex-1 py-2 rounded-full text-xs md:text-sm border border-white/20"><i class="fas fa-sync-alt mr-2"></i>Manual Sync</button>
-          </div>
-          <button id="closeQRModal" class="mt-4 text-white/50 text-sm hover:text-white w-full">Cancel</button>
-        </div>
-      `;
+      modal.innerHTML = `<div class="glass-card-light p-6 md:p-8 max-w-md w-full mx-4 text-center qr-modal"><div class="w-24 h-24 md:w-32 md:h-32 mx-auto bg-white rounded-2xl flex items-center justify-center mb-3 md:mb-4"><i class="fas fa-qrcode text-5xl md:text-6xl text-purple-600"></i></div><h3 class="text-xl md:text-2xl font-bold">Scan Booth QR</h3><p class="text-white/70 text-sm md:text-base mt-2">Position your camera over the QR code at <strong>${boothName}</strong></p><div class="mt-3 md:mt-4 p-3 bg-white/10 rounded-xl"><p class="text-xs md:text-sm"><i class="fas fa-info-circle text-pink-400 mr-2"></i>Booth: ${boothName}</p><p class="text-xs md:text-sm mt-1"><i class="fas fa-coins text-yellow-400 mr-2"></i>Reward: ${coinsEarned} Freedom Coins</p></div><div class="flex gap-3 mt-5 md:mt-6"><button id="qrScanConfirmBtn" class="btn-primary-glow flex-1 py-2 rounded-full text-xs md:text-sm font-bold"><i class="fas fa-camera mr-2"></i>Simulate Scan</button><button id="qrManualSyncBtn" class="bg-white/10 flex-1 py-2 rounded-full text-xs md:text-sm border border-white/20"><i class="fas fa-sync-alt mr-2"></i>Manual Sync</button></div><button id="closeQRModal" class="mt-4 text-white/50 text-sm hover:text-white w-full">Cancel</button></div>`;
       document.body.appendChild(modal);
-      
       document.getElementById('qrScanConfirmBtn')?.addEventListener('click', () => {
         if (currentUser && currentUser.role === 'participant') {
           if (!scannedBooths.includes(boothName)) {
@@ -483,35 +495,20 @@
             participantData.stamps += 1;
             const newStamp = stampName || `${boothName} Stamp`;
             participantData.stampsList.unshift(newStamp);
-            if (!boothStats[boothName].scans.includes(participantData.name)) {
-              boothStats[boothName].scans.push(participantData.name);
-              boothStats[boothName].visitors += 1;
-            }
+            if (!boothStats[boothName].scans.includes(participantData.name)) { boothStats[boothName].scans.push(participantData.name); boothStats[boothName].visitors += 1; }
             showToast(`✅ Successfully scanned ${boothName}! +${coinsEarned} Freedom Coins & ${newStamp}`);
             loadDashboard();
-          } else {
-            showToast(`⚠️ You've already scanned ${boothName}. Visit other booths for more coins!`);
-          }
-        } else {
-          showToast("⚠️ Please login as a participant to scan booths");
-        }
+          } else { showToast(`⚠️ You've already scanned ${boothName}. Visit other booths for more coins!`); }
+        } else { showToast("⚠️ Please login as a participant to scan booths"); }
         modal.remove();
       });
-      
-      document.getElementById('qrManualSyncBtn')?.addEventListener('click', () => {
-        if (currentUser && currentUser.role === 'participant') {
-          showToast(`📋 Manual sync requested for ${boothName}. Booth staff will verify your visit.`);
-          globalNotifications.unshift({ message: `Manual sync request: ${participantData.name} at ${boothName}`, time: new Date().toLocaleTimeString() });
-        }
-        modal.remove();
-      });
-      
+      document.getElementById('qrManualSyncBtn')?.addEventListener('click', () => { if (currentUser && currentUser.role === 'participant') { showToast(`📋 Manual sync requested for ${boothName}. Booth staff will verify your visit.`); globalNotifications.unshift({ message: `Manual sync request: ${participantData.name} at ${boothName}`, time: new Date().toLocaleTimeString() }); } modal.remove(); });
       document.getElementById('closeQRModal')?.addEventListener('click', () => modal.remove());
     }
     
-    // ========== DASHBOARD FUNCTIONS (preserved) ==========
+    // Dashboard render functions (preserved)
     function renderParticipantDashboard() { return `<div class="space-y-5 md:space-y-6"><div class="flex flex-wrap justify-between items-center"><h1 class="text-2xl md:text-3xl font-bold"><i class="fas fa-passport text-pink-400"></i> My Freedom Passport</h1><span class="bg-pink-500/20 px-3 md:px-4 py-1 rounded-full text-xs md:text-sm border border-pink-500/30">🎟️ ${participantData.level}</span></div><div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5"><div class="dashboard-stat-card p-3 md:p-4 text-center"><i class="fas fa-coins text-2xl md:text-3xl text-yellow-400 mb-1 md:mb-2"></i><p class="text-gray-400 text-xs md:text-sm">Freedom Coins</p><p class="text-2xl md:text-3xl font-black">${participantData.coins}</p></div><div class="dashboard-stat-card p-3 md:p-4 text-center"><i class="fas fa-trophy text-2xl md:text-3xl text-orange-400 mb-1 md:mb-2"></i><p class="text-gray-400 text-xs md:text-sm">Global Rank</p><p class="text-2xl md:text-3xl font-black">#${participantData.rank}</p></div><div class="dashboard-stat-card p-3 md:p-4 text-center"><i class="fas fa-stamp text-2xl md:text-3xl text-green-400 mb-1 md:mb-2"></i><p class="text-gray-400 text-xs md:text-sm">Stamps Collected</p><p class="text-2xl md:text-3xl font-black">${participantData.stamps}/20</p></div><div class="dashboard-stat-card p-3 md:p-4 text-center"><i class="fas fa-flag-checkered text-2xl md:text-3xl text-pink-400 mb-1 md:mb-2"></i><p class="text-gray-400 text-xs md:text-sm">Missions</p><p class="text-2xl md:text-3xl font-black">${participantData.missionsCompleted.length}/8</p></div></div><div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3"><i class="fas fa-stamp text-pink-400 mr-2"></i>Digital Stamp Collection</h3><div class="flex flex-wrap gap-2">${participantData.stampsList.map(s => `<span class="badge-stamp text-xs"><i class="fas fa-stamp mr-1"></i>${s}</span>`).join('')}</div></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3"><i class="fas fa-tasks text-pink-400 mr-2"></i>Active Missions</h3><ul class="space-y-1.5 md:space-y-2"><li class="flex items-center gap-2 text-xs md:text-sm"><i class="fas fa-check-circle text-green-400"></i> Explore The Garage - +250 coins</li><li class="flex items-center gap-2 text-xs md:text-sm"><i class="fas fa-check-circle text-green-400"></i> Townhall Voting Experience - +300 coins</li><li class="flex items-center gap-2 text-xs md:text-sm"><i class="fas fa-clock text-yellow-400"></i> Scavenger Hunt: Hidden QR - +200 coins</li></ul><button id="completeMissionBtn" class="mt-2 md:mt-3 text-xs text-pink-400 underline hover:text-pink-300">Complete random mission →</button></div></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3"><i class="fas fa-qrcode text-pink-400 mr-2"></i>Scan Booths to Earn Coins & Stamps</h3><div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">${Object.keys(boothStats).map(booth => `<button class="scan-booth-btn bg-gradient-to-r from-purple-600/40 to-pink-600/40 p-2 md:p-3 rounded-xl text-center hover:scale-105 transition border border-white/20" data-booth="${booth}" data-coins="${booth === 'The Townhall' ? 75 : booth === 'Taste of America' ? 60 : 50}" data-stamp="${booth} Explorer Stamp"><i class="fas fa-qrcode text-xl md:text-2xl text-pink-400 mb-1"></i><p class="text-[10px] md:text-xs font-semibold">${booth}</p><p class="text-[10px] md:text-xs text-yellow-400">+${booth === 'The Townhall' ? 75 : booth === 'Taste of America' ? 60 : 50} coins</p></button>`).join('')}</div></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3"><i class="fas fa-fire text-orange-400 mr-2"></i>Live Booth Traffic (Real-Time)</h3><div class="grid md:grid-cols-2 gap-2 md:gap-3">${Object.entries(boothStats).map(([booth, data]) => `<div class="bg-black/30 rounded-xl p-2 md:p-3"><div class="flex justify-between items-center"><span class="font-medium text-xs md:text-sm">${booth}</span><span class="text-xs md:text-sm ${data.trafficLevel > 80 ? 'text-red-400' : data.trafficLevel > 60 ? 'text-yellow-400' : 'text-green-400'}"><i class="fas fa-users"></i> ${data.trafficLevel}%</span></div><div class="w-full bg-white/10 rounded-full h-1.5 mt-2"><div class="bg-gradient-to-r from-pink-500 to-purple-600 h-1.5 rounded-full" style="width: ${data.trafficLevel}%"></div></div><div class="flex justify-between text-[10px] md:text-xs text-white/50 mt-1"><span>👥 ${data.visitors} visitors</span><span>⭐ ${data.engagementScore}%</span></div></div>`).join('')}</div></div><div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3"><i class="fas fa-bell text-pink-400 mr-2"></i>Notifications</h3><div class="space-y-1.5 md:space-y-2">${participantData.notifications.map(n => `<div class="bg-white/5 rounded-lg p-2 text-xs md:text-sm"><i class="fas fa-bell text-pink-400 mr-2"></i>${n}</div>`).join('')}</div></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3"><i class="fas fa-comment text-pink-400 mr-2"></i>Share Your Feedback</h3><textarea id="feedbackText" rows="2" class="w-full bg-black/50 border border-white/20 rounded-lg p-2 text-xs md:text-sm" placeholder="Tell us about your experience..."></textarea><button id="submitFeedbackBtn" class="mt-2 w-full py-1.5 md:py-2 bg-pink-500/20 rounded-xl border border-pink-500/40 text-xs md:text-sm hover:bg-pink-500/30 transition"><i class="fas fa-paper-plane mr-2"></i>Submit Feedback (+25 Coins)</button></div></div></div>`; }
-    function renderBoothDashboard(boothName) { return `<div class="space-y-5 md:space-y-6"><div class="flex flex-wrap justify-between items-center"><h1 class="text-2xl md:text-3xl font-bold"><i class="fas fa-store text-pink-400"></i> Booth Dashboard: ${boothName}</h1><select id="boothSelector" class="bg-black/50 border border-white/20 rounded-lg px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm">${Object.keys(boothStats).map(b => `<option value="${b}" ${b === boothName ? 'selected' : ''}>${b}</option>`).join('')}</select></div><div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5"><div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-user-check text-2xl md:text-3xl text-green-400 mb-1 md:mb-2"></i><p class="text-2xl md:text-3xl font-black">${boothStats[boothName].visitors}</p><p class="text-xs md:text-sm">Total Visitors</p></div><div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-id-card text-2xl md:text-3xl text-blue-400 mb-1 md:mb-2"></i><p class="text-2xl md:text-3xl font-black">${boothStats[boothName].leadsCollected}</p><p class="text-xs md:text-sm">Leads Collected</p></div><div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-chart-line text-2xl md:text-3xl text-purple-400 mb-1 md:mb-2"></i><p class="text-2xl md:text-3xl font-black">${boothStats[boothName].engagementScore}%</p><p class="text-xs md:text-sm">Engagement Score</p></div></div><div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-qrcode text-pink-400 mr-2"></i>Recent Scans</h3><ul class="mt-2 md:mt-3 space-y-1.5 md:space-y-2">${boothStats[boothName].scans.slice(0,5).map(s => `<li class="flex items-center gap-2 text-xs md:text-sm"><i class="fas fa-user-check text-green-400"></i> ${s}</li>`).join('') || '<li class="text-white/50 text-xs md:text-sm">No scans yet</li>'}</ul><button id="awardPointsBtn" class="mt-3 md:mt-4 w-full py-1.5 md:py-2 bg-pink-500/20 rounded-xl border border-pink-500/40 text-xs md:text-sm hover:bg-pink-500/30 transition"><i class="fas fa-gift mr-2"></i>Award 50 Freedom Coins</button></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-bullhorn text-pink-400 mr-2"></i>Booth Actions</h3><button id="broadcastBoothBtn" class="w-full mb-2 md:mb-3 py-1.5 md:py-2 bg-purple-500/20 rounded-xl border border-purple-500/40 text-xs md:text-sm hover:bg-purple-500/30 transition"><i class="fas fa-broadcast-tower mr-2"></i>Broadcast</button><button id="launchChallengeBtn" class="w-full py-1.5 md:py-2 bg-orange-500/20 rounded-xl border border-orange-500/40 text-xs md:text-sm hover:bg-orange-500/30 transition"><i class="fas fa-gamepad mr-2"></i>Launch Challenge</button><button id="manualSyncBoothBtn" class="w-full mt-2 md:mt-3 py-1.5 md:py-2 bg-blue-500/20 rounded-xl border border-blue-500/40 text-xs md:text-sm hover:bg-blue-500/30 transition"><i class="fas fa-sync-alt mr-2"></i>Manual Sync</button></div></div></div>`; }
+    function renderBoothDashboard(boothName) { const stats = boothStats[boothName] || { visitors: 0, leadsCollected: 0, engagementScore: 0, scans: [] }; return `<div class="space-y-5 md:space-y-6"><div class="flex flex-wrap justify-between items-center"><h1 class="text-2xl md:text-3xl font-bold"><i class="fas fa-store text-pink-400"></i> Booth Dashboard: ${boothName}</h1><select id="boothSelector" class="bg-black/50 border border-white/20 rounded-lg px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm">${Object.keys(boothStats).map(b => `<option value="${b}" ${b === boothName ? 'selected' : ''}>${b}</option>`).join('')}</select></div><div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5"><div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-user-check text-2xl md:text-3xl text-green-400 mb-1 md:mb-2"></i><p class="text-2xl md:text-3xl font-black">${stats.visitors}</p><p class="text-xs md:text-sm">Total Visitors</p></div><div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-id-card text-2xl md:text-3xl text-blue-400 mb-1 md:mb-2"></i><p class="text-2xl md:text-3xl font-black">${stats.leadsCollected}</p><p class="text-xs md:text-sm">Leads Collected</p></div><div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-chart-line text-2xl md:text-3xl text-purple-400 mb-1 md:mb-2"></i><p class="text-2xl md:text-3xl font-black">${stats.engagementScore}%</p><p class="text-xs md:text-sm">Engagement Score</p></div></div><div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-qrcode text-pink-400 mr-2"></i>Recent Scans</h3><ul class="mt-2 md:mt-3 space-y-1.5 md:space-y-2">${stats.scans.slice(0,5).map(s => `<li class="flex items-center gap-2 text-xs md:text-sm"><i class="fas fa-user-check text-green-400"></i> ${s}</li>`).join('') || '<li class="text-white/50 text-xs md:text-sm">No scans yet</li>'}</ul><button id="awardPointsBtn" class="mt-3 md:mt-4 w-full py-1.5 md:py-2 bg-pink-500/20 rounded-xl border border-pink-500/40 text-xs md:text-sm hover:bg-pink-500/30 transition"><i class="fas fa-gift mr-2"></i>Award 50 Freedom Coins</button></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-bullhorn text-pink-400 mr-2"></i>Booth Actions</h3><button id="broadcastBoothBtn" class="w-full mb-2 md:mb-3 py-1.5 md:py-2 bg-purple-500/20 rounded-xl border border-purple-500/40 text-xs md:text-sm hover:bg-purple-500/30 transition"><i class="fas fa-broadcast-tower mr-2"></i>Broadcast</button><button id="launchChallengeBtn" class="w-full py-1.5 md:py-2 bg-orange-500/20 rounded-xl border border-orange-500/40 text-xs md:text-sm hover:bg-orange-500/30 transition"><i class="fas fa-gamepad mr-2"></i>Launch Challenge</button><button id="manualSyncBoothBtn" class="w-full mt-2 md:mt-3 py-1.5 md:py-2 bg-blue-500/20 rounded-xl border border-blue-500/40 text-xs md:text-sm hover:bg-blue-500/30 transition"><i class="fas fa-sync-alt mr-2"></i>Manual Sync</button></div></div></div>`; }
     function renderVolunteerDashboard() { return `<div class="space-y-5 md:space-y-6"><h1 class="text-2xl md:text-3xl font-bold"><i class="fas fa-hands-helping text-pink-400"></i> Volunteer Command Center</h1><div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5"><div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-users text-2xl md:text-3xl text-green-400 mb-1 md:mb-2"></i><p class="text-2xl md:text-3xl font-black">${attendanceDemographics.students + attendanceDemographics.faculty + attendanceDemographics.visitors}</p><p class="text-xs md:text-sm">Total Check-ins</p></div><div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-user-clock text-2xl md:text-3xl text-yellow-400 mb-1 md:mb-2"></i><p class="text-2xl md:text-3xl font-black">1,240</p><p class="text-xs md:text-sm">Currently Active</p></div><div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-chart-line text-2xl md:text-3xl text-purple-400 mb-1 md:mb-2"></i><p class="text-2xl md:text-3xl font-black">2:30 PM</p><p class="text-xs md:text-sm">Peak Hour</p></div></div><div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-check-circle text-green-400 mr-2"></i>Check-in Station</h3><button id="manualCheckinBtn" class="mt-2 w-full py-2 md:py-3 bg-green-500/20 rounded-xl border border-green-500/40 text-sm md:text-lg font-semibold hover:bg-green-500/30 transition"><i class="fas fa-camera mr-2"></i>Scan QR / Manual Check-in</button></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-chart-pie text-pink-400 mr-2"></i>Demographics</h3><div class="space-y-1.5 md:space-y-2 mt-2"><div class="flex justify-between text-xs md:text-sm"><span>Students</span><span>${attendanceDemographics.students}</span></div><div class="flex justify-between text-xs md:text-sm"><span>Faculty</span><span>${attendanceDemographics.faculty}</span></div><div class="flex justify-between text-xs md:text-sm"><span>Visitors</span><span>${attendanceDemographics.visitors}</span></div></div></div></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-exclamation-triangle text-orange-400 mr-2"></i>Incident Reporting</h3><textarea id="incidentText" rows="2" class="w-full bg-black/50 border border-white/20 rounded-lg p-2 text-xs md:text-sm" placeholder="Describe issue..."></textarea><button id="reportIncidentBtn" class="mt-2 w-full py-1.5 md:py-2 bg-red-500/20 rounded-xl border border-red-500/40 text-xs md:text-sm hover:bg-red-500/30 transition"><i class="fas fa-flag mr-2"></i>Submit Report</button></div></div>`; }
     function renderAdminDashboard() { setTimeout(() => { const c = document.getElementById('adminHeatmap'); if(c && window.ac) window.ac.destroy(); if(c) { window.ac = new Chart(c, { type: 'bar', data: { labels: Object.keys(boothStats), datasets: [{ label: 'Traffic %', data: Object.values(boothStats).map(d => d.trafficLevel), backgroundColor: '#f5576c' }] } }); } const ac2 = document.getElementById('attendanceChart'); if(ac2 && window.ac2c) window.ac2c.destroy(); if(ac2) { window.ac2c = new Chart(ac2, { type: 'line', data: { labels: ['9AM','10AM','11AM','12PM','1PM','2PM','3PM','4PM'], datasets: [{ label: 'Attendance', data: attendanceDemographics.hourlyData, borderColor: '#f093fb', fill: true }] } }); } }, 100); return `<div class="space-y-5 md:space-y-6"><div class="flex flex-wrap justify-between items-center"><h1 class="text-2xl md:text-3xl font-bold"><i class="fas fa-crown text-yellow-400"></i> Super Admin - JKUAT Command Center</h1><button id="globalBroadcastBtn" class="btn-primary-glow px-3 md:px-5 py-1.5 md:py-2 rounded-full text-xs md:text-sm"><i class="fas fa-broadcast-tower mr-2"></i>Broadcast</button></div><div class="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4"><div class="dashboard-stat-card p-2 md:p-3 text-center"><i class="fas fa-users text-base md:text-xl text-green-400"></i><p class="text-base md:text-xl font-bold">${attendanceDemographics.students + attendanceDemographics.faculty + attendanceDemographics.visitors}</p><p class="text-[10px] md:text-xs">Total</p></div><div class="dashboard-stat-card p-2 md:p-3 text-center"><i class="fas fa-user-check text-base md:text-xl text-blue-400"></i><p class="text-base md:text-xl font-bold">1,240</p><p class="text-[10px] md:text-xs">Active</p></div><div class="dashboard-stat-card p-2 md:p-3 text-center"><i class="fas fa-coins text-base md:text-xl text-yellow-400"></i><p class="text-base md:text-xl font-bold">342.5K</p><p class="text-[10px] md:text-xs">Coins</p></div><div class="dashboard-stat-card p-2 md:p-3 text-center"><i class="fas fa-stamp text-base md:text-xl text-purple-400"></i><p class="text-base md:text-xl font-bold">12.4K</p><p class="text-[10px] md:text-xs">Stamps</p></div><div class="dashboard-stat-card p-2 md:p-3 text-center"><i class="fas fa-building text-base md:text-xl text-orange-400"></i><p class="text-base md:text-xl font-bold">8</p><p class="text-[10px] md:text-xs">Booths</p></div></div><div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><canvas id="adminHeatmap" height="200"></canvas><p class="text-center text-[10px] md:text-xs mt-2">Zone Traffic Heatmap</p></div><div class="dashboard-stat-card p-4 md:p-5"><canvas id="attendanceChart" height="200"></canvas><p class="text-center text-[10px] md:text-xs mt-2">Hourly Attendance</p></div></div><div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg">📊 Booth Performance</h3><div class="overflow-x-auto mt-2 md:mt-3 max-h-48 md:max-h-64 overflow-y-auto"><table class="w-full text-xs md:text-sm">${Object.entries(boothStats).map(([n,d]) => `<tr class="border-b border-white/10"><td class="py-1.5 md:py-2">${n}</td><td class="py-1.5 md:py-2">👥 ${d.visitors}</td><td class="py-1.5 md:py-2">⭐ ${d.engagementScore}%</td><td class="py-1.5 md:py-2">📋 ${d.leadsCollected}</td></tr>`).join('')} </table></div><button id="exportReportBtn" class="mt-3 md:mt-4 w-full py-1.5 md:py-2 bg-blue-500/20 rounded-xl border border-blue-500/40 text-xs md:text-sm hover:bg-blue-500/30 transition"><i class="fas fa-file-csv mr-2"></i>Export Report</button></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-comment-dots text-pink-400 mr-2"></i>User Feedback</h3><div id="feedbacksList" class="h-32 md:h-48 overflow-y-auto space-y-1.5 md:space-y-2 text-xs md:text-sm">${allFeedbacks.slice(0,5).map(f => `<div class="bg-white/5 rounded-lg p-2"><div class="font-semibold text-xs md:text-sm">${f.name}</div><div class="text-white/70 text-[10px] md:text-xs">${f.message}</div></div>`).join('') || '<div class="text-white/50 text-xs">No feedback yet</div>'}</div></div></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-list text-pink-400 mr-2"></i>System Logs</h3><div id="adminLogs" class="h-32 md:h-40 overflow-y-auto space-y-1 text-[10px] md:text-sm">${globalNotifications.slice(0,5).map(n => `<div class="text-white/70 border-b border-white/10 py-1">[${n.time || 'Now'}] ${n.message}</div>`).join('') || '<div class="text-white/50">No logs</div>'}</div></div></div>`; }
     
@@ -541,7 +538,7 @@
       }
       container.classList.remove('hidden');
       document.getElementById('landingPage').classList.add('hidden');
-      document.getElementById('loggedOutButtons').classList.add('hidden');
+      document.getElementById('loggedOutButtons').classList.remove('hidden');
       document.getElementById('loggedInButtons').classList.remove('hidden');
       document.getElementById('userRoleBadge').innerText = currentUser.role === 'participant' ? '🎟️ Participant' : (currentUser.role === 'booth' ? '🏪 Booth Staff' : (currentUser.role === 'volunteer' ? '👕 Volunteer' : '⚙️ Admin'));
     }
@@ -557,7 +554,7 @@
     
     function logout() { currentUser = null; scannedBooths = []; document.getElementById('dashboardContainer').classList.add('hidden'); document.getElementById('landingPage').classList.remove('hidden'); document.getElementById('loggedOutButtons').classList.remove('hidden'); document.getElementById('loggedInButtons').classList.add('hidden'); showToast("Logged out successfully!"); }
     
-    // Event Listeners
+    // Event Listeners - FIXED navigation and mobile menu 
     document.getElementById('navLoginBtn')?.addEventListener('click', showAuthModal);
     document.getElementById('navRegisterBtn')?.addEventListener('click', showAuthModal);
     document.getElementById('heroRegisterBtn')?.addEventListener('click', showAuthModal);
@@ -567,12 +564,38 @@
     document.getElementById('viewAllZonesBtn')?.addEventListener('click', () => showToast("🚀 8 Zones: Garage, Launchpad, Varsity Lounge, Townhall, Arena, Taste of America, Culture Tent, Wellness Hub"));
     
     document.querySelectorAll('.zone-card').forEach(card => { card.addEventListener('click', () => { const zoneName = card.querySelector('h3')?.innerText || 'Zone'; if (currentUser?.role === 'participant') showQRScanModal(zoneName, 50, `${zoneName} Stamp`); else showToast(`📍 ${zoneName} - Sign in as participant to scan!`); }); });
-    document.querySelectorAll('.nav-link, .mobile-nav-link, .footer-link').forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); const href = link.getAttribute('href'); if (href && href !== '#') { const targetId = href.substring(1); document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' }); } }); });
     
-    // Mobile menu toggle - simple click, no drag required
+    // Fixed navigation - all nav links work and close mobile menu
+    document.querySelectorAll('.nav-link, .mobile-nav-link, .footer-link').forEach(link => { 
+      link.addEventListener('click', (e) => { 
+        e.preventDefault(); 
+        const href = link.getAttribute('href'); 
+        if (href && href !== '#') { 
+          const targetId = href.substring(1); 
+          const targetEl = document.getElementById(targetId);
+          if (targetEl) { targetEl.scrollIntoView({ behavior: 'smooth' }); }
+          // Close mobile menu after clicking
+          const mobilePanel = document.getElementById('mobileMenuPanel');
+          if (mobilePanel && !mobilePanel.classList.contains('hidden')) {
+            mobilePanel.classList.add('hidden');
+          }
+        } 
+      }); 
+    });
+    
+    // Mobile menu toggle - simple click, closes properly
     const mobileBtn = document.getElementById('mobileMenuBtn');
     const mobilePanel = document.getElementById('mobileMenuPanel');
     mobileBtn?.addEventListener('click', () => { mobilePanel.classList.toggle('hidden'); });
+    
+    // Close mobile menu when clicking outside (optional but nice)
+    document.addEventListener('click', (e) => {
+      if (mobilePanel && !mobilePanel.classList.contains('hidden')) {
+        if (!mobileBtn.contains(e.target) && !mobilePanel.contains(e.target)) {
+          mobilePanel.classList.add('hidden');
+        }
+      }
+    });
     
     // Floating chat
     const chatBtn = document.getElementById('floatingChatBtn');
