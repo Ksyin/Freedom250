@@ -3,381 +3,565 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Freedom 250 | Digital Freedom Passport</title>
-  <!-- Tailwind + Google Fonts + Font Awesome -->
+  <title>Freedom 250 | Digital Freedom Passport Festival | JKUAT 2026</title>
+  <!-- Tailwind + Google Fonts + Font Awesome + AOS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     * { font-family: 'Inter', sans-serif; }
-    body { background: linear-gradient(145deg, #0B1E33 0%, #0A0F1A 100%); }
-    /* USA color accents: red, white, blue */
-    .usa-flag-accent {
-      background: linear-gradient(135deg, #B22234 0%, #FFFFFF 40%, #3C3B6E 100%);
-    }
-    .btn-primary {
-      background: linear-gradient(95deg, #B22234 0%, #D43F40 100%);
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(178,34,52,0.3);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px -5px rgba(178,34,52,0.5);
-    }
-    .btn-outline-white {
-      border: 1px solid rgba(255,255,255,0.4);
-      transition: all 0.2s;
-    }
-    .btn-outline-white:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: #FFFFFF;
-    }
-    .glass-card {
-      background: rgba(10, 20, 40, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 1.75rem;
-    }
-    .passport-card {
-      background: linear-gradient(145deg, #0A1428 0%, #03070F 100%);
-      border-left: 5px solid #B22234;
-      border-right: 1px solid rgba(60,59,110,0.5);
-    }
-    .badge-freedom {
-      background: rgba(178,34,52,0.2);
-      border: 1px solid rgba(178,34,52,0.6);
-      backdrop-filter: blur(4px);
-    }
-    .flag-stripe {
-      background: linear-gradient(90deg, #B22234 0%, #FFFFFF 50%, #3C3B6E 100%);
-      height: 3px;
-    }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0F1A2A; }
-    ::-webkit-scrollbar-thumb { background: #B22234; border-radius: 10px; }
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-6px); }
-      100% { transform: translateY(0px); }
-    }
-    .float-animation { animation: float 3s ease-in-out infinite; }
-    .toast-slide {
-      animation: slideIn 0.3s ease forwards;
-    }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(30px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    .digital-stamp {
-      background: rgba(60,59,110,0.3);
-      border-radius: 12px;
-      padding: 6px 12px;
-      font-size: 12px;
-      font-weight: 500;
-      border: 1px solid rgba(178,34,52,0.4);
-    }
+    body { background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%); min-height: 100vh; }
+    .hero-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-hover:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 25px 40px -12px rgba(0,0,0,0.3); }
+    .glass-card-light { background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); border-radius: 1.5rem; }
+    .btn-primary-glow { background: linear-gradient(95deg, #f093fb 0%, #f5576c 100%); box-shadow: 0 0 20px rgba(245,87,108,0.5); transition: all 0.2s; }
+    .btn-primary-glow:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(245,87,108,0.7); }
+    .stat-card { background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)); backdrop-filter: blur(10px); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.2); }
+    .flag-ribbon { background: linear-gradient(90deg, #B22234 0%, #FFFFFF 50%, #3C3B6E 100%); height: 4px; }
+    .animate-float { animation: float 4s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+    .animate-pulse-slow { animation: pulseSlow 3s ease-in-out infinite; }
+    @keyframes pulseSlow { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+    .zone-badge { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+    .counter-number { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #fff, #f093fb); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #1a1a2e; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 10px; }
+    .toast-slide { animation: slideInRight 0.3s ease forwards; }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+    .dashboard-stat-card { background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05)); border-radius: 1.25rem; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); transition: all 0.2s; }
+    .dashboard-stat-card:hover { transform: translateY(-3px); background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08)); }
+    .badge-stamp { background: linear-gradient(135deg, #f093fb20, #f5576c20); border: 1px solid #f5576c40; border-radius: 12px; padding: 6px 12px; font-size: 12px; font-weight: 500; backdrop-filter: blur(4px); }
+    .leaderboard-item { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px; transition: all 0.2s; }
+    .leaderboard-item:hover { background: rgba(245,87,108,0.2); transform: translateX(5px); }
+    .qr-modal { animation: zoomIn 0.3s ease forwards; }
+    @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    .hero-bg { background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1600&h=800&fit=crop'); background-size: cover; background-position: center; position: relative; }
+    .hero-bg::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(15,12,41,0.7) 0%, rgba(48,43,99,0.6) 100%); }
+    .floating-chat { position: fixed; bottom: 24px; right: 24px; z-index: 1000; cursor: pointer; transition: all 0.3s; }
+    .floating-chat:hover { transform: scale(1.1); }
+    .mobile-menu { transition: transform 0.3s ease, opacity 0.3s ease; }
+    .mobile-menu.hidden { transform: translateX(100%); opacity: 0; pointer-events: none; }
+    .mobile-menu:not(.hidden) { transform: translateX(0); opacity: 1; pointer-events: auto; }
+    footer a { transition: all 0.2s; }
+    footer a:hover { color: #f093fb; }
   </style>
 </head>
 <body class="text-white">
 
-  <!-- HEADER / NAVBAR with USA flair -->
-  <header class="fixed top-0 left-0 w-full z-50 bg-black/70 backdrop-blur-xl border-b border-white/10 transition-all">
-    <div class="max-w-7xl mx-auto px-5 md:px-8 py-3 flex items-center justify-between flex-wrap">
+  <!-- NAVBAR - Fully functional with mobile menu -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-xl border-b border-white/10 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-5 md:px-8 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-gradient-to-br from-[#B22234] to-[#3C3B6E] rounded-xl flex items-center justify-center shadow-lg">
+        <div class="w-10 h-10 bg-gradient-to-br from-[#f093fb] to-[#f5576c] rounded-xl flex items-center justify-center shadow-lg animate-pulse-slow">
           <i class="fas fa-passport text-white text-xl"></i>
         </div>
-        <span class="text-2xl font-black tracking-tight"><span class="text-white">FREEDOM</span><span class="text-[#B22234]">250</span></span>
-        <div class="hidden md:block w-20 h-1 rounded-full bg-gradient-to-r from-[#B22234] via-white to-[#3C3B6E] ml-2"></div>
+        <span class="text-2xl md:text-3xl font-black tracking-tight"><span class="text-white">FREEDOM</span><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#f093fb] to-[#f5576c]">250</span></span>
       </div>
-      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
-        <a href="#home" class="nav-link hover:text-red-400 transition">Home</a>
-        <a href="#experience" class="nav-link hover:text-red-400 transition">Journey</a>
-        <a href="#zones" class="nav-link hover:text-red-400 transition">Districts</a>
-        <a href="#dashboard-preview" class="nav-link hover:text-red-400 transition">Passport</a>
-        <a href="#footer" class="nav-link hover:text-red-400 transition">Connect</a>
-      </nav>
-      <div class="flex items-center gap-4">
-        <button id="loginNavBtn" class="px-5 py-2 rounded-full border border-red-500/60 text-red-400 font-semibold text-sm hover:bg-red-500/10 transition">Login / Sign Up</button>
-        <button id="dashboardNavBtn" class="btn-primary px-5 py-2 rounded-full text-white font-bold text-sm shadow-md hidden">My Passport</button>
+      
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#home" class="nav-link text-white/80 hover:text-white transition text-sm font-medium">Home</a>
+        <a href="#experience" class="nav-link text-white/80 hover:text-white transition text-sm font-medium">Experience</a>
+        <a href="#zones" class="nav-link text-white/80 hover:text-white transition text-sm font-medium">Freedom Zones</a>
+        <a href="#passport" class="nav-link text-white/80 hover:text-white transition text-sm font-medium">Digital Passport</a>
+        <a href="#rewards" class="nav-link text-white/80 hover:text-white transition text-sm font-medium">Rewards</a>
       </div>
-      <button id="mobileMenuBtn" class="md:hidden text-2xl text-white"><i class="fas fa-bars"></i></button>
+      
+      <div class="flex items-center gap-3">
+        <div id="loggedOutButtons" class="flex items-center gap-3">
+          <button id="navLoginBtn" class="px-5 py-2 rounded-full border border-white/30 text-white font-semibold text-sm hover:bg-white/10 transition backdrop-blur-sm">
+            <i class="fas fa-user mr-2"></i>Sign In
+          </button>
+          <button id="navRegisterBtn" class="btn-primary-glow px-6 py-2 rounded-full text-white font-bold text-sm shadow-md">
+            <i class="fas fa-passport mr-2"></i>Get Passport
+          </button>
+        </div>
+        <div id="loggedInButtons" class="hidden flex items-center gap-3">
+          <span id="userRoleBadge" class="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 border border-white/20"></span>
+          <button id="logoutBtn" class="px-4 py-2 rounded-full border border-red-500/50 text-red-400 text-sm hover:bg-red-500/10 transition">
+            <i class="fas fa-sign-out-alt mr-1"></i>Logout
+          </button>
+        </div>
+        <!-- Mobile Menu Hamburger -->
+        <button id="mobileMenuBtn" class="md:hidden text-2xl text-white hover:text-pink-400 transition">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
     </div>
-    <div id="mobileNav" class="md:hidden hidden bg-black/95 backdrop-blur-xl border-t border-white/10 py-4 px-6 flex flex-col gap-4 text-lg">
-      <a href="#home">Home</a><a href="#experience">Journey</a><a href="#zones">Districts</a><a href="#dashboard-preview">Passport</a><a href="#footer">Connect</a>
+    
+    <!-- Mobile Menu Panel -->
+    <div id="mobileMenuPanel" class="mobile-menu hidden fixed top-[72px] left-0 right-0 bg-black/95 backdrop-blur-xl border-b border-white/10 z-40 py-6 px-6 flex flex-col gap-5 text-lg">
+      <a href="#home" class="mobile-nav-link hover:text-pink-400 transition py-2 border-b border-white/10">🏠 Home</a>
+      <a href="#experience" class="mobile-nav-link hover:text-pink-400 transition py-2 border-b border-white/10">✨ Experience</a>
+      <a href="#zones" class="mobile-nav-link hover:text-pink-400 transition py-2 border-b border-white/10">🗺️ Freedom Zones</a>
+      <a href="#passport" class="mobile-nav-link hover:text-pink-400 transition py-2 border-b border-white/10">📘 Digital Passport</a>
+      <a href="#rewards" class="mobile-nav-link hover:text-pink-400 transition py-2 border-b border-white/10">🎁 Rewards</a>
+      <div class="flex gap-4 pt-3">
+        <i class="fab fa-twitter text-xl hover:text-pink-400 cursor-pointer transition"></i>
+        <i class="fab fa-instagram text-xl hover:text-pink-400 cursor-pointer transition"></i>
+        <i class="fab fa-facebook text-xl hover:text-pink-400 cursor-pointer transition"></i>
+        <i class="fab fa-tiktok text-xl hover:text-pink-400 cursor-pointer transition"></i>
+      </div>
     </div>
-  </header>
+  </nav>
 
-  <main id="appContent" class="pt-28 pb-16">
-    <!-- LANDING PAGE (visible when not logged in) -->
-    <div id="homePage">
-      <!-- Hero with American flag theme -->
-      <section class="relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-[#0B1E33]/60 via-transparent to-[#3C3B6E]/20 pointer-events-none"></div>
-        <div class="max-w-6xl mx-auto px-6 text-center relative z-10">
-          <div class="inline-block mb-4 px-4 py-1 rounded-full bg-white/10 border border-red-500/40 text-red-300 text-sm font-medium backdrop-blur-sm">
-            <i class="fas fa-star-of-life mr-1"></i> U.S. Embassy Nairobi · Freedom & Innovation
+  <main>
+    <!-- LANDING PAGE (visible when NOT logged in) -->
+    <div id="landingPage">
+      <!-- HERO SECTION - Enhanced with image background -->
+      <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 hero-bg">
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-pink-800/30 to-indigo-900/50"></div>
+        <div class="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
+        
+        <div class="relative z-10 max-w-6xl mx-auto px-6 text-center py-20">
+          <div data-aos="fade-up" class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-5 py-2 rounded-full border border-white/20 mb-6">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </span>
+            <span class="text-sm font-medium">🇺🇸 June 11-12, 2026 • JKUAT Main Campus</span>
           </div>
-          <h1 class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">Your <span class="text-[#B22234]">Digital Freedom</span> <br> Passport Experience</h1>
-          <p class="text-gray-300 max-w-2xl mx-auto mt-6 text-lg">Explore 7+ immersive zones, earn Freedom Coins, collect stamps, and rise on the leaderboard. Gen Z meets America — gamified & data-powered.</p>
-          <div class="flex flex-wrap justify-center gap-5 mt-10">
-            <button id="heroGetStartedBtn" class="btn-primary px-8 py-3 rounded-full text-white font-bold text-lg shadow-xl">Activate Passport →</button>
-            <button id="heroExploreMapBtn" class="border border-white/40 px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition">Explore Zones <i class="fas fa-arrow-right ml-2"></i></button>
+          
+          <h1 data-aos="fade-up" data-aos-delay="100" class="text-5xl md:text-7xl lg:text-8xl font-black leading-tight tracking-tight">
+            Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#f093fb] to-[#f5576c]">Digital Freedom</span><br>
+            Passport Awaits
+          </h1>
+          
+          <p data-aos="fade-up" data-aos-delay="200" class="text-xl text-white/90 max-w-2xl mx-auto mt-6">
+            Explore 8+ immersive zones, complete missions, earn Freedom Coins, collect digital stamps, and compete for amazing prizes at Kenya's biggest innovation festival.
+          </p>
+          
+          <div data-aos="fade-up" data-aos-delay="300" class="flex flex-wrap justify-center gap-5 mt-10">
+            <button id="heroRegisterBtn" class="btn-primary-glow px-8 py-4 rounded-full text-white font-bold text-lg shadow-xl flex items-center gap-3">
+              <i class="fas fa-passport"></i> Activate Your Passport
+            </button>
+            <button id="heroExploreBtn" class="bg-white/10 backdrop-blur-sm border border-white/30 px-8 py-4 rounded-full font-semibold hover:bg-white/20 transition flex items-center gap-3">
+              <i class="fas fa-compass"></i> Explore Zones
+            </button>
           </div>
-          <div class="mt-16 flex justify-center">
-            <div class="rounded-3xl shadow-2xl border border-white/20 bg-black/40 p-2 backdrop-blur-sm">
-              <img src="https://placehold.co/1000x450/1A2A4A/B22234?text=FREEDOM+250+FESTIVAL+STAGE" alt="Freedom festival" class="rounded-2xl w-full max-w-4xl">
+          
+          <div data-aos="fade-up" data-aos-delay="400" class="grid grid-cols-2 md:grid-cols-4 gap-5 mt-16 max-w-3xl mx-auto">
+            <div class="stat-card p-4 text-center"><i class="fas fa-users text-3xl text-pink-400 mb-2"></i><div class="counter-number" id="liveAttendees">2,847</div><p class="text-xs text-white/60">Live Attendees</p></div>
+            <div class="stat-card p-4 text-center"><i class="fas fa-coins text-3xl text-yellow-400 mb-2"></i><div class="counter-number" id="totalCoins">342.5K</div><p class="text-xs text-white/60">Freedom Coins Earned</p></div>
+            <div class="stat-card p-4 text-center"><i class="fas fa-stamp text-3xl text-green-400 mb-2"></i><div class="counter-number" id="totalStamps">12.4K</div><p class="text-xs text-white/60">Stamps Collected</p></div>
+            <div class="stat-card p-4 text-center"><i class="fas fa-trophy text-3xl text-orange-400 mb-2"></i><div class="counter-number" id="activeMissions">24</div><p class="text-xs text-white/60">Active Missions</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PERKS / WHY JOIN SECTION - Enhanced cards -->
+      <section id="experience" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+          <div class="text-center mb-12" data-aos="fade-up">
+            <span class="text-pink-400 uppercase tracking-wider text-sm font-semibold">Why Join Freedom 250</span>
+            <h2 class="text-4xl md:text-5xl font-bold mt-3">Unforgettable Perks & Experiences</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-pink-500 via-white to-purple-600 mx-auto mt-4 rounded-full"></div>
+          </div>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="glass-card-light p-6 text-center card-hover" data-aos="fade-up" data-aos-delay="100">
+              <div class="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-xl"><i class="fas fa-gem text-white text-3xl"></i></div>
+              <h3 class="text-2xl font-bold">Premium Prizes</h3>
+              <p class="text-white/70 mt-2">Win MacBooks, iPhones, scholarships, and exclusive VIP experiences at the US Ambassador's residence.</p>
+              <div class="mt-4 flex justify-center gap-2 text-sm"><span class="bg-white/10 px-3 py-1 rounded-full">$10K+ Prize Pool</span></div>
+            </div>
+            <div class="glass-card-light p-6 text-center card-hover" data-aos="fade-up" data-aos-delay="200">
+              <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-xl"><i class="fas fa-handshake text-white text-3xl"></i></div>
+              <h3 class="text-2xl font-bold">Networking</h3>
+              <p class="text-white/70 mt-2">Connect with US Embassy officials, industry leaders, investors, and fellow innovators.</p>
+              <div class="mt-4 flex justify-center gap-2 text-sm"><span class="bg-white/10 px-3 py-1 rounded-full">50+ Sponsors</span></div>
+            </div>
+            <div class="glass-card-light p-6 text-center card-hover" data-aos="fade-up" data-aos-delay="300">
+              <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-xl"><i class="fas fa-microchip text-white text-3xl"></i></div>
+              <h3 class="text-2xl font-bold">Cutting-Edge Tech</h3>
+              <p class="text-white/70 mt-2">Experience drone soccer, VR tours, robotics demos, and the latest US innovations.</p>
+              <div class="mt-4 flex justify-center gap-2 text-sm"><span class="bg-white/10 px-3 py-1 rounded-full">AR/VR Experiences</span></div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Gamification Highlights -->
-      <section id="experience" class="max-w-7xl mx-auto px-6 py-20">
-        <div class="text-center mb-14">
-          <span class="text-red-400 uppercase tracking-wider text-sm font-semibold">the heart of engagement</span>
-          <h2 class="text-4xl md:text-5xl font-bold mt-3">Freedom Coins & Live Missions</h2>
-          <div class="w-24 h-1 bg-gradient-to-r from-red-600 via-white to-blue-800 mx-auto mt-4 rounded-full"></div>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
-          <div class="glass-card p-6 text-center"><div class="w-16 h-16 bg-gradient-to-br from-red-600 to-blue-800 rounded-2xl flex items-center justify-center mx-auto mb-5"><i class="fas fa-qrcode text-white text-2xl"></i></div><h3 class="text-2xl font-bold">QR Check-in</h3><p class="text-gray-300 mt-2">Seamless entry, booth scanning — earn instantly.</p></div>
-          <div class="glass-card p-6 text-center"><div class="w-16 h-16 bg-gradient-to-br from-red-600 to-blue-800 rounded-2xl flex items-center justify-center mx-auto mb-5"><i class="fas fa-trophy text-white text-2xl"></i></div><h3 class="text-2xl font-bold">Leaderboards & Badges</h3><p class="text-gray-300 mt-2">Compete for top explorer & visionary ranks.</p></div>
-          <div class="glass-card p-6 text-center"><div class="w-16 h-16 bg-gradient-to-br from-red-600 to-blue-800 rounded-2xl flex items-center justify-center mx-auto mb-5"><i class="fas fa-map-marked-alt text-white text-2xl"></i></div><h3 class="text-2xl font-bold">Smart Navigation</h3><p class="text-gray-300 mt-2">Interactive venue map & hidden mission hotspots.</p></div>
+      <!-- FREEDOM ZONES - Interactive Booth Cards with images -->
+      <section id="zones" class="py-20 px-6 bg-white/5">
+        <div class="max-w-7xl mx-auto">
+          <div class="text-center mb-12" data-aos="fade-up">
+            <span class="text-pink-400 uppercase tracking-wider text-sm font-semibold">Explore</span>
+            <h2 class="text-4xl md:text-5xl font-bold mt-3">The Freedom Districts</h2>
+            <p class="text-white/70 mt-3 max-w-2xl mx-auto">Each zone offers unique challenges, stamps, and Freedom Coins</p>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="glass-card-light p-5 card-hover cursor-pointer zone-card" data-zone="garage" data-aos="fade-up" data-aos-delay="100">
+              <div class="h-32 rounded-xl overflow-hidden mb-4"><img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=300&h=150&fit=crop" class="w-full h-full object-cover" alt="The Garage"></div>
+              <div class="zone-badge w-12 h-12 rounded-xl flex items-center justify-center mb-4"><i class="fas fa-microchip text-white text-2xl"></i></div>
+              <h3 class="text-xl font-bold">THE GARAGE</h3>
+              <p class="text-white/60 text-sm mt-1">Innovation & Technology</p>
+              <div class="mt-3 flex items-center justify-between text-sm"><span><i class="fas fa-star text-yellow-400"></i> 250 coins</span><span class="text-pink-400">🤖 Drone Soccer</span></div>
+              <div class="flag-ribbon w-full mt-3 rounded-full"></div>
+            </div>
+            <div class="glass-card-light p-5 card-hover cursor-pointer zone-card" data-zone="launchpad" data-aos="fade-up" data-aos-delay="150">
+              <div class="h-32 rounded-xl overflow-hidden mb-4"><img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=300&h=150&fit=crop" class="w-full h-full object-cover" alt="The Launchpad"></div>
+              <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-4"><i class="fas fa-chalkboard-user text-white text-2xl"></i></div>
+              <h3 class="text-xl font-bold">THE LAUNCHPAD</h3>
+              <p class="text-white/60 text-sm mt-1">Entrepreneurship</p>
+              <div class="mt-3 flex items-center justify-between text-sm"><span><i class="fas fa-star text-yellow-400"></i> 200 coins</span><span class="text-pink-400">💡 Pitch Competitions</span></div>
+            </div>
+            <div class="glass-card-light p-5 card-hover cursor-pointer zone-card" data-zone="townhall" data-aos="fade-up" data-aos-delay="200">
+              <div class="h-32 rounded-xl overflow-hidden mb-4"><img src="https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=300&h=150&fit=crop" class="w-full h-full object-cover" alt="Townhall"></div>
+              <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center mb-4"><i class="fas fa-landmark text-white text-2xl"></i></div>
+              <h3 class="text-xl font-bold">THE TOWNHALL</h3>
+              <p class="text-white/60 text-sm mt-1">Civic Engagement</p>
+              <div class="mt-3 flex items-center justify-between text-sm"><span><i class="fas fa-star text-yellow-400"></i> 300 coins</span><span class="text-pink-400">🗳️ Voting Sim</span></div>
+            </div>
+            <div class="glass-card-light p-5 card-hover cursor-pointer zone-card" data-zone="arena" data-aos="fade-up" data-aos-delay="250">
+              <div class="h-32 rounded-xl overflow-hidden mb-4"><img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=300&h=150&fit=crop" class="w-full h-full object-cover" alt="The Arena"></div>
+              <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center mb-4"><i class="fas fa-basketball text-white text-2xl"></i></div>
+              <h3 class="text-xl font-bold">THE ARENA</h3>
+              <p class="text-white/60 text-sm mt-1">Sports & Wellness</p>
+              <div class="mt-3 flex items-center justify-between text-sm"><span><i class="fas fa-star text-yellow-400"></i> 150 coins</span><span class="text-pink-400">⚾ Fast Pitch</span></div>
+            </div>
+          </div>
+          <div class="text-center mt-10"><button id="viewAllZonesBtn" class="bg-white/10 hover:bg-white/20 px-6 py-2 rounded-full transition">+ 4 More Zones →</button></div>
         </div>
       </section>
 
-      <!-- FREEDOM DISTRICTS (Zones) -->
-      <section id="zones" class="bg-black/30 py-20 border-y border-white/5">
-        <div class="max-w-7xl mx-auto px-6">
-          <div class="text-center mb-12"><h2 class="text-4xl font-bold">The Freedom Districts</h2><p class="text-gray-400 mt-2">7 zones — each with exclusive stamps & challenges</p></div>
-          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-microchip text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">THE GARAGE</h3><p class="text-gray-400 text-sm">Innovation, robotics & drone soccer</p></div>
-            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-chalkboard-user text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">THE LAUNCHPAD</h3><p class="text-gray-400 text-sm">Entrepreneurship & startups</p></div>
-            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-university text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">VARSITY LOUNGE</h3><p class="text-gray-400 text-sm">US university insights & VR</p></div>
-            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-landmark text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">TOWNHALL</h3><p class="text-gray-400 text-sm">Democracy mural & civic engagement</p></div>
-            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-basketball text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">THE ARENA</h3><p class="text-gray-400 text-sm">Sports, baseball & wellness</p></div>
-            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-utensils text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">TASTE OF AMERICA</h3><p class="text-gray-400 text-sm">Food court & cultural lounge</p></div>
-            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-music text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">CULTURE TENT</h3><p class="text-gray-400 text-sm">Music & poetry storytelling</p></div>
-            <div class="bg-[#0F1A2A] rounded-2xl p-5 border-l-4 border-red-500"><i class="fas fa-heartbeat text-red-400 text-2xl"></i><h3 class="font-bold text-xl mt-3">WELLNESS HUB</h3><p class="text-gray-400 text-sm">Yoga, chill & first aid</p></div>
+      <!-- REAL-TIME HEATMAP & METRICS SECTION -->
+      <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+          <div class="grid lg:grid-cols-2 gap-10 items-center">
+            <div data-aos="fade-right">
+              <span class="text-pink-400 uppercase tracking-wider text-sm font-semibold">Live Intelligence</span>
+              <h2 class="text-4xl font-bold mt-3">Real-Time Venue Heatmap</h2>
+              <p class="text-white/70 mt-4">See crowd density, popular zones, and live activity - updated every second.</p>
+              <div class="mt-6 space-y-3" id="heatmapContainer">
+                <div><div class="flex justify-between mb-1"><span>🎯 THE GARAGE</span><span class="text-pink-400" id="heatGarage">78%</span></div><div class="w-full bg-white/20 rounded-full h-2"><div class="bg-gradient-to-r from-pink-500 to-purple-600 h-2 rounded-full" style="width: 78%"></div></div></div>
+                <div><div class="flex justify-between mb-1"><span>🚀 THE LAUNCHPAD</span><span id="heatLaunchpad">65%</span></div><div class="w-full bg-white/20 rounded-full h-2"><div class="bg-gradient-to-r from-pink-500 to-purple-600 h-2 rounded-full" style="width: 65%"></div></div></div>
+                <div><div class="flex justify-between mb-1"><span>🏛️ THE TOWNHALL</span><span id="heatTownhall">92%</span></div><div class="w-full bg-white/20 rounded-full h-2"><div class="bg-gradient-to-r from-pink-500 to-purple-600 h-2 rounded-full" style="width: 92%"></div></div></div>
+                <div><div class="flex justify-between mb-1"><span>🏟️ THE ARENA</span><span id="heatArena">70%</span></div><div class="w-full bg-white/20 rounded-full h-2"><div class="bg-gradient-to-r from-pink-500 to-purple-600 h-2 rounded-full" style="width: 70%"></div></div></div>
+              </div>
+              <div class="mt-6 p-4 bg-white/5 rounded-xl border border-white/10"><p class="text-sm"><i class="fas fa-chart-line text-pink-400 mr-2"></i> Peak activity: <strong class="text-pink-400">2:30 PM - 4:00 PM</strong> | 1,240 active participants</p></div>
+            </div>
+            <div data-aos="fade-left">
+              <div class="glass-card-light p-6">
+                <h3 class="text-2xl font-bold mb-4"><i class="fas fa-trophy text-yellow-400 mr-2"></i>Leaderboard Top 5</h3>
+                <div class="space-y-3">
+                  <div class="leaderboard-item flex justify-between items-center"><div class="flex items-center gap-3"><span class="text-2xl">🥇</span><span>Alex Mwangi</span></div><span class="text-yellow-400 font-bold">2,450 pts</span></div>
+                  <div class="leaderboard-item flex justify-between items-center"><div class="flex items-center gap-3"><span class="text-2xl">🥈</span><span>Zuri Achieng</span></div><span class="text-yellow-400 font-bold">1,820 pts</span></div>
+                  <div class="leaderboard-item flex justify-between items-center"><div class="flex items-center gap-3"><span class="text-2xl">🥉</span><span>Brian Omondi</span></div><span class="text-yellow-400 font-bold">1,540 pts</span></div>
+                  <div class="leaderboard-item flex justify-between items-center"><div class="flex items-center gap-3"><span>4</span><span>Faith Kamau</span></div><span class="text-yellow-400 font-bold">1,280 pts</span></div>
+                  <div class="leaderboard-item flex justify-between items-center"><div class="flex items-center gap-3"><span>5</span><span>James Otieno</span></div><span class="text-yellow-400 font-bold">1,150 pts</span></div>
+                </div>
+                <div class="mt-4 text-center text-sm text-white/60">🏆 Top 10 get VIP Lounge Access + Ambassador's Fourth of July Invite</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- Digital Passport Preview with register call -->
-      <section id="dashboard-preview" class="max-w-7xl mx-auto px-6 py-20">
-        <div class="glass-card p-8 md:p-12 rounded-3xl flex flex-col lg:flex-row gap-10 items-center">
-          <div class="flex-1">
-            <span class="text-red-400 text-sm font-semibold">✨ Your Living Identity</span>
-            <h2 class="text-3xl md:text-4xl font-bold mt-2">Digital Freedom Passport</h2>
-            <p class="text-gray-300 mt-4">Once you sign up, receive a personalized passport with dynamic stamps, Freedom Coins balance, live ranking & mission tracker. Compete with peers and unlock exclusive rewards.</p>
-            <ul class="mt-6 space-y-3"><li class="flex items-center gap-3"><i class="fas fa-check-circle text-red-400"></i> Booth-by-booth validation & scanning</li><li class="flex items-center gap-3"><i class="fas fa-chart-line text-red-400"></i> Real-time rank & heatmaps</li><li class="flex items-center gap-3"><i class="fas fa-bell text-red-400"></i> Challenge alerts & hidden missions</li></ul>
-            <button id="previewSignupBtn" class="mt-8 btn-primary px-6 py-2.5 rounded-full text-white font-bold">Create My Passport →</button>
-          </div>
-          <div class="flex-1 bg-black/50 rounded-2xl p-6 border border-red-500/30">
-            <div class="flex justify-between items-center border-b border-white/10 pb-3"><i class="fas fa-passport text-red-400 text-xl"></i><span class="text-xs bg-red-900/40 px-2 py-0.5 rounded">FREEDOM RANK: EXPLORER</span></div>
-            <div class="mt-4 space-y-2"><p><i class="fas fa-user mr-2"></i> <strong>[Your Name]</strong> · ID: #FR250-...</p><div class="flex justify-between"><span>🔥 Freedom Coins: <strong class="text-red-400">0</strong></span><span>🏆 Rank #--</span></div><div class="w-full bg-gray-700 rounded-full h-2 mt-2"><div class="w-0 bg-red-500 h-2 rounded-full"></div></div>
-            <div class="flex gap-2 mt-4 flex-wrap"><span class="digital-stamp"><i class="fas fa-stamp"></i> No stamps yet</span><span class="digital-stamp">Join to unlock</span></div>
-            <button class="mt-4 w-full bg-red-500/20 border border-red-500/40 py-1.5 rounded-lg text-sm">Signup to unlock full passport</button>
+      <!-- REWARDS & PRIZES SECTION -->
+      <section id="rewards" class="py-20 px-6 bg-gradient-to-r from-purple-900/30 to-pink-900/30">
+        <div class="max-w-7xl mx-auto text-center">
+          <h2 class="text-4xl font-bold mb-4" data-aos="fade-up">Claim Your Freedom Rewards</h2>
+          <p class="text-white/70 mb-10" data-aos="fade-up">Redeem your Freedom Coins for amazing prizes</p>
+          <div class="grid md:grid-cols-4 gap-5" data-aos="fade-up" data-aos-delay="100">
+            <div class="glass-card-light p-4"><i class="fas fa-laptop-code text-4xl text-pink-400 mb-2"></i><h4 class="font-bold">MacBook Air</h4><p class="text-yellow-400">15,000 coins</p></div>
+            <div class="glass-card-light p-4"><i class="fas fa-headphones text-4xl text-pink-400 mb-2"></i><h4 class="font-bold">AirPods Pro</h4><p class="text-yellow-400">5,000 coins</p></div>
+            <div class="glass-card-light p-4"><i class="fas fa-ticket-alt text-4xl text-pink-400 mb-2"></i><h4 class="font-bold">VIP Festival Pass</h4><p class="text-yellow-400">3,500 coins</p></div>
+            <div class="glass-card-light p-4"><i class="fas fa-tshirt text-4xl text-pink-400 mb-2"></i><h4 class="font-bold">Freedom Merch</h4><p class="text-yellow-400">1,000 coins</p></div>
           </div>
         </div>
       </section>
 
-      <!-- CTA Banner -->
-      <div class="max-w-7xl mx-auto px-6 mb-12"><div class="bg-gradient-to-r from-[#B22234] to-[#3C3B6E] rounded-3xl p-8 text-white text-center shadow-2xl"><h3 class="text-2xl font-black">Become a Freedom Champion</h3><p class="mt-1 font-medium">JKUAT · June 11-12 · Join 1000+ innovators</p><button id="ctaRegisterBtn" class="mt-4 bg-white text-[#B22234] px-8 py-2 rounded-full font-bold hover:bg-gray-100 transition">Register for Free →</button></div></div>
+      <!-- CTA BANNER -->
+      <section class="py-16 px-6">
+        <div class="max-w-4xl mx-auto text-center glass-card-light p-12" data-aos="zoom-in">
+          <i class="fas fa-passport text-5xl text-pink-400 mb-4"></i>
+          <h2 class="text-3xl md:text-4xl font-bold">Ready to Begin Your Freedom Journey?</h2>
+          <p class="text-white/70 mt-3">Join 2,000+ participants at JKUAT - June 11-12, 2026</p>
+          <button id="ctaRegisterBtn" class="btn-primary-glow px-8 py-3 rounded-full text-white font-bold mt-6 inline-flex items-center gap-2">
+            <i class="fas fa-passport"></i> Activate Your Digital Passport Now
+          </button>
+          <p class="text-xs text-white/50 mt-4">✨ Free registration • Instant passport generation • Start earning coins immediately</p>
+        </div>
+      </section>
     </div>
 
-    <!-- ========== USER DASHBOARD (personalized per account) ========== -->
-    <div id="userDashboard" class="hidden max-w-6xl mx-auto px-6">
-      <div class="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
-        <div><h1 class="text-3xl font-bold"><i class="fas fa-passport text-red-400"></i> My Freedom Passport</h1><p id="dashboardUserName" class="text-gray-400">Welcome, Freedom Seeker</p></div>
-        <button id="logoutDashboardBtn" class="border border-red-500/50 text-red-400 px-5 py-2 rounded-full hover:bg-red-500/10 transition"><i class="fas fa-sign-out-alt"></i> Logout</button>
-      </div>
-      <!-- Stats Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-4 gap-5 mb-10">
-        <div class="glass-card p-5"><div class="text-red-400 text-xl"><i class="fas fa-coins"></i></div><p class="text-gray-400 text-sm">FREEDOM COINS</p><p id="dashCoins" class="text-3xl font-black">0</p></div>
-        <div class="glass-card p-5"><div class="text-red-400 text-xl"><i class="fas fa-medal"></i></div><p class="text-gray-400 text-sm">RANK</p><p id="dashRank" class="text-3xl font-black">#—</p></div>
-        <div class="glass-card p-5"><div class="text-red-400 text-xl"><i class="fas fa-stamp"></i></div><p class="text-gray-400 text-sm">DIGITAL STAMPS</p><p id="dashStamps" class="text-3xl font-black">0</p></div>
-        <div class="glass-card p-5"><div class="text-red-400 text-xl"><i class="fas fa-flag-usa"></i></div><p class="text-gray-400 text-sm">FREEDOM RANK</p><p id="dashLevel" class="text-xl font-bold">Explorer</p></div>
-      </div>
-      <!-- Profile & Digital Passport Extended -->
-      <div class="grid lg:grid-cols-3 gap-8 mb-8">
-        <div class="lg:col-span-1 bg-black/40 rounded-2xl border border-white/10 p-6">
-          <div class="flex items-center gap-4 border-b border-white/10 pb-4"><div class="w-16 h-16 rounded-full bg-gradient-to-tr from-red-600 to-blue-800 flex items-center justify-center text-2xl"><i class="fas fa-user-astronaut"></i></div><div><h3 id="profileNameDisplay" class="font-bold text-xl">Freedom Seeker</h3><p class="text-xs text-gray-400">ID: <span id="profileID">#FR250-001</span></p><button id="editProfileBtn" class="text-red-400 text-xs underline">Edit Profile</button></div></div>
-          <div class="mt-5"><p class="text-sm"><i class="fas fa-envelope mr-2 text-red-400"></i> <span id="profileEmail">user@example.com</span></p><p class="text-sm mt-2"><i class="fas fa-phone-alt mr-2 text-red-400"></i> +254 XXX XXX</p></div>
-          <div class="mt-6"><div class="flag-stripe w-full rounded-full"></div><p class="text-center text-xs text-gray-400 mt-3">"Freedom is participation"</p></div>
-        </div>
-        <div class="lg:col-span-2 bg-black/40 rounded-2xl border border-white/10 p-6">
-          <h3 class="text-xl font-semibold flex items-center gap-2"><i class="fas fa-passport text-red-400"></i> Digital Stamp Collection</h3>
-          <div id="stampsContainer" class="flex flex-wrap gap-2 mt-4"><span class="digital-stamp bg-white/5">✨ No stamps yet — scan booths!</span></div>
-          <div class="mt-6"><h4 class="font-semibold">Active Missions</h4><ul id="missionList" class="text-sm space-y-2 mt-2"><li>✅ Visit The Garage & Launchpad → +100 Coins</li><li>🎯 Complete Townhall mural → Visionary Stamp</li><li>📸 Share #Freedom250 → +75 Coins</li></ul></div>
-        </div>
-      </div>
-      <!-- Notifications & Scan Simulator -->
-      <div class="grid lg:grid-cols-2 gap-8">
-        <div class="bg-black/50 rounded-2xl border border-white/10 p-5"><h3 class="text-xl font-semibold"><i class="fas fa-bell text-red-400"></i> Live Notifications</h3><div id="notifList" class="mt-4 space-y-3 max-h-64 overflow-y-auto"><div class="bg-white/5 p-2 rounded text-sm">🎉 Welcome to Freedom 250! Scan booths to earn coins.</div></div><button id="simulateScanDashboardBtn" class="mt-4 w-full py-2 rounded-lg border border-red-500/40 hover:bg-red-500/10 text-sm">+ Simulate Booth Scan (Earn 45-75 Coins + Stamp)</button></div>
-        <div class="bg-black/50 rounded-2xl border border-white/10 p-5"><h3 class="text-xl font-semibold"><i class="fas fa-chart-line"></i> Leaderboard Snapshot</h3><div id="leaderboardPreview" class="mt-3 space-y-2 text-sm"><div class="flex justify-between"><span>1. Alex M.</span><span class="text-red-400">2,340 Coins</span></div><div class="flex justify-between"><span>2. Zuri K.</span><span class="text-red-400">1,980 Coins</span></div><div class="flex justify-between"><span>3. Brian O.</span><span class="text-red-400">1,720 Coins</span></div><div class="flex justify-between text-gray-400"><span>... you are rising</span><span></span></div></div><div class="mt-4 p-3 bg-red-500/10 rounded-xl border border-red-500/30 text-center text-xs">🏆 Next reward: Top 30 get VIP Lounge access</div></div>
-      </div>
-      <div class="mt-8 text-center text-sm text-gray-400 border-t border-white/10 pt-8"><i class="fas fa-laptop-code mr-1"></i> Full interactive map & prize redemption — Live during the festival.</div>
-    </div>
+    <!-- DYNAMIC DASHBOARD CONTAINER (visible when logged in) -->
+    <div id="dashboardContainer" class="hidden max-w-7xl mx-auto px-5 py-8"></div>
   </main>
 
-  <footer id="footer" class="bg-black/60 border-t border-white/10 py-12 mt-10">
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8"><div><span class="text-2xl font-bold">FREEDOM250</span><p class="text-gray-400 text-sm mt-2">U.S. Embassy Nairobi · American Spaces Kenya</p></div><div><h4 class="font-semibold">Quick Links</h4><ul class="text-gray-400 text-sm space-y-1 mt-2"><li>About Freedom 250</li><li>Partner Universities</li><li>Volunteer</li></ul></div><div><h4 class="font-semibold">Resources</h4><ul class="text-gray-400 text-sm space-y-1 mt-2"><li>Digital Passport Guide</li><li>Booth Operator Kit</li><li>Privacy & Security</li></ul></div><div><h4 class="font-semibold">Follow</h4><div class="flex gap-4 mt-2 text-red-400 text-xl"><i class="fab fa-twitter"></i><i class="fab fa-instagram"></i><i class="fab fa-linkedin"></i></div></div></div>
-    <div class="text-center text-gray-500 text-xs mt-10 border-t border-white/5 pt-6">© 2026 Freedom 250 Festival · Celebrating US-Kenya Innovation & Cultural Exchange</div>
+  <!-- FOOTER - Sticky with socials -->
+  <footer class="bg-black/60 border-t border-white/10 py-12 mt-10">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-8 h-8 bg-gradient-to-br from-[#f093fb] to-[#f5576c] rounded-lg flex items-center justify-center"><i class="fas fa-passport text-white text-sm"></i></div>
+          <span class="text-xl font-bold">FREEDOM250</span>
+        </div>
+        <p class="text-gray-400 text-sm">A U.S. Embassy Nairobi-led festival fusing technology, culture, sport, and civic learning across Kenya's leading universities.</p>
+        <div class="flex gap-4 mt-4">
+          <i class="fab fa-twitter text-xl text-gray-400 hover:text-pink-400 cursor-pointer transition"></i>
+          <i class="fab fa-instagram text-xl text-gray-400 hover:text-pink-400 cursor-pointer transition"></i>
+          <i class="fab fa-facebook text-xl text-gray-400 hover:text-pink-400 cursor-pointer transition"></i>
+          <i class="fab fa-linkedin text-xl text-gray-400 hover:text-pink-400 cursor-pointer transition"></i>
+          <i class="fab fa-tiktok text-xl text-gray-400 hover:text-pink-400 cursor-pointer transition"></i>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-semibold text-lg">Quick Links</h4>
+        <ul class="text-gray-400 text-sm space-y-2 mt-3">
+          <li><a href="#home" class="footer-link hover:text-pink-400 transition">Home</a></li>
+          <li><a href="#experience" class="footer-link hover:text-pink-400 transition">Experience</a></li>
+          <li><a href="#zones" class="footer-link hover:text-pink-400 transition">Freedom Zones</a></li>
+          <li><a href="#rewards" class="footer-link hover:text-pink-400 transition">Rewards</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-lg">Resources</h4>
+        <ul class="text-gray-400 text-sm space-y-2 mt-3">
+          <li><a href="#" class="footer-link hover:text-pink-400 transition">Digital Passport Guide</a></li>
+          <li><a href="#" class="footer-link hover:text-pink-400 transition">Booth Operator Kit</a></li>
+          <li><a href="#" class="footer-link hover:text-pink-400 transition">Volunteer Handbook</a></li>
+          <li><a href="#" class="footer-link hover:text-pink-400 transition">Privacy & Security</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-lg">Contact</h4>
+        <ul class="text-gray-400 text-sm space-y-2 mt-3">
+          <li><i class="fas fa-envelope mr-2 text-pink-400"></i> info@freedom250.com</li>
+          <li><i class="fas fa-phone mr-2 text-pink-400"></i> +254 700 000 000</li>
+          <li><i class="fas fa-map-marker-alt mr-2 text-pink-400"></i> JKUAT Main Campus, Juja</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center text-gray-500 text-xs mt-10 border-t border-white/5 pt-6">
+      <p>© 2026 Freedom 250 Festival · Celebrating US-Kenya Innovation & Cultural Exchange · U.S. Embassy Nairobi</p>
+    </div>
   </footer>
-  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+  <!-- FLOATING CHAT BOT ICON -->
+  <div id="floatingChatBtn" class="floating-chat">
+    <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl cursor-pointer hover:scale-110 transition-all duration-300">
+      <i class="fas fa-comment-dots text-white text-2xl"></i>
+    </div>
+  </div>
+
+  <!-- CHAT MODAL -->
+  <div id="chatModal" class="fixed inset-0 z-[150] hidden items-center justify-center bg-black/80 backdrop-blur-md">
+    <div class="glass-card-light p-6 max-w-md w-full mx-4 qr-modal">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold"><i class="fas fa-robot text-pink-400 mr-2"></i>Freedom Assistant</h3>
+        <button id="closeChatBtn" class="text-white/50 hover:text-white text-2xl">&times;</button>
+      </div>
+      <div class="h-80 overflow-y-auto space-y-3 mb-4 p-2" id="chatMessages">
+        <div class="bg-pink-500/20 rounded-lg p-2 text-sm">🤖 Hi! I'm your Freedom Assistant. Ask me about:</div>
+        <div class="bg-white/10 rounded-lg p-2 text-sm">• How to earn Freedom Coins</div>
+        <div class="bg-white/10 rounded-lg p-2 text-sm">• Booth locations and traffic</div>
+        <div class="bg-white/10 rounded-lg p-2 text-sm">• Missions and challenges</div>
+        <div class="bg-white/10 rounded-lg p-2 text-sm">• Prize redemption</div>
+      </div>
+      <div class="flex gap-2">
+        <input type="text" id="chatInput" placeholder="Ask me anything..." class="flex-1 bg-black/50 border border-white/20 rounded-xl px-4 py-2 text-sm">
+        <button id="sendChatBtn" class="btn-primary-glow px-4 py-2 rounded-xl text-sm"><i class="fas fa-paper-plane"></i></button>
+      </div>
+      <p class="text-xs text-white/50 mt-3 text-center">✨ Demo assistant - Try asking about booths, coins, or missions!</p>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-24 right-5 z-50 flex flex-col gap-2"></div>
 
   <script>
-    // ------------------- MULTI-USER SYSTEM (mock accounts, each with own dashboard data) -------------------
-    let currentUser = null; // stores user object
-    let usersDB = [
-      { id: "FR250-001", name: "Jamie Okoth", email: "jamie@freedom.com", phone: "+254712345678", coins: 1250, rank: 42, stamps: 6, level: "Visionary", stampsList: ["Innovation Stamp", "Leadership Seal", "Culture Stamp", "Garage Badge"], notifications: ["Welcome Jamie! You earned 1250 coins already.", "New mission: Visit The Townhall"] },
-      { id: "FR250-002", name: "Zuri Makena", email: "zuri@freedom.com", phone: "+254723456789", coins: 870, rank: 68, stamps: 3, level: "Pathfinder", stampsList: ["Launchpad Badge", "Varsity Lounge Stamp"], notifications: ["Scan more booths to reach top 50"] },
-      { id: "FR250-003", name: "Brian Odhiambo", email: "brian@example.com", phone: "+254734567890", coins: 2040, rank: 11, stamps: 9, level: "Freedom Champion", stampsList: ["All zones pioneer", "Townhall Hero", "Arena MVP"], notifications: ["You're almost top 10!"] }
-    ];
-
-    // helper: show toast
-    function showToast(msg, type="info") {
+    AOS.init({ duration: 800, once: true });
+    
+    // ========== MOCK DATABASE ==========
+    let currentUser = null;
+    let scannedBooths = [];
+    
+    let participantData = {
+      id: "FR250-001",
+      name: "Alex Mwangi",
+      email: "alex@jkuat.ac.ke",
+      coins: 2450,
+      rank: 3,
+      stamps: 12,
+      level: "Freedom Champion",
+      stampsList: ["Garage Innovator", "Launchpad Leader", "Townhall Hero", "Arena Slam", "Culture Beat", "Taste of America"],
+      notifications: ["🎉 You won a VIP pass!", "🏆 You're in top 5 leaderboard!", "📍 New mission: Visit The Garage"],
+      missionsCompleted: ["Exploration Mission", "Networking Mission", "Visionary Mission"],
+      feedbacks: [],
+      attendanceHistory: ["Day 1 - 10:30 AM", "Day 1 - 2:00 PM", "Day 2 - 11:00 AM"]
+    };
+    
+    let boothStats = {
+      "The Garage": { visitors: 342, leadsCollected: 87, engagementScore: 92, trafficLevel: 78, scans: ["Alex Mwangi", "Zuri Achieng", "Brian Omondi"] },
+      "The Launchpad": { visitors: 289, leadsCollected: 64, engagementScore: 88, trafficLevel: 65, scans: ["Faith Kamau", "James Otieno"] },
+      "The Townhall": { visitors: 412, leadsCollected: 112, engagementScore: 94, trafficLevel: 92, scans: ["Alex Mwangi", "Zuri Achieng", "Brian Omondi", "Faith Kamau"] },
+      "The Arena": { visitors: 256, leadsCollected: 43, engagementScore: 76, trafficLevel: 70, scans: [] },
+      "Varsity Lounge": { visitors: 198, leadsCollected: 31, engagementScore: 72, trafficLevel: 55, scans: [] },
+      "Taste of America": { visitors: 523, leadsCollected: 89, engagementScore: 96, trafficLevel: 88, scans: [] },
+      "Culture Tent": { visitors: 307, leadsCollected: 52, engagementScore: 84, trafficLevel: 74, scans: [] },
+      "Wellness Hub": { visitors: 167, leadsCollected: 28, engagementScore: 68, trafficLevel: 48, scans: [] }
+    };
+    
+    let attendanceDemographics = {
+      students: 2100, faculty: 347, visitors: 400,
+      hourlyData: [450, 780, 1200, 1847, 2100, 2400, 2600, 2847],
+      universities: { "JKUAT": 1250, "UoN": 580, "MKU": 320, "DKUT": 297, "Other": 400 }
+    };
+    
+    let globalNotifications = [];
+    let allFeedbacks = [];
+    
+    function showToast(msg) {
+      const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
-      toast.className = `bg-black/80 backdrop-blur border-l-4 border-red-500 text-white px-4 py-2 rounded-lg shadow-xl text-sm flex items-center gap-2 toast-slide`;
-      toast.innerHTML = `<i class="fas fa-flag-usa text-red-400"></i> ${msg}`;
-      document.getElementById('toastContainer').appendChild(toast);
+      toast.className = "bg-gradient-to-r from-purple-900 to-pink-900 border-l-4 border-pink-500 px-4 py-3 rounded-lg shadow-2xl text-sm toast-slide flex items-center gap-3";
+      toast.innerHTML = `<i class="fas fa-flag-usa text-pink-400"></i> ${msg}`;
+      container.appendChild(toast);
       setTimeout(() => toast.remove(), 4000);
     }
-
-    function updateDashboardUI() {
-      if (!currentUser) return;
-      document.getElementById('dashCoins').innerText = currentUser.coins;
-      document.getElementById('dashRank').innerText = `#${currentUser.rank}`;
-      document.getElementById('dashStamps').innerText = currentUser.stamps;
-      document.getElementById('dashLevel').innerText = currentUser.level;
-      document.getElementById('dashboardUserName').innerHTML = `Welcome, ${currentUser.name}`;
-      document.getElementById('profileNameDisplay').innerText = currentUser.name;
-      document.getElementById('profileID').innerText = currentUser.id;
-      document.getElementById('profileEmail').innerText = currentUser.email;
-      // stamps display
-      const stampsDiv = document.getElementById('stampsContainer');
-      if (currentUser.stampsList && currentUser.stampsList.length) {
-        stampsDiv.innerHTML = currentUser.stampsList.map(s => `<span class="digital-stamp"><i class="fas fa-stamp"></i> ${s}</span>`).join('');
-      } else { stampsDiv.innerHTML = '<span class="digital-stamp bg-white/5">✉️ No stamps yet — scan booths to collect!</span>'; }
-      // notifications
-      const notifDiv = document.getElementById('notifList');
-      if(currentUser.notifications && currentUser.notifications.length){
-        notifDiv.innerHTML = currentUser.notifications.slice().reverse().map(n => `<div class="bg-white/5 p-2 rounded text-sm"><i class="fas fa-bell text-red-400 mr-2"></i> ${n}</div>`).join('');
-      } else { notifDiv.innerHTML = '<div class="bg-white/5 p-2 rounded text-sm">✨ Start your journey by scanning booths!</div>'; }
-    }
-
-    function addNotificationForUser(msg) {
-      if(!currentUser) return;
-      currentUser.notifications.unshift(msg);
-      if(currentUser.notifications.length > 10) currentUser.notifications.pop();
-      updateDashboardUI();
-      showToast(msg);
-    }
-
-    function simulateBoothScan() {
-      if(!currentUser) { showToast("Please login first to scan booths!"); return; }
-      let earned = 45 + Math.floor(Math.random() * 40);
-      currentUser.coins += earned;
-      currentUser.stamps += 1;
-      const newStamp = `Booth #${Math.floor(Math.random()*10)+1} Stamp`;
-      if (!currentUser.stampsList) currentUser.stampsList = [];
-      currentUser.stampsList.unshift(newStamp);
-      // update rank dynamically based on coins
-      let newRank = Math.max(5, 80 - Math.floor(currentUser.coins / 35));
-      currentUser.rank = newRank;
-      if(currentUser.coins > 1800) currentUser.level = "Freedom Champion";
-      else if(currentUser.coins > 1000) currentUser.level = "Visionary";
-      else if(currentUser.coins > 500) currentUser.level = "Pathfinder";
-      else currentUser.level = "Explorer";
-      updateDashboardUI();
-      addNotificationForUser(`✅ Booth scanned! +${earned} Freedom Coins & collected: ${newStamp}`);
-    }
-
-    // Login / Signup flow: Simulate account creation with custom name
-    function openSignupModal() {
-      let username = prompt("🎟️ Create your Freedom Passport!\nEnter your full name:", "Freedom Seeker");
-      if(!username) username = "Freedom Seeker";
-      let email = prompt("Enter your email address:", `${username.replace(/\s/g,'').toLowerCase()}@freedom250.com`);
-      if(!email) email = "user@freedom.com";
-      let newId = `FR250-${Math.floor(Math.random()*900+100)}`;
-      let newUser = {
-        id: newId, name: username, email: email, phone: "+254 700 000000",
-        coins: 100, rank: 99, stamps: 1, level: "Explorer",
-        stampsList: ["Freedom Passport Issued"],
-        notifications: [`🎉 Welcome ${username}! You've activated your Digital Freedom Passport. Start exploring zones to earn coins.`]
-      };
-      usersDB.push(newUser);
-      currentUser = newUser;
-      completeLoginUI();
-      showToast(`Welcome ${username}! Your Freedom Passport is ready. +100 starter coins.`);
-    }
-
-    function loginWithMock() {
-      // choose from existing mock accounts or create new via signup
-      let choice = confirm("Do you have an existing account? Press OK to pick a demo user, Cancel to create a new Passport.");
-      if(choice){
-        let userOptions = usersDB.map((u,idx)=> `${idx+1}. ${u.name} (${u.email})`).join("\n");
-        let selected = prompt(`Select a demo user:\n${userOptions}\n\nEnter number (1-${usersDB.length}):`, "1");
-        let idx = parseInt(selected) - 1;
-        if(!isNaN(idx) && usersDB[idx]) currentUser = JSON.parse(JSON.stringify(usersDB[idx]));
-        else { currentUser = JSON.parse(JSON.stringify(usersDB[0])); showToast("Using default Jamie account");}
-      } else {
-        openSignupModal();
-        return;
-      }
-      completeLoginUI();
-      showToast(`Welcome back ${currentUser.name}! Your Passport is live.`);
-    }
-
-    function completeLoginUI() {
-      document.getElementById('homePage').classList.add('hidden');
-      document.getElementById('userDashboard').classList.remove('hidden');
-      document.getElementById('loginNavBtn').classList.add('hidden');
-      document.getElementById('dashboardNavBtn').classList.remove('hidden');
-      updateDashboardUI();
-      window.scrollTo({top:0, behavior:'smooth'});
-    }
-
-    function logout() {
-      currentUser = null;
-      document.getElementById('homePage').classList.remove('hidden');
-      document.getElementById('userDashboard').classList.add('hidden');
-      document.getElementById('loginNavBtn').classList.remove('hidden');
-      document.getElementById('dashboardNavBtn').classList.add('hidden');
-      showToast("You've been logged out. See you at the festival!");
+    
+    function showQRScanModal(boothName, coinsEarned = 50, stampName = null) {
+      const modal = document.createElement('div');
+      modal.className = "fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-md";
+      modal.innerHTML = `
+        <div class="glass-card-light p-8 max-w-md w-full mx-4 text-center qr-modal">
+          <div class="w-32 h-32 mx-auto bg-white rounded-2xl flex items-center justify-center mb-4">
+            <i class="fas fa-qrcode text-6xl text-purple-600"></i>
+          </div>
+          <h3 class="text-2xl font-bold">Scan Booth QR</h3>
+          <p class="text-white/70 mt-2">Position your camera over the QR code at <strong>${boothName}</strong></p>
+          <div class="mt-4 p-3 bg-white/10 rounded-xl">
+            <p class="text-sm"><i class="fas fa-info-circle text-pink-400 mr-2"></i>Booth: ${boothName}</p>
+            <p class="text-sm mt-1"><i class="fas fa-coins text-yellow-400 mr-2"></i>Reward: ${coinsEarned} Freedom Coins</p>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button id="qrScanConfirmBtn" class="btn-primary-glow flex-1 py-2 rounded-full text-sm font-bold"><i class="fas fa-camera mr-2"></i>Simulate Scan</button>
+            <button id="qrManualSyncBtn" class="bg-white/10 flex-1 py-2 rounded-full text-sm border border-white/20"><i class="fas fa-sync-alt mr-2"></i>Manual Sync</button>
+          </div>
+          <button id="closeQRModal" class="mt-4 text-white/50 text-sm hover:text-white w-full">Cancel</button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      
+      document.getElementById('qrScanConfirmBtn')?.addEventListener('click', () => {
+        if (currentUser && currentUser.role === 'participant') {
+          if (!scannedBooths.includes(boothName)) {
+            scannedBooths.push(boothName);
+            participantData.coins += coinsEarned;
+            participantData.stamps += 1;
+            const newStamp = stampName || `${boothName} Stamp`;
+            participantData.stampsList.unshift(newStamp);
+            if (!boothStats[boothName].scans.includes(participantData.name)) {
+              boothStats[boothName].scans.push(participantData.name);
+              boothStats[boothName].visitors += 1;
+            }
+            showToast(`✅ Successfully scanned ${boothName}! +${coinsEarned} Freedom Coins & ${newStamp}`);
+            loadDashboard();
+          } else {
+            showToast(`⚠️ You've already scanned ${boothName}. Visit other booths for more coins!`);
+          }
+        } else {
+          showToast("⚠️ Please login as a participant to scan booths");
+        }
+        modal.remove();
+      });
+      
+      document.getElementById('qrManualSyncBtn')?.addEventListener('click', () => {
+        if (currentUser && currentUser.role === 'participant') {
+          showToast(`📋 Manual sync requested for ${boothName}. Booth staff will verify your visit.`);
+          globalNotifications.unshift({ message: `Manual sync request: ${participantData.name} at ${boothName}`, time: new Date().toLocaleTimeString() });
+        }
+        modal.remove();
+      });
+      
+      document.getElementById('closeQRModal')?.addEventListener('click', () => modal.remove());
     }
     
-    function editProfile() {
-      if(!currentUser) return;
-      let newName = prompt("Edit your display name:", currentUser.name);
-      if(newName && newName.trim()) currentUser.name = newName.trim();
-      let newEmail = prompt("Edit email:", currentUser.email);
-      if(newEmail && newEmail.includes('@')) currentUser.email = newEmail;
-      updateDashboardUI();
-      showToast("Profile updated!");
+    // ========== DASHBOARD FUNCTIONS (preserved) ==========
+    function renderParticipantDashboard() { /* preserved - too long but functional */ return `<div class="space-y-6"><div class="flex flex-wrap justify-between items-center"><h1 class="text-3xl font-bold"><i class="fas fa-passport text-pink-400"></i> My Freedom Passport</h1><span class="bg-pink-500/20 px-4 py-1 rounded-full text-sm border border-pink-500/30">🎟️ ${participantData.level}</span></div><div class="grid grid-cols-2 md:grid-cols-4 gap-5"><div class="dashboard-stat-card p-4 text-center"><i class="fas fa-coins text-3xl text-yellow-400 mb-2"></i><p class="text-gray-400 text-sm">Freedom Coins</p><p class="text-3xl font-black">${participantData.coins}</p></div><div class="dashboard-stat-card p-4 text-center"><i class="fas fa-trophy text-3xl text-orange-400 mb-2"></i><p class="text-gray-400 text-sm">Global Rank</p><p class="text-3xl font-black">#${participantData.rank}</p></div><div class="dashboard-stat-card p-4 text-center"><i class="fas fa-stamp text-3xl text-green-400 mb-2"></i><p class="text-gray-400 text-sm">Stamps Collected</p><p class="text-3xl font-black">${participantData.stamps}/20</p></div><div class="dashboard-stat-card p-4 text-center"><i class="fas fa-flag-checkered text-3xl text-pink-400 mb-2"></i><p class="text-gray-400 text-sm">Missions</p><p class="text-3xl font-black">${participantData.missionsCompleted.length}/8</p></div></div><div class="grid md:grid-cols-2 gap-6"><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg mb-3"><i class="fas fa-stamp text-pink-400 mr-2"></i>Digital Stamp Collection</h3><div class="flex flex-wrap gap-2">${participantData.stampsList.map(s => `<span class="badge-stamp"><i class="fas fa-stamp mr-1"></i>${s}</span>`).join('')}</div></div><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg mb-3"><i class="fas fa-tasks text-pink-400 mr-2"></i>Active Missions</h3><ul class="space-y-2"><li class="flex items-center gap-2 text-sm"><i class="fas fa-check-circle text-green-400"></i> Explore The Garage - +250 coins</li><li class="flex items-center gap-2 text-sm"><i class="fas fa-check-circle text-green-400"></i> Townhall Voting Experience - +300 coins</li><li class="flex items-center gap-2 text-sm"><i class="fas fa-clock text-yellow-400"></i> Scavenger Hunt: Hidden QR - +200 coins</li></ul><button id="completeMissionBtn" class="mt-3 text-xs text-pink-400 underline hover:text-pink-300">Complete random mission →</button></div></div><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg mb-3"><i class="fas fa-qrcode text-pink-400 mr-2"></i>Scan Booths to Earn Coins & Stamps</h3><div class="grid grid-cols-2 md:grid-cols-4 gap-3">${Object.keys(boothStats).map(booth => `<button class="scan-booth-btn bg-gradient-to-r from-purple-600/40 to-pink-600/40 p-3 rounded-xl text-center hover:scale-105 transition border border-white/20" data-booth="${booth}" data-coins="${booth === 'The Townhall' ? 75 : booth === 'Taste of America' ? 60 : 50}" data-stamp="${booth} Explorer Stamp"><i class="fas fa-qrcode text-2xl text-pink-400 mb-1"></i><p class="text-xs font-semibold">${booth}</p><p class="text-xs text-yellow-400">+${booth === 'The Townhall' ? 75 : booth === 'Taste of America' ? 60 : 50} coins</p></button>`).join('')}</div></div><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg mb-3"><i class="fas fa-fire text-orange-400 mr-2"></i>Live Booth Traffic (Real-Time)</h3><div class="grid md:grid-cols-2 gap-3">${Object.entries(boothStats).map(([booth, data]) => `<div class="bg-black/30 rounded-xl p-3"><div class="flex justify-between items-center"><span class="font-medium">${booth}</span><span class="text-sm ${data.trafficLevel > 80 ? 'text-red-400' : data.trafficLevel > 60 ? 'text-yellow-400' : 'text-green-400'}"><i class="fas fa-users"></i> ${data.trafficLevel}%</span></div><div class="w-full bg-white/10 rounded-full h-1.5 mt-2"><div class="bg-gradient-to-r from-pink-500 to-purple-600 h-1.5 rounded-full" style="width: ${data.trafficLevel}%"></div></div><div class="flex justify-between text-xs text-white/50 mt-1"><span>👥 ${data.visitors} visitors</span><span>⭐ ${data.engagementScore}% engagement</span></div></div>`).join('')}</div></div><div class="grid md:grid-cols-2 gap-6"><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg mb-3"><i class="fas fa-bell text-pink-400 mr-2"></i>Notifications</h3><div class="space-y-2">${participantData.notifications.map(n => `<div class="bg-white/5 rounded-lg p-2 text-sm"><i class="fas fa-bell text-pink-400 mr-2"></i>${n}</div>`).join('')}</div></div><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg mb-3"><i class="fas fa-comment text-pink-400 mr-2"></i>Share Your Feedback</h3><textarea id="feedbackText" rows="2" class="w-full bg-black/50 border border-white/20 rounded-lg p-2 text-sm" placeholder="Tell us about your experience..."></textarea><button id="submitFeedbackBtn" class="mt-2 w-full py-2 bg-pink-500/20 rounded-xl border border-pink-500/40 text-sm hover:bg-pink-500/30 transition"><i class="fas fa-paper-plane mr-2"></i>Submit Feedback (+25 Coins)</button></div></div></div>`; }
+    function renderBoothDashboard(boothName) { /* preserved */ return `<div class="space-y-6"><div class="flex flex-wrap justify-between items-center"><h1 class="text-3xl font-bold"><i class="fas fa-store text-pink-400"></i> Booth Dashboard: ${boothName}</h1><select id="boothSelector" class="bg-black/50 border border-white/20 rounded-lg px-3 py-2 text-sm">${Object.keys(boothStats).map(b => `<option value="${b}" ${b === boothName ? 'selected' : ''}>${b}</option>`).join('')}</select></div><div class="grid md:grid-cols-3 gap-5"><div class="dashboard-stat-card p-5 text-center"><i class="fas fa-user-check text-3xl text-green-400 mb-2"></i><p class="text-3xl font-black">${boothStats[boothName].visitors}</p><p>Total Visitors</p></div><div class="dashboard-stat-card p-5 text-center"><i class="fas fa-id-card text-3xl text-blue-400 mb-2"></i><p class="text-3xl font-black">${boothStats[boothName].leadsCollected}</p><p>Leads Collected</p></div><div class="dashboard-stat-card p-5 text-center"><i class="fas fa-chart-line text-3xl text-purple-400 mb-2"></i><p class="text-3xl font-black">${boothStats[boothName].engagementScore}%</p><p>Engagement Score</p></div></div><div class="grid md:grid-cols-2 gap-6"><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg"><i class="fas fa-qrcode text-pink-400 mr-2"></i>Recent Scans</h3><ul class="mt-3 space-y-2">${boothStats[boothName].scans.slice(0,5).map(s => `<li class="flex items-center gap-2 text-sm"><i class="fas fa-user-check text-green-400"></i> ${s}</li>`).join('') || '<li class="text-white/50">No scans yet</li>'}</ul><button id="awardPointsBtn" class="mt-4 w-full py-2 bg-pink-500/20 rounded-xl border border-pink-500/40 text-sm hover:bg-pink-500/30 transition"><i class="fas fa-gift mr-2"></i>Award 50 Freedom Coins</button></div><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg"><i class="fas fa-bullhorn text-pink-400 mr-2"></i>Booth Actions</h3><button id="broadcastBoothBtn" class="w-full mb-3 py-2 bg-purple-500/20 rounded-xl border border-purple-500/40 text-sm hover:bg-purple-500/30 transition"><i class="fas fa-broadcast-tower mr-2"></i>Broadcast</button><button id="launchChallengeBtn" class="w-full py-2 bg-orange-500/20 rounded-xl border border-orange-500/40 text-sm hover:bg-orange-500/30 transition"><i class="fas fa-gamepad mr-2"></i>Launch Challenge</button><button id="manualSyncBoothBtn" class="w-full mt-3 py-2 bg-blue-500/20 rounded-xl border border-blue-500/40 text-sm hover:bg-blue-500/30 transition"><i class="fas fa-sync-alt mr-2"></i>Manual Sync</button></div></div></div>`; }
+    function renderVolunteerDashboard() { return `<div class="space-y-6"><h1 class="text-3xl font-bold"><i class="fas fa-hands-helping text-pink-400"></i> Volunteer Command Center</h1><div class="grid md:grid-cols-3 gap-5"><div class="dashboard-stat-card p-5 text-center"><i class="fas fa-users text-3xl text-green-400 mb-2"></i><p class="text-3xl font-black">${attendanceDemographics.students + attendanceDemographics.faculty + attendanceDemographics.visitors}</p><p>Total Check-ins</p></div><div class="dashboard-stat-card p-5 text-center"><i class="fas fa-user-clock text-3xl text-yellow-400 mb-2"></i><p class="text-3xl font-black">1,240</p><p>Currently Active</p></div><div class="dashboard-stat-card p-5 text-center"><i class="fas fa-chart-line text-3xl text-purple-400 mb-2"></i><p class="text-3xl font-black">2:30 PM</p><p>Peak Hour</p></div></div><div class="grid md:grid-cols-2 gap-6"><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg"><i class="fas fa-check-circle text-green-400 mr-2"></i>Check-in Station</h3><button id="manualCheckinBtn" class="mt-2 w-full py-3 bg-green-500/20 rounded-xl border border-green-500/40 text-lg font-semibold hover:bg-green-500/30 transition"><i class="fas fa-camera mr-2"></i>Scan QR / Manual Check-in</button></div><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg"><i class="fas fa-chart-pie text-pink-400 mr-2"></i>Demographics</h3><div class="space-y-2 mt-2"><div class="flex justify-between"><span>Students</span><span>${attendanceDemographics.students}</span></div><div class="flex justify-between"><span>Faculty</span><span>${attendanceDemographics.faculty}</span></div><div class="flex justify-between"><span>Visitors</span><span>${attendanceDemographics.visitors}</span></div></div></div></div><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg"><i class="fas fa-exclamation-triangle text-orange-400 mr-2"></i>Incident Reporting</h3><textarea id="incidentText" rows="2" class="w-full bg-black/50 border border-white/20 rounded-lg p-2 text-sm" placeholder="Describe issue..."></textarea><button id="reportIncidentBtn" class="mt-2 w-full py-2 bg-red-500/20 rounded-xl border border-red-500/40 text-sm hover:bg-red-500/30 transition"><i class="fas fa-flag mr-2"></i>Submit Report</button></div></div>`; }
+    function renderAdminDashboard() { setTimeout(() => { const c = document.getElementById('adminHeatmap'); if(c && window.ac) window.ac.destroy(); if(c) { window.ac = new Chart(c, { type: 'bar', data: { labels: Object.keys(boothStats), datasets: [{ label: 'Traffic %', data: Object.values(boothStats).map(d => d.trafficLevel), backgroundColor: '#f5576c' }] } }); } const ac2 = document.getElementById('attendanceChart'); if(ac2 && window.ac2c) window.ac2c.destroy(); if(ac2) { window.ac2c = new Chart(ac2, { type: 'line', data: { labels: ['9AM','10AM','11AM','12PM','1PM','2PM','3PM','4PM'], datasets: [{ label: 'Attendance', data: attendanceDemographics.hourlyData, borderColor: '#f093fb', fill: true }] } }); } }, 100); return `<div class="space-y-6"><div class="flex flex-wrap justify-between items-center"><h1 class="text-3xl font-bold"><i class="fas fa-crown text-yellow-400"></i> Super Admin - JKUAT Command Center</h1><button id="globalBroadcastBtn" class="btn-primary-glow px-5 py-2 rounded-full text-sm"><i class="fas fa-broadcast-tower mr-2"></i>Broadcast to All</button></div><div class="grid md:grid-cols-5 gap-4"><div class="dashboard-stat-card p-3 text-center"><i class="fas fa-users text-xl text-green-400"></i><p class="text-xl font-bold">${attendanceDemographics.students + attendanceDemographics.faculty + attendanceDemographics.visitors}</p><p class="text-xs">Total Attendees</p></div><div class="dashboard-stat-card p-3 text-center"><i class="fas fa-user-check text-xl text-blue-400"></i><p class="text-xl font-bold">1,240</p><p class="text-xs">Active Now</p></div><div class="dashboard-stat-card p-3 text-center"><i class="fas fa-coins text-xl text-yellow-400"></i><p class="text-xl font-bold">342.5K</p><p class="text-xs">Coins Earned</p></div><div class="dashboard-stat-card p-3 text-center"><i class="fas fa-stamp text-xl text-purple-400"></i><p class="text-xl font-bold">12.4K</p><p class="text-xs">Stamps</p></div><div class="dashboard-stat-card p-3 text-center"><i class="fas fa-building text-xl text-orange-400"></i><p class="text-xl font-bold">8</p><p class="text-xs">Booths</p></div></div><div class="grid md:grid-cols-2 gap-6"><div class="dashboard-stat-card p-5"><canvas id="adminHeatmap" height="200"></canvas></div><div class="dashboard-stat-card p-5"><canvas id="attendanceChart" height="200"></canvas></div></div><div class="grid md:grid-cols-2 gap-6"><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg">📊 Booth Performance</h3><div class="overflow-x-auto mt-3 max-h-64 overflow-y-auto"><table class="w-full text-sm">${Object.entries(boothStats).map(([n,d]) => `<tr class="border-b border-white/10"><td class="py-2">${n}</td><td>👥 ${d.visitors}</td><td>⭐ ${d.engagementScore}%</td><td>📋 ${d.leadsCollected}</td></tr>`).join('')} </table></div><button id="exportReportBtn" class="mt-4 w-full py-2 bg-blue-500/20 rounded-xl border border-blue-500/40 text-sm hover:bg-blue-500/30 transition"><i class="fas fa-file-csv mr-2"></i>Export Report</button></div><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg"><i class="fas fa-comment-dots text-pink-400 mr-2"></i>User Feedback</h3><div id="feedbacksList" class="h-48 overflow-y-auto space-y-2 text-sm">${allFeedbacks.slice(0,5).map(f => `<div class="bg-white/5 rounded-lg p-2"><div class="font-semibold">${f.name}</div><div class="text-white/70 text-xs">${f.message}</div></div>`).join('') || '<div class="text-white/50">No feedback yet</div>'}</div></div></div><div class="dashboard-stat-card p-5"><h3 class="font-semibold text-lg"><i class="fas fa-list text-pink-400 mr-2"></i>System Logs</h3><div id="adminLogs" class="h-40 overflow-y-auto space-y-1 text-sm">${globalNotifications.slice(0,5).map(n => `<div class="text-white/70 border-b border-white/10 py-1">[${n.time || 'Just now'}] ${n.message}</div>`).join('') || '<div class="text-white/50">No logs</div>'}</div></div></div>`; }
+    
+    function loadDashboard() {
+      const container = document.getElementById('dashboardContainer');
+      if (!currentUser) return;
+      if (currentUser.role === 'participant') {
+        container.innerHTML = renderParticipantDashboard();
+        document.querySelectorAll('.scan-booth-btn').forEach(btn => btn.addEventListener('click', (e) => { const booth = btn.getAttribute('data-booth'); const coins = parseInt(btn.getAttribute('data-coins')); const stamp = btn.getAttribute('data-stamp'); showQRScanModal(booth, coins, stamp); }));
+        document.getElementById('completeMissionBtn')?.addEventListener('click', () => { participantData.coins += 150; participantData.missionsCompleted.push("New Mission"); showToast("🎉 Mission Complete! +150 Freedom Coins"); loadDashboard(); });
+        document.getElementById('submitFeedbackBtn')?.addEventListener('click', () => { const fb = document.getElementById('feedbackText')?.value; if(fb) { allFeedbacks.unshift({ name: participantData.name, message: fb }); participantData.coins += 25; showToast("📝 Feedback submitted! +25 Coins"); document.getElementById('feedbackText').value = ''; loadDashboard(); } });
+      } else if (currentUser.role === 'booth') {
+        container.innerHTML = renderBoothDashboard(currentUser.boothName || "The Garage");
+        document.getElementById('boothSelector')?.addEventListener('change', (e) => { currentUser.boothName = e.target.value; loadDashboard(); });
+        document.getElementById('awardPointsBtn')?.addEventListener('click', () => showToast("⭐ Awarded 50 Freedom Coins!"));
+        document.getElementById('broadcastBoothBtn')?.addEventListener('click', () => { const msg = prompt("Broadcast message:"); if(msg) showToast(`📢 "${msg}"`); });
+        document.getElementById('launchChallengeBtn')?.addEventListener('click', () => showToast("🎮 Booth challenge launched!"));
+        document.getElementById('manualSyncBoothBtn')?.addEventListener('click', () => { const name = prompt("Participant name:"); if(name) { boothStats[currentUser.boothName].scans.unshift(name); showToast(`✅ Synced ${name}`); loadDashboard(); } });
+      } else if (currentUser.role === 'volunteer') {
+        container.innerHTML = renderVolunteerDashboard();
+        document.getElementById('manualCheckinBtn')?.addEventListener('click', () => showToast("✅ Check-in successful!"));
+        document.getElementById('reportIncidentBtn')?.addEventListener('click', () => { const txt = document.getElementById('incidentText')?.value; if(txt) { showToast("📋 Incident reported"); globalNotifications.unshift({ message: `Volunteer: ${txt}`, time: new Date().toLocaleTimeString() }); } });
+      } else if (currentUser.role === 'admin') {
+        container.innerHTML = renderAdminDashboard();
+        document.getElementById('globalBroadcastBtn')?.addEventListener('click', () => { const msg = prompt("Broadcast:"); if(msg) { showToast(`📢 ${msg}`); globalNotifications.unshift({ message: `Admin: ${msg}`, time: new Date().toLocaleTimeString() }); loadDashboard(); } });
+        document.getElementById('exportReportBtn')?.addEventListener('click', () => alert("CSV Report exported!"));
+      }
+      container.classList.remove('hidden');
+      document.getElementById('landingPage').classList.add('hidden');
+      document.getElementById('loggedOutButtons').classList.add('hidden');
+      document.getElementById('loggedInButtons').classList.remove('hidden');
+      document.getElementById('userRoleBadge').innerText = currentUser.role === 'participant' ? '🎟️ Participant' : (currentUser.role === 'booth' ? '🏪 Booth Staff' : (currentUser.role === 'volunteer' ? '👕 Volunteer' : '⚙️ Admin'));
     }
-
-    // Event listeners
-    document.getElementById('loginNavBtn').addEventListener('click', loginWithMock);
-    document.getElementById('dashboardNavBtn').addEventListener('click', () => { if(currentUser){ document.getElementById('homePage').classList.add('hidden'); document.getElementById('userDashboard').classList.remove('hidden'); window.scrollTo(0,0);} else loginWithMock();});
-    document.getElementById('logoutDashboardBtn').addEventListener('click', logout);
-    document.getElementById('heroGetStartedBtn').addEventListener('click', loginWithMock);
-    document.getElementById('previewSignupBtn').addEventListener('click', loginWithMock);
-    document.getElementById('ctaRegisterBtn').addEventListener('click', loginWithMock);
-    document.getElementById('simulateScanDashboardBtn').addEventListener('click', simulateBoothScan);
-    document.getElementById('editProfileBtn').addEventListener('click', editProfile);
-    document.getElementById('heroExploreMapBtn').addEventListener('click', () => document.getElementById('zones')?.scrollIntoView({behavior:'smooth'}));
+    
+    function showAuthModal() {
+      const modal = document.createElement('div');
+      modal.className = "fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md";
+      modal.innerHTML = `<div class="glass-card-light p-8 max-w-md w-full mx-4 text-center animate-float"><i class="fas fa-passport text-5xl text-pink-400 mb-4"></i><h2 class="text-2xl font-bold">Join Freedom 250</h2><p class="text-white/70 text-sm mt-2">Sign up to access your dashboard</p><div class="mt-6 space-y-3"><input type="text" id="authName" placeholder="Full Name" class="w-full bg-black/50 border border-white/20 rounded-xl px-4 py-3 text-white"><input type="email" id="authEmail" placeholder="Email" class="w-full bg-black/50 border border-white/20 rounded-xl px-4 py-3 text-white"><select id="authRole" class="w-full bg-black/50 border border-white/20 rounded-xl px-4 py-3 text-white"><option value="participant">🎟️ Participant</option><option value="booth">🏪 Booth Staff</option><option value="volunteer">👕 Volunteer</option><option value="admin">⚙️ Admin</option></select></div><button id="authSubmitBtn" class="btn-primary-glow w-full mt-6 py-3 rounded-full font-bold">Continue →</button><button id="closeAuthModal" class="mt-3 text-white/50 text-sm hover:text-white">Cancel</button></div>`;
+      document.body.appendChild(modal);
+      document.getElementById('authSubmitBtn')?.addEventListener('click', () => { const name = document.getElementById('authName').value || "User"; const role = document.getElementById('authRole').value; currentUser = { role, name }; if (role === 'booth') currentUser.boothName = "The Garage"; if (role === 'participant') participantData.name = name; showToast(`✨ Welcome ${name}!`); modal.remove(); loadDashboard(); });
+      document.getElementById('closeAuthModal')?.addEventListener('click', () => modal.remove());
+    }
+    
+    function logout() { currentUser = null; scannedBooths = []; document.getElementById('dashboardContainer').classList.add('hidden'); document.getElementById('landingPage').classList.remove('hidden'); document.getElementById('loggedOutButtons').classList.remove('hidden'); document.getElementById('loggedInButtons').classList.add('hidden'); showToast("Logged out successfully!"); }
+    
+    // Event Listeners
+    document.getElementById('navLoginBtn')?.addEventListener('click', showAuthModal);
+    document.getElementById('navRegisterBtn')?.addEventListener('click', showAuthModal);
+    document.getElementById('heroRegisterBtn')?.addEventListener('click', showAuthModal);
+    document.getElementById('ctaRegisterBtn')?.addEventListener('click', showAuthModal);
+    document.getElementById('logoutBtn')?.addEventListener('click', logout);
+    document.getElementById('heroExploreBtn')?.addEventListener('click', () => document.getElementById('zones')?.scrollIntoView({ behavior: 'smooth' }));
+    document.getElementById('viewAllZonesBtn')?.addEventListener('click', () => showToast("🚀 8 Zones: Garage, Launchpad, Varsity Lounge, Townhall, Arena, Taste of America, Culture Tent, Wellness Hub"));
+    
+    document.querySelectorAll('.zone-card').forEach(card => { card.addEventListener('click', () => { const zoneName = card.querySelector('h3')?.innerText || 'Zone'; if (currentUser?.role === 'participant') showQRScanModal(zoneName, 50, `${zoneName} Stamp`); else showToast(`📍 ${zoneName} - Sign in as participant to scan!`); }); });
+    document.querySelectorAll('.nav-link, .mobile-nav-link, .footer-link').forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); const href = link.getAttribute('href'); if (href && href !== '#') { const targetId = href.substring(1); document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' }); } }); });
+    
+    // Mobile menu toggle
     const mobileBtn = document.getElementById('mobileMenuBtn');
-    const mobileNav = document.getElementById('mobileNav');
-    mobileBtn.addEventListener('click', () => mobileNav.classList.toggle('hidden'));
-    document.querySelectorAll('#mobileNav a').forEach(a => a.addEventListener('click',()=>mobileNav.classList.add('hidden')));
-
-    // initial UI set
-    if(!currentUser) { /* nothing */ }
-    const styleAnim = document.createElement('style');
-    styleAnim.textContent = `.toast-slide{animation:slideIn 0.3s ease forwards;} @keyframes slideIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}`;
-    document.head.appendChild(styleAnim);
+    const mobilePanel = document.getElementById('mobileMenuPanel');
+    mobileBtn?.addEventListener('click', () => mobilePanel?.classList.toggle('hidden'));
+    
+    // Floating chat
+    const chatBtn = document.getElementById('floatingChatBtn');
+    const chatModal = document.getElementById('chatModal');
+    const closeChat = document.getElementById('closeChatBtn');
+    const sendChat = document.getElementById('sendChatBtn');
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
+    
+    chatBtn?.addEventListener('click', () => chatModal?.classList.toggle('hidden'));
+    closeChat?.addEventListener('click', () => chatModal?.classList.add('hidden'));
+    sendChat?.addEventListener('click', () => { const q = chatInput?.value; if(q) { const msgDiv = document.createElement('div'); msgDiv.className = "bg-pink-500/20 rounded-lg p-2 text-sm self-end"; msgDiv.innerHTML = `🧑 You: ${q}`; chatMessages?.appendChild(msgDiv); const replyDiv = document.createElement('div'); replyDiv.className = "bg-white/10 rounded-lg p-2 text-sm"; replyDiv.innerHTML = `🤖 Thanks for your question! At Freedom 250, you can earn coins by scanning booth QR codes. Try scanning The Garage for 50 coins!`; chatMessages?.appendChild(replyDiv); chatMessages.scrollTop = chatMessages.scrollHeight; chatInput.value = ''; } });
+    
+    // Animate counters
+    setTimeout(() => { const counters = [{ element: document.getElementById('liveAttendees'), target: 2847, current: 0 }, { element: document.getElementById('totalCoins'), target: 342.5, current: 0, suffix: 'K' }, { element: document.getElementById('totalStamps'), target: 12.4, current: 0, suffix: 'K' }, { element: document.getElementById('activeMissions'), target: 24, current: 0 }]; counters.forEach(c => { if(!c.element) return; const inc = c.target / 50; const int = setInterval(() => { c.current += inc; if(c.current >= c.target) { c.current = c.target; clearInterval(int); } c.element.innerText = Math.floor(c.current) + (c.suffix || ''); }, 30); }); }, 500);
   </script>
 </body>
 </html>
