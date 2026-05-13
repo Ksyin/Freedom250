@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,63 +44,55 @@
     .hero-bg::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(15,12,41,0.7) 0%, rgba(48,43,99,0.6) 100%); }
     .floating-chat { position: fixed; bottom: 24px; right: 24px; z-index: 1000; cursor: pointer; transition: all 0.3s; }
     .floating-chat:hover { transform: scale(1.1); }
-    /* Mobile menu - always visible when opened, no drag needed */
     .mobile-menu { transition: transform 0.3s ease, opacity 0.3s ease; background: #0a0a1a; }
     .mobile-menu.hidden { transform: translateX(100%); opacity: 0; display: none; }
     .mobile-menu:not(.hidden) { transform: translateX(0); opacity: 1; display: flex; }
     footer a { transition: all 0.2s; }
     footer a:hover { color: #f093fb; }
-    /* Mobile responsive improvements */
     @media (max-width: 768px) {
       .container-padding { padding-left: 16px; padding-right: 16px; }
-      .counter-number { font-size: 1.75rem; }
-      .glass-card-light, .dashboard-stat-card { padding: 1rem; }
-      h1 { font-size: 2rem; }
-      h2 { font-size: 1.75rem; }
+      .counter-number { font-size: 1.5rem; }
+      .glass-card-light, .dashboard-stat-card { padding: 0.75rem; }
+      h1 { font-size: 1.75rem; }
+      h2 { font-size: 1.5rem; }
+      .logo-img { height: 35px !important; width: auto !important; }
     }
-    /* Prevent horizontal drag */
     html, body { max-width: 100%; overflow-x: hidden; position: relative; }
     * { box-sizing: border-box; }
-    /* Logo styling */
-    .logo-img { height: 40px; width: auto; object-fit: contain; }
-    @media (max-width: 768px) { .logo-img { height: 32px; } }
-    /* Visual cards grid */
-    .visual-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
-    .visual-card { overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .logo-img { height: 45px; width: auto; object-fit: contain; border-radius: 8px; }
+    .visual-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .visual-card { overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
     .visual-card:hover { transform: translateY(-5px); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.3); }
+    .countdown-card { background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)); border-radius: 1rem; padding: 1rem; text-align: center; }
   </style>
 </head>
 <body class="text-white">
 
   <!-- NAVBAR - Fully functional with mobile menu -->
   <nav class="fixed top-0 left-0 w-full z-50 bg-black/40 backdrop-blur-xl border-b border-white/10 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 md:px-8 py-3 md:py-4 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 py-2 md:py-3 flex items-center justify-between">
       <div class="flex items-center gap-2 md:gap-3">
-  <!-- USA Flag Logo -->
-  <img src="https://res.cloudinary.com/dzghdog3m/image/upload/v1776930538/American_c0vlws.png" alt="USA Flag" class="logo-img w-10 h-6 md:w-12 md:h-8 rounded shadow-lg">
-  
-  <!-- Brand Text -->
-  <span class="text-xl md:text-3xl font-black tracking-tight">
-    <span class="text-white">FREEDOM</span><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#f093fb] to-[#f5576c]">250</span>
-  </span>
-</div>
+        <!-- Larger Logo for visibility -->
+        <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USA Flag" class="logo-img h-10 md:h-12 w-auto rounded-lg shadow-lg">
+        <!-- Brand Text -->
+        <span class="text-xl md:text-2xl lg:text-3xl font-black tracking-tight">
+          <span class="text-white">FREEDOM</span><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#f093fb] to-[#f5576c]">250</span>
+        </span>
+      </div>
       
       <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center gap-6 lg:gap-8">
+      <div class="hidden md:flex items-center gap-5 lg:gap-8">
         <a href="#home" class="nav-link text-white/80 hover:text-white transition text-sm font-medium">Home</a>
         <a href="#experience" class="nav-link text-white/80 hover:text-white transition text-sm font-medium">Experience</a>
         <a href="#zones" class="nav-link text-white/80 hover:text-white transition text-sm font-medium">Freedom Zones</a>
-        <a href="#passport" class="nav-link text-white/80 hover:text-white transition text-sm font-medium">Digital Passport</a>
+        <a href="#gallery" class="nav-link text-white/80 hover:text-white transition text-sm font-medium">Gallery</a>
         <a href="#rewards" class="nav-link text-white/80 hover:text-white transition text-sm font-medium">Rewards</a>
         <a href="#about" class="nav-link text-white/80 hover:text-white transition text-sm font-medium">About</a>
       </div>
       
       <div class="flex items-center gap-2 md:gap-3">
         <div id="loggedOutButtons" class="flex items-center gap-2 md:gap-3">
-          <button id="navLoginBtn" class="px-3 md:px-5 py-1.5 md:py-2 rounded-full border border-white/30 text-white font-semibold text-xs md:text-sm hover:bg-white/10 transition backdrop-blur-sm">
-            <i class="fas fa-user mr-1 md:mr-2"></i>Sign In
-          </button>
-          <button id="navRegisterBtn" class="btn-primary-glow px-4 md:px-6 py-1.5 md:py-2 rounded-full text-white font-bold text-xs md:text-sm shadow-md">
+          <button id="navRegisterBtn" class="btn-primary-glow px-3 md:px-5 py-1.5 md:py-2 rounded-full text-white font-bold text-xs md:text-sm shadow-md">
             <i class="fas fa-passport mr-1 md:mr-2"></i>Get Passport
           </button>
         </div>
@@ -111,21 +102,20 @@
             <i class="fas fa-sign-out-alt mr-1"></i>Logout
           </button>
         </div>
-        <!-- Mobile Menu Hamburger - always visible, no drag needed -->
         <button id="mobileMenuBtn" class="md:hidden text-2xl text-white hover:text-pink-400 transition ml-1">
           <i class="fas fa-bars"></i>
         </button>
       </div>
     </div>
     
-    <!-- Mobile Menu Panel - visible on click, not hidden by default -->
-    <div id="mobileMenuPanel" class="mobile-menu hidden flex-col bg-black/95 backdrop-blur-xl border-b border-white/10 z-40 py-6 px-5 absolute left-0 right-0 top-[60px] md:top-[72px]">
+    <!-- Mobile Menu Panel -->
+    <div id="mobileMenuPanel" class="mobile-menu hidden flex-col bg-black/95 backdrop-blur-xl border-b border-white/10 z-40 py-6 px-5 absolute left-0 right-0 top-[56px] md:top-[64px]">
       <a href="#home" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>🏠 Home</a>
       <a href="#experience" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>✨ Experience</a>
       <a href="#zones" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>🗺️ Freedom Zones</a>
-      <a href="#passport" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>📘 Digital Passport</a>
+      <a href="#gallery" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>📸 Gallery</a>
       <a href="#rewards" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>🎁 Rewards</a>
-      <a href="#about" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>ℹ️ About Freedom 250</a>
+      <a href="#about" class="mobile-nav-link hover:text-pink-400 transition py-3 border-b border-white/10 text-base" data-close-mobile>ℹ️ About</a>
       <div class="flex gap-5 pt-4">
         <i class="fab fa-twitter text-xl hover:text-pink-400 cursor-pointer transition"></i>
         <i class="fab fa-instagram text-xl hover:text-pink-400 cursor-pointer transition"></i>
@@ -138,13 +128,13 @@
   <main>
     <!-- LANDING PAGE (visible when NOT logged in) -->
     <div id="landingPage">
-      <!-- HERO SECTION - Enhanced with image background -->
+      <!-- HERO SECTION -->
       <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20 hero-bg">
         <div class="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-pink-800/30 to-indigo-900/50"></div>
         <div class="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
         <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
         
-        <div class="relative z-10 max-w-6xl mx-auto px-5 md:px-6 text-center py-12 md:py-20">
+        <div class="relative z-10 max-w-6xl mx-auto px-5 md:px-6 text-center py-10 md:py-20">
           <div data-aos="fade-up" class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 md:px-5 md:py-2 rounded-full border border-white/20 mb-5 md:mb-6">
             <span class="relative flex h-2 w-2">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -153,7 +143,7 @@
             <span class="text-xs md:text-sm font-medium">🇺🇸 June 11-12, 2026 • JKUAT Main Campus</span>
           </div>
           
-          <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl md:text-6xl lg:text-8xl font-black leading-tight tracking-tight">
+          <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight">
             Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#f093fb] to-[#f5576c]">Digital Freedom</span><br>
             Passport Awaits
           </h1>
@@ -180,36 +170,60 @@
         </div>
       </section>
 
-      <!-- NEW VISUAL CARDS SECTION - Eye-catching image grid -->
-      <section class="py-12 md:py-16 px-5 md:px-6 bg-gradient-to-r from-purple-800/20 to-pink-800/20">
-        <div class="max-w-7xl mx-auto">
-          <div class="text-center mb-8 md:mb-12" data-aos="fade-up">
-            <span class="text-pink-400 uppercase tracking-wider text-xs md:text-sm font-semibold">Capture the Moment</span>
-            <h2 class="text-3xl md:text-4xl font-bold mt-2">Freedom 250 in Pictures</h2>
-            <div class="w-20 h-1 bg-gradient-to-r from-pink-500 to-purple-600 mx-auto mt-3 rounded-full"></div>
+      <!-- EVENT COUNTDOWN SECTION - NEW -->
+      <section class="py-10 md:py-14 px-5 md:px-6 bg-gradient-to-r from-pink-600/20 to-purple-600/20">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-2xl md:text-3xl font-bold mb-4" data-aos="fade-up">🎉 Event Countdown</h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5" data-aos="fade-up" data-aos-delay="100" id="countdownContainer">
+            <div class="countdown-card"><div class="text-3xl md:text-5xl font-bold text-pink-400" id="days">00</div><div class="text-xs md:text-sm text-white/70">Days</div></div>
+            <div class="countdown-card"><div class="text-3xl md:text-5xl font-bold text-pink-400" id="hours">00</div><div class="text-xs md:text-sm text-white/70">Hours</div></div>
+            <div class="countdown-card"><div class="text-3xl md:text-5xl font-bold text-pink-400" id="minutes">00</div><div class="text-xs md:text-sm text-white/70">Minutes</div></div>
+            <div class="countdown-card"><div class="text-3xl md:text-5xl font-bold text-pink-400" id="seconds">00</div><div class="text-xs md:text-sm text-white/70">Seconds</div></div>
           </div>
+          <p class="text-white/70 text-xs md:text-sm mt-4">Until the biggest festival in Kenya!</p>
+        </div>
+      </section>
+
+      <!-- GALLERY SECTION - Freedom 250 in Pictures (HEAVY CARDS) -->
+      <section id="gallery" class="py-16 md:py-20 px-5 md:px-6 bg-white/5">
+        <div class="max-w-7xl mx-auto">
+          <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
+            <span class="text-pink-400 uppercase tracking-wider text-xs md:text-sm font-semibold">Capture the Moment</span>
+            <h2 class="text-3xl md:text-5xl font-bold mt-2">Freedom 250 in Pictures</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-pink-500 to-purple-600 mx-auto mt-3 rounded-full"></div>
+            <p class="text-white/70 text-sm md:text-base mt-3 max-w-2xl mx-auto">Experience the energy, innovation, and culture through our gallery</p>
+          </div>
+          
           <div class="visual-grid" data-aos="fade-up" data-aos-delay="100">
-            <div class="glass-card-light visual-card cursor-pointer" onclick="showToast('🎉 Drone Soccer - The Garage Zone!')">
-              <img src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=400&h=250&fit=crop" alt="Drone Soccer" class="w-full h-48 object-cover rounded-t-xl">
-              <div class="p-4"><h3 class="font-bold text-lg">Drone Soccer Arena</h3><p class="text-white/70 text-sm">High-tech competition at The Garage</p></div>
+            <div class="glass-card-light visual-card" onclick="showToast('🎉 Drone Soccer Tournament at The Garage Zone!')">
+              <img src="https://images.unsplash.com/photo-1535378620166-273708d44e4c?w=500&h=300&fit=crop" alt="Drone Soccer" class="w-full h-56 object-cover rounded-t-xl">
+              <div class="p-4"><div class="flex items-center gap-2 mb-2"><span class="px-2 py-0.5 bg-pink-500/30 rounded-full text-xs">The Garage</span></div><h3 class="font-bold text-lg">Drone Soccer Arena</h3><p class="text-white/70 text-sm">High-tech drone competitions & robotics showcase</p></div>
             </div>
-            <div class="glass-card-light visual-card cursor-pointer" onclick="showToast('🎤 Live music at Culture Tent!')">
-              <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=250&fit=crop" alt="Music" class="w-full h-48 object-cover rounded-t-xl">
-              <div class="p-4"><h3 class="font-bold text-lg">Live Performances</h3><p class="text-white/70 text-sm">Cultural tent featuring top artists</p></div>
+            <div class="glass-card-light visual-card" onclick="showToast('🎤 Live performances at Culture Tent!')">
+              <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&h=300&fit=crop" alt="Music" class="w-full h-56 object-cover rounded-t-xl">
+              <div class="p-4"><div class="flex items-center gap-2 mb-2"><span class="px-2 py-0.5 bg-pink-500/30 rounded-full text-xs">Culture Tent</span></div><h3 class="font-bold text-lg">Live Performances</h3><p class="text-white/70 text-sm">Amazing musical acts and cultural showcases</p></div>
             </div>
-            <div class="glass-card-light visual-card cursor-pointer" onclick="showToast('🍔 Taste of America - Food Court!')">
-              <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=250&fit=crop" alt="Food" class="w-full h-48 object-cover rounded-t-xl">
-              <div class="p-4"><h3 class="font-bold text-lg">Taste of America</h3><p class="text-white/70 text-sm">Authentic American cuisine</p></div>
+            <div class="glass-card-light visual-card" onclick="showToast('🍔 Taste of America - Food Festival!')">
+              <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=500&h=300&fit=crop" alt="Food" class="w-full h-56 object-cover rounded-t-xl">
+              <div class="p-4"><div class="flex items-center gap-2 mb-2"><span class="px-2 py-0.5 bg-pink-500/30 rounded-full text-xs">Food Court</span></div><h3 class="font-bold text-lg">Taste of America</h3><p class="text-white/70 text-sm">Authentic American cuisine & food experiences</p></div>
             </div>
-            <div class="glass-card-light visual-card cursor-pointer" onclick="showToast('🏀 Sports challenges at The Arena!')">
-              <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&h=250&fit=crop" alt="Sports" class="w-full h-48 object-cover rounded-t-xl">
-              <div class="p-4"><h3 class="font-bold text-lg">Sports Arena</h3><p class="text-white/70 text-sm">Basketball, baseball & wellness</p></div>
+            <div class="glass-card-light visual-card" onclick="showToast('🏀 Sports challenges at The Arena!')">
+              <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=500&h=300&fit=crop" alt="Sports" class="w-full h-56 object-cover rounded-t-xl">
+              <div class="p-4"><div class="flex items-center gap-2 mb-2"><span class="px-2 py-0.5 bg-pink-500/30 rounded-full text-xs">The Arena</span></div><h3 class="font-bold text-lg">Sports Challenges</h3><p class="text-white/70 text-sm">Basketball, baseball fast-pitch & wellness activities</p></div>
+            </div>
+            <div class="glass-card-light visual-card" onclick="showToast('🗳️ Democracy experience at The Townhall!')">
+              <img src="https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500&h=300&fit=crop" alt="Townhall" class="w-full h-56 object-cover rounded-t-xl">
+              <div class="p-4"><div class="flex items-center gap-2 mb-2"><span class="px-2 py-0.5 bg-pink-500/30 rounded-full text-xs">The Townhall</span></div><h3 class="font-bold text-lg">Civic Engagement</h3><p class="text-white/70 text-sm">Voting simulations & democracy mural painting</p></div>
+            </div>
+            <div class="glass-card-light visual-card" onclick="showToast('💡 Entrepreneurship at The Launchpad!')">
+              <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=500&h=300&fit=crop" alt="Launchpad" class="w-full h-56 object-cover rounded-t-xl">
+              <div class="p-4"><div class="flex items-center gap-2 mb-2"><span class="px-2 py-0.5 bg-pink-500/30 rounded-full text-xs">The Launchpad</span></div><h3 class="font-bold text-lg">Pitch Competitions</h3><p class="text-white/70 text-sm">Entrepreneurship showcases & startup pitches</p></div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- PERKS / WHY JOIN SECTION - Enhanced cards -->
+      <!-- PERKS / WHY JOIN SECTION -->
       <section id="experience" class="py-16 md:py-20 px-5 md:px-6">
         <div class="max-w-7xl mx-auto">
           <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
@@ -240,7 +254,7 @@
         </div>
       </section>
 
-      <!-- FREEDOM ZONES - Interactive Booth Cards with images -->
+      <!-- FREEDOM ZONES - Interactive Booth Cards -->
       <section id="zones" class="py-16 md:py-20 px-5 md:px-6 bg-white/5">
         <div class="max-w-7xl mx-auto">
           <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
@@ -322,10 +336,10 @@
           <h2 class="text-3xl md:text-4xl font-bold mb-3 md:mb-4" data-aos="fade-up">Claim Your Freedom Rewards</h2>
           <p class="text-white/70 text-sm md:text-base mb-6 md:mb-10" data-aos="fade-up">Redeem your Freedom Coins for amazing prizes</p>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5" data-aos="fade-up" data-aos-delay="100">
-            <div class="glass-card-light p-3 md:p-4"><i class="fas fa-laptop-code text-3xl md:text-4xl text-pink-400 mb-1 md:mb-2"></i><h4 class="font-bold text-sm md:text-base">MacBook Air</h4><p class="text-yellow-400 text-xs md:text-sm">15,000 coins</p></div>
-            <div class="glass-card-light p-3 md:p-4"><i class="fas fa-headphones text-3xl md:text-4xl text-pink-400 mb-1 md:mb-2"></i><h4 class="font-bold text-sm md:text-base">AirPods Pro</h4><p class="text-yellow-400 text-xs md:text-sm">5,000 coins</p></div>
-            <div class="glass-card-light p-3 md:p-4"><i class="fas fa-ticket-alt text-3xl md:text-4xl text-pink-400 mb-1 md:mb-2"></i><h4 class="font-bold text-sm md:text-base">VIP Festival Pass</h4><p class="text-yellow-400 text-xs md:text-sm">3,500 coins</p></div>
-            <div class="glass-card-light p-3 md:p-4"><i class="fas fa-tshirt text-3xl md:text-4xl text-pink-400 mb-1 md:mb-2"></i><h4 class="font-bold text-sm md:text-base">Freedom Merch</h4><p class="text-yellow-400 text-xs md:text-sm">1,000 coins</p></div>
+            <div class="glass-card-light p-3 md:p-4 card-hover"><i class="fas fa-laptop-code text-3xl md:text-4xl text-pink-400 mb-1 md:mb-2"></i><h4 class="font-bold text-sm md:text-base">MacBook Air</h4><p class="text-yellow-400 text-xs md:text-sm">15,000 coins</p></div>
+            <div class="glass-card-light p-3 md:p-4 card-hover"><i class="fas fa-headphones text-3xl md:text-4xl text-pink-400 mb-1 md:mb-2"></i><h4 class="font-bold text-sm md:text-base">AirPods Pro</h4><p class="text-yellow-400 text-xs md:text-sm">5,000 coins</p></div>
+            <div class="glass-card-light p-3 md:p-4 card-hover"><i class="fas fa-ticket-alt text-3xl md:text-4xl text-pink-400 mb-1 md:mb-2"></i><h4 class="font-bold text-sm md:text-base">VIP Festival Pass</h4><p class="text-yellow-400 text-xs md:text-sm">3,500 coins</p></div>
+            <div class="glass-card-light p-3 md:p-4 card-hover"><i class="fas fa-tshirt text-3xl md:text-4xl text-pink-400 mb-1 md:mb-2"></i><h4 class="font-bold text-sm md:text-base">Freedom Merch</h4><p class="text-yellow-400 text-xs md:text-sm">1,000 coins</p></div>
           </div>
         </div>
       </section>
@@ -362,12 +376,12 @@
     <div id="dashboardContainer" class="hidden max-w-7xl mx-auto px-4 md:px-5 py-6 md:py-8"></div>
   </main>
 
-  <!-- FOOTER - Sticky with socials -->
-  <footer class="bg-black/60 border-t border-white/10 py-8 md:py-12 mt-8 md:mt-10">
+  <!-- FOOTER - Sticky with socials and branding -->
+  <footer class="bg-black/80 border-t border-white/10 py-8 md:py-12 mt-8 md:mt-10">
     <div class="max-w-7xl mx-auto px-5 md:px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
       <div>
         <div class="flex items-center gap-2 mb-3">
-          <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USA Flag" class="w-8 h-5 rounded shadow">
+          <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USA Flag" class="w-10 h-6 rounded shadow">
           <div class="w-8 h-8 bg-gradient-to-br from-[#f093fb] to-[#f5576c] rounded-lg flex items-center justify-center"><i class="fas fa-passport text-white text-sm"></i></div>
           <span class="text-lg md:text-xl font-bold">FREEDOM250</span>
         </div>
@@ -385,6 +399,7 @@
           <li><a href="#home" class="footer-link hover:text-pink-400 transition">Home</a></li>
           <li><a href="#experience" class="footer-link hover:text-pink-400 transition">Experience</a></li>
           <li><a href="#zones" class="footer-link hover:text-pink-400 transition">Freedom Zones</a></li>
+          <li><a href="#gallery" class="footer-link hover:text-pink-400 transition">Gallery</a></li>
           <li><a href="#rewards" class="footer-link hover:text-pink-400 transition">Rewards</a></li>
           <li><a href="#about" class="footer-link hover:text-pink-400 transition">About</a></li>
         </ul>
@@ -446,6 +461,30 @@
 
   <script>
     AOS.init({ duration: 800, once: true });
+    
+    // Countdown Timer
+    function updateCountdown() {
+      const eventDate = new Date(2026, 5, 11, 9, 0, 0); // June 11, 2026
+      const now = new Date();
+      const diff = eventDate - now;
+      if (diff > 0) {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (86400000)) / (3600000));
+        const minutes = Math.floor((diff % 3600000) / 60000);
+        const seconds = Math.floor((diff % 60000) / 1000);
+        document.getElementById('days').innerText = days.toString().padStart(2, '0');
+        document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+        document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+        document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+      } else {
+        document.getElementById('days').innerText = '00';
+        document.getElementById('hours').innerText = '00';
+        document.getElementById('minutes').innerText = '00';
+        document.getElementById('seconds').innerText = '00';
+      }
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
     
     // ========== MOCK DATABASE (completely preserved) ==========
     let currentUser = null;
@@ -555,7 +594,6 @@
     function logout() { currentUser = null; scannedBooths = []; document.getElementById('dashboardContainer').classList.add('hidden'); document.getElementById('landingPage').classList.remove('hidden'); document.getElementById('loggedOutButtons').classList.remove('hidden'); document.getElementById('loggedInButtons').classList.add('hidden'); showToast("Logged out successfully!"); }
     
     // Event Listeners - FIXED navigation and mobile menu 
-    document.getElementById('navLoginBtn')?.addEventListener('click', showAuthModal);
     document.getElementById('navRegisterBtn')?.addEventListener('click', showAuthModal);
     document.getElementById('heroRegisterBtn')?.addEventListener('click', showAuthModal);
     document.getElementById('ctaRegisterBtn')?.addEventListener('click', showAuthModal);
@@ -574,7 +612,6 @@
           const targetId = href.substring(1); 
           const targetEl = document.getElementById(targetId);
           if (targetEl) { targetEl.scrollIntoView({ behavior: 'smooth' }); }
-          // Close mobile menu after clicking
           const mobilePanel = document.getElementById('mobileMenuPanel');
           if (mobilePanel && !mobilePanel.classList.contains('hidden')) {
             mobilePanel.classList.add('hidden');
@@ -588,7 +625,7 @@
     const mobilePanel = document.getElementById('mobileMenuPanel');
     mobileBtn?.addEventListener('click', () => { mobilePanel.classList.toggle('hidden'); });
     
-    // Close mobile menu when clicking outside (optional but nice)
+    // Close mobile menu when clicking outside
     document.addEventListener('click', (e) => {
       if (mobilePanel && !mobilePanel.classList.contains('hidden')) {
         if (!mobileBtn.contains(e.target) && !mobilePanel.contains(e.target)) {
