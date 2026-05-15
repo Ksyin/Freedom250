@@ -13,42 +13,44 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     * { font-family: 'Inter', sans-serif; }
-    body { background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%); min-height: 100vh; overflow-x: hidden; }
-    .hero-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    :root { --brand-navy: #071b34; --brand-navy-2: #102b4f; --brand-red: #b22234; --brand-red-dark: #8f1b2a; --brand-white: #ffffff; --brand-line: rgba(255,255,255,0.16); }
+    body { background: var(--brand-navy); min-height: 100vh; overflow-x: hidden; }
+    .hero-gradient { background: var(--brand-navy-2); }
     .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     .card-hover:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 25px 40px -12px rgba(0,0,0,0.3); }
-    .glass-card-light { background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); border-radius: 1.5rem; }
-    .btn-primary-glow { background: linear-gradient(95deg, #f093fb 0%, #f5576c 100%); box-shadow: 0 0 20px rgba(245,87,108,0.5); transition: all 0.2s; }
-    .btn-primary-glow:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(245,87,108,0.7); }
-    .stat-card { background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)); backdrop-filter: blur(10px); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.2); }
+    .glass-card-light { background: var(--brand-navy-2); border: 1px solid var(--brand-line); border-radius: 1rem; box-shadow: 0 18px 44px rgba(0,0,0,0.18); }
+    .btn-primary-glow { background: var(--brand-red); box-shadow: 0 10px 22px rgba(178,34,52,0.28); transition: all 0.2s; }
+    .btn-primary-glow:hover { transform: translateY(-2px); background: var(--brand-red-dark); box-shadow: 0 14px 28px rgba(178,34,52,0.34); }
+    .stat-card { background: var(--brand-navy-2); border-radius: 1rem; border: 1px solid var(--brand-line); box-shadow: 0 18px 44px rgba(0,0,0,0.18); }
     .flag-ribbon { background: linear-gradient(90deg, #B22234 0%, #FFFFFF 50%, #3C3B6E 100%); height: 4px; }
     .animate-float { animation: float 4s ease-in-out infinite; }
     @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
     .animate-pulse-slow { animation: pulseSlow 3s ease-in-out infinite; }
     @keyframes pulseSlow { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-    .zone-badge { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
-    .counter-number { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #fff, #f093fb); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .zone-badge { background: var(--brand-red); }
+    .counter-number { font-size: 2.5rem; font-weight: 800; color: var(--brand-white); }
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #1a1a2e; }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: var(--brand-red); border-radius: 10px; }
     .toast-slide { animation: slideInRight 0.3s ease forwards; }
     @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
-    .dashboard-stat-card { background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05)); border-radius: 1.25rem; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); transition: all 0.2s; }
-    .dashboard-stat-card:hover { transform: translateY(-3px); background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08)); }
-    .badge-stamp { background: linear-gradient(135deg, #f093fb20, #f5576c20); border: 1px solid #f5576c40; border-radius: 12px; padding: 6px 12px; font-size: 12px; font-weight: 500; backdrop-filter: blur(4px); }
-    .leaderboard-item { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px; transition: all 0.2s; }
-    .leaderboard-item:hover { background: rgba(245,87,108,0.2); transform: translateX(5px); }
+    .dashboard-stat-card { background: var(--brand-navy-2); border-radius: 1rem; border: 1px solid var(--brand-line); transition: all 0.2s; box-shadow: 0 14px 34px rgba(0,0,0,0.16); }
+    .dashboard-stat-card:hover { transform: translateY(-3px); border-color: rgba(178,34,52,0.56); }
+    .badge-stamp { background: rgba(178,34,52,0.18); border: 1px solid rgba(178,34,52,0.5); border-radius: 10px; padding: 6px 12px; font-size: 12px; font-weight: 600; }
+    .leaderboard-item { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px; transition: all 0.2s; }
+    .leaderboard-item:hover { background: rgba(178,34,52,0.22); transform: translateX(5px); }
     .qr-modal { animation: zoomIn 0.3s ease forwards; }
     @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
     .hero-bg { background-image: url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1600&h=800&fit=crop'); background-size: cover; background-position: center; position: relative; }
-    .hero-bg::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(15,12,41,0.7) 0%, rgba(48,43,99,0.6) 100%); }
+    .hero-bg::before { content: ''; position: absolute; inset: 0; background: rgba(7,27,52,0.78); }
+    #home .blur-3xl { display: none; }
     .floating-chat { position: fixed; bottom: 24px; right: 24px; z-index: 1000; cursor: pointer; transition: all 0.3s; }
     .floating-chat:hover { transform: scale(1.1); }
     .mobile-menu { transition: transform 0.3s ease, opacity 0.3s ease; background: #0a0a1a; }
     .mobile-menu.hidden { transform: translateX(100%); opacity: 0; display: none; }
     .mobile-menu:not(.hidden) { transform: translateX(0); opacity: 1; display: flex; }
     footer a { transition: all 0.2s; }
-    footer a:hover { color: #f093fb; }
+    footer a:hover { color: var(--brand-red); }
     @media (max-width: 768px) {
       .container-padding { padding-left: 16px; padding-right: 16px; }
       .counter-number { font-size: 1.5rem; }
@@ -63,7 +65,19 @@
     .visual-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
     .visual-card { overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
     .visual-card:hover { transform: translateY(-5px); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.3); }
-    .countdown-card { background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)); border-radius: 1rem; padding: 1rem; text-align: center; }
+    .countdown-card { background: var(--brand-white); color: var(--brand-navy); border-radius: 1rem; padding: 1rem; text-align: center; border: 1px solid rgba(7,27,52,0.08); box-shadow: 0 16px 36px rgba(0,0,0,0.14); }
+    .countdown-deck { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; background: var(--brand-white); color: var(--brand-navy); border: 1px solid rgba(7,27,52,0.12); border-left: 8px solid var(--brand-red); border-radius: 1rem; padding: 1rem 1.25rem; box-shadow: 0 18px 40px rgba(0,0,0,0.16); }
+    .countdown-deck span { font-weight: 900; color: var(--brand-red); }
+    .brand-panel { background: var(--brand-navy-2); border: 1px solid var(--brand-line); border-radius: 1rem; }
+    .brand-chip { background: rgba(178,34,52,0.18); border: 1px solid rgba(178,34,52,0.5); color: #fff; border-radius: 999px; }
+    .brand-action { background: var(--brand-red); color: var(--brand-white); border: 1px solid rgba(255,255,255,0.12); }
+    .brand-action:hover { background: var(--brand-red-dark); }
+    .text-pink-400, .text-purple-400, .text-purple-600, .text-indigo-400 { color: var(--brand-red) !important; }
+    .hover\:text-pink-400:hover, .hover\:text-purple-400:hover { color: var(--brand-red) !important; }
+    .border-pink-500\/30, .border-pink-500\/40, .border-purple-500\/40, .border-red-500\/50 { border-color: rgba(178,34,52,0.55) !important; }
+    .bg-pink-500\/20, .bg-pink-500\/30, .bg-purple-500\/20, .bg-purple-600\/40 { background-color: rgba(178,34,52,0.18) !important; }
+    .bg-gradient-to-r, .bg-gradient-to-br { background-image: none !important; background-color: var(--brand-red) !important; }
+    #home > .absolute.inset-0 { background-color: rgba(7,27,52,0.36) !important; }
   </style>
 </head>
 <body class="text-white">
@@ -129,12 +143,12 @@
     <!-- LANDING PAGE (visible when NOT logged in) -->
     <div id="landingPage">
       <!-- HERO SECTION -->
-      <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20 hero-bg">
+      <section id="home" class="relative min-h-[78vh] flex items-center justify-center overflow-hidden pt-16 md:pt-20 hero-bg">
         <div class="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-pink-800/30 to-indigo-900/50"></div>
         <div class="absolute top-20 left-10 w-72 h-72 bg-pink-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
         <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
         
-        <div class="relative z-10 max-w-6xl mx-auto px-5 md:px-6 text-center py-10 md:py-20">
+        <div class="relative z-10 max-w-6xl mx-auto px-5 md:px-6 text-center py-8 md:py-12">
           <div data-aos="fade-up" class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 md:px-5 md:py-2 rounded-full border border-white/20 mb-5 md:mb-6">
             <span class="relative flex h-2 w-2">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -161,7 +175,7 @@
             </button>
           </div>
           
-          <div data-aos="fade-up" data-aos-delay="400" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mt-10 md:mt-16 max-w-3xl mx-auto">
+          <div data-aos="fade-up" data-aos-delay="400" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5 mt-8 md:mt-10 max-w-3xl mx-auto">
             <div class="stat-card p-3 md:p-4 text-center"><i class="fas fa-users text-2xl md:text-3xl text-pink-400 mb-1 md:mb-2"></i><div class="counter-number text-2xl md:text-3xl" id="liveAttendees">2,847</div><p class="text-[10px] md:text-xs text-white/60">Live Attendees</p></div>
             <div class="stat-card p-3 md:p-4 text-center"><i class="fas fa-coins text-2xl md:text-3xl text-yellow-400 mb-1 md:mb-2"></i><div class="counter-number text-2xl md:text-3xl" id="totalCoins">342.5K</div><p class="text-[10px] md:text-xs text-white/60">Freedom Coins</p></div>
             <div class="stat-card p-3 md:p-4 text-center"><i class="fas fa-stamp text-2xl md:text-3xl text-green-400 mb-1 md:mb-2"></i><div class="counter-number text-2xl md:text-3xl" id="totalStamps">12.4K</div><p class="text-[10px] md:text-xs text-white/60">Stamps</p></div>
@@ -171,16 +185,13 @@
       </section>
 
       <!-- EVENT COUNTDOWN SECTION - NEW -->
-      <section class="py-10 md:py-14 px-5 md:px-6 bg-gradient-to-r from-pink-600/20 to-purple-600/20">
+      <section class="py-4 md:py-6 px-5 md:px-6 bg-white/5">
         <div class="max-w-4xl mx-auto text-center">
-          <h2 class="text-2xl md:text-3xl font-bold mb-4" data-aos="fade-up">🎉 Event Countdown</h2>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5" data-aos="fade-up" data-aos-delay="100" id="countdownContainer">
-            <div class="countdown-card"><div class="text-3xl md:text-5xl font-bold text-pink-400" id="days">00</div><div class="text-xs md:text-sm text-white/70">Days</div></div>
-            <div class="countdown-card"><div class="text-3xl md:text-5xl font-bold text-pink-400" id="hours">00</div><div class="text-xs md:text-sm text-white/70">Hours</div></div>
-            <div class="countdown-card"><div class="text-3xl md:text-5xl font-bold text-pink-400" id="minutes">00</div><div class="text-xs md:text-sm text-white/70">Minutes</div></div>
-            <div class="countdown-card"><div class="text-3xl md:text-5xl font-bold text-pink-400" id="seconds">00</div><div class="text-xs md:text-sm text-white/70">Seconds</div></div>
+          <h2 class="text-2xl md:text-3xl font-bold mb-4">Event Countdown</h2>
+          <div class="countdown-deck text-xl md:text-4xl" id="countdownDeck">
+            <span id="days">00</span> Days. <span id="hours">00</span> Hours. <span id="minutes">00</span> Min.
           </div>
-          <p class="text-white/70 text-xs md:text-sm mt-4">Until the biggest festival in Kenya!</p>
+          <p class="text-white/70 text-xs md:text-sm mt-4">June 11, 2026 at JKUAT Main Campus</p>
         </div>
       </section>
 
@@ -471,20 +482,17 @@
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (86400000)) / (3600000));
         const minutes = Math.floor((diff % 3600000) / 60000);
-        const seconds = Math.floor((diff % 60000) / 1000);
         document.getElementById('days').innerText = days.toString().padStart(2, '0');
         document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
         document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
       } else {
         document.getElementById('days').innerText = '00';
         document.getElementById('hours').innerText = '00';
         document.getElementById('minutes').innerText = '00';
-        document.getElementById('seconds').innerText = '00';
       }
     }
     updateCountdown();
-    setInterval(updateCountdown, 1000);
+    setInterval(updateCountdown, 60000);
     
     // ========== MOCK DATABASE (completely preserved) ==========
     let currentUser = null;
@@ -509,8 +517,38 @@
     };
     
     let attendanceDemographics = { students: 2100, faculty: 347, visitors: 400, hourlyData: [450, 780, 1200, 1847, 2100, 2400, 2600, 2847], universities: { "JKUAT": 1250, "UoN": 580, "MKU": 320, "DKUT": 297, "Other": 400 } };
-    let globalNotifications = [];
-    let allFeedbacks = [];
+    let globalNotifications = [
+      { message: "Broadcast ready for Day 1 arrivals", time: "9:00 AM" },
+      { message: "Townhall zone nearing capacity", time: "11:45 AM" }
+    ];
+    let allFeedbacks = [
+      { name: "Zuri Achieng", message: "The Launchpad pitch clinic was the most useful session so far." },
+      { name: "Brian Omondi", message: "More signs near Taste of America would help the lunch rush." }
+    ];
+    let boothRegistry = Object.keys(boothStats).map((name, index) => ({
+      id: `B-${String(index + 1).padStart(3, '0')}`,
+      name,
+      owner: index % 2 === 0 ? "Program Team" : "Partner Team",
+      status: index < 6 ? "Active" : "Setup"
+    }));
+    let incidentReports = [
+      { area: "The Townhall", level: "High", status: "Open", message: "Queue line needs a second volunteer", time: "11:50 AM" },
+      { area: "Taste of America", level: "Medium", status: "Monitoring", message: "Inventory restock requested", time: "12:20 PM" }
+    ];
+    let boothBroadcasts = [
+      { booth: "The Garage", message: "Drone soccer demo starts in 10 minutes", time: "10:10 AM" }
+    ];
+    let rewardInventory = {
+      "Freedom Merch": { stock: 260, cost: 1000 },
+      "VIP Festival Pass": { stock: 24, cost: 3500 },
+      "AirPods Pro": { stock: 8, cost: 5000 },
+      "MacBook Air": { stock: 2, cost: 15000 }
+    };
+    let volunteerAssignments = [
+      { station: "Gate A", shift: "9:00 AM - 12:00 PM", status: "Active" },
+      { station: "Townhall Queue", shift: "12:00 PM - 2:00 PM", status: "Pending" },
+      { station: "Rewards Desk", shift: "2:00 PM - 5:00 PM", status: "Pending" }
+    ];
     
     function showToast(msg) {
       const container = document.getElementById('toastContainer');
@@ -544,6 +582,31 @@
       document.getElementById('qrManualSyncBtn')?.addEventListener('click', () => { if (currentUser && currentUser.role === 'participant') { showToast(`📋 Manual sync requested for ${boothName}. Booth staff will verify your visit.`); globalNotifications.unshift({ message: `Manual sync request: ${participantData.name} at ${boothName}`, time: new Date().toLocaleTimeString() }); } modal.remove(); });
       document.getElementById('closeQRModal')?.addEventListener('click', () => modal.remove());
     }
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[char]));
+    }
+
+    function formatNumber(value) {
+      return Number(value).toLocaleString();
+    }
+
+    function renderProgress(value) {
+      const width = Math.max(0, Math.min(100, value));
+      return `<div class="w-full bg-white/10 rounded-full h-2 mt-2"><div class="bg-red-700 h-2 rounded-full" style="width: ${width}%"></div></div>`;
+    }
+
+    function exportCsv(filename, rows) {
+      const csv = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
     
     // Dashboard render functions (preserved)
     function renderParticipantDashboard() { return `<div class="space-y-5 md:space-y-6"><div class="flex flex-wrap justify-between items-center"><h1 class="text-2xl md:text-3xl font-bold"><i class="fas fa-passport text-pink-400"></i> My Freedom Passport</h1><span class="bg-pink-500/20 px-3 md:px-4 py-1 rounded-full text-xs md:text-sm border border-pink-500/30">🎟️ ${participantData.level}</span></div><div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5"><div class="dashboard-stat-card p-3 md:p-4 text-center"><i class="fas fa-coins text-2xl md:text-3xl text-yellow-400 mb-1 md:mb-2"></i><p class="text-gray-400 text-xs md:text-sm">Freedom Coins</p><p class="text-2xl md:text-3xl font-black">${participantData.coins}</p></div><div class="dashboard-stat-card p-3 md:p-4 text-center"><i class="fas fa-trophy text-2xl md:text-3xl text-orange-400 mb-1 md:mb-2"></i><p class="text-gray-400 text-xs md:text-sm">Global Rank</p><p class="text-2xl md:text-3xl font-black">#${participantData.rank}</p></div><div class="dashboard-stat-card p-3 md:p-4 text-center"><i class="fas fa-stamp text-2xl md:text-3xl text-green-400 mb-1 md:mb-2"></i><p class="text-gray-400 text-xs md:text-sm">Stamps Collected</p><p class="text-2xl md:text-3xl font-black">${participantData.stamps}/20</p></div><div class="dashboard-stat-card p-3 md:p-4 text-center"><i class="fas fa-flag-checkered text-2xl md:text-3xl text-pink-400 mb-1 md:mb-2"></i><p class="text-gray-400 text-xs md:text-sm">Missions</p><p class="text-2xl md:text-3xl font-black">${participantData.missionsCompleted.length}/8</p></div></div><div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3"><i class="fas fa-stamp text-pink-400 mr-2"></i>Digital Stamp Collection</h3><div class="flex flex-wrap gap-2">${participantData.stampsList.map(s => `<span class="badge-stamp text-xs"><i class="fas fa-stamp mr-1"></i>${s}</span>`).join('')}</div></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3"><i class="fas fa-tasks text-pink-400 mr-2"></i>Active Missions</h3><ul class="space-y-1.5 md:space-y-2"><li class="flex items-center gap-2 text-xs md:text-sm"><i class="fas fa-check-circle text-green-400"></i> Explore The Garage - +250 coins</li><li class="flex items-center gap-2 text-xs md:text-sm"><i class="fas fa-check-circle text-green-400"></i> Townhall Voting Experience - +300 coins</li><li class="flex items-center gap-2 text-xs md:text-sm"><i class="fas fa-clock text-yellow-400"></i> Scavenger Hunt: Hidden QR - +200 coins</li></ul><button id="completeMissionBtn" class="mt-2 md:mt-3 text-xs text-pink-400 underline hover:text-pink-300">Complete random mission →</button></div></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3"><i class="fas fa-qrcode text-pink-400 mr-2"></i>Scan Booths to Earn Coins & Stamps</h3><div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">${Object.keys(boothStats).map(booth => `<button class="scan-booth-btn bg-gradient-to-r from-purple-600/40 to-pink-600/40 p-2 md:p-3 rounded-xl text-center hover:scale-105 transition border border-white/20" data-booth="${booth}" data-coins="${booth === 'The Townhall' ? 75 : booth === 'Taste of America' ? 60 : 50}" data-stamp="${booth} Explorer Stamp"><i class="fas fa-qrcode text-xl md:text-2xl text-pink-400 mb-1"></i><p class="text-[10px] md:text-xs font-semibold">${booth}</p><p class="text-[10px] md:text-xs text-yellow-400">+${booth === 'The Townhall' ? 75 : booth === 'Taste of America' ? 60 : 50} coins</p></button>`).join('')}</div></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3"><i class="fas fa-fire text-orange-400 mr-2"></i>Live Booth Traffic (Real-Time)</h3><div class="grid md:grid-cols-2 gap-2 md:gap-3">${Object.entries(boothStats).map(([booth, data]) => `<div class="bg-black/30 rounded-xl p-2 md:p-3"><div class="flex justify-between items-center"><span class="font-medium text-xs md:text-sm">${booth}</span><span class="text-xs md:text-sm ${data.trafficLevel > 80 ? 'text-red-400' : data.trafficLevel > 60 ? 'text-yellow-400' : 'text-green-400'}"><i class="fas fa-users"></i> ${data.trafficLevel}%</span></div><div class="w-full bg-white/10 rounded-full h-1.5 mt-2"><div class="bg-gradient-to-r from-pink-500 to-purple-600 h-1.5 rounded-full" style="width: ${data.trafficLevel}%"></div></div><div class="flex justify-between text-[10px] md:text-xs text-white/50 mt-1"><span>👥 ${data.visitors} visitors</span><span>⭐ ${data.engagementScore}%</span></div></div>`).join('')}</div></div><div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3"><i class="fas fa-bell text-pink-400 mr-2"></i>Notifications</h3><div class="space-y-1.5 md:space-y-2">${participantData.notifications.map(n => `<div class="bg-white/5 rounded-lg p-2 text-xs md:text-sm"><i class="fas fa-bell text-pink-400 mr-2"></i>${n}</div>`).join('')}</div></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-2 md:mb-3"><i class="fas fa-comment text-pink-400 mr-2"></i>Share Your Feedback</h3><textarea id="feedbackText" rows="2" class="w-full bg-black/50 border border-white/20 rounded-lg p-2 text-xs md:text-sm" placeholder="Tell us about your experience..."></textarea><button id="submitFeedbackBtn" class="mt-2 w-full py-1.5 md:py-2 bg-pink-500/20 rounded-xl border border-pink-500/40 text-xs md:text-sm hover:bg-pink-500/30 transition"><i class="fas fa-paper-plane mr-2"></i>Submit Feedback (+25 Coins)</button></div></div></div>`; }
@@ -551,29 +614,284 @@
     function renderVolunteerDashboard() { return `<div class="space-y-5 md:space-y-6"><h1 class="text-2xl md:text-3xl font-bold"><i class="fas fa-hands-helping text-pink-400"></i> Volunteer Command Center</h1><div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5"><div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-users text-2xl md:text-3xl text-green-400 mb-1 md:mb-2"></i><p class="text-2xl md:text-3xl font-black">${attendanceDemographics.students + attendanceDemographics.faculty + attendanceDemographics.visitors}</p><p class="text-xs md:text-sm">Total Check-ins</p></div><div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-user-clock text-2xl md:text-3xl text-yellow-400 mb-1 md:mb-2"></i><p class="text-2xl md:text-3xl font-black">1,240</p><p class="text-xs md:text-sm">Currently Active</p></div><div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-chart-line text-2xl md:text-3xl text-purple-400 mb-1 md:mb-2"></i><p class="text-2xl md:text-3xl font-black">2:30 PM</p><p class="text-xs md:text-sm">Peak Hour</p></div></div><div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-check-circle text-green-400 mr-2"></i>Check-in Station</h3><button id="manualCheckinBtn" class="mt-2 w-full py-2 md:py-3 bg-green-500/20 rounded-xl border border-green-500/40 text-sm md:text-lg font-semibold hover:bg-green-500/30 transition"><i class="fas fa-camera mr-2"></i>Scan QR / Manual Check-in</button></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-chart-pie text-pink-400 mr-2"></i>Demographics</h3><div class="space-y-1.5 md:space-y-2 mt-2"><div class="flex justify-between text-xs md:text-sm"><span>Students</span><span>${attendanceDemographics.students}</span></div><div class="flex justify-between text-xs md:text-sm"><span>Faculty</span><span>${attendanceDemographics.faculty}</span></div><div class="flex justify-between text-xs md:text-sm"><span>Visitors</span><span>${attendanceDemographics.visitors}</span></div></div></div></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-exclamation-triangle text-orange-400 mr-2"></i>Incident Reporting</h3><textarea id="incidentText" rows="2" class="w-full bg-black/50 border border-white/20 rounded-lg p-2 text-xs md:text-sm" placeholder="Describe issue..."></textarea><button id="reportIncidentBtn" class="mt-2 w-full py-1.5 md:py-2 bg-red-500/20 rounded-xl border border-red-500/40 text-xs md:text-sm hover:bg-red-500/30 transition"><i class="fas fa-flag mr-2"></i>Submit Report</button></div></div>`; }
     function renderAdminDashboard() { setTimeout(() => { const c = document.getElementById('adminHeatmap'); if(c && window.ac) window.ac.destroy(); if(c) { window.ac = new Chart(c, { type: 'bar', data: { labels: Object.keys(boothStats), datasets: [{ label: 'Traffic %', data: Object.values(boothStats).map(d => d.trafficLevel), backgroundColor: '#f5576c' }] } }); } const ac2 = document.getElementById('attendanceChart'); if(ac2 && window.ac2c) window.ac2c.destroy(); if(ac2) { window.ac2c = new Chart(ac2, { type: 'line', data: { labels: ['9AM','10AM','11AM','12PM','1PM','2PM','3PM','4PM'], datasets: [{ label: 'Attendance', data: attendanceDemographics.hourlyData, borderColor: '#f093fb', fill: true }] } }); } }, 100); return `<div class="space-y-5 md:space-y-6"><div class="flex flex-wrap justify-between items-center"><h1 class="text-2xl md:text-3xl font-bold"><i class="fas fa-crown text-yellow-400"></i> Super Admin - JKUAT Command Center</h1><button id="globalBroadcastBtn" class="btn-primary-glow px-3 md:px-5 py-1.5 md:py-2 rounded-full text-xs md:text-sm"><i class="fas fa-broadcast-tower mr-2"></i>Broadcast</button></div><div class="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4"><div class="dashboard-stat-card p-2 md:p-3 text-center"><i class="fas fa-users text-base md:text-xl text-green-400"></i><p class="text-base md:text-xl font-bold">${attendanceDemographics.students + attendanceDemographics.faculty + attendanceDemographics.visitors}</p><p class="text-[10px] md:text-xs">Total</p></div><div class="dashboard-stat-card p-2 md:p-3 text-center"><i class="fas fa-user-check text-base md:text-xl text-blue-400"></i><p class="text-base md:text-xl font-bold">1,240</p><p class="text-[10px] md:text-xs">Active</p></div><div class="dashboard-stat-card p-2 md:p-3 text-center"><i class="fas fa-coins text-base md:text-xl text-yellow-400"></i><p class="text-base md:text-xl font-bold">342.5K</p><p class="text-[10px] md:text-xs">Coins</p></div><div class="dashboard-stat-card p-2 md:p-3 text-center"><i class="fas fa-stamp text-base md:text-xl text-purple-400"></i><p class="text-base md:text-xl font-bold">12.4K</p><p class="text-[10px] md:text-xs">Stamps</p></div><div class="dashboard-stat-card p-2 md:p-3 text-center"><i class="fas fa-building text-base md:text-xl text-orange-400"></i><p class="text-base md:text-xl font-bold">8</p><p class="text-[10px] md:text-xs">Booths</p></div></div><div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><canvas id="adminHeatmap" height="200"></canvas><p class="text-center text-[10px] md:text-xs mt-2">Zone Traffic Heatmap</p></div><div class="dashboard-stat-card p-4 md:p-5"><canvas id="attendanceChart" height="200"></canvas><p class="text-center text-[10px] md:text-xs mt-2">Hourly Attendance</p></div></div><div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg">📊 Booth Performance</h3><div class="overflow-x-auto mt-2 md:mt-3 max-h-48 md:max-h-64 overflow-y-auto"><table class="w-full text-xs md:text-sm">${Object.entries(boothStats).map(([n,d]) => `<tr class="border-b border-white/10"><td class="py-1.5 md:py-2">${n}</td><td class="py-1.5 md:py-2">👥 ${d.visitors}</td><td class="py-1.5 md:py-2">⭐ ${d.engagementScore}%</td><td class="py-1.5 md:py-2">📋 ${d.leadsCollected}</td></tr>`).join('')} </table></div><button id="exportReportBtn" class="mt-3 md:mt-4 w-full py-1.5 md:py-2 bg-blue-500/20 rounded-xl border border-blue-500/40 text-xs md:text-sm hover:bg-blue-500/30 transition"><i class="fas fa-file-csv mr-2"></i>Export Report</button></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-comment-dots text-pink-400 mr-2"></i>User Feedback</h3><div id="feedbacksList" class="h-32 md:h-48 overflow-y-auto space-y-1.5 md:space-y-2 text-xs md:text-sm">${allFeedbacks.slice(0,5).map(f => `<div class="bg-white/5 rounded-lg p-2"><div class="font-semibold text-xs md:text-sm">${f.name}</div><div class="text-white/70 text-[10px] md:text-xs">${f.message}</div></div>`).join('') || '<div class="text-white/50 text-xs">No feedback yet</div>'}</div></div></div><div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-list text-pink-400 mr-2"></i>System Logs</h3><div id="adminLogs" class="h-32 md:h-40 overflow-y-auto space-y-1 text-[10px] md:text-sm">${globalNotifications.slice(0,5).map(n => `<div class="text-white/70 border-b border-white/10 py-1">[${n.time || 'Now'}] ${n.message}</div>`).join('') || '<div class="text-white/50">No logs</div>'}</div></div></div>`; }
     
+    // Richer role dashboards override the compact legacy templates above.
+    function renderParticipantDashboard() {
+      const boothButtons = Object.keys(boothStats).map(booth => {
+        const coins = booth === 'The Townhall' ? 75 : booth === 'Taste of America' ? 60 : 50;
+        const scanned = scannedBooths.includes(booth);
+        return '<button class="scan-booth-btn brand-panel p-3 rounded-xl text-left hover:border-red-600 transition border border-white/10" data-booth="' + escapeHTML(booth) + '" data-coins="' + coins + '" data-stamp="' + escapeHTML(booth) + ' Explorer Stamp"><div class="flex items-center justify-between gap-2"><i class="fas fa-qrcode text-2xl text-red-500"></i><span class="text-[10px] uppercase tracking-wide ' + (scanned ? 'text-green-300' : 'text-white/60') + '">' + (scanned ? 'Stamped' : 'Scan') + '</span></div><p class="text-xs md:text-sm font-semibold mt-2">' + escapeHTML(booth) + '</p><p class="text-[10px] md:text-xs text-yellow-300">+' + coins + ' coins</p></button>';
+      }).join('');
+
+      const stamps = participantData.stampsList.map(stamp => '<span class="badge-stamp text-xs"><i class="fas fa-stamp mr-1"></i>' + escapeHTML(stamp) + '</span>').join('');
+      const rewards = Object.entries(rewardInventory).map(([name, item]) => {
+        const canClaim = participantData.coins >= item.cost && item.stock > 0;
+        return '<div class="brand-panel p-3"><div class="flex items-start justify-between gap-3"><div><p class="font-semibold text-sm">' + escapeHTML(name) + '</p><p class="text-xs text-white/60">' + formatNumber(item.cost) + ' coins</p></div><span class="text-xs text-white/70">' + item.stock + ' left</span></div><button class="claim-reward-btn mt-3 w-full py-2 rounded-lg text-xs font-bold ' + (canClaim ? 'brand-action' : 'bg-white/10 text-white/40 cursor-not-allowed') + '" data-reward="' + escapeHTML(name) + '"' + (canClaim ? '' : ' disabled') + '>' + (canClaim ? 'Claim Reward' : 'Locked') + '</button></div>';
+      }).join('');
+
+      const notifications = participantData.notifications.map(note => '<div class="bg-white/5 rounded-lg p-2 text-xs md:text-sm"><i class="fas fa-bell text-red-500 mr-2"></i>' + escapeHTML(note) + '</div>').join('');
+
+      return `<div class="space-y-5 md:space-y-6">
+        <div class="flex flex-wrap justify-between items-start gap-3">
+          <div>
+            <p class="text-xs uppercase tracking-widest text-red-400">Participant</p>
+            <h1 class="text-2xl md:text-3xl font-bold"><i class="fas fa-passport text-red-500"></i> Liberty Pass</h1>
+          </div>
+          <span class="brand-chip px-3 md:px-4 py-1 text-xs md:text-sm font-semibold">${escapeHTML(participantData.level)}</span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+          <div class="dashboard-stat-card p-3 md:p-4 text-center"><i class="fas fa-coins text-2xl md:text-3xl text-yellow-300 mb-1 md:mb-2"></i><p class="text-white/60 text-xs md:text-sm">Freedom Coins</p><p class="text-2xl md:text-3xl font-black">${formatNumber(participantData.coins)}</p></div>
+          <div class="dashboard-stat-card p-3 md:p-4 text-center"><i class="fas fa-trophy text-2xl md:text-3xl text-red-400 mb-1 md:mb-2"></i><p class="text-white/60 text-xs md:text-sm">Global Rank</p><p class="text-2xl md:text-3xl font-black">#${participantData.rank}</p></div>
+          <div class="dashboard-stat-card p-3 md:p-4 text-center"><i class="fas fa-stamp text-2xl md:text-3xl text-green-300 mb-1 md:mb-2"></i><p class="text-white/60 text-xs md:text-sm">Stamps</p><p class="text-2xl md:text-3xl font-black">${participantData.stamps}/20</p></div>
+          <div class="dashboard-stat-card p-3 md:p-4 text-center"><i class="fas fa-flag-checkered text-2xl md:text-3xl text-red-500 mb-1 md:mb-2"></i><p class="text-white/60 text-xs md:text-sm">Missions</p><p class="text-2xl md:text-3xl font-black">${participantData.missionsCompleted.length}/8</p></div>
+        </div>
+        <div class="grid lg:grid-cols-[1fr_1.35fr] gap-5 md:gap-6">
+          <div class="dashboard-stat-card p-5">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <p class="text-xs uppercase tracking-widest text-white/50">Liberty Pass ID</p>
+                <h2 class="text-xl md:text-2xl font-black">${escapeHTML(participantData.id)}</h2>
+                <p class="text-sm text-white/70 mt-1">${escapeHTML(participantData.name)} - ${escapeHTML(participantData.email)}</p>
+              </div>
+              <div class="w-24 h-24 bg-white rounded-xl flex items-center justify-center"><i class="fas fa-qrcode text-5xl text-red-700"></i></div>
+            </div>
+            <div class="mt-5 grid grid-cols-2 gap-3 text-xs">
+              <div class="bg-white/5 rounded-lg p-3"><span class="block text-white/50">Last check-in</span>${escapeHTML(participantData.attendanceHistory[0])}</div>
+              <div class="bg-white/5 rounded-lg p-3"><span class="block text-white/50">Next reward tier</span>${Math.max(0, 3500 - participantData.coins)} coins away</div>
+            </div>
+          </div>
+          <div class="dashboard-stat-card p-5">
+            <h3 class="font-semibold text-base md:text-lg mb-3"><i class="fas fa-qrcode text-red-500 mr-2"></i>Booth Scanning</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">${boothButtons}</div>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5 md:gap-6">
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-3"><i class="fas fa-stamp text-red-500 mr-2"></i>Digital Stamp Collection</h3><div class="flex flex-wrap gap-2">${stamps}</div></div>
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-3"><i class="fas fa-tasks text-red-500 mr-2"></i>Active Missions</h3><ul class="space-y-2 text-xs md:text-sm"><li><i class="fas fa-check-circle text-green-300 mr-2"></i>Explore The Garage - +250 coins</li><li><i class="fas fa-check-circle text-green-300 mr-2"></i>Townhall Voting Experience - +300 coins</li><li><i class="fas fa-clock text-yellow-300 mr-2"></i>Scavenger Hunt: Hidden QR - +200 coins</li></ul><button id="completeMissionBtn" class="mt-3 text-xs text-red-300 underline hover:text-white">Complete random mission</button></div>
+        </div>
+        <div class="grid lg:grid-cols-[1.2fr_0.8fr] gap-5 md:gap-6">
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-3"><i class="fas fa-gift text-red-500 mr-2"></i>Rewards</h3><div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">${rewards}</div></div>
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-3"><i class="fas fa-comment text-red-500 mr-2"></i>Feedback</h3><textarea id="feedbackText" rows="4" class="w-full bg-black/30 border border-white/20 rounded-lg p-2 text-xs md:text-sm" placeholder="Tell us about your experience..."></textarea><button id="submitFeedbackBtn" class="mt-2 w-full py-2 brand-action rounded-lg text-xs md:text-sm font-bold"><i class="fas fa-paper-plane mr-2"></i>Submit Feedback (+25 Coins)</button></div>
+        </div>
+        <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg mb-3"><i class="fas fa-bell text-red-500 mr-2"></i>Notifications</h3><div class="grid md:grid-cols-3 gap-2">${notifications}</div></div>
+      </div>`;
+    }
+
+    function renderBoothDashboard(boothName) {
+      const stats = boothStats[boothName] || { visitors: 0, leadsCollected: 0, engagementScore: 0, trafficLevel: 0, scans: [] };
+      const selector = Object.keys(boothStats).map(name => '<option value="' + escapeHTML(name) + '" ' + (name === boothName ? 'selected' : '') + '>' + escapeHTML(name) + '</option>').join('');
+      const scans = stats.scans.slice(0, 8).map(name => '<li class="flex items-center justify-between gap-2 text-xs md:text-sm bg-white/5 rounded-lg p-2"><span><i class="fas fa-user-check text-green-300 mr-2"></i>' + escapeHTML(name) + '</span><span class="text-white/50">verified</span></li>').join('') || '<li class="text-white/50 text-xs md:text-sm">No scans yet</li>';
+      const inventory = Object.entries(rewardInventory).map(([name, item]) => '<div class="flex items-center justify-between gap-3 bg-white/5 rounded-lg p-2 text-xs md:text-sm"><div><p class="font-semibold">' + escapeHTML(name) + '</p><p class="text-white/50">' + item.stock + ' in stock</p></div><button class="restock-reward-btn px-3 py-1 rounded-lg brand-action" data-reward="' + escapeHTML(name) + '">Restock</button></div>').join('');
+      const broadcasts = boothBroadcasts.filter(item => item.booth === boothName).slice(0, 4).map(item => '<div class="bg-white/5 rounded-lg p-2 text-xs"><span class="text-white/50">' + escapeHTML(item.time) + '</span><p>' + escapeHTML(item.message) + '</p></div>').join('') || '<div class="text-white/50 text-xs">No booth broadcasts yet</div>';
+
+      return `<div class="space-y-5 md:space-y-6">
+        <div class="flex flex-wrap justify-between items-start gap-3">
+          <div>
+            <p class="text-xs uppercase tracking-widest text-red-400">Booth Admin</p>
+            <h1 class="text-2xl md:text-3xl font-bold"><i class="fas fa-store text-red-500"></i> ${escapeHTML(boothName)}</h1>
+          </div>
+          <select id="boothSelector" class="bg-black/30 border border-white/20 rounded-lg px-3 py-2 text-xs md:text-sm">${selector}</select>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+          <div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-user-check text-2xl md:text-3xl text-green-300 mb-2"></i><p class="text-2xl md:text-3xl font-black">${formatNumber(stats.visitors)}</p><p class="text-xs md:text-sm text-white/60">Visitors</p></div>
+          <div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-id-card text-2xl md:text-3xl text-blue-300 mb-2"></i><p class="text-2xl md:text-3xl font-black">${formatNumber(stats.leadsCollected)}</p><p class="text-xs md:text-sm text-white/60">Leads</p></div>
+          <div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-chart-line text-2xl md:text-3xl text-red-400 mb-2"></i><p class="text-2xl md:text-3xl font-black">${stats.engagementScore}%</p><p class="text-xs md:text-sm text-white/60">Engagement</p></div>
+          <div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-fire text-2xl md:text-3xl text-yellow-300 mb-2"></i><p class="text-2xl md:text-3xl font-black">${stats.trafficLevel}%</p><p class="text-xs md:text-sm text-white/60">Traffic</p></div>
+        </div>
+        <div class="grid lg:grid-cols-[0.9fr_1.1fr] gap-5 md:gap-6">
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-camera text-red-500 mr-2"></i>Participant QR Scan</h3><p class="text-xs text-white/60 mt-1">Use this for booth-side verification when a participant reaches your desk.</p><div class="grid grid-cols-2 gap-2 mt-4"><button id="scanParticipantBtn" class="py-2 brand-action rounded-lg text-xs md:text-sm font-bold"><i class="fas fa-qrcode mr-2"></i>Scan Participant</button><button id="manualSyncBoothBtn" class="py-2 bg-white/10 border border-white/20 rounded-lg text-xs md:text-sm"><i class="fas fa-keyboard mr-2"></i>Manual Sync</button></div></div>
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-list text-red-500 mr-2"></i>Recent Scans</h3><ul class="mt-3 space-y-2">${scans}</ul></div>
+        </div>
+        <div class="grid lg:grid-cols-3 gap-5 md:gap-6">
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-address-book text-red-500 mr-2"></i>Leads</h3><p class="text-xs text-white/60 mt-1">${stats.leadsCollected} collected from booth interactions.</p><button id="recordLeadBtn" class="mt-4 w-full py-2 brand-action rounded-lg text-xs md:text-sm font-bold"><i class="fas fa-plus mr-2"></i>Record Lead</button></div>
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-gift text-red-500 mr-2"></i>Rewards Inventory</h3><div class="mt-3 space-y-2">${inventory}</div></div>
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-bullhorn text-red-500 mr-2"></i>Booth Broadcasts</h3><textarea id="boothBroadcastText" rows="3" class="w-full bg-black/30 border border-white/20 rounded-lg p-2 text-xs md:text-sm mt-3" placeholder="Message to visitors at this booth..."></textarea><button id="broadcastBoothBtn" class="mt-2 w-full py-2 brand-action rounded-lg text-xs md:text-sm font-bold">Broadcast</button><div class="mt-3 space-y-2">${broadcasts}</div></div>
+        </div>
+      </div>`;
+    }
+
+    function renderVolunteerDashboard() {
+      const total = attendanceDemographics.students + attendanceDemographics.faculty + attendanceDemographics.visitors;
+      const demographics = [
+        ['Students', attendanceDemographics.students],
+        ['Faculty', attendanceDemographics.faculty],
+        ['Visitors', attendanceDemographics.visitors]
+      ].map(([label, value]) => '<div><div class="flex justify-between text-xs md:text-sm"><span>' + label + '</span><span>' + formatNumber(value) + '</span></div>' + renderProgress(Math.round((value / total) * 100)) + '</div>').join('');
+      const assignments = volunteerAssignments.map((item, index) => '<div class="flex items-center justify-between gap-3 bg-white/5 rounded-lg p-3 text-xs md:text-sm"><div><p class="font-semibold">' + escapeHTML(item.station) + '</p><p class="text-white/50">' + escapeHTML(item.shift) + '</p></div><button class="complete-assignment-btn px-3 py-1 rounded-lg ' + (item.status === 'Done' ? 'bg-white/10 text-white/40' : 'brand-action') + '" data-index="' + index + '"' + (item.status === 'Done' ? ' disabled' : '') + '>' + escapeHTML(item.status) + '</button></div>').join('');
+      const incidents = incidentReports.slice(0, 4).map(item => '<div class="bg-white/5 rounded-lg p-2 text-xs"><div class="flex justify-between gap-2"><strong>' + escapeHTML(item.area) + '</strong><span class="text-red-300">' + escapeHTML(item.level) + '</span></div><p class="text-white/70 mt-1">' + escapeHTML(item.message) + '</p></div>').join('');
+
+      return `<div class="space-y-5 md:space-y-6">
+        <div>
+          <p class="text-xs uppercase tracking-widest text-red-400">Volunteer</p>
+          <h1 class="text-2xl md:text-3xl font-bold"><i class="fas fa-hands-helping text-red-500"></i> Field Operations</h1>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5">
+          <div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-users text-2xl md:text-3xl text-green-300 mb-2"></i><p class="text-2xl md:text-3xl font-black">${formatNumber(total)}</p><p class="text-xs md:text-sm text-white/60">Total Check-ins</p></div>
+          <div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-user-clock text-2xl md:text-3xl text-yellow-300 mb-2"></i><p class="text-2xl md:text-3xl font-black">1,240</p><p class="text-xs md:text-sm text-white/60">Currently Active</p></div>
+          <div class="dashboard-stat-card p-3 md:p-5 text-center"><i class="fas fa-chart-line text-2xl md:text-3xl text-red-400 mb-2"></i><p class="text-2xl md:text-3xl font-black">2:30 PM</p><p class="text-xs md:text-sm text-white/60">Peak Hour</p></div>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-5 md:gap-6">
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-check-circle text-green-300 mr-2"></i>Entry Check-in</h3><div class="grid sm:grid-cols-[1fr_140px] gap-2 mt-3"><input id="participantCheckinName" class="bg-black/30 border border-white/20 rounded-lg p-2 text-xs md:text-sm" placeholder="Participant name or pass ID"><select id="participantCheckinType" class="bg-black/30 border border-white/20 rounded-lg p-2 text-xs md:text-sm"><option value="students">Student</option><option value="faculty">Faculty</option><option value="visitors">Visitor</option></select></div><button id="manualCheckinBtn" class="mt-3 w-full py-2 md:py-3 brand-action rounded-lg text-sm md:text-base font-semibold"><i class="fas fa-camera mr-2"></i>Scan QR / Manual Check-in</button></div>
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-chart-pie text-red-500 mr-2"></i>Demographics</h3><div class="space-y-3 mt-3">${demographics}</div></div>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-5 md:gap-6">
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-clipboard-list text-red-500 mr-2"></i>Assignments</h3><div class="mt-3 space-y-2">${assignments}</div></div>
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-exclamation-triangle text-yellow-300 mr-2"></i>Incident Reporting</h3><textarea id="incidentText" rows="3" class="w-full bg-black/30 border border-white/20 rounded-lg p-2 text-xs md:text-sm mt-3" placeholder="Describe issue, location, and urgency..."></textarea><button id="reportIncidentBtn" class="mt-2 w-full py-2 bg-red-700 rounded-lg text-xs md:text-sm font-bold hover:bg-red-800"><i class="fas fa-flag mr-2"></i>Submit Report</button><div class="mt-3 space-y-2">${incidents}</div></div>
+        </div>
+      </div>`;
+    }
+
+    function renderAdminCharts() {
+      if (!window.Chart) return;
+      const trafficCanvas = document.getElementById('adminHeatmap');
+      if (trafficCanvas) {
+        if (window.adminTrafficChart) window.adminTrafficChart.destroy();
+        window.adminTrafficChart = new Chart(trafficCanvas, {
+          type: 'bar',
+          data: { labels: Object.keys(boothStats), datasets: [{ label: 'Traffic %', data: Object.values(boothStats).map(item => item.trafficLevel), backgroundColor: '#b22234' }] },
+          options: { plugins: { legend: { labels: { color: '#ffffff' } } }, scales: { x: { ticks: { color: '#ffffff' }, grid: { color: 'rgba(255,255,255,0.08)' } }, y: { ticks: { color: '#ffffff' }, grid: { color: 'rgba(255,255,255,0.08)' } } } }
+        });
+      }
+      const attendanceCanvas = document.getElementById('attendanceChart');
+      if (attendanceCanvas) {
+        if (window.adminAttendanceChart) window.adminAttendanceChart.destroy();
+        window.adminAttendanceChart = new Chart(attendanceCanvas, {
+          type: 'line',
+          data: { labels: ['9AM','10AM','11AM','12PM','1PM','2PM','3PM','4PM'], datasets: [{ label: 'Attendance', data: attendanceDemographics.hourlyData, borderColor: '#ffffff', backgroundColor: 'rgba(178,34,52,0.28)', fill: true, tension: 0.35 }] },
+          options: { plugins: { legend: { labels: { color: '#ffffff' } } }, scales: { x: { ticks: { color: '#ffffff' }, grid: { color: 'rgba(255,255,255,0.08)' } }, y: { ticks: { color: '#ffffff' }, grid: { color: 'rgba(255,255,255,0.08)' } } } }
+        });
+      }
+    }
+
+    function renderAdminDashboard() {
+      setTimeout(renderAdminCharts, 100);
+      const total = attendanceDemographics.students + attendanceDemographics.faculty + attendanceDemographics.visitors;
+      const boothRows = boothRegistry.map(item => '<tr class="border-b border-white/10"><td class="py-2">' + escapeHTML(item.id) + '</td><td class="py-2 font-semibold">' + escapeHTML(item.name) + '</td><td class="py-2">' + escapeHTML(item.owner) + '</td><td class="py-2"><span class="brand-chip px-2 py-1 text-[10px]">' + escapeHTML(item.status) + '</span></td></tr>').join('');
+      const incidentRows = incidentReports.map((item, index) => '<div class="bg-white/5 rounded-lg p-3 text-xs md:text-sm"><div class="flex items-center justify-between gap-3"><strong>' + escapeHTML(item.area) + '</strong><span class="text-red-300">' + escapeHTML(item.level) + '</span></div><p class="text-white/70 mt-1">' + escapeHTML(item.message) + '</p><div class="flex items-center justify-between mt-2 text-white/50"><span>' + escapeHTML(item.status) + ' - ' + escapeHTML(item.time) + '</span><button class="resolve-incident-btn text-red-300 underline" data-index="' + index + '">Resolve</button></div></div>').join('') || '<div class="text-white/50 text-xs">No incidents</div>';
+      const feedbackRows = allFeedbacks.slice(0, 6).map(item => '<div class="bg-white/5 rounded-lg p-2 text-xs md:text-sm"><div class="font-semibold">' + escapeHTML(item.name) + '</div><div class="text-white/70">' + escapeHTML(item.message) + '</div></div>').join('') || '<div class="text-white/50 text-xs">No feedback yet</div>';
+
+      return `<div class="space-y-5 md:space-y-6">
+        <div class="flex flex-wrap justify-between items-start gap-3">
+          <div>
+            <p class="text-xs uppercase tracking-widest text-red-400">Super Admin</p>
+            <h1 class="text-2xl md:text-3xl font-bold"><i class="fas fa-crown text-yellow-300"></i> JKUAT Command Center</h1>
+          </div>
+          <div class="flex flex-wrap gap-2"><button id="exportReportBtn" class="px-3 md:px-5 py-2 rounded-lg bg-white/10 border border-white/20 text-xs md:text-sm"><i class="fas fa-file-csv mr-2"></i>Export CSV</button><button id="globalBroadcastBtn" class="px-3 md:px-5 py-2 rounded-lg brand-action text-xs md:text-sm"><i class="fas fa-broadcast-tower mr-2"></i>Global Broadcast</button></div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
+          <div class="dashboard-stat-card p-3 text-center"><i class="fas fa-users text-xl text-green-300"></i><p class="text-xl font-bold">${formatNumber(total)}</p><p class="text-[10px] md:text-xs text-white/60">Total</p></div>
+          <div class="dashboard-stat-card p-3 text-center"><i class="fas fa-user-check text-xl text-blue-300"></i><p class="text-xl font-bold">1,240</p><p class="text-[10px] md:text-xs text-white/60">Active</p></div>
+          <div class="dashboard-stat-card p-3 text-center"><i class="fas fa-coins text-xl text-yellow-300"></i><p class="text-xl font-bold">342.5K</p><p class="text-[10px] md:text-xs text-white/60">Coins</p></div>
+          <div class="dashboard-stat-card p-3 text-center"><i class="fas fa-stamp text-xl text-red-400"></i><p class="text-xl font-bold">12.4K</p><p class="text-[10px] md:text-xs text-white/60">Stamps</p></div>
+          <div class="dashboard-stat-card p-3 text-center"><i class="fas fa-building text-xl text-white"></i><p class="text-xl font-bold">${Object.keys(boothStats).length}</p><p class="text-[10px] md:text-xs text-white/60">Booths</p></div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5 md:gap-6"><div class="dashboard-stat-card p-4 md:p-5"><canvas id="adminHeatmap" height="200"></canvas><p class="text-center text-[10px] md:text-xs mt-2">Zone Traffic</p></div><div class="dashboard-stat-card p-4 md:p-5"><canvas id="attendanceChart" height="200"></canvas><p class="text-center text-[10px] md:text-xs mt-2">Hourly Attendance</p></div></div>
+        <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-5 md:gap-6">
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-warehouse text-red-500 mr-2"></i>Booth Registry</h3><div class="grid sm:grid-cols-[1fr_1fr_auto] gap-2 mt-3"><input id="newBoothName" class="bg-black/30 border border-white/20 rounded-lg p-2 text-xs md:text-sm" placeholder="New booth name"><input id="newBoothOwner" class="bg-black/30 border border-white/20 rounded-lg p-2 text-xs md:text-sm" placeholder="Owner/team"><button id="createBoothBtn" class="px-4 py-2 brand-action rounded-lg text-xs md:text-sm font-bold">Create</button></div><div class="overflow-x-auto mt-4 max-h-64 overflow-y-auto"><table class="w-full text-xs md:text-sm">${boothRows}</table></div></div>
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-bullhorn text-red-500 mr-2"></i>Global Broadcast</h3><textarea id="globalBroadcastText" rows="3" class="w-full bg-black/30 border border-white/20 rounded-lg p-2 text-xs md:text-sm mt-3" placeholder="Message for all dashboards..."></textarea><div class="mt-3 space-y-2 text-xs">${globalNotifications.slice(0, 4).map(item => '<div class="bg-white/5 rounded-lg p-2"><span class="text-white/50">' + escapeHTML(item.time || 'Now') + '</span><p>' + escapeHTML(item.message) + '</p></div>').join('')}</div></div>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-5 md:gap-6">
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-triangle-exclamation text-yellow-300 mr-2"></i>Incidents</h3><div class="mt-3 space-y-2 max-h-72 overflow-y-auto">${incidentRows}</div></div>
+          <div class="dashboard-stat-card p-4 md:p-5"><h3 class="font-semibold text-base md:text-lg"><i class="fas fa-comment-dots text-red-500 mr-2"></i>Participant Feedback</h3><div class="mt-3 space-y-2 max-h-72 overflow-y-auto">${feedbackRows}</div></div>
+        </div>
+      </div>`;
+    }
+
     function loadDashboard() {
       const container = document.getElementById('dashboardContainer');
       if (!currentUser) return;
       if (currentUser.role === 'participant') {
         container.innerHTML = renderParticipantDashboard();
         document.querySelectorAll('.scan-booth-btn').forEach(btn => btn.addEventListener('click', (e) => { const booth = btn.getAttribute('data-booth'); const coins = parseInt(btn.getAttribute('data-coins')); const stamp = btn.getAttribute('data-stamp'); showQRScanModal(booth, coins, stamp); }));
-        document.getElementById('completeMissionBtn')?.addEventListener('click', () => { participantData.coins += 150; participantData.missionsCompleted.push("New Mission"); showToast("🎉 Mission Complete! +150 Freedom Coins"); loadDashboard(); });
-        document.getElementById('submitFeedbackBtn')?.addEventListener('click', () => { const fb = document.getElementById('feedbackText')?.value; if(fb) { allFeedbacks.unshift({ name: participantData.name, message: fb }); participantData.coins += 25; showToast("📝 Feedback submitted! +25 Coins"); document.getElementById('feedbackText').value = ''; loadDashboard(); } });
+        document.querySelectorAll('.claim-reward-btn').forEach(btn => btn.addEventListener('click', () => {
+          const rewardName = btn.getAttribute('data-reward');
+          const reward = rewardInventory[rewardName];
+          if (!reward || participantData.coins < reward.cost || reward.stock < 1) return;
+          participantData.coins -= reward.cost;
+          reward.stock -= 1;
+          showToast(`Claimed ${rewardName}. ${formatNumber(participantData.coins)} coins remaining.`);
+          loadDashboard();
+        }));
+        document.getElementById('completeMissionBtn')?.addEventListener('click', () => { participantData.coins += 150; participantData.missionsCompleted.push("New Mission"); showToast("Mission complete. +150 Freedom Coins"); loadDashboard(); });
+        document.getElementById('submitFeedbackBtn')?.addEventListener('click', () => { const fb = document.getElementById('feedbackText')?.value; if(fb) { allFeedbacks.unshift({ name: participantData.name, message: fb }); participantData.coins += 25; showToast("Feedback submitted. +25 Coins"); document.getElementById('feedbackText').value = ''; loadDashboard(); } });
       } else if (currentUser.role === 'booth') {
         container.innerHTML = renderBoothDashboard(currentUser.boothName || "The Garage");
         document.getElementById('boothSelector')?.addEventListener('change', (e) => { currentUser.boothName = e.target.value; loadDashboard(); });
-        document.getElementById('awardPointsBtn')?.addEventListener('click', () => showToast("⭐ Awarded 50 Freedom Coins!"));
-        document.getElementById('broadcastBoothBtn')?.addEventListener('click', () => { const msg = prompt("Broadcast message:"); if(msg) showToast(`📢 "${msg}"`); });
-        document.getElementById('launchChallengeBtn')?.addEventListener('click', () => showToast("🎮 Booth challenge launched!"));
-        document.getElementById('manualSyncBoothBtn')?.addEventListener('click', () => { const name = prompt("Participant name:"); if(name) { boothStats[currentUser.boothName].scans.unshift(name); showToast(`✅ Synced ${name}`); loadDashboard(); } });
+        document.getElementById('scanParticipantBtn')?.addEventListener('click', () => {
+          const name = prompt("Participant name or Liberty Pass ID:");
+          if (name) {
+            const booth = currentUser.boothName;
+            boothStats[booth].scans.unshift(name);
+            boothStats[booth].visitors += 1;
+            showToast(`Verified ${name} at ${booth}.`);
+            loadDashboard();
+          }
+        });
+        document.getElementById('recordLeadBtn')?.addEventListener('click', () => {
+          const name = prompt("Lead name or organization:");
+          if (name) {
+            boothStats[currentUser.boothName].leadsCollected += 1;
+            boothStats[currentUser.boothName].scans.unshift(`${name} - lead`);
+            showToast(`Lead recorded for ${currentUser.boothName}.`);
+            loadDashboard();
+          }
+        });
+        document.querySelectorAll('.restock-reward-btn').forEach(btn => btn.addEventListener('click', () => {
+          const rewardName = btn.getAttribute('data-reward');
+          rewardInventory[rewardName].stock += 10;
+          showToast(`${rewardName} restocked by 10.`);
+          loadDashboard();
+        }));
+        document.getElementById('broadcastBoothBtn')?.addEventListener('click', () => {
+          const input = document.getElementById('boothBroadcastText');
+          const msg = input?.value || prompt("Broadcast message:");
+          if(msg) {
+            boothBroadcasts.unshift({ booth: currentUser.boothName, message: msg, time: new Date().toLocaleTimeString() });
+            globalNotifications.unshift({ message: `${currentUser.boothName}: ${msg}`, time: new Date().toLocaleTimeString() });
+            showToast(`Broadcast sent for ${currentUser.boothName}.`);
+            loadDashboard();
+          }
+        });
+        document.getElementById('manualSyncBoothBtn')?.addEventListener('click', () => { const name = prompt("Participant name:"); if(name) { boothStats[currentUser.boothName].scans.unshift(name); boothStats[currentUser.boothName].visitors += 1; showToast(`Synced ${name}`); loadDashboard(); } });
       } else if (currentUser.role === 'volunteer') {
         container.innerHTML = renderVolunteerDashboard();
-        document.getElementById('manualCheckinBtn')?.addEventListener('click', () => showToast("✅ Check-in successful!"));
-        document.getElementById('reportIncidentBtn')?.addEventListener('click', () => { const txt = document.getElementById('incidentText')?.value; if(txt) { showToast("📋 Incident reported"); globalNotifications.unshift({ message: `Volunteer: ${txt}`, time: new Date().toLocaleTimeString() }); } });
+        document.getElementById('manualCheckinBtn')?.addEventListener('click', () => {
+          const name = document.getElementById('participantCheckinName')?.value || "Walk-in participant";
+          const type = document.getElementById('participantCheckinType')?.value || "students";
+          attendanceDemographics[type] += 1;
+          globalNotifications.unshift({ message: `Check-in: ${name}`, time: new Date().toLocaleTimeString() });
+          showToast(`Check-in successful for ${name}.`);
+          loadDashboard();
+        });
+        document.querySelectorAll('.complete-assignment-btn').forEach(btn => btn.addEventListener('click', () => {
+          const index = parseInt(btn.getAttribute('data-index'), 10);
+          volunteerAssignments[index].status = "Done";
+          showToast(`Assignment completed: ${volunteerAssignments[index].station}.`);
+          loadDashboard();
+        }));
+        document.getElementById('reportIncidentBtn')?.addEventListener('click', () => { const txt = document.getElementById('incidentText')?.value; if(txt) { incidentReports.unshift({ area: "Volunteer report", level: "Medium", status: "Open", message: txt, time: new Date().toLocaleTimeString() }); globalNotifications.unshift({ message: `Volunteer: ${txt}`, time: new Date().toLocaleTimeString() }); showToast("Incident reported."); loadDashboard(); } });
       } else if (currentUser.role === 'admin') {
         container.innerHTML = renderAdminDashboard();
-        document.getElementById('globalBroadcastBtn')?.addEventListener('click', () => { const msg = prompt("Broadcast:"); if(msg) { showToast(`📢 ${msg}`); globalNotifications.unshift({ message: `Admin: ${msg}`, time: new Date().toLocaleTimeString() }); loadDashboard(); } });
-        document.getElementById('exportReportBtn')?.addEventListener('click', () => alert("CSV Report exported!"));
+        document.getElementById('createBoothBtn')?.addEventListener('click', () => {
+          const name = document.getElementById('newBoothName')?.value?.trim();
+          const owner = document.getElementById('newBoothOwner')?.value?.trim() || "Program Team";
+          if (!name || boothStats[name]) return showToast("Enter a unique booth name.");
+          boothStats[name] = { visitors: 0, leadsCollected: 0, engagementScore: 0, trafficLevel: 0, scans: [] };
+          boothRegistry.push({ id: `B-${String(boothRegistry.length + 1).padStart(3, '0')}`, name, owner, status: "Setup" });
+          showToast(`Booth created: ${name}.`);
+          loadDashboard();
+        });
+        document.getElementById('globalBroadcastBtn')?.addEventListener('click', () => { const msg = document.getElementById('globalBroadcastText')?.value || prompt("Broadcast:"); if(msg) { globalNotifications.unshift({ message: `Admin: ${msg}`, time: new Date().toLocaleTimeString() }); showToast(`Broadcast sent: ${msg}`); loadDashboard(); } });
+        document.querySelectorAll('.resolve-incident-btn').forEach(btn => btn.addEventListener('click', () => {
+          const index = parseInt(btn.getAttribute('data-index'), 10);
+          incidentReports[index].status = "Resolved";
+          showToast("Incident marked resolved.");
+          loadDashboard();
+        }));
+        document.getElementById('exportReportBtn')?.addEventListener('click', () => {
+          const rows = [['Booth', 'Visitors', 'Leads', 'Engagement', 'Traffic']].concat(Object.entries(boothStats).map(([name, data]) => [name, data.visitors, data.leadsCollected, `${data.engagementScore}%`, `${data.trafficLevel}%`]));
+          exportCsv('freedom250-booth-report.csv', rows);
+          showToast("CSV export generated.");
+        });
       }
       container.classList.remove('hidden');
       document.getElementById('landingPage').classList.add('hidden');
