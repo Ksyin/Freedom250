@@ -96,30 +96,28 @@
         .hidden { display: none !important; }
         .mobile-menu-btn { background: none; border: 1.5px solid var(--gray-200); color: var(--gray-700); width: 38px; height: 38px; border-radius: 8px; display: none; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; }
 
-        /* ===== MOBILE MENU (max-height clip — immune to overflow-x:hidden) ===== */
+        /* ===== MOBILE MENU ===== */
         .mobile-menu-panel {
           position: fixed;
-          top: 60px;
+          top: 68px;
           left: 0;
           right: 0;
           background: #fff;
-          z-index: 1100;
-          padding: 0 24px;
+          z-index: 999;
+          padding: 20px 24px;
           border-bottom: 1px solid var(--gray-200);
           display: flex;
           flex-direction: column;
-          gap: 0;
-          box-shadow: 0 20px 40px rgba(10,49,97,0.12);
-          max-height: 0;
-          overflow: hidden;
+          gap: 6px;
+          box-shadow: 0 20px 40px rgba(10,49,97,0.1);
+          transform: translateY(-100%);
           opacity: 0;
-          transition: max-height 0.38s cubic-bezier(.4,0,.2,1), opacity 0.25s ease, padding 0.25s ease;
+          transition: transform 0.3s ease, opacity 0.3s ease;
           pointer-events: none;
         }
         .mobile-menu-panel.open {
-          max-height: 600px;
+          transform: translateY(0);
           opacity: 1;
-          padding: 10px 24px 18px;
           pointer-events: all;
         }
         .mobile-link { font-size: 0.95rem; font-weight: 600; color: var(--gray-700); padding: 12px 16px; border-radius: 10px; display: block; transition: background 0.18s; cursor: pointer; }
@@ -153,65 +151,14 @@
 
         /* Hero graphic */
         .hero-visual { position: relative; height: 500px; }
-        /* ===== HERO SLIDESHOW ===== */
-        .hero-slideshow { position: relative; height: 500px; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,0.45); border: 2px solid rgba(255,255,255,0.12); }
-        .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.9s ease; }
-        .hero-slide.active { opacity: 1; }
-        .hero-slide img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-slide-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,49,97,0.65) 0%, transparent 55%); }
-        .hero-slide-caption { position: absolute; bottom: 20px; left: 20px; right: 20px; color: #fff; font-family: 'Sora', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.05em; }
-        .hero-slide-dots { position: absolute; bottom: 14px; right: 16px; display: flex; gap: 6px; z-index: 5; }
-        .hero-slide-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.45); cursor: pointer; transition: background 0.25s, transform 0.25s; border: none; padding: 0; }
-        .hero-slide-dot.active { background: #fff; transform: scale(1.3); }
-        .hero-chip { position: absolute; top: 14px; left: 14px; background: var(--red); color: #fff; font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 800; padding: 5px 10px; border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; z-index: 5; display: flex; align-items: center; gap: 6px; }
-        .hero-chip .live-dot { width: 6px; height: 6px; background: #fff; border-radius: 50%; animation: pulse 1.2s infinite; }
-        .hero-floating-badge { position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%); background: #fff; color: var(--blue); padding: 11px 20px; border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.25); font-family: 'Sora', sans-serif; font-weight: 800; font-size: 0.82rem; z-index: 10; display: flex; align-items: center; gap: 8px; white-space: nowrap; animation: floatBob 4s ease-in-out infinite; }
+        .hero-img-main { position: absolute; top: 20px; left: 0; width: 68%; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1); aspect-ratio: 4/3; }
+        .hero-img-sec { position: absolute; bottom: 30px; right: 0; width: 48%; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.35); border: 2px solid rgba(255,255,255,0.1); aspect-ratio: 4/3; }
+        .hero-img-main img, .hero-img-sec img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-chip { position: absolute; top: 12px; right: 12px; background: var(--red); color: #fff; font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 800; padding: 5px 10px; border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; z-index: 5; }
+        .hero-floating-badge { position: absolute; top: 200px; right: -20px; background: #fff; color: var(--blue); padding: 12px 18px; border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.25); font-family: 'Sora', sans-serif; font-weight: 800; font-size: 0.82rem; z-index: 10; display: flex; align-items: center; gap: 8px; white-space: nowrap; animation: floatBob 4s ease-in-out infinite; }
         .hero-floating-badge .dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes floatBob { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(-8px);} }
+        @keyframes floatBob { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
         @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.6;transform:scale(1.4);} }
-
-        /* ===== GALLERY / VIBE DECK SLIDESHOW ===== */
-        .gallery-section { padding: var(--section-pad); background: var(--blue); }
-        .gallery-section .section-label { background: rgba(255,255,255,0.12); color: #fff; border-color: rgba(255,255,255,0.15); }
-        .gallery-section .section-title { color: #fff; }
-        .gallery-section .section-desc { color: rgba(255,255,255,0.65); }
-        .vibe-slideshow { position: relative; border-radius: 28px; overflow: hidden; height: 480px; box-shadow: 0 40px 80px rgba(0,0,0,0.5); margin-bottom: 24px; }
-        .vibe-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; }
-        .vibe-slide.active { opacity: 1; }
-        .vibe-slide img { width: 100%; height: 100%; object-fit: cover; }
-        .vibe-slide-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,49,97,0.88) 0%, rgba(10,49,97,0.2) 50%, transparent 80%); }
-        .vibe-slide-info { position: absolute; bottom: 32px; left: 36px; right: 36px; color: #fff; }
-        .vibe-slide-info h3 { font-family: 'Sora', sans-serif; font-size: 1.6rem; font-weight: 900; margin-bottom: 8px; }
-        .vibe-slide-info p { font-size: 0.9rem; opacity: 0.8; }
-        .vibe-controls { position: absolute; top: 50%; right: 20px; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 5; }
-        .vibe-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; border: none; padding: 0; transition: all 0.25s; }
-        .vibe-dot.active { background: #fff; height: 24px; border-radius: 4px; }
-        .vibe-nav { position: absolute; bottom: 32px; right: 36px; display: flex; gap: 10px; z-index: 5; }
-        .vibe-nav-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; font-size: 0.85rem; }
-        .vibe-nav-btn:hover { background: rgba(255,255,255,0.3); }
-        .vibe-thumbs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-        .vibe-thumb { border-radius: 12px; overflow: hidden; height: 70px; cursor: pointer; opacity: 0.55; transition: opacity 0.25s, transform 0.25s; border: 2px solid transparent; }
-        .vibe-thumb.active { opacity: 1; border-color: #fff; transform: translateY(-3px); }
-        .vibe-thumb img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* ===== TENT CARDS WITH IMAGES ===== */
-        .tent-card-img { height: 140px; margin: -28px -28px 18px; overflow: hidden; position: relative; }
-        .tent-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .tent-card:hover .tent-card-img img { transform: scale(1.07); }
-        .tent-card-img-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(10,49,97,0.35) 100%); }
-
-        /* ===== LIVE NOTIFICATION POPUP ===== */
-        .live-popup { position: fixed; bottom: 90px; left: 20px; z-index: 8000; background: #fff; border-radius: 16px; padding: 14px 18px; box-shadow: 0 12px 40px rgba(10,49,97,0.2); display: flex; align-items: center; gap: 12px; max-width: 300px; border: 1px solid var(--gray-200); transform: translateX(-140%); transition: transform 0.4s cubic-bezier(.34,1.56,.64,1); }
-        .live-popup.show { transform: translateX(0); }
-        .live-popup-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-        .live-popup-avatar-placeholder { width: 42px; height: 42px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-weight: 900; font-size: 0.9rem; flex-shrink: 0; }
-        .live-popup-text strong { display: block; font-size: 0.85rem; color: var(--gray-900); font-weight: 700; margin-bottom: 2px; }
-        .live-popup-text span { font-size: 0.78rem; color: var(--gray-500); }
-        .live-popup-green { color: #10b981; font-weight: 700; }
-
-        /* ===== STAT COUNTER ANIMATION ===== */
-        .hero-stat .val { font-family: 'Sora', sans-serif; font-size: 1.9rem; font-weight: 900; display: block; }
-        .hero-stat .lbl { font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.08em; }
 
         /* ===== BOOTH FLOW ===== */
         .flow-section { padding: var(--section-pad); background: var(--off-white); }
@@ -505,21 +452,10 @@
           .flow-card p { font-size: 0.8rem; line-height: 1.6; }
 
           .tent-card { padding: 14px 12px; border-radius: 14px; }
-          .tent-card-img { height: 90px; margin: -14px -12px 12px; border-radius: 14px 14px 0 0; }
           .tent-icon { width: 40px; height: 40px; border-radius: 12px; font-size: 1rem; margin-bottom: 12px; }
           .tent-card h3 { font-size: 0.9rem; margin-bottom: 6px; }
           .tent-card p { font-size: 0.8rem; line-height: 1.55; margin-bottom: 10px; }
           .tent-badge { font-size: 0.7rem; padding: 5px 10px; }
-
-          /* --- Gallery/Vibe Deck mobile --- */
-          .vibe-slideshow { height: 280px; border-radius: 16px; }
-          .vibe-slide-info h3 { font-size: 1.1rem; }
-          .vibe-slide-info { bottom: 16px; left: 16px; right: 16px; }
-          .vibe-controls { display: none; }
-          .vibe-nav { bottom: 16px; right: 16px; }
-          .vibe-nav-btn { width: 32px; height: 32px; font-size: 0.75rem; }
-          .vibe-thumbs { grid-template-columns: repeat(5, 1fr); gap: 6px; }
-          .vibe-thumb { height: 50px; border-radius: 8px; }
 
           .mission-card-body { padding: 14px; gap: 8px; }
           .mission-icon { width: 38px; height: 38px; border-radius: 12px; font-size: 1.05rem; margin-bottom: 6px; }
@@ -697,40 +633,16 @@
                 </div>
 
                 <div class="hero-visual">
-                    <div class="hero-slideshow" id="heroSlideshow">
-                        <span class="hero-chip"><span class="live-dot"></span> LIVE</span>
-
-                        <div class="hero-slide active">
-                            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80" alt="Students Innovating">
-                            <div class="hero-slide-overlay"></div>
-                            <div class="hero-slide-caption">🚀 The Garage — Innovation MakerLab</div>
-                        </div>
-                        <div class="hero-slide">
-                            <img src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=800&q=80" alt="Festival Energy">
-                            <div class="hero-slide-overlay"></div>
-                            <div class="hero-slide-caption">🎤 Main Stage — Keynotes & Live Performances</div>
-                        </div>
-                        <div class="hero-slide">
-                            <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80" alt="Tech Collaboration">
-                            <div class="hero-slide-overlay"></div>
-                            <div class="hero-slide-caption">💡 The Launchpad — Startup Pitches</div>
-                        </div>
-                        <div class="hero-slide">
-                            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80" alt="Community Event">
-                            <div class="hero-slide-overlay"></div>
-                            <div class="hero-slide-caption">🌍 The Townhall — Civic Engagement</div>
-                        </div>
-                        <div class="hero-slide">
-                            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80" alt="Workshop">
-                            <div class="hero-slide-overlay"></div>
-                            <div class="hero-slide-caption">🏀 The Arena — Sports & Wellness</div>
-                        </div>
-
-                        <div class="hero-slide-dots" id="heroSlideDots"></div>
+                    <div class="hero-img-main">
+                        <span class="hero-chip">🔴 LIVE</span>
+                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80" alt="Students Innovating">
+                    </div>
+                    <div class="hero-img-sec">
+                        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=500&q=80" alt="Tech Collaboration">
                     </div>
                     <div class="hero-floating-badge">
                         <div class="dot"></div>
-                        <span id="liveCount">2,847</span> registered participants
+                        2,847 registered participants
                     </div>
                 </div>
             </div>
@@ -847,52 +759,45 @@
 
             <div class="tents-grid">
                 <div class="tent-card">
-                    <div class="tent-card-img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="The Garage"><div class="tent-card-img-overlay"></div></div>
                     <div class="tent-icon"><i class="fas fa-microchip"></i></div>
                     <h3>THE GARAGE</h3>
                     <p>Innovation & MakerLab — Drone soccer, robotics challenge, VR headsets, and live tech demos. Where builders come to build.</p>
                     <span class="tent-badge"><i class="fas fa-star" style="color:var(--red);font-size:.7rem"></i> Host your tech club here</span>
                 </div>
                 <div class="tent-card">
-                    <div class="tent-card-img"><img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=500&q=80" alt="The Launchpad"><div class="tent-card-img-overlay"></div></div>
                     <div class="tent-icon"><i class="fas fa-chart-line"></i></div>
                     <h3>THE LAUNCHPAD</h3>
                     <p>Entrepreneurship & Business — Student fashion, arts, business showcases with U.S. partnerships and VC connections.</p>
                     <span class="tent-badge">Pitch your startup</span>
                 </div>
                 <div class="tent-card">
-                    <div class="tent-card-img"><img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=500&q=80" alt="Varsity Lounge"><div class="tent-card-img-overlay"></div></div>
                     <div class="tent-icon"><i class="fas fa-graduation-cap"></i></div>
                     <h3>THE VARSITY LOUNGE</h3>
                     <p>Education & Alumni — USA university map, study abroad information, mascot games, and exclusive merch drops.</p>
                     <span class="tent-badge">Find your U.S. school</span>
                 </div>
                 <div class="tent-card">
-                    <div class="tent-card-img"><img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=500&q=80" alt="Townhall"><div class="tent-card-img-overlay"></div></div>
                     <div class="tent-icon"><i class="fas fa-landmark"></i></div>
                     <h3>THE TOWNHALL</h3>
                     <p>Democracy & Leadership — Voting booths, Founder's Museum, and the Paint-by-Numbers collaborative mural experience.</p>
                     <span class="tent-badge">Make your voice heard</span>
                 </div>
                 <div class="tent-card">
-                    <div class="tent-card-img"><img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=500&q=80" alt="The Arena"><div class="tent-card-img-overlay"></div></div>
                     <div class="tent-icon"><i class="fas fa-basketball-ball"></i></div>
                     <h3>THE ARENA</h3>
                     <p>Sports & Wellness — Basketball, baseball challenge, disc golf, and high-intensity fitness competitions across teams.</p>
                     <span class="tent-badge">Compete & play</span>
                 </div>
                 <div class="tent-card">
-                    <div class="tent-card-img"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=500&q=80" alt="Taste of America"><div class="tent-card-img-overlay"></div></div>
                     <div class="tent-icon"><i class="fas fa-utensils"></i></div>
                     <h3>TASTE OF AMERICA</h3>
                     <p>Food & Culture — Kenyan and American culinary fusion, cooking demos, brand tastings, and cultural food storytelling.</p>
                     <span class="tent-badge">Taste the fusion</span>
                 </div>
                 <div class="tent-card">
-                    <div class="tent-card-img"><img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=500&q=80" alt="Main Stage"><div class="tent-card-img-overlay"></div></div>
                     <div class="tent-icon" style="background:var(--red)"><i class="fas fa-microphone"></i></div>
                     <h3>THE MAIN STAGE</h3>
-                    <p>The heartbeat of Freedom 250 — keynotes from Embassy leadership, live performances, award ceremonies, team showcases and the grand closing celebration.</p>
+                    <p>The heartbeat of Freedom 250 — keynotes from Embassy leadership, live performances, award ceremonies, team showcases and the grand closing celebration. All the energy lands here.</p>
                     <span class="tent-badge" style="background:var(--red-pale);color:var(--red);border-color:rgba(178,34,52,0.15)">Featured Stage</span>
                 </div>
             </div>
@@ -974,70 +879,35 @@
         </div>
     </section>
 
-    <!-- ===== GALLERY / VIBE DECK ===== -->
+    <!-- ===== GALLERY ===== -->
     <section id="gallery" class="gallery-section">
         <div class="container">
             <div class="section-header centered">
                 <div class="section-label">Moments</div>
                 <h2 class="section-title">Festival <span class="accent">Vibe Deck</span></h2>
-                <p class="section-desc" style="margin:0 auto;color:rgba(255,255,255,0.65);">A glimpse of the energy, creations, and high-octane competitive sprints from previous iterations.</p>
+                <p class="section-desc" style="margin:0 auto;">A glimpse of the energy, creations, and high-octane competitive sprints from previous iterations.</p>
             </div>
-
-            <div class="vibe-slideshow" id="vibeSlideshow">
-                <div class="vibe-slide active">
-                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80" alt="Maker Collective">
-                    <div class="vibe-slide-overlay"></div>
-                    <div class="vibe-slide-info">
-                        <h3>Maker Collective</h3>
-                        <p>Tech builders and creators coming together in The Garage tent</p>
-                    </div>
+            <div class="gallery-grid">
+                <div class="g-frame g-span-7 g-row-2">
+                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Tech Presentation">
+                    <div class="g-caption">Maker Collective</div>
                 </div>
-                <div class="vibe-slide">
-                    <img src="https://images.unsplash.com/photo-1560439514-4e9645039924?auto=format&fit=crop&w=1200&q=80" alt="Keynote">
-                    <div class="vibe-slide-overlay"></div>
-                    <div class="vibe-slide-info">
-                        <h3>Townhall Keynote</h3>
-                        <p>Embassy leadership and student voices on democracy and innovation</p>
-                    </div>
+                <div class="g-frame g-span-5">
+                    <img src="https://images.unsplash.com/photo-1560439514-4e9645039924?auto=format&fit=crop&w=600&q=80" alt="Keynote">
+                    <div class="g-caption">Townhall Keynote</div>
                 </div>
-                <div class="vibe-slide">
-                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" alt="Hackathon Teams">
-                    <div class="vibe-slide-overlay"></div>
-                    <div class="vibe-slide-info">
-                        <h3>Co-Creation Matrix</h3>
-                        <p>Cross-university teams building the future in 48-hour sprints</p>
-                    </div>
+                <div class="g-frame g-span-5">
+                    <img src="https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=600&q=80" alt="Festival Grounds">
+                    <div class="g-caption">Festival Grounds</div>
                 </div>
-                <div class="vibe-slide">
-                    <img src="https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1200&q=80" alt="Festival Grounds">
-                    <div class="vibe-slide-overlay"></div>
-                    <div class="vibe-slide-info">
-                        <h3>Festival Grounds</h3>
-                        <p>7 themed experience tents across the JKUAT main campus</p>
-                    </div>
+                <div class="g-frame g-span-8">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80" alt="Hackathon Teams">
+                    <div class="g-caption">Co-Creation Matrix</div>
                 </div>
-                <div class="vibe-slide">
-                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80" alt="Workshop Sprint">
-                    <div class="vibe-slide-overlay"></div>
-                    <div class="vibe-slide-info">
-                        <h3>Workshop Sprint</h3>
-                        <p>Hands-on learning sessions with industry mentors and Embassy experts</p>
-                    </div>
+                <div class="g-frame g-span-4">
+                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80" alt="Workshop">
+                    <div class="g-caption">Workshop Sprint</div>
                 </div>
-
-                <div class="vibe-controls" id="vibeDots"></div>
-                <div class="vibe-nav">
-                    <button class="vibe-nav-btn" id="vibePrev"><i class="fas fa-chevron-left"></i></button>
-                    <button class="vibe-nav-btn" id="vibeNext"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-
-            <div class="vibe-thumbs" id="vibeThumbs">
-                <div class="vibe-thumb active" data-slide="0"><img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=200&q=60" alt=""></div>
-                <div class="vibe-thumb" data-slide="1"><img src="https://images.unsplash.com/photo-1560439514-4e9645039924?auto=format&fit=crop&w=200&q=60" alt=""></div>
-                <div class="vibe-thumb" data-slide="2"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=200&q=60" alt=""></div>
-                <div class="vibe-thumb" data-slide="3"><img src="https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=200&q=60" alt=""></div>
-                <div class="vibe-thumb" data-slide="4"><img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=200&q=60" alt=""></div>
             </div>
         </div>
     </section>
@@ -1174,15 +1044,6 @@
     </div>
 </div>
 
-<!-- ===== LIVE NOTIFICATION POPUP ===== -->
-<div class="live-popup" id="livePopup">
-    <div class="live-popup-avatar-placeholder" id="popupAvatar">JN</div>
-    <div class="live-popup-text">
-        <strong id="popupTitle">Jane N. just registered!</strong>
-        <span id="popupSub">University of Nairobi · <span class="live-popup-green">+50 pts</span></span>
-    </div>
-</div>
-
 <!-- ===== TOAST ===== -->
 <div class="toast-container" id="toastContainer"></div>
 
@@ -1192,255 +1053,62 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 <script type="module" src="js/main.js"></script>
 
+<!-- ===== MOBILE MENU FAILSAFE (works even if main.js module fails) ===== -->
 <script>
-/* ========================================
-   SELF-CONTAINED MOBILE & INTERACTIVE JS
-   (works even if main.js module fails)
-   ======================================== */
 (function() {
+  function initMobileMenu() {
+    var btn = document.getElementById('mobileMenuBtn');
+    var panel = document.getElementById('mobileMenuPanel');
+    var navbar = document.getElementById('mainNavbar');
+    if (!btn || !panel) return;
 
-/* ── 1. MOBILE MENU ── */
-function initMobileMenu() {
-  var btn   = document.getElementById('mobileMenuBtn');
-  var panel = document.getElementById('mobileMenuPanel');
-  var navbar = document.getElementById('mainNavbar');
-  if (!btn || !panel) return;
-
-  btn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    var open = panel.classList.toggle('open');
-    btn.innerHTML = open ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-
-  panel.querySelectorAll('.mobile-link').forEach(function(link) {
-    link.addEventListener('click', function() {
-      panel.classList.remove('open');
-      btn.innerHTML = '<i class="fas fa-bars"></i>';
+    // Toggle menu on hamburger click
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var isOpen = panel.classList.contains('open');
+      if (isOpen) {
+        panel.classList.remove('open');
+        btn.innerHTML = '<i class="fas fa-bars"></i>';
+        btn.setAttribute('aria-expanded', 'false');
+      } else {
+        panel.classList.add('open');
+        btn.innerHTML = '<i class="fas fa-times"></i>';
+        btn.setAttribute('aria-expanded', 'true');
+      }
     });
-  });
 
-  document.addEventListener('click', function(e) {
-    if (!panel.contains(e.target) && !btn.contains(e.target)) {
-      panel.classList.remove('open');
-      btn.innerHTML = '<i class="fas fa-bars"></i>';
-    }
-  });
-
-  if (navbar) {
-    window.addEventListener('scroll', function() {
-      navbar.classList.toggle('scrolled', window.scrollY > 10);
-    }, { passive: true });
-  }
-}
-
-/* ── 2. HERO SLIDESHOW ── */
-function initHeroSlideshow() {
-  var slideshow = document.getElementById('heroSlideshow');
-  if (!slideshow) return;
-  var slides = slideshow.querySelectorAll('.hero-slide');
-  var dotsEl = document.getElementById('heroSlideDots');
-  var current = 0;
-  var timer;
-
-  // Build dots
-  slides.forEach(function(_, i) {
-    var d = document.createElement('button');
-    d.className = 'hero-slide-dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', function() { goTo(i); });
-    dotsEl.appendChild(d);
-  });
-
-  function goTo(n) {
-    slides[current].classList.remove('active');
-    dotsEl.children[current].classList.remove('active');
-    current = (n + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dotsEl.children[current].classList.add('active');
-    resetTimer();
-  }
-
-  function resetTimer() {
-    clearInterval(timer);
-    timer = setInterval(function() { goTo(current + 1); }, 4500);
-  }
-
-  resetTimer();
-}
-
-/* ── 3. VIBE DECK SLIDESHOW ── */
-function initVibeSlideshow() {
-  var slides  = document.querySelectorAll('.vibe-slide');
-  var thumbs  = document.querySelectorAll('.vibe-thumb');
-  var dotsEl  = document.getElementById('vibeDots');
-  var prevBtn = document.getElementById('vibePrev');
-  var nextBtn = document.getElementById('vibeNext');
-  if (!slides.length) return;
-  var current = 0;
-  var timer;
-
-  // Build sidebar dots
-  slides.forEach(function(_, i) {
-    var d = document.createElement('button');
-    d.className = 'vibe-dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', function() { goTo(i); });
-    dotsEl.appendChild(d);
-  });
-
-  function goTo(n) {
-    slides[current].classList.remove('active');
-    dotsEl.children[current].classList.remove('active');
-    if (thumbs[current]) thumbs[current].classList.remove('active');
-    current = (n + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dotsEl.children[current].classList.add('active');
-    if (thumbs[current]) thumbs[current].classList.add('active');
-    resetTimer();
-  }
-
-  thumbs.forEach(function(t) {
-    t.addEventListener('click', function() {
-      goTo(parseInt(t.dataset.slide));
+    // Close menu when a mobile link is clicked
+    var mobileLinks = panel.querySelectorAll('.mobile-link');
+    mobileLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        panel.classList.remove('open');
+        btn.innerHTML = '<i class="fas fa-bars"></i>';
+        btn.setAttribute('aria-expanded', 'false');
+      });
     });
-  });
 
-  if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); });
-  if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); });
+    // Close on outside click
+    document.addEventListener('click', function(e) {
+      if (!panel.contains(e.target) && e.target !== btn) {
+        panel.classList.remove('open');
+        btn.innerHTML = '<i class="fas fa-bars"></i>';
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
 
-  function resetTimer() {
-    clearInterval(timer);
-    timer = setInterval(function() { goTo(current + 1); }, 5000);
-  }
-  resetTimer();
-}
-
-/* ── 4. LOADING OVERLAY DISMISS ── */
-function dismissLoader() {
-  var overlay = document.getElementById('loadingOverlay');
-  if (!overlay) return;
-  setTimeout(function() {
-    overlay.style.opacity = '0';
-    setTimeout(function() { overlay.style.display = 'none'; }, 500);
-  }, 1200);
-}
-
-/* ── 5. COUNTDOWN TIMER ── */
-function initCountdown() {
-  var target = new Date('2026-06-11T09:00:00+03:00');
-  function tick() {
-    var now  = new Date();
-    var diff = target - now;
-    if (diff <= 0) { diff = 0; }
-    var d = Math.floor(diff / 86400000);
-    var h = Math.floor((diff % 86400000) / 3600000);
-    var m = Math.floor((diff % 3600000) / 60000);
-    var pad = function(v) { return String(v).padStart(2, '0'); };
-    var dEl = document.getElementById('days');
-    var hEl = document.getElementById('hours');
-    var mEl = document.getElementById('minutes');
-    if (dEl) dEl.textContent = pad(d);
-    if (hEl) hEl.textContent = pad(h);
-    if (mEl) mEl.textContent = pad(m);
-  }
-  tick();
-  setInterval(tick, 30000);
-}
-
-/* ── 6. LIVE NOTIFICATION POPUPS ── */
-function initLivePopups() {
-  var popup = document.getElementById('livePopup');
-  if (!popup) return;
-
-  var notifications = [
-    { init: 'JN', name: 'Jane N. just registered!',      sub: 'University of Nairobi',   pts: '+50 pts' },
-    { init: 'KO', name: 'Kevin O. earned Liberty Coins', sub: 'JKUAT · The Garage',      pts: '+120 pts' },
-    { init: 'AM', name: 'Amina M. joined The Launchpad', sub: 'Strathmore University',   pts: '+80 pts' },
-    { init: 'TK', name: 'Team Kenya scanned in!',        sub: 'Main Stage booth',        pts: '+200 pts' },
-    { init: 'BW', name: 'Brian W. pitched his startup',  sub: 'DeKUT · Launchpad',       pts: '+150 pts' },
-    { init: 'FN', name: 'Fatuma N. checked in',          sub: 'Taste of America tent',   pts: '+60 pts' },
-    { init: 'DO', name: 'David O. won a challenge!',     sub: 'The Arena · Sports',      pts: '+300 pts' },
-  ];
-  var colors = ['#0A3161','#B22234','#10b981','#7c3aed','#f59e0b','#0891b2'];
-  var idx = 0;
-
-  function showNext() {
-    var n   = notifications[idx % notifications.length];
-    var col = colors[idx % colors.length];
-    idx++;
-
-    var av = document.getElementById('popupAvatar');
-    var ti = document.getElementById('popupTitle');
-    var su = document.getElementById('popupSub');
-
-    av.textContent = n.init;
-    av.style.background = col;
-    ti.textContent = n.name;
-    su.innerHTML  = n.sub + ' &nbsp;·&nbsp; <span class="live-popup-green">' + n.pts + '</span>';
-
-    popup.classList.add('show');
-    setTimeout(function() { popup.classList.remove('show'); }, 4000);
-  }
-
-  setTimeout(function() {
-    showNext();
-    setInterval(showNext, 9000);
-  }, 3500);
-}
-
-/* ── 7. ANIMATED STAT COUNTERS ── */
-function animateCounters() {
-  var targets = [
-    { el: document.querySelector('.hero-stat:nth-child(1) .val'), end: 12,    suffix: '+',  dec: 0 },
-    { el: document.querySelector('.hero-stat:nth-child(2) .val'), end: 15,    suffix: 'K+', dec: 0 },
-    { el: document.querySelector('.hero-stat:nth-child(3) .val'), end: 7,     suffix: '',   dec: 0 },
-  ];
-  targets.forEach(function(t) {
-    if (!t.el) return;
-    var start = 0;
-    var duration = 1800;
-    var step = 16;
-    var steps = duration / step;
-    var inc = t.end / steps;
-    var current = start;
-    var timer = setInterval(function() {
-      current = Math.min(current + inc, t.end);
-      t.el.textContent = (t.dec ? current.toFixed(t.dec) : Math.floor(current)) + t.suffix;
-      if (current >= t.end) clearInterval(timer);
-    }, step);
-  });
-}
-
-/* ── 8. LIVE COUNT TICKER ── */
-function initLiveCount() {
-  var el = document.getElementById('liveCount');
-  if (!el) return;
-  var count = 2847;
-  setInterval(function() {
-    if (Math.random() > 0.5) {
-      count += Math.floor(Math.random() * 3) + 1;
-      el.textContent = count.toLocaleString();
+    // Navbar scroll shadow
+    if (navbar) {
+      window.addEventListener('scroll', function() {
+        navbar.classList.toggle('scrolled', window.scrollY > 10);
+      }, { passive: true });
     }
-  }, 8000);
-}
+  }
 
-/* ── BOOT ── */
-function boot() {
-  initMobileMenu();
-  initHeroSlideshow();
-  initVibeSlideshow();
-  dismissLoader();
-  initCountdown();
-  initLivePopups();
-  animateCounters();
-  initLiveCount();
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', boot);
-} else {
-  boot();
-}
-
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileMenu);
+  } else {
+    initMobileMenu();
+  }
 })();
 </script>
 </body>
