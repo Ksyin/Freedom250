@@ -1,0 +1,16 @@
+{
+  "name": "freedom250-notifications",
+  "version": "0.1.0",
+  "description": "Example server for SendGrid transactional email and Firebase Admin (FCM) for Freedom250",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.0.3",
+    "@sendgrid/mail": "^7.7.0",
+    "firebase-admin": "^11.10.0"
+  }
+}

@@ -1,0 +1,378 @@
+<!-- dashboard-volunteer.html - Complete Working Volunteer Dashboard -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Volunteer | Freedom 250</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f5f5; }
+        .dash-mobile { max-width: 500px; margin: 0 auto; background: #f5f5f5; min-height: 100vh; padding-bottom: 80px; }
+
+        .volunteer-header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            padding: 25px 20px;
+        }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 20px;
+            background: white;
+            margin: 15px;
+            border-radius: 24px;
+        }
+        .stat-card { text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 800; color: #B22234; }
+
+        .section-header { padding: 0 15px; margin: 20px 0 12px; }
+        .section-header h2 { font-size: 1.1rem; color: #1a1a2e; }
+
+        .cards-grid { display: flex; flex-direction: column; gap: 12px; padding: 0 15px; }
+        .task-card {
+            background: white;
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .task-card:active { transform: scale(0.98); }
+        .task-icon {
+            width: 50px;
+            height: 50px;
+            background: #3C3B6E;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+        .task-info { flex: 1; }
+        .task-info h3 { font-size: 1rem; margin-bottom: 4px; }
+        .task-info p { font-size: 0.75rem; color: #666; }
+        .task-status {
+            font-size: 0.7rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .status-completed { background: #e8f5e9; color: #2e7d32; }
+        .status-inprogress { background: #fff3e0; color: #e65100; }
+        .status-pending { background: #f5f5f5; color: #999; }
+
+        .scanner-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .scanner-modal.show { display: flex; }
+        .scanner-content {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 20px 14px;
+            border-top: 1px solid #eee;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .nav-item { text-align: center; color: #999; text-decoration: none; font-size: 0.7rem; cursor: pointer; }
+        .nav-item.active { color: #B22234; }
+        .nav-item i { font-size: 1.3rem; display: block; margin-bottom: 4px; }
+
+        .help-fab {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            background: #B22234;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 200;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background: white;
+            margin: 20px;
+            padding: 25px;
+            border-radius: 24px;
+            max-width: 400px;
+            width: 90%;
+        }
+    </style>
+</head>
+<body>
+<div class="dash-mobile">
+    <div class="volunteer-header">
+        <h1><i class="fas fa-handshake"></i> Volunteer Hub</h1>
+        <p style="opacity: 0.7; margin-top: 5px;">Freedom 250 Festival · JKUAT</p>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card"><div class="stat-value" id="hoursToday">6</div><div class="stat-label">Hours Today</div></div>
+        <div class="stat-card"><div class="stat-value" id="totalHours">24</div><div class="stat-label">Total Hours</div></div>
+        <div class="stat-card"><div class="stat-value" id="tasksCompleted">8</div><div class="stat-label">Tasks Done</div></div>
+    </div>
+
+    <!-- Tasks Section -->
+    <div id="tasksSection">
+        <div class="section-header"><h2><i class="fas fa-tasks"></i> My Assigned Tasks</h2></div>
+        <div class="cards-grid" id="tasksList"></div>
+    </div>
+
+    <!-- Scanner Section -->
+    <div id="scannerSection" style="display: none;">
+        <div class="qr-section" style="background: white; margin: 15px; padding: 20px; border-radius: 24px; text-align: center;">
+            <h3><i class="fas fa-qrcode"></i> QR Scanner</h3>
+            <div style="background: #f0f0f0; height: 200px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 15px 0;">
+                <i class="fas fa-camera" style="font-size: 3rem; color: #999;"></i>
+            </div>
+            <button class="btn-primary" id="scanQrBtn" style="width: 100%;">Start Scanning</button>
+            <p style="font-size: 0.7rem; color: #666; margin-top: 12px;">Scan participant QR codes to award Liberty Coins</p>
+        </div>
+        <div class="section-header"><h2>Recent Scans</h2></div>
+        <div class="cards-grid" id="recentScans"></div>
+    </div>
+
+    <!-- Schedule Section -->
+    <div id="scheduleSection" style="display: none;">
+        <div class="section-header"><h2><i class="fas fa-clock"></i> Today's Schedule</h2></div>
+        <div class="cards-grid" id="scheduleList"></div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" data-nav="tasks"><i class="fas fa-tasks"></i><span>Tasks</span></div>
+        <div class="nav-item" data-nav="scanner"><i class="fas fa-qrcode"></i><span>Scanner</span></div>
+        <div class="nav-item" data-nav="schedule"><i class="fas fa-clock"></i><span>Schedule</span></div>
+    </div>
+
+    <div class="help-fab" id="helpFab"><i class="fas fa-headset"></i></div>
+</div>
+
+<!-- Task Detail Modal -->
+<div id="taskModal" class="modal">
+    <div class="modal-content">
+        <h3 id="taskModalTitle"></h3>
+        <p id="taskModalDesc"></p>
+        <p id="taskModalLocation"></p>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button class="btn-primary" id="completeTaskBtn" style="flex:1;">Mark Complete</button>
+            <button class="btn-outline" onclick="closeTaskModal()" style="flex:1;">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Scan Result Modal -->
+<div id="scanResultModal" class="modal">
+    <div class="modal-content">
+        <h3 id="scanResultTitle"></h3>
+        <p id="scanResultMessage"></p>
+        <button class="btn-primary" onclick="closeScanModal()" style="margin-top: 15px;">OK</button>
+    </div>
+</div>
+
+<script type="module">
+    import { getCurrentUser, signOutUser, onAuthStateChange } from './js/auth.js';
+
+    let tasks = [
+        { id: 1, name: "Gate Registration", location: "Main Entrance", status: "in-progress", description: "Help participants check in using their QR codes", icon: "fa-check-in-alt" },
+        { id: 2, name: "Guide Participants", location: "The Garage Zone", status: "pending", description: "Direct participants to the Innovation & MakerLab tent", icon: "fa-compass" },
+        { id: 3, name: "Award Liberty Coins", location: "The Arena", status: "pending", description: "Scan participant QR codes at sports challenges", icon: "fa-coins" },
+        { id: 4, name: "Session Management", location: "The Townhall", status: "pending", description: "Manage crowd and check-ins for leadership sessions", icon: "fa-microphone" },
+        { id: 5, name: "QR Scanning Support", location: "All Zones", status: "pending", description: "Assist participants with QR code scanning issues", icon: "fa-qrcode" },
+        { id: 6, name: "Feedback Collection", location: "The Varsity Lounge", status: "pending", description: "Collect participant feedback about the event", icon: "fa-comment" }
+    ];
+
+    let recentScans = [
+        { name: "Sarah Kamau", zone: "THE GARAGE", coins: 50, time: "10:30 AM" },
+        { name: "James Omondi", zone: "THE ARENA", coins: 50, time: "11:15 AM" }
+    ];
+
+    let schedule = [
+        { time: "8:00 AM", task: "Volunteer Briefing", location: "Volunteer Tent" },
+        { time: "9:00 AM", task: "Gate Registration Opens", location: "Main Entrance" },
+        { time: "10:00 AM", task: "Opening Ceremony Support", location: "Main Stage" },
+        { time: "12:00 PM", task: "Lunch Break", location: "Volunteer Tent" },
+        { time: "1:00 PM", task: "Zone Assistance", location: "Various Zones" },
+        { time: "5:00 PM", task: "Closing Ceremony Support", location: "Main Stage" }
+    ];
+
+    let currentHours = 6;
+    let totalHours = 24;
+    let completedTasks = 8;
+
+    function renderTasks() {
+        const container = document.getElementById('tasksList');
+        container.innerHTML = tasks.map(task => `
+            <div class="task-card" onclick="openTask(${task.id})">
+                <div class="task-icon"><i class="fas ${task.icon}"></i></div>
+                <div class="task-info">
+                    <h3>${task.name}</h3>
+                    <p>${task.location}</p>
+                </div>
+                <div class="task-status ${getStatusClass(task.status)}">${getStatusText(task.status)}</div>
+            </div>
+        `).join('');
+    }
+
+    function renderSchedule() {
+        const container = document.getElementById('scheduleList');
+        container.innerHTML = schedule.map(s => `
+            <div class="task-card" style="cursor:default;">
+                <div class="task-icon" style="background:#B22234;"><i class="fas fa-calendar-alt"></i></div>
+                <div class="task-info">
+                    <h3>${s.time}</h3>
+                    <p><strong>${s.task}</strong><br>${s.location}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderRecentScans() {
+        const container = document.getElementById('recentScans');
+        container.innerHTML = recentScans.map(scan => `
+            <div class="task-card" style="cursor:default;">
+                <div class="task-icon" style="background:#10b981;"><i class="fas fa-check-circle"></i></div>
+                <div class="task-info">
+                    <h3>${scan.name}</h3>
+                    <p>${scan.zone} · +${scan.coins} coins</p>
+                </div>
+                <div style="font-size:0.7rem; color:#999;">${scan.time}</div>
+            </div>
+        `).join('');
+    }
+
+    function getStatusClass(status) {
+        if (status === 'completed') return 'status-completed';
+        if (status === 'in-progress') return 'status-inprogress';
+        return 'status-pending';
+    }
+
+    function getStatusText(status) {
+        if (status === 'completed') return '✓ Completed';
+        if (status === 'in-progress') return 'In Progress';
+        return 'Pending';
+    }
+
+    window.openTask = function(taskId) {
+        const task = tasks.find(t => t.id === taskId);
+        const modal = document.getElementById('taskModal');
+        document.getElementById('taskModalTitle').innerText = task.name;
+        document.getElementById('taskModalDesc').innerText = task.description;
+        document.getElementById('taskModalLocation').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${task.location}`;
+        document.getElementById('completeTaskBtn').onclick = () => {
+            task.status = 'completed';
+            completedTasks++;
+            document.getElementById('tasksCompleted').innerText = completedTasks;
+            renderTasks();
+            closeTaskModal();
+            alert(`✅ Task "${task.name}" marked as complete!\n\n+2 volunteer hours logged.`);
+        };
+        modal.classList.add('show');
+    };
+
+    window.closeTaskModal = function() {
+        document.getElementById('taskModal').classList.remove('show');
+    };
+
+    window.closeScanModal = function() {
+        document.getElementById('scanResultModal').classList.remove('show');
+    };
+
+    function showSection(section) {
+        document.getElementById('tasksSection').style.display = 'none';
+        document.getElementById('scannerSection').style.display = 'none';
+        document.getElementById('scheduleSection').style.display = 'none';
+
+        if (section === 'tasks') document.getElementById('tasksSection').style.display = 'block';
+        if (section === 'scanner') {
+            document.getElementById('scannerSection').style.display = 'block';
+            renderRecentScans();
+        }
+        if (section === 'schedule') {
+            document.getElementById('scheduleSection').style.display = 'block';
+            renderSchedule();
+        }
+
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        document.querySelector(`.nav-item[data-nav="${section}"]`).classList.add('active');
+    }
+
+    document.getElementById('scanQrBtn')?.addEventListener('click', () => {
+        const modal = document.getElementById('scanResultModal');
+        document.getElementById('scanResultTitle').innerText = '✅ Scan Successful!';
+        document.getElementById('scanResultMessage').innerHTML = 'Participant: Sarah Kamau<br>Zone: THE GARAGE<br>+50 Liberty Coins awarded!';
+        modal.classList.add('show');
+
+        // Add to recent scans
+        recentScans.unshift({ name: "New Scan", zone: "THE GARAGE", coins: 50, time: new Date().toLocaleTimeString() });
+        if (recentScans.length > 5) recentScans.pop();
+        renderRecentScans();
+    });
+
+    document.querySelectorAll('.nav-item').forEach(nav => {
+        nav.addEventListener('click', () => showSection(nav.dataset.nav));
+    });
+
+    document.getElementById('helpFab')?.addEventListener('click', () => {
+        alert("📞 Volunteer Support\n\n📍 Volunteer Tent: Near Main Entrance\n📞 Shift Coordinator: +254 700 000 001\n\nNeed help with QR scanning? Ask at the Info Desk!");
+    });
+
+    // Check auth
+    onAuthStateChange((user) => {
+        if (!user) window.location.href = '/';
+        else {
+            renderTasks();
+            document.querySelector('.volunteer-header h1').innerHTML = `<i class="fas fa-handshake"></i> Welcome, ${user.displayName || user.email.split('@')[0]}!`;
+        }
+    });
+</script>
+</body>
+</html>

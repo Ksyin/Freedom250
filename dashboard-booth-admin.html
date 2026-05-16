@@ -1,0 +1,501 @@
+<!-- dashboard-booth-admin.html - Complete Working Booth Admin Dashboard -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Booth Admin | Freedom 250</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f5f5; }
+        .dash-mobile { max-width: 500px; margin: 0 auto; background: #f5f5f5; min-height: 100vh; padding-bottom: 80px; }
+
+        .booth-header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 20px;
+            background: white;
+            margin: 15px;
+            border-radius: 24px;
+        }
+        .stat-card { text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 800; color: #B22234; }
+
+        .scanner-card {
+            background: white;
+            margin: 15px;
+            padding: 25px;
+            border-radius: 28px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .team-form {
+            display: grid;
+            gap: 12px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .team-form input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid #ddd;
+            font-size: 0.95rem;
+        }
+        .team-form label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        .team-assignment-item {
+            background: #f8f8fb;
+            border-radius: 18px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+        .team-assignment-item small {
+            color: #666;
+        }
+        .scanner-preview {
+            background: #f0f0f0;
+            height: 180px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .qr-button {
+            background: #B22234;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .visitor-item {
+            background: white;
+            border-radius: 16px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 20px 14px;
+            border-top: 1px solid #eee;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .nav-item { text-align: center; color: #999; text-decoration: none; font-size: 0.7rem; cursor: pointer; }
+        .nav-item.active { color: #B22234; }
+        .nav-item i { font-size: 1.3rem; display: block; margin-bottom: 4px; }
+
+        .help-fab {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            background: #B22234;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 200;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background: white;
+            margin: 20px;
+            padding: 25px;
+            border-radius: 24px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .award-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+        .chart-container { height: 200px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+<div class="dash-mobile">
+    <div class="booth-header">
+        <h1><i class="fas fa-store"></i> Booth Admin</h1>
+        <div><i class="fas fa-qrcode"></i> <span id="zoneName">THE GARAGE</span></div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-card"><div class="stat-value" id="todayVisitors">247</div><div class="stat-label">Today's Visitors</div></div>
+        <div class="stat-card"><div class="stat-value" id="totalPoints">12,450</div><div class="stat-label">Liberty Coins Given</div></div>
+    </div>
+
+    <!-- Scanner Section -->
+    <div id="scanSection">
+        <div class="scanner-card">
+            <h3>📸 Scan Participant QR</h3>
+            <div class="scanner-preview" id="qrScannerRegion">
+                <i class="fas fa-camera" style="font-size: 3rem; color: #999;"></i>
+            </div>
+            <button class="qr-button" id="startScannerBtn"><i class="fas fa-qrcode"></i> Start Scanner</button>
+            <p style="font-size: 0.7rem; color: #666; margin-top: 12px;">Scan participant QR to award 50 Liberty Coins</p>
+        </div>
+
+        <div class="scanner-card">
+            <h3><i class="fas fa-users"></i> Teams</h3>
+            <p style="color:#666;">Teams are chosen by participants at signup — admins cannot create teams here. Below are active teams and their colors.</p>
+            <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap;">
+                <div style="background:#B22234; color:white; padding:8px 12px; border-radius:12px; font-weight:700;">Team Liberty</div>
+                <div style="background:#3C3B6E; color:white; padding:8px 12px; border-radius:12px; font-weight:700;">Team Freedom</div>
+                <div style="background:#10b981; color:white; padding:8px 12px; border-radius:12px; font-weight:700;">Team Unity</div>
+            </div>
+            <div id="teamAssignmentsList" style="margin-top: 18px;"></div>
+        </div>
+
+        <div style="padding: 0 15px;">
+            <h3 style="margin-bottom: 15px;">Recent Visitors</h3>
+            <div id="visitorsList"></div>
+        </div>
+    </div>
+
+    <!-- Analytics Section -->
+    <div id="analyticsSection" style="display: none;">
+        <div class="scanner-card">
+            <h3><i class="fas fa-chart-line"></i> Booth Performance</h3>
+            <div class="chart-container">
+                <canvas id="visitorChart"></canvas>
+            </div>
+        </div>
+        <div style="padding: 0 15px;">
+            <h3 style="margin-bottom: 15px;">Visitor Insights</h3>
+            <div id="insightsList"></div>
+        </div>
+    </div>
+
+    <!-- Rewards Section -->
+    <div id="rewardsSection" style="display: none;">
+        <div class="scanner-card">
+            <h3><i class="fas fa-gift"></i> Booth Rewards</h3>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="visitor-item"><div>🎁 Freedom Sticker</div><div>50 coins</div><button class="award-btn" onclick="awardReward('Sticker')">Give</button></div>
+                <div class="visitor-item"><div>🎫 Liberty Pass</div><div>200 coins</div><button class="award-btn" onclick="awardReward('Liberty Pass')">Give</button></div>
+                <div class="visitor-item"><div>🏆 VIP Access</div><div>500 coins</div><button class="award-btn" onclick="awardReward('VIP Access')">Give</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" data-nav="scan"><i class="fas fa-qrcode"></i><span>Scan</span></div>
+        <div class="nav-item" data-nav="analytics"><i class="fas fa-chart-bar"></i><span>Analytics</span></div>
+        <div class="nav-item" data-nav="rewards"><i class="fas fa-gift"></i><span>Rewards</span></div>
+    </div>
+
+    <div class="help-fab" id="helpFab"><i class="fas fa-headset"></i></div>
+</div>
+
+<!-- Scan Result Modal -->
+<div id="scanModal" class="modal">
+    <div class="modal-content">
+        <i class="fas fa-check-circle" style="font-size: 3rem; color: #10b981;"></i>
+        <h3 id="scanModalTitle" style="margin: 15px 0;">Scan Successful!</h3>
+        <p id="scanModalMessage">+50 Liberty Coins awarded</p>
+        <button class="btn-primary" onclick="closeScanModal()" style="margin-top: 15px;">Continue</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.7/html5-qrcode.min.js"></script>
+<script type="module">
+    import { getCurrentUser, signOutUser, onAuthStateChange } from './js/auth.js';
+    import { db, doc, getDoc, setDoc, updateDoc, addDoc, collection, increment, serverTimestamp } from './js/firebase-config.js';
+
+    let visitors = [
+        { name: "Sarah Kamau", coins: 50, time: "2:45 PM" },
+        { name: "James Omondi", coins: 50, time: "2:30 PM" },
+        { name: "Faith Njeri", coins: 50, time: "2:15 PM" },
+        { name: "Brian Otieno", coins: 50, time: "1:55 PM" },
+        { name: "Mercy Wanjiku", coins: 50, time: "1:30 PM" }
+    ];
+
+    let todayCount = 247;
+    let totalCoinsGiven = 12450;
+    let boothName = "THE GARAGE";
+
+    let visitorChart;
+
+    function renderVisitors() {
+        const container = document.getElementById('visitorsList');
+        container.innerHTML = visitors.map(v => `
+            <div class="visitor-item">
+                <div><strong>${v.name}</strong><br><small style="color:#999;">${v.time}</small></div>
+                <div><span style="color: gold;">+${v.coins}</span> <i class="fas fa-coins"></i></div>
+            </div>
+        `).join('');
+    }
+
+    let teamAssignments = [
+        { team: 'Team Liberty', participant: 'Sarah Kamau' },
+        { team: 'Team Freedom', participant: 'James Omondi' }
+    ];
+
+    function renderTeamAssignments() {
+        const container = document.getElementById('teamAssignmentsList');
+        if (!container) return;
+        container.innerHTML = teamAssignments.map(item => `
+            <div class="team-assignment-item">
+                <div>
+                    <strong>${item.team}</strong><br>
+                    <small>${item.participant}</small>
+                </div>
+                <span style="color:#B22234; font-weight:700;">Assigned</span>
+            </div>
+        `).join('');
+    }
+
+    function addTeamAssignment() {
+        const teamName = document.getElementById('teamNameInput')?.value.trim();
+        const participant = document.getElementById('teamParticipantInput')?.value.trim();
+        if (!teamName || !participant) {
+            alert('Please add both a team name and participant.');
+            return;
+        }
+        teamAssignments.unshift({ team: teamName, participant });
+        renderTeamAssignments();
+        document.getElementById('teamNameInput').value = '';
+        document.getElementById('teamParticipantInput').value = '';
+        alert('Team assignment saved.');
+    }
+
+    function renderInsights() {
+        const container = document.getElementById('insightsList');
+        container.innerHTML = `
+            <div class="visitor-item"><div>👥 Peak Hour</div><div>3:00 PM - 4:00 PM</div><div>156 visitors</div></div>
+            <div class="visitor-item"><div>⭐ Average Rating</div><div>4.8/5</div><div><i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i><i class="fas fa-star" style="color: gold;"></i></div></div>
+            <div class="visitor-item"><div>🎯 Engagement Score</div><div>94%</div><div>Very High</div></div>
+            <div class="visitor-item"><div>🔄 Repeat Visitors</div><div>38</div><div>15% of total</div></div>
+        `;
+    }
+
+    function initChart() {
+        const ctx = document.getElementById('visitorChart')?.getContext('2d');
+        if (ctx && !visitorChart) {
+            visitorChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm'],
+                    datasets: [{ label: 'Visitors per Hour', data: [12, 34, 56, 89, 123, 156, 189, 167, 98], borderColor: '#B22234', backgroundColor: 'rgba(178,34,52,0.1)', fill: true, tension: 0.4 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+    }
+
+    function showSection(section) {
+        document.getElementById('scanSection').style.display = 'none';
+        document.getElementById('analyticsSection').style.display = 'none';
+        document.getElementById('rewardsSection').style.display = 'none';
+
+        if (section === 'scan') document.getElementById('scanSection').style.display = 'block';
+        if (section === 'analytics') {
+            document.getElementById('analyticsSection').style.display = 'block';
+            renderInsights();
+            setTimeout(initChart, 100);
+        }
+        if (section === 'rewards') document.getElementById('rewardsSection').style.display = 'block';
+
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        document.querySelector(`.nav-item[data-nav="${section}"]`).classList.add('active');
+    }
+
+    window.closeScanModal = function() {
+        document.getElementById('scanModal').classList.remove('show');
+    };
+
+    window.awardReward = function(reward) {
+        alert(`🎁 ${reward} awarded to participant!\n\n-${reward === 'Sticker' ? 50 : reward === 'Liberty Pass' ? 200 : 500} Liberty Coins`);
+    };
+
+    let html5QrCode;
+    document.getElementById('startScannerBtn')?.addEventListener('click', async () => {
+        const scannerRegion = document.getElementById('qrScannerRegion');
+        if (!scannerRegion) return;
+
+        // Replace preview with scanner container
+        scannerRegion.innerHTML = '<div id="qr-reader" style="width:100%"></div>';
+
+        try {
+            const cameras = await Html5Qrcode.getCameras();
+            const cameraId = (cameras && cameras.length) ? cameras[0].id : null;
+            html5QrCode = new Html5Qrcode("qr-reader");
+
+            const config = { fps: 10, qrbox: 250 };
+
+            await html5QrCode.start(
+                cameraId,
+                config,
+                async (decodedText, decodedResult) => {
+                    // Handle on success
+                    console.log('QR decoded:', decodedText);
+                    await handleSuccessfulScan(decodedText);
+                    try { await html5QrCode.stop(); } catch(e) { console.warn(e); }
+                },
+                (errorMessage) => {
+                    // ignore parse errors
+                }
+            );
+        } catch (err) {
+            console.error('Scanner start failed', err);
+            alert('Unable to start camera. Please ensure camera permission is allowed and try again.');
+        }
+    });
+
+    async function handleSuccessfulScan(qrValue) {
+        try {
+            // Expect format freedom250_<uid>
+            let uid = null;
+            if (qrValue && qrValue.includes('freedom250_')) {
+                uid = qrValue.split('freedom250_')[1].split('_')[0];
+            } else {
+                // fallback: treat whole value as uid
+                uid = qrValue;
+            }
+
+            if (!uid) {
+                alert('Invalid QR data');
+                return;
+            }
+
+            const userRef = doc(db, 'users', uid);
+            const userDoc = await getDoc(userRef);
+            if (!userDoc.exists()) {
+                alert('User not found in system');
+                return;
+            }
+
+            const userData = userDoc.data();
+
+            // Award points to user document
+            try {
+                await updateDoc(userRef, { points: increment(50) });
+            } catch (e) {
+                // If update fails because doc missing, set it
+                await setDoc(userRef, { ...userData, points: (userData.points || 0) + 50 }, { merge: true });
+            }
+
+            // Log scan event
+            await addDoc(collection(db, 'scans'), {
+                userId: uid,
+                userName: userData.displayName || userData.email,
+                booth: boothName,
+                points: 50,
+                timestamp: serverTimestamp()
+            });
+
+            // Update booth counts for heatmap
+            const boothId = boothName.toLowerCase().replace(/\s+/g, '_');
+            const boothRef = doc(db, 'boothCounts', boothId);
+            try {
+                await updateDoc(boothRef, { scans: increment(1), lastScan: serverTimestamp() });
+            } catch (e) {
+                await setDoc(boothRef, { name: boothName, scans: 1, lastScan: serverTimestamp() });
+            }
+
+            // Update UI
+            todayCount++;
+            totalCoinsGiven += 50;
+            document.getElementById('todayVisitors').innerText = todayCount;
+            document.getElementById('totalPoints').innerText = totalCoinsGiven.toLocaleString();
+
+            visitors.unshift({ name: userData.displayName || userData.email, coins: 50, time: new Date().toLocaleTimeString() });
+            if (visitors.length > 10) visitors.pop();
+            renderVisitors();
+
+            // Show success modal
+            const modal = document.getElementById('scanModal');
+            document.getElementById('scanModalMessage').innerHTML = `Participant: ${userData.displayName || userData.email}<br>+50 Liberty Coins awarded!`;
+            modal.classList.add('show');
+        } catch (err) {
+            console.error('Scan handling error', err);
+            alert('Scan processed but failed to update backend: ' + (err.message || err));
+        }
+    }
+
+    document.querySelectorAll('.nav-item').forEach(nav => {
+        nav.addEventListener('click', () => showSection(nav.dataset.nav));
+    });
+
+    // team creation moved to signup; admins do not add teams here
+
+    document.getElementById('helpFab')?.addEventListener('click', () => {
+        alert("🏪 Booth Support\n\nZone: THE GARAGE\n📍 Location: Innovation & MakerLab Tent\n📞 Booth Coordinator: +254 700 000 002\n\nNeed help with QR scanner? Ask for technical support.");
+    });
+
+    // Check auth and render
+    onAuthStateChange((user) => {
+        if (!user) window.location.href = '/';
+        else {
+            renderVisitors();
+            renderTeamAssignments();
+            document.getElementById('zoneName').innerText = boothName;
+        }
+    });
+</script>
+</body>
+</html>

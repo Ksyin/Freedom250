@@ -1,1 +1,13 @@
+# Dashboard Routes
+/participant /dashboard-participant.html 200
+/volunteer /dashboard-volunteer.html 200
+/booth-admin /dashboard-booth-admin.html 200
+/admin /dashboard-admin.html 200
+/super-admin /dashboard-admin.html 200
+/organizer /dashboard-organizer.html 200
+/university-admin /dashboard-university.html 200
+/login /login.html 200
+/register /register.html 200
+
+# Fallback to home
 /* /index.html 200

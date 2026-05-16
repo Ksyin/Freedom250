@@ -1,0 +1,118 @@
+<!-- dashboard-organizer.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Organizer | Freedom 250</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f5f5; }
+        .dash-mobile { max-width: 500px; margin: 0 auto; background: #f5f5f5; min-height: 100vh; padding-bottom: 80px; }
+        .dash-header { background: var(--usa-blue); color: white; padding: 20px; }
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px; background: white; margin: 15px; border-radius: 20px; }
+        .stat-card { text-align: center; }
+        .stat-value { font-size: 1.3rem; font-weight: 800; color: var(--usa-red); }
+
+        .cards-grid { display: flex; flex-direction: column; gap: 12px; padding: 0 15px; }
+        .admin-card { background: white; border-radius: 16px; padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .admin-card-left h3 { font-size: 1rem; margin-bottom: 4px; }
+        .admin-card-left p { font-size: 0.75rem; color: #666; }
+        .admin-btn { background: var(--usa-red); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; }
+
+        .pending-item { background: white; border-radius: 12px; padding: 12px 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .pending-name { font-weight: 600; }
+        .approve-btn { background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 12px 20px; border-top: 1px solid #eee; max-width: 500px; margin: 0 auto; }
+        .nav-item { text-align: center; color: #999; text-decoration: none; font-size: 0.7rem; }
+        .nav-item.active { color: var(--usa-red); }
+        .help-fab { position: fixed; bottom: 70px; right: 20px; background: var(--usa-red); color: white; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; z-index: 200; }
+    </style>
+</head>
+<body>
+<div class="dash-mobile">
+    <div class="dash-header">
+        <h1><i class="fas fa-crown"></i> Organizer Portal</h1>
+        <p style="font-size: 0.75rem; opacity: 0.8;">Freedom 250 Festival</p>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card"><div class="stat-value">2,847</div><div class="stat-label">Registered</div></div>
+        <div class="stat-card"><div class="stat-value">342</div><div class="stat-label">Total Points</div></div>
+        <div class="stat-card"><div class="stat-value">7</div><div class="stat-label">Active Tents</div></div>
+    </div>
+
+    <div class="cards-grid">
+        <div class="admin-card"><div class="admin-card-left"><h3>📋 Approve Participants</h3><p>3 pending requests</p></div><button class="admin-btn">Review</button></div>
+        <div class="admin-card"><div class="admin-card-left"><h3>📅 Manage Schedule</h3><p>Update event timeline</p></div><button class="admin-btn">Edit</button></div>
+        <div class="admin-card"><div class="admin-card-left"><h3>🏪 Booth Management</h3><p>7 tents active</p></div><button class="admin-btn" id="manageBoothsBtn">Manage</button></div>
+        <div class="admin-card"><div class="admin-card-left"><h3>📢 Announcements</h3><p>Send to all participants</p></div><button class="admin-btn">Broadcast</button></div>
+    </div>
+
+    <div style="padding: 15px;">
+        <h3 style="margin-bottom: 15px;">Pending Approvals</h3>
+        <div class="pending-item"><div><span class="pending-name">Sarah Kamau</span><br><small>JKUAT</small></div><button class="approve-btn">✓ Approve</button></div>
+        <div class="pending-item"><div><span class="pending-name">James Omondi</span><br><small>UoN</small></div><button class="approve-btn">✓ Approve</button></div>
+        <div class="pending-item"><div><span class="pending-name">Faith Njeri</span><br><small>Strathmore</small></div><button class="approve-btn">✓ Approve</button></div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active"><i class="fas fa-chart-line"></i><span>Overview</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-users"></i><span>Attendees</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-calendar"></i><span>Schedule</span></a>
+        <a href="#" class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+    </div>
+
+    <div class="help-fab" id="helpFab"><i class="fas fa-headset"></i></div>
+
+        <!-- Add Booth Modal (hidden) -->
+        <div id="addBoothModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:400; align-items:center; justify-content:center;">
+            <div style="background:white; padding:18px; border-radius:12px; width:92%; max-width:420px;">
+                <h3>Add Booth / Partner</h3>
+                <input id="boothName" placeholder="Booth name (e.g., KFC)" style="width:100%; padding:10px; margin-top:8px;" />
+                <input id="boothLogo" placeholder="Logo URL (optional)" style="width:100%; padding:10px; margin-top:8px;" />
+                <div style="display:flex; gap:8px; margin-top:12px; justify-content:flex-end;"><button id="cancelAddBooth" class="btn-outline">Cancel</button><button id="saveAddBooth" class="btn-primary">Add Booth</button></div>
+            </div>
+        </div>
+</div>
+
+<script type="module">
+    import { signOutUser } from './js/auth.js';
+    document.getElementById('helpFab').onclick = () => alert('Admin Support: Contact U.S. Embassy Nairobi at +254 20 363 6000');
+
+    // Double tap header to logout
+    let tapCount = 0;
+    document.querySelector('.dash-header').ondblclick = async () => {
+      if (confirm('Logout from Admin?')) { await signOutUser(); window.location.href = '/'; }
+    };
+
+        // Booth management: open modal and save to Firestore
+        import('./js/firebase-config.js').then(async ({ db, collection, addDoc, serverTimestamp }) => {
+            const manageBtn = document.getElementById('manageBoothsBtn');
+            const modal = document.getElementById('addBoothModal');
+            const cancel = document.getElementById('cancelAddBooth');
+            const save = document.getElementById('saveAddBooth');
+
+            if (manageBtn && modal) manageBtn.onclick = () => { modal.style.display = 'flex'; };
+            if (cancel) cancel.onclick = () => { modal.style.display = 'none'; };
+            if (save) save.onclick = async () => {
+                const name = document.getElementById('boothName').value.trim();
+                const logo = document.getElementById('boothLogo').value.trim();
+                if (!name) return alert('Provide a booth name');
+                try {
+                    await addDoc(collection(db, 'booths'), { name, logo: logo || null, createdAt: serverTimestamp() });
+                    alert('Booth added — will appear on homepage once synced');
+                    modal.style.display = 'none';
+                } catch (e) {
+                    console.error('Add booth failed', e);
+                    alert('Failed to add booth');
+                }
+            };
+        }).catch(e => console.warn('Booth mgmt init failed', e));
+</script>
+</body>
+</html>
