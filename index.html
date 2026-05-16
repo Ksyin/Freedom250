@@ -509,13 +509,24 @@
           .mobile-menu-panel { top: 60px; }
 
           /* --- Hero --- */
-          .hero-section { padding: 90px 0 48px; }
+          .hero-section { padding: 90px 0 48px; overflow: hidden; }
           .hero-section h1 { font-size: 2rem; }
           .section-title { font-size: 1.7rem; }
-          .hero-inner { grid-template-columns: 1fr; gap: 32px; }
-          .hero-visual { display: none; }
-          .hero-stats { gap: 16px; flex-wrap: wrap; }
-          .hero-ctas { gap: 10px; }
+          .hero-inner { display: grid; position: relative; gap: 22px; }
+          .hero-visual { display: block; width: 100%; max-width: none; margin: 0 auto; position: relative; border-radius: 30px; overflow: hidden; min-height: 420px; box-shadow: 0 32px 80px rgba(10,49,97,0.12); }
+          .hero-left { position: absolute; top: 16px; left: 14px; right: 14px; z-index: 2; background: rgba(255,255,255,0.04); border-radius: 28px; padding: 14px 16px 14px; box-shadow: 0 20px 46px rgba(10,49,97,0.04); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(22px); color: #111; }
+          .hero-left h1, .hero-left .hero-desc, .hero-left .hero-quote, .hero-left .hero-definition, .hero-left .countdown-label, .hero-left .hero-stat .lbl, .hero-left .hero-stat .val { color: #111; }
+          .hero-left .hero-definition { color: #b22234; }
+          .hero-left .hero-quote { color: rgba(17,17,17,0.92); }
+          .hero-mosaic { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: 150px 150px; gap: 10px; }
+          .hero-mosaic-item { min-height: 120px; }
+          .hero-chip-badge { position: absolute; white-space: normal; width: auto; max-width: 160px; padding: 8px 10px; font-size: 0.75rem; }
+          .hero-chip-badge.chip-mentorship { top: 16px; right: 14px; }
+          .hero-chip-badge.chip-people { bottom: 92px; left: 12px; }
+          .hero-chip-badge.chip-programs { bottom: 14px; right: 14px; }
+          .hero-floating-badge { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); margin: 0; }
+          .hero-stats { gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+          .hero-ctas { gap: 10px; margin-top: 16px; }
           .hero-ctas .btn { flex: 1; min-width: 0; font-size: 0.82rem; padding: 11px 14px; }
           .countdown-wrap { gap: 12px; padding: 14px 16px; }
           .countdown-digits { gap: 10px; }
