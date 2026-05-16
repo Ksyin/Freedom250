@@ -17,13 +17,7 @@
       --text: #ffffff;
       --text-secondary: #a0a0a0;
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(135deg, var(--bg) 0%, #1a0033 100%);
@@ -34,12 +28,7 @@
       justify-content: center;
       padding: 20px;
     }
-
-    .auth-container {
-      width: 100%;
-      max-width: 500px;
-    }
-
+    .auth-container { width: 100%; max-width: 500px; }
     .auth-card {
       background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
       border: 1px solid rgba(102, 126, 234, 0.2);
@@ -47,64 +36,23 @@
       padding: 40px;
       backdrop-filter: blur(10px);
     }
-
-    .auth-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .auth-logo {
-      font-size: 36px;
-      margin-bottom: 15px;
-    }
-
-    .auth-title {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .auth-subtitle {
-      color: var(--text-secondary);
-      font-size: 14px;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .form-input,
-    .form-select {
+    .auth-header { text-align: center; margin-bottom: 30px; }
+    .auth-logo { font-size: 36px; margin-bottom: 15px; }
+    .auth-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .auth-subtitle { color: var(--text-secondary); font-size: 14px; }
+    .form-group { margin-bottom: 18px; }
+    .form-label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; }
+    .form-input, .form-select {
       width: 100%;
       padding: 12px 16px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(102, 126, 234, 0.3);
       border-radius: 8px;
       color: var(--text);
-      font-family: 'Inter', sans-serif;
       font-size: 14px;
       transition: all 0.3s ease;
     }
-
-    .form-input:focus,
-    .form-select:focus {
-      outline: none;
-      border-color: var(--primary);
-      background: rgba(102, 126, 234, 0.1);
-      box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
-    }
-
-    .form-input::placeholder {
-      color: var(--text-secondary);
-    }
-
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--primary); background: rgba(102, 126, 234, 0.1); }
     .form-button {
       width: 100%;
       padding: 12px;
@@ -115,35 +63,11 @@
       font-weight: 600;
       font-size: 16px;
       cursor: pointer;
-      transition: all 0.3s ease;
       margin-top: 10px;
     }
-
-    .form-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      margin: 30px 0;
-      gap: 15px;
-    }
-
-    .divider::before,
-    .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(102, 126, 234, 0.2);
-    }
-
-    .divider-text {
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-
+    .divider { display: flex; align-items: center; margin: 30px 0; gap: 15px; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(102, 126, 234, 0.2); }
+    .divider-text { font-size: 12px; color: var(--text-secondary); }
     .google-btn {
       width: 100%;
       padding: 12px;
@@ -152,38 +76,14 @@
       border-radius: 8px;
       color: var(--text);
       font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
+      cursor: pointer;
     }
-
-    .google-btn:hover {
-      background: rgba(102, 126, 234, 0.1);
-      border-color: var(--primary);
-    }
-
-    .auth-footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-
-    .auth-footer a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .auth-footer a:hover {
-      color: var(--accent);
-    }
-
+    .auth-footer { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-secondary); }
+    .auth-footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
     .error-message {
       background: rgba(255, 59, 48, 0.2);
       border: 1px solid rgba(255, 59, 48, 0.4);
@@ -194,36 +94,11 @@
       margin-bottom: 20px;
       display: none;
     }
-
-    .error-message.show {
-      display: block;
-    }
-
-    .loading {
-      display: none;
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 14px;
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(102, 126, 234, 0.3);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-      margin-right: 8px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .loading.show {
-      display: block;
-    }
+    .error-message.show { display: block; }
+    .loading { display: none; text-align: center; color: var(--text-secondary); font-size: 14px; }
+    .loading.show { display: block; }
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(102, 126, 234, 0.3); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -237,65 +112,56 @@
 
       <form id="registerForm">
         <div class="error-message" id="errorMessage"></div>
-
         <div class="form-group">
           <label class="form-label">Full Name</label>
           <input type="text" class="form-input" id="name" placeholder="Your full name" required>
         </div>
-
         <div class="form-group">
           <label class="form-label">Email Address</label>
           <input type="email" class="form-input" id="email" placeholder="your@email.com" required>
         </div>
-
         <div class="form-group">
           <label class="form-label">Password</label>
           <input type="password" class="form-input" id="password" placeholder="••••••••" required>
         </div>
-
         <div class="form-group">
           <label class="form-label">Role</label>
-          <select class="form-select" id="role">
+          <select class="form-select" id="role" style="background-color: #1a1a2e; color: white;">
             <option value="participant">Participant</option>
             <option value="volunteer">Volunteer</option>
             <option value="booth_admin">Booth Staff</option>
+            <option value="organizer">Organizer</option>
           </select>
         </div>
-
         <button type="submit" class="form-button">Create Account</button>
-        <div class="loading" id="loading">
-          <span class="spinner"></span>
-          Creating account...
-        </div>
+        <div class="loading" id="loading"><span class="spinner"></span> Creating account...</div>
       </form>
 
-      <div class="divider">
-        <span class="divider-text">OR</span>
-      </div>
-
-      <button class="google-btn" id="googleBtn">
-        <i class="fab fa-google"></i>
-        Sign up with Google
-      </button>
-
-      <div class="auth-footer">
-        Already have an account?
-        <a href="login.html">Sign in here</a>
-      </div>
+      <div class="divider"><span class="divider-text">OR</span></div>
+      <button class="google-btn" id="googleBtn"><i class="fab fa-google"></i> Sign up with Google</button>
+      <div class="auth-footer">Already have an account? <a href="login.html">Sign in here</a></div>
     </div>
   </div>
 
   <script type="module">
-    import { signUp, signInWithGoogle } from './js/auth.js';
+    import { initAuth, signUp, signInWithGoogle, getDashboardPath, getCurrentUser } from './js/auth.js';
+
+    await initAuth();
 
     const registerForm = document.getElementById('registerForm');
     const googleBtn = document.getElementById('googleBtn');
     const errorMessage = document.getElementById('errorMessage');
     const loading = document.getElementById('loading');
 
+    function redirectToDashboard() {
+      const user = getCurrentUser();
+      if (user) {
+        window.location.href = getDashboardPath(user);
+      }
+    }
+
     registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-
       const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
@@ -304,17 +170,15 @@
       try {
         loading.classList.add('show');
         errorMessage.classList.remove('show');
-
         const result = await signUp(email, password, name, role);
         if (result.success) {
-          window.location.href = '/participant/';
+          setTimeout(redirectToDashboard, 800);
         } else {
           throw new Error(result.error);
         }
       } catch (error) {
         errorMessage.textContent = error.message || 'Failed to create account. Please try again.';
         errorMessage.classList.add('show');
-      } finally {
         loading.classList.remove('show');
       }
     });
@@ -323,17 +187,15 @@
       try {
         loading.classList.add('show');
         errorMessage.classList.remove('show');
-
         const result = await signInWithGoogle();
         if (result.success) {
-          window.location.href = '/participant/';
+          setTimeout(redirectToDashboard, 800);
         } else {
           throw new Error(result.error);
         }
       } catch (error) {
         errorMessage.textContent = error.message || 'Failed to sign up with Google.';
         errorMessage.classList.add('show');
-      } finally {
         loading.classList.remove('show');
       }
     });

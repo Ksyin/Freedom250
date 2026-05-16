@@ -1,5 +1,12 @@
 {
+  "trailingSlash": false,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/participant", "destination": "/dashboard-participant.html" },
+    { "source": "/volunteer", "destination": "/dashboard-volunteer.html" },
+    { "source": "/booth-admin", "destination": "/dashboard-booth-admin.html" },
+    { "source": "/admin", "destination": "/dashboard-admin.html" },
+    { "source": "/organizer", "destination": "/dashboard-organizer.html" },
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/register", "destination": "/index.html" }
   ]
 }
