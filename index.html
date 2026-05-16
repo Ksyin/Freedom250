@@ -37,7 +37,7 @@
         /* ===== RESET & BASE ===== */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--gray-900); background: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--gray-900); background: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         img { max-width: 100%; display: block; }
         a { text-decoration: none; color: inherit; }
         button { font-family: inherit; cursor: pointer; border: none; outline: none; }
@@ -399,11 +399,22 @@
         }
         @media (max-width: 768px) {
           :root { --section-pad: 64px 0; }
+          .container, .nav-container { padding: 0 18px; }
+          .nav-container { justify-content: space-between; }
           .hero-section h1 { font-size: 2.4rem; }
           .section-title { font-size: 2rem; }
           .nav-links { display: none; }
           .mobile-menu-btn { display: flex; }
-          .flow-grid { grid-template-columns: 1fr; }
+          .nav-actions { gap: 8px; }
+          .nav-actions .btn { padding: 10px 14px; font-size: 0.85rem; }
+          .hero-visual { position: relative; height: 420px; max-width: 100%; overflow: hidden; }
+          .hero-img-main { position: absolute; top: 18px; left: 50%; width: 64%; max-width: calc(100% - 32px); transform: translateX(-50%); }
+          .hero-img-sec { position: absolute; bottom: 18px; right: 12px; width: 42%; max-width: calc(100% - 28px); }
+          .hero-floating-badge { position: absolute; bottom: 14px; right: 14px; width: auto; margin: 0; }
+          .flow-grid { grid-template-columns: repeat(3, minmax(120px, 1fr)); gap: 14px; }
+          .flow-card { padding: 18px 14px; min-height: 170px; border-radius: 22px; aspect-ratio: 1 / 1; display: grid; grid-template-rows: auto 1fr; }
+          .flow-card h3 { font-size: 0.98rem; margin-bottom: 10px; }
+          .flow-card p { font-size: 0.84rem; line-height: 1.5; overflow: hidden; }
           .mission-grid { grid-template-columns: repeat(2, 1fr); }
           .tents-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
           .events-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -423,14 +434,17 @@
           .mission-card-body { padding: 20px; }
         }
         @media (max-width: 480px) {
+          .container, .nav-container { padding: 0 14px; }
+          .mobile-menu-btn { width: 36px; height: 36px; }
           .hero-stats { gap: 20px; flex-wrap: wrap; }
           .countdown-digits { gap: 10px; }
           .cd-unit .num { font-size: 1.5rem; }
-          /* On very small phones, stack events/tents to single col */
+          .flow-grid { grid-template-columns: repeat(3, minmax(110px, 1fr)); gap: 10px; }
+          .flow-card { padding: 20px 14px; }
+          .hero-visual { height: 360px; }
+          .hero-img-main { width: 60%; }
+          .hero-img-sec { width: 40%; }
           .events-grid { grid-template-columns: 1fr; }
-          .tents-grid { grid-template-columns: 1fr; }
-          .mission-grid { grid-template-columns: 1fr; }
-          .partners-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
