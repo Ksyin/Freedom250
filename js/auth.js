@@ -1,4 +1,4 @@
-// js/auth.js - Simplified Authentication with proper role handling
+// js/auth.js - Working Authentication
 export const ROLES = {
   PARTICIPANT: 'participant',
   VOLUNTEER: 'volunteer',
@@ -24,27 +24,21 @@ export async function initAuth() {
             const userDocRef = doc(db, 'users', user.uid);
             const userDoc = await getDoc(userDocRef);
 
-            let userData = { role: ROLES.PARTICIPANT, points: 0, events: [] };
+            let userData = { role: ROLES.PARTICIPANT, points: 0 };
             if (userDoc.exists()) {
               userData = userDoc.data();
             }
-
-            const userRole = userData.role || ROLES.PARTICIPANT;
 
             currentUser = {
               uid: user.uid,
               email: user.email,
               displayName: user.displayName || userData.displayName || user.email.split('@')[0],
-              role: userRole,
+              role: userData.role || ROLES.PARTICIPANT,
               points: userData.points || 0,
-              events: userData.events || [],
-              teamName: userData.teamName || null,
-              teamColor: userData.teamColor || null,
-              qrCode: userData.qrCode || `freedom250_${user.uid}`,
               ...userData
             };
 
-            console.log("User loaded:", currentUser.email, "Role:", currentUser.role);
+            console.log("User loaded:", currentUser.email);
             authCallbacks.forEach(cb => cb(currentUser, true));
             resolve(currentUser);
           } catch (error) {
@@ -54,8 +48,7 @@ export async function initAuth() {
               email: user.email,
               displayName: user.email.split('@')[0],
               role: ROLES.PARTICIPANT,
-              points: 0,
-              events: []
+              points: 0
             };
             authCallbacks.forEach(cb => cb(currentUser, true));
             resolve(currentUser);
@@ -77,7 +70,7 @@ export function getCurrentUser() {
   return currentUser;
 }
 
-export async function signUp(email, password, displayName = '', role = ROLES.PARTICIPANT, teamName = null, teamColor = null) {
+export async function signUp(email, password, displayName = '', role = ROLES.PARTICIPANT) {
   try {
     const { auth, db, doc, setDoc } = await import('./firebase-config.js');
     const { createUserWithEmailAndPassword, updateProfile } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
@@ -99,25 +92,21 @@ export async function signUp(email, password, displayName = '', role = ROLES.PAR
       role: role,
       createdAt: new Date().toISOString(),
       points: 0,
-      events: [],
-      badges: [],
-      teamName: teamName || null,
-      teamColor: teamColor || null,
       qrCode: `freedom250_${user.uid}`
     };
 
     await setDoc(doc(db, 'users', user.uid), userData);
-    currentUser = { ...userData };
+    currentUser = userData;
     authCallbacks.forEach(cb => cb(currentUser, true));
 
     return { success: true, user: currentUser };
   } catch (error) {
     console.error('Sign up error:', error);
-    let errorMessage = 'Registration failed';
+    let errorMessage = 'Registration failed. Please try again.';
     if (error.code === 'auth/email-already-in-use') {
       errorMessage = 'Email already registered. Please sign in instead.';
     } else if (error.code === 'auth/weak-password') {
-      errorMessage = 'Password is too weak. Please use a stronger password.';
+      errorMessage = 'Password is too weak. Use a stronger password.';
     } else if (error.code === 'auth/invalid-email') {
       errorMessage = 'Invalid email address.';
     }
@@ -133,15 +122,15 @@ export async function signIn(email, password) {
     return { success: true, user: userCredential.user };
   } catch (error) {
     console.error('Sign in error:', error);
-    let errorMessage = 'Login failed';
+    let errorMessage = 'Login failed. Please try again.';
     if (error.code === 'auth/user-not-found') {
-      errorMessage = 'No account found with this email. Please sign up first.';
+      errorMessage = 'No account found. Please sign up first.';
     } else if (error.code === 'auth/wrong-password') {
       errorMessage = 'Incorrect password. Please try again.';
     } else if (error.code === 'auth/invalid-email') {
       errorMessage = 'Invalid email address.';
     } else if (error.code === 'auth/too-many-requests') {
-      errorMessage = 'Too many failed attempts. Please try again later.';
+      errorMessage = 'Too many failed attempts. Try again later.';
     }
     return { success: false, error: errorMessage };
   }
@@ -168,8 +157,6 @@ export async function signInWithGoogle() {
         role: ROLES.PARTICIPANT,
         createdAt: new Date().toISOString(),
         points: 0,
-        events: [],
-        badges: [],
         qrCode: `freedom250_${user.uid}`
       };
       await setDoc(userDocRef, userData);

@@ -404,9 +404,9 @@
           .nav-links { display: none; }
           .mobile-menu-btn { display: flex; }
           .flow-grid { grid-template-columns: 1fr; }
-          .mission-grid { grid-template-columns: 1fr; }
-          .tents-grid { grid-template-columns: 1fr; }
-          .events-grid { grid-template-columns: 1fr; }
+          .mission-grid { grid-template-columns: repeat(2, 1fr); }
+          .tents-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+          .events-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
           .footer-grid { grid-template-columns: 1fr; gap: 32px; }
           .gallery-grid { grid-template-columns: repeat(2, 1fr); }
           .g-span-5, .g-span-7, .g-span-4, .g-span-8 { grid-column: span 2; }
@@ -415,14 +415,22 @@
           .event-detail-body { padding: 24px; }
           .event-detail-hero { height: 220px; }
           .event-detail-hero-text h2 { font-size: 1.5rem; }
-          .universities-grid { grid-template-columns: 1fr; }
+          .universities-grid { grid-template-columns: repeat(2, 1fr); }
           .partners-grid { grid-template-columns: repeat(2, 1fr); }
+          /* Reduce card padding on mobile for tighter grid */
+          .event-card-body { padding: 16px; }
+          .tent-card { padding: 24px 20px; }
+          .mission-card-body { padding: 20px; }
         }
         @media (max-width: 480px) {
           .hero-stats { gap: 20px; flex-wrap: wrap; }
           .countdown-digits { gap: 10px; }
           .cd-unit .num { font-size: 1.5rem; }
-          .partners-grid { grid-template-columns: 1fr; }
+          /* On very small phones, stack events/tents to single col */
+          .events-grid { grid-template-columns: 1fr; }
+          .tents-grid { grid-template-columns: 1fr; }
+          .mission-grid { grid-template-columns: 1fr; }
+          .partners-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -457,7 +465,7 @@
         </div>
         <div class="nav-actions">
             <button id="getPassBtn" class="btn btn-primary btn-sm">Get Liberty Pass</button>
-            <button id="loginBtn" class="btn btn-outline btn-sm hidden">Sign In</button>
+            <button id="loginBtn" class="btn btn-outline btn-sm">Sign In</button>
             <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Menu"><i class="fas fa-bars"></i></button>
         </div>
     </div>
@@ -475,7 +483,7 @@
     <a href="#contact" class="mobile-link">Contact</a>
     <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
         <button id="mobileGetPassBtn" class="btn btn-primary btn-sm">Get Liberty Pass</button>
-        <button id="mobileLoginBtn" class="btn btn-outline btn-sm hidden">Sign In</button>
+        <button id="mobileLoginBtn" class="btn btn-outline btn-sm">Sign In</button>
     </div>
 </div>
 

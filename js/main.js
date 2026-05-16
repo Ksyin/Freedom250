@@ -225,6 +225,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const loadingOverlay = document.getElementById('loadingOverlay');
 
+    // Bind nav buttons immediately (before Firebase resolves) so they're never dead
+    updateNavbarForAuth(null, false);
+
     // Initialize auth first
     await initAuth();
 
@@ -549,9 +552,159 @@ export function redirectToDashboard() {
     window.showAuthModal();
     return;
   }
-  const dashboardPath = getDashboardPath(user);
-  console.log("Redirecting to:", dashboardPath);
-  window.location.href = dashboardPath;
+  showDashboardPanel(user);
+}
+
+// Sign out helper (global so inline onclick can call it)
+window.doSignOut = async function() {
+  const result = await signOutUser();
+  if (result.success) {
+    const panel = document.getElementById('dashboardPanel');
+    if (panel) { panel.remove(); document.body.style.overflow = ''; }
+    window.showToast('Signed out successfully', 'info');
+  }
+};
+
+// ── INLINE DASHBOARD PANEL ──────────────────────────────────────────────────
+function showDashboardPanel(user) {
+  const existing = document.getElementById('dashboardPanel');
+  if (existing) existing.remove();
+
+  const roleColors = { admin:'#B22234', organizer:'#0A3161', booth_admin:'#7c3aed', volunteer:'#059669', participant:'#0A3161' };
+  const roleLabels = { admin:'Admin', organizer:'Event Organizer', booth_admin:'Booth Admin', volunteer:'Volunteer', participant:'Participant' };
+
+  const color     = roleColors[user.role] || '#0A3161';
+  const roleLabel = roleLabels[user.role] || 'Participant';
+  const qrValue   = user.qrCode || `freedom250_${user.uid}`;
+  const initial   = (user.displayName || user.email || '?')[0].toUpperCase();
+
+  const isAdmin = ['admin','organizer'].includes(user.role);
+  const isBooth = user.role === 'booth_admin';
+  const isVolunteer = user.role === 'volunteer';
+
+  const panel = document.createElement('div');
+  panel.id = 'dashboardPanel';
+  panel.style.cssText = 'position:fixed;inset:0;background:#f0f2f7;z-index:4000;overflow-y:auto;font-family:DM Sans,system-ui,sans-serif;';
+
+  panel.innerHTML = `
+    <!-- TOP BAR -->
+    <div style="background:${color};color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.25);">
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+        <span style="font-family:Sora,sans-serif;font-weight:900;font-size:1.15rem;letter-spacing:-.02em;">FREEDOM<span style="color:rgba(255,255,255,0.55)">250</span></span>
+        <span style="background:rgba(255,255,255,0.18);padding:4px 14px;border-radius:99px;font-size:0.73rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;">${roleLabel} Dashboard</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="font-size:0.83rem;opacity:0.8;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${user.displayName || user.email}</span>
+        <button onclick="window.doSignOut()" style="background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.3);color:#fff;padding:7px 16px;border-radius:8px;cursor:pointer;font-size:0.8rem;font-weight:600;font-family:inherit;transition:background .2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.18)'">Sign Out</button>
+        <button onclick="document.getElementById('dashboardPanel').remove();document.body.style.overflow='';" style="background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);color:#fff;width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;">✕</button>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div style="max-width:960px;margin:0 auto;padding:32px 20px 48px;">
+
+      <!-- PROFILE CARD -->
+      <div style="background:#fff;border-radius:18px;padding:28px 28px;display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;border:1px solid #e2e6ef;box-shadow:0 4px 20px rgba(10,49,97,0.07);margin-bottom:20px;">
+        <div style="width:60px;height:60px;border-radius:16px;background:${color};color:#fff;font-family:Sora,sans-serif;font-weight:900;font-size:1.6rem;display:flex;align-items:center;justify-content:center;">${initial}</div>
+        <div>
+          <div style="font-family:Sora,sans-serif;font-weight:800;font-size:1.15rem;color:#0A3161;margin-bottom:3px;">${user.displayName || 'Participant'}</div>
+          <div style="font-size:0.83rem;color:#8891a5;">${user.email}</div>
+          <div style="margin-top:10px;display:flex;gap:7px;flex-wrap:wrap;">
+            <span style="background:#edf2fa;color:#0A3161;padding:4px 13px;border-radius:99px;font-size:0.72rem;font-weight:700;">${roleLabel}</span>
+            ${user.teamName ? `<span style="background:#fdf2f3;color:#B22234;padding:4px 13px;border-radius:99px;font-size:0.72rem;font-weight:700;">${user.teamName}</span>` : ''}
+          </div>
+        </div>
+        <div style="text-align:center;background:linear-gradient(135deg,#fdf2f3,#fff0f1);border-radius:14px;padding:18px 24px;border:1px solid rgba(178,34,52,0.15);">
+          <div style="font-family:Sora,sans-serif;font-size:2.2rem;font-weight:900;color:#B22234;line-height:1;">${user.points || 0}</div>
+          <div style="font-size:0.68rem;font-weight:700;color:#B22234;opacity:.7;text-transform:uppercase;letter-spacing:.1em;margin-top:4px;">Liberty Coins</div>
+        </div>
+      </div>
+
+      <!-- TWO-COLUMN GRID -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+
+        <!-- QR BADGE -->
+        <div style="background:#fff;border-radius:18px;padding:28px;border:1px solid #e2e6ef;box-shadow:0 4px 20px rgba(10,49,97,0.07);display:flex;flex-direction:column;align-items:center;text-align:center;">
+          <div style="font-family:Sora,sans-serif;font-weight:800;color:#0A3161;font-size:0.95rem;margin-bottom:4px;">Your Liberty Pass</div>
+          <div style="font-size:0.8rem;color:#8891a5;margin-bottom:18px;">Present at any booth to earn points</div>
+          <div id="dashQR" style="padding:14px;background:#fff;border:2px solid #e2e6ef;border-radius:12px;"></div>
+          <div style="margin-top:12px;font-family:monospace;font-size:0.7rem;color:#8891a5;background:#f2f4f7;padding:6px 14px;border-radius:8px;word-break:break-all;max-width:200px;">${qrValue}</div>
+        </div>
+
+        <!-- QUICK STATS -->
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="background:#fff;border-radius:14px;padding:20px;border:1px solid #e2e6ef;box-shadow:0 2px 10px rgba(10,49,97,0.05);flex:1;">
+            <div style="font-size:0.72rem;font-weight:700;color:#8891a5;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Your Activity</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div style="background:#edf2fa;border-radius:10px;padding:14px;text-align:center;"><div style="font-family:Sora,sans-serif;font-size:1.6rem;font-weight:900;color:#0A3161;">${user.points || 0}</div><div style="font-size:0.7rem;color:#8891a5;font-weight:600;">Points</div></div>
+              <div style="background:#fdf2f3;border-radius:10px;padding:14px;text-align:center;"><div style="font-family:Sora,sans-serif;font-size:1.6rem;font-weight:900;color:#B22234;">1</div><div style="font-size:0.7rem;color:#8891a5;font-weight:600;">Events</div></div>
+              <div style="background:#f0fdf4;border-radius:10px;padding:14px;text-align:center;"><div style="font-family:Sora,sans-serif;font-size:1.6rem;font-weight:900;color:#059669;">0</div><div style="font-size:0.7rem;color:#8891a5;font-weight:600;">Badges</div></div>
+              <div style="background:#fdf2f3;border-radius:10px;padding:14px;text-align:center;"><div style="font-family:Sora,sans-serif;font-size:1.6rem;font-weight:900;color:#B22234;">#–</div><div style="font-size:0.7rem;color:#8891a5;font-weight:600;">Rank</div></div>
+            </div>
+          </div>
+          <div style="background:linear-gradient(135deg,#0A3161,#1a4f8f);border-radius:14px;padding:20px;color:#fff;">
+            <div style="font-size:0.72rem;font-weight:700;opacity:.6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">🔴 Active Event</div>
+            <div style="font-family:Sora,sans-serif;font-weight:800;font-size:1rem;margin-bottom:3px;">Freedom 250 Festival</div>
+            <div style="font-size:0.8rem;opacity:.7;">June 11–12, 2026 · JKUAT</div>
+          </div>
+        </div>
+      </div>
+
+      ${isAdmin || isBooth || isVolunteer ? `
+      <!-- ROLE-SPECIFIC TOOLS -->
+      <div style="background:#fff;border-radius:18px;padding:28px;border:1px solid #e2e6ef;box-shadow:0 4px 20px rgba(10,49,97,0.07);margin-bottom:20px;">
+        <div style="font-family:Sora,sans-serif;font-weight:800;color:#0A3161;margin-bottom:18px;font-size:0.95rem;">
+          ${isAdmin ? '⚙️ Admin Tools' : isBooth ? '🎪 Booth Tools' : '🙋 Volunteer Tools'}
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;">
+          ${isAdmin ? `
+            <button style="background:#edf2fa;border:none;border-radius:12px;padding:18px;cursor:pointer;text-align:left;font-family:Sora,sans-serif;font-weight:700;color:#0A3161;font-size:0.83rem;transition:background .2s;" onmouseover="this.style.background='#dce7f8'" onmouseout="this.style.background='#edf2fa'">📊 Analytics</button>
+            <button style="background:#edf2fa;border:none;border-radius:12px;padding:18px;cursor:pointer;text-align:left;font-family:Sora,sans-serif;font-weight:700;color:#0A3161;font-size:0.83rem;" onmouseover="this.style.background='#dce7f8'" onmouseout="this.style.background='#edf2fa'">👥 Users</button>
+            <button style="background:#edf2fa;border:none;border-radius:12px;padding:18px;cursor:pointer;text-align:left;font-family:Sora,sans-serif;font-weight:700;color:#0A3161;font-size:0.83rem;" onmouseover="this.style.background='#dce7f8'" onmouseout="this.style.background='#edf2fa'">🎟️ Events</button>
+            <button style="background:#edf2fa;border:none;border-radius:12px;padding:18px;cursor:pointer;text-align:left;font-family:Sora,sans-serif;font-weight:700;color:#0A3161;font-size:0.83rem;" onmouseover="this.style.background='#dce7f8'" onmouseout="this.style.background='#edf2fa'">🏆 Leaderboard</button>
+          ` : isBooth ? `
+            <button style="background:#edf2fa;border:none;border-radius:12px;padding:18px;cursor:pointer;text-align:left;font-family:Sora,sans-serif;font-weight:700;color:#0A3161;font-size:0.83rem;" onmouseover="this.style.background='#dce7f8'" onmouseout="this.style.background='#edf2fa'">📷 Scan QR</button>
+            <button style="background:#edf2fa;border:none;border-radius:12px;padding:18px;cursor:pointer;text-align:left;font-family:Sora,sans-serif;font-weight:700;color:#0A3161;font-size:0.83rem;" onmouseover="this.style.background='#dce7f8'" onmouseout="this.style.background='#edf2fa'">🎯 Award Points</button>
+            <button style="background:#edf2fa;border:none;border-radius:12px;padding:18px;cursor:pointer;text-align:left;font-family:Sora,sans-serif;font-weight:700;color:#0A3161;font-size:0.83rem;" onmouseover="this.style.background='#dce7f8'" onmouseout="this.style.background='#edf2fa'">📋 Check-ins</button>
+          ` : `
+            <button style="background:#edf2fa;border:none;border-radius:12px;padding:18px;cursor:pointer;text-align:left;font-family:Sora,sans-serif;font-weight:700;color:#0A3161;font-size:0.83rem;" onmouseover="this.style.background='#dce7f8'" onmouseout="this.style.background='#edf2fa'">✅ My Tasks</button>
+            <button style="background:#edf2fa;border:none;border-radius:12px;padding:18px;cursor:pointer;text-align:left;font-family:Sora,sans-serif;font-weight:700;color:#0A3161;font-size:0.83rem;" onmouseover="this.style.background='#dce7f8'" onmouseout="this.style.background='#edf2fa'">👥 Attendees</button>
+          `}
+        </div>
+      </div>` : ''}
+
+      <!-- COMING SOON NOTICE -->
+      <div style="background:linear-gradient(135deg,#fdf2f3,#fff8f8);border-radius:14px;padding:20px 24px;border:1px solid rgba(178,34,52,0.15);display:flex;align-items:center;gap:14px;">
+        <div style="font-size:1.5rem;">🚀</div>
+        <div>
+          <div style="font-family:Sora,sans-serif;font-weight:800;color:#0A3161;font-size:0.9rem;margin-bottom:3px;">Full Dashboard Coming Soon</div>
+          <div style="font-size:0.82rem;color:#8891a5;">Your Liberty Pass is active. Full event features — live leaderboards, booth check-ins, and team challenges — go live on June 11.</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(panel);
+  document.body.style.overflow = 'hidden';
+
+  // Generate QR code
+  setTimeout(() => {
+    const qrEl = document.getElementById('dashQR');
+    if (qrEl && window.QRCode) {
+      try {
+        new window.QRCode(qrEl, { text: qrValue, width: 150, height: 150, colorDark: '#0A3161', colorLight: '#ffffff' });
+      } catch(e) {
+        qrEl.style.cssText = 'width:150px;height:150px;background:#edf2fa;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:2rem;';
+        qrEl.textContent = '🎫';
+      }
+    }
+  }, 150);
+
+  // Make QR panel responsive on small screens
+  const twoCol = panel.querySelector('[style*="grid-template-columns:1fr 1fr"]');
+  if (twoCol && window.innerWidth < 600) {
+    twoCol.style.gridTemplateColumns = '1fr';
+  }
 }
 
 // Countdown timer
@@ -680,13 +833,13 @@ function setupEventListeners() {
     // Close mobile menu when clicking a link
     const mobileLinks = mobileMenuPanel.querySelectorAll('.mobile-link');
     mobileLinks.forEach(link => {
-      link.onclick = () => {
+      link.onclick = (e) => {   // ← fixed: e is now properly defined
         mobileMenuPanel.classList.remove('open');
-        // Smooth scroll to section
         const href = link.getAttribute('href');
         if (href && href.startsWith('#')) {
           e.preventDefault();
-          const element = document.getElementById(href.substring(1));
+          const sectionId = href.substring(1);
+          const element = document.getElementById(sectionId);
           if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
           }
