@@ -94,7 +94,7 @@
         .nav-link.active { color: var(--red); }
         .nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
         .hidden { display: none !important; }
-        .mobile-menu-btn { background: none; border: 1.5px solid var(--gray-200); color: var(--gray-700); width: 38px; height: 38px; border-radius: 8px; display: none; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; }
+        .mobile-menu-btn { background: none; border: 1.5px solid var(--gray-200); color: var(--gray-700); width: 38px; height: 38px; border-radius: 8px; display: none; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; z-index: 1100; }
 
         /* ===== MOBILE MENU ===== */
         .mobile-menu-panel {
@@ -287,7 +287,7 @@
         .gallery-section { padding: var(--section-pad); background: #fff; }
         .gallery-grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 200px; gap: 16px; }
         .g-frame { border-radius: var(--radius-md); overflow: hidden; position: relative; cursor: pointer; }
-        .g-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .g-frame img { width: 100%; height: 100%; object-fit: cover; clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%); transition: transform 0.5s ease; }
         .g-frame:hover img { transform: scale(1.07); }
         .g-caption { position: absolute; bottom: 0; inset-x: 0; padding: 16px 18px 14px; background: linear-gradient(to top, rgba(10,49,97,0.85), transparent); color: #fff; font-family: 'Sora', sans-serif; font-size: 0.82rem; font-weight: 700; transform: translateY(8px); opacity: 0; transition: all 0.3s; }
         .g-frame:hover .g-caption { transform: translateY(0); opacity: 1; }
@@ -400,7 +400,8 @@
         @media (max-width: 1024px) {
           .hero-inner, .hub-inner, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
           .hero-section { padding: 130px 0 80px; }
-          .hero-visual { height: 380px; }
+          .hero-visual { height: auto; min-height: 320px; }
+          .hero-img-main, .hero-img-sec { position: relative; width: 100%; max-width: 100%; top: auto; left: auto; right: auto; bottom: auto; margin: 0 auto; }
           .hero-floating-badge { right: 0; top: 160px; }
           .events-grid { grid-template-columns: repeat(2, 1fr); }
           .live-grid { grid-template-columns: 1fr; }
@@ -409,20 +410,28 @@
           :root { --section-pad: 64px 0; }
           .hero-section h1 { font-size: 2.4rem; }
           .section-title { font-size: 2rem; }
-          .nav-container { justify-content: space-between; }
+          .nav-container { justify-content: space-between; padding: 0 18px; }
           .nav-links { display: none; }
           .nav-actions { gap: 10px; margin-left: auto; flex-shrink: 0; }
           .nav-actions .btn { padding: 10px 14px; white-space: nowrap; }
           .mobile-menu-btn { display: flex; }
-          .flow-grid, .mission-grid, .tents-grid, .events-grid { grid-auto-flow: column; grid-template-columns: repeat(3, minmax(240px, 1fr)); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; }
-          .flow-grid > *, .mission-grid > *, .tents-grid > *, .events-grid > * { scroll-snap-align: start; }
+          .flow-grid, .mission-grid, .tents-grid, .events-grid {
+            grid-auto-flow: initial;
+            grid-template-columns: repeat(2, minmax(220px, 1fr));
+            overflow-x: visible;
+            scroll-snap-type: none;
+            padding-bottom: 0;
+          }
+          .flow-grid > *, .mission-grid > *, .tents-grid > *, .events-grid > * { scroll-snap-align: none; }
           .flow-grid { gap: 18px; }
           .mission-grid { gap: 18px; }
           .tents-grid { gap: 18px; }
           .events-grid { gap: 18px; }
           .footer-grid { grid-template-columns: 1fr; gap: 32px; }
-          .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-          .g-span-5, .g-span-7, .g-span-4, .g-span-8 { grid-column: span 2; }
+          .gallery-grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+          .g-frame { border-radius: 24px; overflow: hidden; position: relative; }
+          .g-frame img { clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%); }
+          .g-caption { position: absolute; left: 16px; right: 16px; bottom: 16px; margin: 0; background: rgba(0,0,0,0.45); color: #fff; padding: 10px 14px; border-radius: 999px; font-size: 0.9rem; }
           .event-detail-grid { grid-template-columns: repeat(2, 1fr); }
           .event-detail-highlights { grid-template-columns: 1fr; }
           .event-detail-body { padding: 24px; }
