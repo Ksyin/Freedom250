@@ -46,6 +46,7 @@ Here is the complete HTML document with all the requested fixes and improvements
 
         html {
           scroll-behavior: smooth;
+          overflow-x: hidden;
         }
 
         body {
@@ -54,6 +55,7 @@ Here is the complete HTML document with all the requested fixes and improvements
           background: #fff;
           line-height: 1.6;
           -webkit-font-smoothing: antialiased;
+          overflow-x: hidden;
         }
 
         img {
@@ -294,9 +296,9 @@ Here is the complete HTML document with all the requested fixes and improvements
           justify-content: space-between;
           max-width: var(--container);
           margin: 0 auto;
-          padding: 0 20px;
+          padding: 0 16px;
           height: 68px;
-          gap: 16px;
+          gap: 12px;
         }
 
         .nav-brand {
@@ -358,6 +360,7 @@ Here is the complete HTML document with all the requested fixes and improvements
           align-items: center;
           gap: 8px;
           flex-shrink: 0;
+          margin: 0 8px 0 8px;
         }
 
         .hidden {
@@ -575,27 +578,59 @@ Here is the complete HTML document with all the requested fixes and improvements
 
         /* Marquee */
         .marquee-strip {
-          background: rgba(255, 255, 255, 0.07);
+          background: rgba(255, 255, 255, 0.08);
           border-radius: 99px;
           padding: 10px 18px;
-          font-size: 0.85rem;
-          font-weight: 600;
-          opacity: 0.9;
+          font-size: 0.95rem;
+          font-weight: 700;
+          opacity: 0.95;
           overflow: hidden;
           margin-bottom: 32px;
+          border: 1px solid rgba(10, 49, 97, 0.08);
+        }
+
+        .marquee-track {
+          display: inline-flex;
+          gap: 32px;
+          will-change: transform;
+          animation: marquee-scroll 24s linear infinite;
+          white-space: nowrap;
+        }
+
+        .marquee-item {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 10px 18px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.88);
+          color: var(--blue);
+          font-weight: 700;
+          letter-spacing: 0.02em;
+        }
+
+        @keyframes marquee-scroll {
+          from {
+            transform: translateX(0);
+          }
+          to {
+            transform: translateX(-50%);
+          }
         }
 
         /* Hero graphic */
         .hero-visual {
           position: relative;
           height: 500px;
+          max-width: 100%;
+          overflow: hidden;
         }
 
         .hero-img-main {
           position: absolute;
           top: 20px;
           left: 0;
-          width: 68%;
+          width: 60%;
           border-radius: 20px;
           overflow: hidden;
           box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
@@ -607,7 +642,7 @@ Here is the complete HTML document with all the requested fixes and improvements
           position: absolute;
           bottom: 30px;
           right: 0;
-          width: 48%;
+          width: 44%;
           border-radius: 16px;
           overflow: hidden;
           box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
@@ -641,7 +676,7 @@ Here is the complete HTML document with all the requested fixes and improvements
         .hero-floating-badge {
           position: absolute;
           top: 200px;
-          right: -20px;
+          right: 10px;
           background: #fff;
           color: var(--blue);
           padding: 12px 18px;
@@ -698,16 +733,20 @@ Here is the complete HTML document with all the requested fixes and improvements
         .tents-grid,
         .events-grid,
         .universities-grid,
-        .partners-grid {
+        .partners-grid,
+        .hub-grid,
+        .gallery-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
           gap: 28px;
           margin-top: 20px;
         }
 
-        /* Ensure tents grid also uses 3 per row */
-        .tents-grid {
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        /* Ensure grids can fit 3 cards per row on wider devices */
+        .tents-grid,
+        .hub-grid,
+        .gallery-grid {
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         }
 
         /* For extra large screens, keep 3 columns max */
@@ -718,7 +757,9 @@ Here is the complete HTML document with all the requested fixes and improvements
           .tents-grid,
           .events-grid,
           .universities-grid,
-          .partners-grid {
+          .partners-grid,
+          .hub-grid,
+          .gallery-grid {
             grid-template-columns: repeat(3, 1fr);
           }
         }
@@ -731,8 +772,10 @@ Here is the complete HTML document with all the requested fixes and improvements
           .tents-grid,
           .events-grid,
           .universities-grid,
-          .partners-grid {
-            grid-template-columns: repeat(2, 1fr);
+          .partners-grid,
+          .hub-grid,
+          .gallery-grid {
+            grid-template-columns: repeat(3, minmax(220px, 1fr));
           }
         }
 
@@ -744,7 +787,9 @@ Here is the complete HTML document with all the requested fixes and improvements
           .tents-grid,
           .events-grid,
           .universities-grid,
-          .partners-grid {
+          .partners-grid,
+          .hub-grid,
+          .gallery-grid {
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 16px;
           }
@@ -758,6 +803,43 @@ Here is the complete HTML document with all the requested fixes and improvements
           box-shadow: var(--shadow-sm);
           border: 1px solid var(--gray-200);
           transition: all 0.25s;
+        }
+
+        .hub-card,
+        .gallery-card {
+          background: #fff;
+          border-radius: var(--radius-md);
+          box-shadow: var(--shadow-sm);
+          border: 1px solid var(--gray-200);
+          padding: 28px;
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .hub-card:hover,
+        .gallery-card:hover {
+          transform: translateY(-6px);
+          box-shadow: var(--shadow-md);
+        }
+
+        .card-icon {
+          width: 48px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 16px;
+          background: var(--blue-pale);
+          color: var(--blue);
+          margin-bottom: 18px;
+          font-size: 1.2rem;
+        }
+
+        .gallery-card img {
+          width: 100%;
+          border-radius: 18px;
+          object-fit: cover;
+          aspect-ratio: 4 / 3;
+          margin-bottom: 18px;
         }
 
         .flow-card:hover {
@@ -1112,7 +1194,8 @@ Here is the complete HTML document with all the requested fixes and improvements
             gap: 32px;
           }
 
-          .gallery-grid {
+          .gallery-grid,
+          .hub-grid {
             grid-template-columns: repeat(2, 1fr);
           }
         }
@@ -1271,6 +1354,12 @@ Here is the complete HTML document with all the requested fixes and improvements
         <section id="about" class="mission-section"><div class="container"><div class="section-header"><div class="section-label">Our Mission</div><h2 class="section-title">What is <span class="accent">Freedom 250</span>?</h2><p class="section-desc">A U.S. Embassy Nairobi-led initiative empowering Kenya's next generation.</p></div><div class="mission-grid"><div class="mission-card"><div class="mission-card-img"><img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=600&q=80" alt="Innovation"></div><div class="mission-card-body"><div class="mission-icon"><i class="fas fa-lightbulb"></i></div><h3>Innovation</h3><p>Hands-on tech experiences.</p></div></div><div class="mission-card"><div class="mission-card-img"><img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=600&q=80" alt="Collaboration"></div><div class="mission-card-body"><div class="mission-icon"><i class="fas fa-handshake"></i></div><h3>Collaboration</h3><p>Direct engagement with American brands.</p></div></div><div class="mission-card"><div class="mission-card-img"><img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=600&q=80" alt="Civic"></div><div class="mission-card-body"><div class="mission-icon"><i class="fas fa-landmark"></i></div><h3>Civic Engagement</h3><p>Democracy simulations.</p></div></div><div class="mission-card"><div class="mission-card-img"><img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80" alt="Culture"></div><div class="mission-card-body"><div class="mission-icon"><i class="fas fa-music"></i></div><h3>Culture & Music</h3><p>Live performances.</p></div></div></div></div></section>
 
         <section id="tents" class="tents-section"><div class="container"><div class="section-header"><div class="section-label">The Experience</div><h2 class="section-title">7 Themed <span class="accent">Experience Tents</span></h2></div><div class="tents-grid"><div class="tent-card"><div class="tent-icon"><i class="fas fa-microchip"></i></div><h3>THE GARAGE</h3><p>Innovation & MakerLab</p><span class="tent-badge">Tech Zone</span></div><div class="tent-card"><div class="tent-icon"><i class="fas fa-chart-line"></i></div><h3>THE LAUNCHPAD</h3><p>Entrepreneurship</p></div><div class="tent-card"><div class="tent-icon"><i class="fas fa-landmark"></i></div><h3>THE TOWNHALL</h3><p>Democracy</p></div><div class="tent-card"><div class="tent-icon"><i class="fas fa-basketball-ball"></i></div><h3>THE ARENA</h3><p>Sports</p></div><div class="tent-card"><div class="tent-icon"><i class="fas fa-utensils"></i></div><h3>TASTE OF AMERICA</h3><p>Food</p></div><div class="tent-card"><div class="tent-icon" style="background:var(--red)"><i class="fas fa-microphone"></i></div><h3>THE MAIN STAGE</h3><p>Keynotes & Performances</p></div></div></div></section>
+
+        <section id="hub" class="hub-section"><div class="container"><div class="section-header"><div class="section-label"><i class="fas fa-flask"></i> Innovation Hub</div><h2 class="section-title">Innovation Hub <span class="accent">Labs</span></h2><p class="section-desc">Explore hands-on labs, mentorship pods and future-ready solutions that bring ideas to life.</p></div><div class="hub-grid"><article class="hub-card"><div class="card-icon"><i class="fas fa-robot"></i></div><h3>Robotics Studio</h3><p>Live demos, coding clinics and AI-powered robotics.</p></article><article class="hub-card"><div class="card-icon"><i class="fas fa-lightbulb"></i></div><h3>Startup Studio</h3><p>Pitch practice, product design and entrepreneurial coaching.</p></article><article class="hub-card"><div class="card-icon"><i class="fas fa-chart-line"></i></div><h3>Growth Lab</h3><p>Market research support, networking and scale strategies.</p></article></div></div></section>
+
+        <section id="gallery" class="gallery-section"><div class="container"><div class="section-header"><div class="section-label"><i class="fas fa-images"></i> Gallery</div><h2 class="section-title">Freedom 250 <span class="accent">Moments</span></h2><p class="section-desc">A visual showcase of innovation, collaboration and the energy that drives this event.</p></div><div class="gallery-grid"><article class="gallery-card"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80" alt="Team Workshop"><h3>Team Workshops</h3><p>Students collaborate on breakthrough ideas and product builds.</p></article><article class="gallery-card"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80" alt="Speaker Stage"><h3>Stage Sessions</h3><p>Panel talks, keynotes and innovation showcases on the main stage.</p></article><article class="gallery-card"><img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=600&q=80" alt="Expo Floor"><h3>Expo Floor</h3><p>Interactive booths, partner showcases and immersive technology hubs.</p></article></div></div></section>
+
+        <section id="partners" class="partners-section"><div class="container"><div class="section-header"><div class="section-label"><i class="fas fa-handshake"></i> Partners</div><h2 class="section-title">Partner <span class="accent">Network</span></h2><p class="section-desc">Official supporters powering Freedom 250 across diplomacy, government and academia.</p></div><div class="marquee-strip"><div class="marquee-track"><div class="marquee-item">U.S. Embassy Nairobi</div><div class="marquee-item">U.S. Government</div><div class="marquee-item">Universities</div><div class="marquee-item">Tech Innovators</div><div class="marquee-item">Community Leaders</div><div class="marquee-item">U.S. Embassy Nairobi</div><div class="marquee-item">U.S. Government</div><div class="marquee-item">Universities</div></div></div></div></section>
 
         <section id="events" class="events-section"><div class="container"><div class="section-header"><div class="section-label"><i class="fas fa-calendar-star"></i> Upcoming Events</div><h2 class="section-title">Choose Your <span class="accent">Experience</span></h2></div><div class="events-grid" id="eventsGrid"></div></div></section>
     </main>
