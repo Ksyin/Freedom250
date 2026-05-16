@@ -70,7 +70,7 @@ export function getCurrentUser() {
   return currentUser;
 }
 
-export async function signUp(email, password, displayName = '', role = ROLES.PARTICIPANT) {
+export async function signUp(email, password, displayName = '', role = ROLES.PARTICIPANT, teamName = null, teamColor = null) {
   try {
     const { auth, db, doc, setDoc } = await import('./firebase-config.js');
     const { createUserWithEmailAndPassword, updateProfile } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
@@ -90,6 +90,8 @@ export async function signUp(email, password, displayName = '', role = ROLES.PAR
       email: user.email,
       displayName: displayName || email.split('@')[0],
       role: role,
+      teamName: teamName,
+      teamColor: teamColor,
       createdAt: new Date().toISOString(),
       points: 0,
       qrCode: `freedom250_${user.uid}`
