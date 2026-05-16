@@ -167,62 +167,17 @@ function updateNavbarForAuth(user, isLoggedIn) {
 
 
 function renderEventPanel() {
-  const section = document.getElementById('events');
-  if (!section) return;
-  section.style.display = 'none';
+  // Events section is always visible now; detail shown via overlay
   updateEventDetail('freedom250');
-  document.querySelectorAll('.event-selector').forEach(btn => {
-    btn.addEventListener('click', () => {
-      updateEventDetail(btn.dataset.event);
-    });
-  });
 }
 
 function updateEventDetail(eventId) {
-  const event = platformData.events.find(e => e.id === eventId) || platformData.events[0];
-  const section = document.getElementById('events');
-  if (!section) return;
-
-  const title = document.getElementById('eventTitle');
-  const description = document.getElementById('eventDescription');
-  const date = document.getElementById('eventDate');
-  const location = document.getElementById('eventLocation');
-  const participants = document.getElementById('eventParticipants');
-  const points = document.getElementById('eventPoints');
-  const status = document.getElementById('eventStatus');
-  const feature = document.getElementById('eventFeature');
-  const registerBtn = document.getElementById('registerEventBtn');
-  const learnMoreBtn = document.getElementById('learnMoreEventBtn');
-
-  if (title) title.textContent = event.name;
-  if (description) description.textContent = event.tagline;
-  if (date) date.textContent = event.date;
-  if (location) location.textContent = event.location || 'JKUAT Main Campus';
-  if (participants) participants.textContent = event.participants.toLocaleString();
-  if (points) points.textContent = event.points;
-  if (status) status.textContent = event.status.toUpperCase();
-  if (feature) feature.textContent = event.featured ? 'Flagship' : 'Experience';
-  if (registerBtn) {
-    registerBtn.textContent = `Register for ${event.name}`;
-    registerBtn.onclick = () => handleEventRegistration(event.id);
-  }
-  if (learnMoreBtn) {
-    learnMoreBtn.onclick = () => {
-      window.showToast(`${event.name} details coming soon.`, 'info');
-    };
-  }
-
-  document.querySelectorAll('.event-selector').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.event === event.id);
-  });
+  // Legacy function — event detail now shown via openEventDetail() overlay in index.html
 }
 
 function showEventSection(eventId = 'freedom250') {
   const section = document.getElementById('events');
-  if (!section) return;
-  section.style.display = 'block';
-  updateEventDetail(eventId);
-  setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 10);
+  if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function renderUniversitiesGrid() {
@@ -232,8 +187,10 @@ function renderUniversitiesGrid() {
   container.innerHTML = platformData.universities.map(univ => `
     <div class="university-card">
       <div class="university-logo">${univ.logo}</div>
-      <h4>${univ.name}</h4>
-      <p>${univ.events} Events | ${univ.participants.toLocaleString()} participants</p>
+      <div>
+        <h4>${univ.name}</h4>
+        <p>${univ.events} Events · ${univ.participants.toLocaleString()} participants</p>
+      </div>
     </div>
   `).join('');
 }
@@ -259,7 +216,7 @@ async function renderParticipantQrCard(user) {
       </div>
     `;
     const signInBtn = document.getElementById('badgeSignInBtn');
-    if (signInBtn) signInBtn.onclick = showAuthModal;
+    if (signInBtn) signInBtn.onclick = () => window.showAuthModal();
     return;
   }
 
@@ -339,18 +296,31 @@ async function handleEventRegistration(eventId) {
   window.showToast(`Registered for event! You've earned 50 points.`, 'success');
 }
 
-// Auth Modal
-function showAuthModal() {
+// Auth Modal — exposed globally so inline HTML onclick handlers can call it
+window.showAuthModal = function showAuthModal(eventContext) {
   // Remove existing modal if any
   const existingModal = document.getElementById('authModal');
   if (existingModal) existingModal.remove();
+
+  // Determine context label (event name or generic)
+  const eventLabel = eventContext && typeof eventContext === 'string'
+    ? (() => {
+        const evMap = { 'freedom250': 'Freedom 250 Festival', 'tech-frontier': 'Tech Frontier Summit', 'innovation-week': 'Innovation Week' };
+        return evMap[eventContext] || null;
+      })()
+    : null;
+
+  const contextBanner = eventLabel
+    ? `<div class="auth-context"><i class="fas fa-ticket-alt"></i> Getting Liberty Pass for: <strong>${eventLabel}</strong></div>`
+    : '';
 
   const modal = document.createElement('div');
   modal.className = 'auth-modal';
   modal.id = 'authModal';
   modal.innerHTML = `
-    <div class="auth-modal-content">
-      <button class="auth-modal-close" id="closeAuth">&times;</button>
+    <div class="auth-panel">
+      <button class="auth-close" id="closeAuth"><i class="fas fa-times"></i></button>
+      ${contextBanner}
       <div class="auth-tabs">
         <button class="auth-tab active" data-tab="login">Sign In</button>
         <button class="auth-tab" data-tab="register">Create Account</button>
@@ -360,27 +330,26 @@ function showAuthModal() {
         <h3>Welcome Back</h3>
         <input type="email" id="loginEmail" placeholder="Email Address" class="auth-input" autocomplete="email">
         <input type="password" id="loginPassword" placeholder="Password" class="auth-input" autocomplete="current-password">
-        <button id="doLogin" class="btn-primary w-full">Sign In</button>
+        <button id="doLogin" class="btn btn-primary w-full">Sign In</button>
         <div class="auth-divider">OR</div>
-        <button id="doGoogle" class="btn-google w-full">
+        <button id="doGoogle" class="btn btn-google w-full">
           <i class="fab fa-google"></i> Continue with Google
         </button>
       </div>
 
       <div id="registerForm" class="auth-form">
-        <h3>Create Account</h3>
+        <h3>Create Your Account</h3>
         <input type="text" id="regName" placeholder="Full Name" class="auth-input" autocomplete="name">
         <input type="email" id="regEmail" placeholder="Email Address" class="auth-input" autocomplete="email">
         <input type="password" id="regPassword" placeholder="Password (min 6 characters)" class="auth-input" autocomplete="new-password">
-        <label style="font-size:0.85rem; margin-top:6px; color:#444;">Choose Team</label>
-        <select id="regTeam" class="auth-input" style="padding:10px;">
-          <option value="">Select a team</option>
+        <select id="regTeam" class="auth-input">
+          <option value="">Choose a Team</option>
           <option value="Team Liberty|#B22234">Team Liberty</option>
           <option value="Team Freedom|#3C3B6E">Team Freedom</option>
           <option value="Team Unity|#10b981">Team Unity</option>
         </select>
         <p class="auth-terms">By registering, you agree to our Terms of Service.</p>
-        <button id="doRegister" class="btn-primary w-full">Create Account</button>
+        <button id="doRegister" class="btn btn-primary w-full">Create Account &amp; Get Pass</button>
       </div>
     </div>
   `;
@@ -628,61 +597,49 @@ function setupEventListeners() {
   // Countdown timer
   initCountdownTimer();
   
-  // Get Liberty Pass buttons (new)
+  // Get Liberty Pass buttons
   const getPassBtn = document.getElementById('getPassBtn');
   const mobileGetPassBtn = document.getElementById('mobileGetPassBtn');
-  if (getPassBtn) getPassBtn.onclick = showAuthModal;
-  if (mobileGetPassBtn) mobileGetPassBtn.onclick = showAuthModal;
+  if (getPassBtn) getPassBtn.onclick = () => window.showAuthModal();
+  if (mobileGetPassBtn) mobileGetPassBtn.onclick = () => window.showAuthModal();
   
   // Login buttons
   const loginBtn = document.getElementById('loginBtn');
   const mobileLoginBtn = document.getElementById('mobileLoginBtn');
-  if (loginBtn) loginBtn.onclick = showAuthModal;
-  if (mobileLoginBtn) mobileLoginBtn.onclick = showAuthModal;
+  if (loginBtn) loginBtn.onclick = () => window.showAuthModal();
+  if (mobileLoginBtn) mobileLoginBtn.onclick = () => window.showAuthModal();
 
   // Footer links
   const footerSignUp = document.getElementById('footerSignUp');
   const footerVolunteer = document.getElementById('footerVolunteer');
   const footerBooth = document.getElementById('footerBooth');
 
-  if (footerSignUp) footerSignUp.onclick = (e) => { e.preventDefault(); showAuthModal(); };
-  if (footerVolunteer) footerVolunteer.onclick = (e) => { e.preventDefault(); showAuthModal(); };
-  if (footerBooth) footerBooth.onclick = (e) => { e.preventDefault(); showAuthModal(); };
+  if (footerSignUp) footerSignUp.onclick = (e) => { e.preventDefault(); window.showAuthModal(); };
+  if (footerVolunteer) footerVolunteer.onclick = (e) => { e.preventDefault(); window.showAuthModal(); };
+  if (footerBooth) footerBooth.onclick = (e) => { e.preventDefault(); window.showAuthModal(); };
 
   const boothStartBtn = document.getElementById('boothStartBtn');
   const boothTeamBtn = document.getElementById('boothTeamBtn');
   if (boothStartBtn) boothStartBtn.onclick = () => {
     const user = getCurrentUser();
-    if (!user) {
-      showAuthModal();
-      return;
-    }
+    if (!user) { window.showAuthModal(); return; }
     const tentsSection = document.getElementById('tents');
     if (tentsSection) tentsSection.scrollIntoView({ behavior: 'smooth' });
   };
   if (boothTeamBtn) boothTeamBtn.onclick = () => {
     const user = getCurrentUser();
-    if (!user) {
-      showAuthModal();
-      return;
-    }
+    if (!user) { window.showAuthModal(); return; }
     window.showToast('Team management is available in your dashboard.', 'info');
   };
 
   const heroEventBtn = document.getElementById('heroEventBtn');
   if (heroEventBtn) heroEventBtn.onclick = () => {
     const user = getCurrentUser();
-    if (!user) {
-      showAuthModal();
-    } else {
-      redirectToDashboard();
-    }
+    if (!user) { window.showAuthModal(); } else { redirectToDashboard(); }
   };
 
   document.querySelectorAll('a.nav-link[href="#events"], .mobile-link[href="#events"]').forEach(link => {
     link.addEventListener('click', (e) => {
-      e.preventDefault();
-      showEventSection('freedom250');
       const menuPanel = document.getElementById('mobileMenuPanel');
       if (menuPanel) menuPanel.classList.add('hidden');
     });
@@ -690,7 +647,7 @@ function setupEventListeners() {
 
   document.body.addEventListener('click', (e) => {
     if (e.target && e.target.id === 'badgeSignInBtn') {
-      showAuthModal();
+      window.showAuthModal();
     }
   });
 
@@ -700,10 +657,7 @@ function setupEventListeners() {
 
   const goToDashboard = () => {
     const user = getCurrentUser();
-    if (!user) {
-      showAuthModal();
-      return;
-    }
+    if (!user) { window.showAuthModal(); return; }
     redirectToDashboard();
   };
 
