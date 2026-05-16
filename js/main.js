@@ -1,5 +1,5 @@
 // js/main.js - Main Application Logic
-import { initAuth, signUp, signIn, signInWithGoogle, signOutUser, getCurrentUser, onAuthStateChange, ROLES, getDashboardPath } from './auth.js';
+import { initAuth, signUp, signIn, resetPassword, signInWithGoogle, signOutUser, getCurrentUser, onAuthStateChange, ROLES, getDashboardPath } from './auth.js';
 import { initFCM, sendTestNotificationToServer } from './push-email.js';
 import { db, collection, getDocs, addDoc, query, orderBy } from './firebase-config.js';
 
@@ -420,6 +420,9 @@ window.showAuthModal = function showAuthModal(eventContext) {
         <h3>Welcome Back</h3>
         <input type="email" id="loginEmail" placeholder="Email Address" class="auth-input">
         <input type="password" id="loginPassword" placeholder="Password" class="auth-input">
+        <div style="text-align:right; margin-bottom:14px; margin-top:-8px;">
+          <a href="#" id="forgotPasswordLink" style="font-size:0.8rem; color:var(--blue); font-weight:600;">Forgot Password?</a>
+        </div>
         <button id="doLogin" class="btn btn-primary w-full">Sign In</button>
         <div class="auth-divider">OR</div>
         <button id="doGoogle" class="btn btn-google w-full"><i class="fab fa-google"></i> Continue with Google</button>
@@ -437,6 +440,15 @@ window.showAuthModal = function showAuthModal(eventContext) {
         </select>
         <button id="doRegister" class="btn btn-primary w-full">Create Account & Get Pass</button>
         <p class="auth-terms" style="margin-top:12px;">By registering, you agree to our Terms of Service and Privacy Policy.</p>
+      </div>
+      <div id="forgotForm" class="auth-form">
+        <h3>Reset Password</h3>
+        <p style="font-size:0.85rem; color:var(--gray-500); margin-bottom:18px;">Enter your email address and we'll send you a link to reset your password.</p>
+        <input type="email" id="resetEmail" placeholder="Email Address" class="auth-input">
+        <button id="doReset" class="btn btn-primary w-full">Send Reset Link</button>
+        <div style="text-align:center; margin-top:16px;">
+          <a href="#" id="backToLogin" style="font-size:0.85rem; color:var(--blue); font-weight:600;">Back to Sign In</a>
+        </div>
       </div>
     </div>
   `;
@@ -460,6 +472,57 @@ window.showAuthModal = function showAuthModal(eventContext) {
       modal.querySelector(`#${target}Form`).classList.add('active');
     };
   });
+
+  // Forgot Password Link
+  const forgotLink = modal.querySelector('#forgotPasswordLink');
+  if (forgotLink) {
+    forgotLink.onclick = (e) => {
+      e.preventDefault();
+      modal.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+      modal.querySelector('#forgotForm').classList.add('active');
+      // Hide tabs when in forgot password mode
+      modal.querySelector('.auth-tabs').style.display = 'none';
+    };
+  }
+
+  // Back to Login
+  const backToLogin = modal.querySelector('#backToLogin');
+  if (backToLogin) {
+    backToLogin.onclick = (e) => {
+      e.preventDefault();
+      modal.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+      modal.querySelector('#loginForm').classList.add('active');
+      modal.querySelector('.auth-tabs').style.display = 'flex';
+      tabs.forEach(t => t.classList.remove('active'));
+      modal.querySelector('[data-tab="login"]').classList.add('active');
+    };
+  }
+
+  // Reset Password Handler
+  const resetBtn = modal.querySelector('#doReset');
+  if (resetBtn) {
+    resetBtn.onclick = async () => {
+      const email = modal.querySelector('#resetEmail').value.trim();
+      if (!email) {
+        window.showToast('Please enter your email address', 'error');
+        return;
+      }
+
+      resetBtn.disabled = true;
+      resetBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+      const result = await resetPassword(email);
+      if (result.success) {
+        window.showToast('Password reset email sent!', 'success');
+        // Go back to login
+        modal.querySelector('#backToLogin').click();
+      } else {
+        window.showToast(result.error || 'Failed to send reset email', 'error');
+        resetBtn.disabled = false;
+        resetBtn.innerHTML = 'Send Reset Link';
+      }
+    };
+  }
 
   // Login handler
   const loginBtn = modal.querySelector('#doLogin');

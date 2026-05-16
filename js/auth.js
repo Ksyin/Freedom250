@@ -70,7 +70,7 @@ export function getCurrentUser() {
   return currentUser;
 }
 
-export async function signUp(email, password, displayName = '', role = ROLES.PARTICIPANT, teamName = null, teamColor = null) {
+export async function signUp(email, password, displayName = '', role = ROLES.PARTICIPANT) {
   try {
     const { auth, db, doc, setDoc } = await import('./firebase-config.js');
     const { createUserWithEmailAndPassword, updateProfile } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
@@ -90,8 +90,6 @@ export async function signUp(email, password, displayName = '', role = ROLES.PAR
       email: user.email,
       displayName: displayName || email.split('@')[0],
       role: role,
-      teamName: teamName,
-      teamColor: teamColor,
       createdAt: new Date().toISOString(),
       points: 0,
       qrCode: `freedom250_${user.uid}`
@@ -133,6 +131,24 @@ export async function signIn(email, password) {
       errorMessage = 'Invalid email address.';
     } else if (error.code === 'auth/too-many-requests') {
       errorMessage = 'Too many failed attempts. Try again later.';
+    }
+    return { success: false, error: errorMessage };
+  }
+}
+
+export async function resetPassword(email) {
+  try {
+    const { auth } = await import('./firebase-config.js');
+    const { sendPasswordResetEmail } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+    await sendPasswordResetEmail(auth, email);
+    return { success: true };
+  } catch (error) {
+    console.error('Password reset error:', error);
+    let errorMessage = 'Failed to send reset email.';
+    if (error.code === 'auth/user-not-found') {
+      errorMessage = 'No account found with this email.';
+    } else if (error.code === 'auth/invalid-email') {
+      errorMessage = 'Invalid email address.';
     }
     return { success: false, error: errorMessage };
   }
