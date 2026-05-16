@@ -37,7 +37,7 @@
         /* ===== RESET & BASE ===== */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--gray-900); background: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--gray-900); background: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
         img { max-width: 100%; display: block; }
         a { text-decoration: none; color: inherit; }
         button { font-family: inherit; cursor: pointer; border: none; outline: none; }
@@ -399,19 +399,11 @@
         }
         @media (max-width: 768px) {
           :root { --section-pad: 64px 0; }
-          .container, .nav-container { padding: 0 18px; }
           .hero-section h1 { font-size: 2.4rem; }
           .section-title { font-size: 2rem; }
           .nav-links { display: none; }
           .mobile-menu-btn { display: flex; }
-          .hero-visual { display: grid; grid-template-columns: 1fr; gap: 18px; height: auto; min-height: 320px; }
-          .hero-img-main, .hero-img-sec { position: relative; width: 100%; left: auto; right: auto; top: auto; bottom: auto; aspect-ratio: 4 / 3; }
-          .hero-img-sec { margin-top: 14px; }
-          .hero-floating-badge { position: relative; margin: 0 auto 0; width: fit-content; top: auto; right: auto; }
-          .flow-grid { grid-template-columns: repeat(3, minmax(150px, 1fr)); gap: 14px; }
-          .flow-card { padding: 24px 18px; }
-          .flow-card h3 { font-size: 1rem; }
-          .flow-card p { font-size: 0.88rem; line-height: 1.55; }
+          .flow-grid { grid-template-columns: 1fr; }
           .mission-grid { grid-template-columns: repeat(2, 1fr); }
           .tents-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
           .events-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -431,17 +423,11 @@
           .mission-card-body { padding: 20px; }
         }
         @media (max-width: 480px) {
-          .container, .nav-container { padding: 0 14px; }
-          .mobile-menu-btn { width: 36px; height: 36px; }
           .hero-stats { gap: 20px; flex-wrap: wrap; }
           .countdown-digits { gap: 10px; }
           .cd-unit .num { font-size: 1.5rem; }
-          .flow-grid { grid-template-columns: repeat(3, minmax(110px, 1fr)); gap: 10px; }
-          .flow-card { padding: 20px 14px; }
-          .hero-visual { min-height: 260px; }
-          .hero-img-main, .hero-img-sec { aspect-ratio: 4 / 3; }
+          /* On very small phones, stack events/tents to single col */
           .events-grid { grid-template-columns: 1fr; }
-        }
           .tents-grid { grid-template-columns: 1fr; }
           .mission-grid { grid-template-columns: 1fr; }
           .partners-grid { grid-template-columns: repeat(2, 1fr); }
