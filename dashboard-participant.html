@@ -57,6 +57,92 @@
         .stat-pill .value { font-size: 1.3rem; font-weight: 800; color: gold; }
         .stat-pill .label { font-size: 0.65rem; opacity: 0.7; }
 
+        .passport-summary {
+            padding: 0 15px 20px;
+        }
+        .passport-chip {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 24px;
+            padding: 18px;
+            display: grid;
+            gap: 14px;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+        }
+        .passport-chip strong { font-size: 0.96rem; color: #fff; }
+        .progress-box { display: grid; gap: 8px; }
+        .progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: rgba(255,255,255,0.8); }
+        .level-bar { width: 100%; height: 10px; background: rgba(255,255,255,0.12); border-radius: 999px; overflow: hidden; }
+        .level-bar div { height: 100%; background: linear-gradient(90deg, #FFD700, #B22234); transition: width 0.4s ease; }
+
+        .badge-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.12);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+        }
+
+        .notification-card {
+            background: white;
+            border-radius: 24px;
+            padding: 18px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            margin: 0 15px 18px;
+        }
+        .notification-card h3 { font-size: 0.95rem; margin-bottom: 10px; }
+        .notification-item { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+        .notification-item:last-child { margin-bottom: 0; }
+        .notification-item small { color: #999; font-size: 0.75rem; }
+
+        .toast-container {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(420px, calc(100% - 30px));
+            z-index: 400;
+            display: grid;
+            gap: 10px;
+        }
+        .toast-item {
+            background: rgba(0,0,0,0.9);
+            color: white;
+            border-radius: 16px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 16px 30px rgba(0,0,0,0.2);
+            animation: slideUp 0.35s ease;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .btn-primary,
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: none;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: transform 0.2s ease;
+        }
+        .btn-primary { background: #B22234; color: white; }
+        .btn-outline { background: transparent; border: 1px solid #B22234; color: #B22234; }
+        .btn-primary:active, .btn-outline:active { transform: scale(0.98); }
+
+        @media (min-width: 768px) {
+            .cards-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
         /* QR Section */
         .qr-section {
             background: white;
@@ -254,6 +340,21 @@
             <div class="stat-pill"><div class="value" id="passportLevel">1</div><div class="label"><i class="fas fa-star"></i> Freedom Rank</div></div>
             <div class="stat-pill"><div class="value" id="stampsCount">0</div><div class="label"><i class="fas fa-stamp"></i> Stamps</div></div>
         </div>
+        <div class="passport-summary">
+            <div class="passport-chip">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap: 10px;">
+                    <div>
+                        <strong id="profileRank">Freedom Explorer</strong>
+                        <div style="font-size:0.75rem; color: rgba(255,255,255,0.75);">Freedom Passport Progress</div>
+                    </div>
+                    <div class="badge-row" id="badgeRow"></div>
+                </div>
+                <div class="progress-box">
+                    <div class="progress-label"><span>Next Rank in</span><span id="xpToNext">500 XP</span></div>
+                    <div class="level-bar"><div id="levelProgress" style="width: 0%;"></div></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Digital Passport QR -->
@@ -274,6 +375,12 @@
 
         <div class="section-header"><h2>🏆 Liberty Leaderboard</h2><a href="#" id="viewFullLeaderboard">View Full →</a></div>
         <div id="leaderboardPreview"></div>
+        <div class="notification-card" id="notificationFeed">
+            <h3>🔔 Live Announcements</h3>
+            <div class="notification-item"><div>Freedom Bonus Active!</div><small>+10% bonus points on all zone visits this hour.</small></div>
+        </div>
+        <div class="section-header"><h2>📜 Activity History</h2></div>
+        <div id="activityHistorySection" class="cards-grid"></div>
     </div>
 
     <div id="challengesSection" style="display: none;">
@@ -306,6 +413,7 @@
     </div>
 
     <div class="help-fab" id="helpFab"><i class="fas fa-headset"></i></div>
+    <div class="toast-container" id="toastContainer"></div>
 </div>
 
 <!-- Challenge Modal -->
@@ -356,6 +464,90 @@
 
     let userPoints = 0;
     let visitedZones = [];
+    let badges = [
+        { name: 'Freedom Starter', icon: 'fa-flag', earned: true }
+    ];
+    let activityHistory = [];
+    let notifications = [
+        { title: 'Welcome to Freedom 250!', details: 'Your digital passport is ready to start your journey.', time: 'Now' }
+    ];
+    let dailyMission = { title: 'Find the Freedom Mural', reward: 75, progress: 0, target: 1, completed: false };
+
+    function notify(title, details) {
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+        const toast = document.createElement('div');
+        toast.className = 'toast-item';
+        toast.innerHTML = `<div><strong>${title}</strong><div style="font-size:0.85rem; color:#ddd; margin-top:4px;">${details}</div></div>`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4200);
+    }
+
+    function renderBadges() {
+        const row = document.getElementById('badgeRow');
+        if (!row) return;
+        row.innerHTML = badges.map(b => `<span class="badge-pill"><i class="fas ${b.icon}"></i> ${b.name}</span>`).join('');
+    }
+
+    function renderNotifications() {
+        const container = document.getElementById('notificationFeed');
+        if (!container) return;
+        const items = notifications.slice(0, 3).map(note => `
+            <div class="notification-item"><div><strong>${note.title}</strong><br>${note.details}</div><small>${note.time}</small></div>
+        `).join('');
+        container.innerHTML = `<h3>🔔 Live Announcements</h3>${items}`;
+    }
+
+    function renderActivityHistory() {
+        const historySection = document.getElementById('activityHistorySection');
+        if (!historySection) return;
+        historySection.innerHTML = activityHistory.slice(0, 5).map(entry => `
+            <div class="feature-card" style="padding:14px;">
+                <div class="feature-content">
+                    <h3>${entry.label}</h3>
+                    <p>${entry.details}</p>
+                    <small style="color:#999;">${new Date(entry.time).toLocaleString()}</small>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function addActivity(label, details) {
+        activityHistory.unshift({ label, details, time: new Date().toISOString() });
+        renderActivityHistory();
+    }
+
+    function updatePassportProgress() {
+        const level = Math.floor(userPoints / 500) + 1;
+        const xp = userPoints % 500;
+        document.getElementById('passportLevel').innerText = level;
+        document.getElementById('profileRank').innerText = level <= 2 ? 'Freedom Explorer' : level <= 4 ? 'Freedom Trailblazer' : 'Liberty Legend';
+        document.getElementById('xpToNext').innerText = `${500 - xp} XP`;
+        document.getElementById('levelProgress').style.width = `${(xp / 500) * 100}%`;
+    }
+
+    function applyBonus(amount) {
+        // simulate active bonus window
+        const bonus = 1.1;
+        return Math.round(amount * bonus);
+    }
+
+    function addBadge(name, icon) {
+        if (!badges.some(b => b.name === name)) {
+            badges.push({ name, icon, earned: true });
+            renderBadges();
+            notify('Badge unlocked', name);
+            addActivity('Badge unlocked', `Earned ${name}`);
+        }
+    }
+
+    function triggerDailyMission() {
+        if (!dailyMission.completed) {
+            notifications.unshift({ title: 'Daily Mission Available', details: dailyMission.title, time: 'Now' });
+            renderNotifications();
+            notify('New mission unlocked', dailyMission.title);
+        }
+    }
 
     // Render Zones
     function renderZones() {
@@ -435,13 +627,19 @@
     // Actions
     window.visitZone = function(zoneName, reward) {
         if (visitedZones.includes(zoneName)) {
-            alert(`📍 ${zoneName}\n\nYou've already visited this zone! Each zone can only be visited once for points.`);
+            notify('Zone already visited', `You've already checked in at ${zoneName}. Keep exploring!`);
             return;
         }
         visitedZones.push(zoneName);
-        userPoints += reward;
+        const awarded = applyBonus(reward);
+        userPoints += awarded;
+        addActivity('Zone visited', `Checked in at ${zoneName} and earned ${awarded} coins.`);
+        renderNotifications();
         updateUserData();
-        alert(`✅ Checked in at ${zoneName}!\n\n+${reward} Liberty Coins awarded!\n\nTotal: ${userPoints} Liberty Coins`);
+        saveUserData();
+        notify('Zone checked in', `+${awarded} Liberty Coins from ${zoneName}`);
+        if (visitedZones.length === 3) addBadge('Zone Explorer', 'fa-map-marker-alt');
+        if (visitedZones.length === zones.length) addBadge('Freedom Traveler', 'fa-globe');
     };
 
     window.openChallenge = function(challengeId) {
@@ -457,7 +655,27 @@
             </div>
         `;
         document.getElementById('startChallengeBtn').onclick = () => {
-            alert(`🚀 Challenge Started: ${ch.name}\n\nComplete the challenge to earn ${ch.reward} Liberty Coins!`);
+            if (!ch.completed) {
+                ch.progress = Math.min(ch.target, ch.progress + 1);
+                if (ch.progress >= ch.target) {
+                    ch.completed = true;
+                    userPoints += ch.reward;
+                    addActivity('Challenge completed', `${ch.name} completed for +${ch.reward} coins.`);
+                    renderChallenges();
+                    renderAllChallenges();
+                    notify('Challenge complete', `You earned ${ch.reward} Liberty Coins!`);
+                    if (ch.name.includes('Networking')) addBadge('Connector', 'fa-hands-helping');
+                    if (ch.name.includes('Hidden QR') || ch.name.includes('All Zones')) addBadge('Explorer', 'fa-binoculars');
+                    renderNotifications();
+                    saveUserData();
+                } else {
+                    addActivity('Challenge progress', `${ch.name} progress updated (${ch.progress}/${ch.target}).`);
+                    notify('Challenge progress', `Progress: ${ch.progress}/${ch.target}`);
+                    renderChallenges();
+                    renderAllChallenges();
+                }
+                updateUserData();
+            }
             closeModal();
         };
         modal.classList.add('show');
@@ -471,8 +689,11 @@
         document.getElementById('libertyCoins').innerText = userPoints;
         document.getElementById('stampsCount').innerText = visitedZones.length;
         document.getElementById('passportLevel').innerText = Math.floor(userPoints / 500) + 1;
+        updatePassportProgress();
+        renderBadges();
+        renderNotifications();
+        renderActivityHistory();
 
-        // Update profile
         const user = getCurrentUser();
         if (user) {
             document.getElementById('profileName').innerText = user.displayName || user.email;
@@ -502,27 +723,40 @@
         const user = getCurrentUser();
         if (user) {
             document.getElementById('userName').innerText = user.displayName || user.email.split('@')[0];
-            // Load saved data from localStorage
             const savedPoints = localStorage.getItem(`f250_points_${user.uid}`);
             const savedZones = localStorage.getItem(`f250_zones_${user.uid}`);
-            if (savedPoints) userPoints = parseInt(savedPoints);
+            const savedBadges = localStorage.getItem(`f250_badges_${user.uid}`);
+            const savedHistory = localStorage.getItem(`f250_history_${user.uid}`);
+            const savedChallenges = localStorage.getItem(`f250_challenges_${user.uid}`);
+            if (savedPoints) userPoints = parseInt(savedPoints, 10);
             if (savedZones) visitedZones = JSON.parse(savedZones);
+            if (savedBadges) badges = JSON.parse(savedBadges);
+            if (savedHistory) activityHistory = JSON.parse(savedHistory);
+            if (savedChallenges) challenges = JSON.parse(savedChallenges);
+            renderBadges();
+            renderNotifications();
+            renderActivityHistory();
             updateUserData();
 
-            // Generate QR
             const qrContainer = document.getElementById('qrCodeDisplay');
             const profileQr = document.getElementById('profileQrCode');
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=F250:${user.uid}:${Date.now()}`;
+            const qrText = `F250:${user.uid}:${new Date().toISOString()}`;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(qrText)}`;
             qrContainer.innerHTML = `<img src="${qrUrl}" style="width:100%;height:100%;object-fit:contain;">`;
             if (profileQr) profileQr.innerHTML = `<img src="${qrUrl}" style="width:100%;height:100%;object-fit:contain;">`;
+            notify('Passport ready', 'Your digital passport and QR code are loaded.');
+            triggerDailyMission();
         }
     }
 
     function saveUserData() {
         const user = getCurrentUser();
         if (user) {
-            localStorage.setItem(`f250_points_${user.uid}`, userPoints);
+            localStorage.setItem(`f250_points_${user.uid}`, String(userPoints));
             localStorage.setItem(`f250_zones_${user.uid}`, JSON.stringify(visitedZones));
+            localStorage.setItem(`f250_badges_${user.uid}`, JSON.stringify(badges));
+            localStorage.setItem(`f250_history_${user.uid}`, JSON.stringify(activityHistory));
+            localStorage.setItem(`f250_challenges_${user.uid}`, JSON.stringify(challenges));
         }
     }
 

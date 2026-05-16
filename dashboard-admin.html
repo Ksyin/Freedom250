@@ -286,6 +286,63 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             z-index: 200;
         }
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .action-box {
+            background: white;
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        .action-box h4 {
+            margin-bottom: 14px;
+            font-size: 1rem;
+        }
+        .action-box input,
+        .action-box select,
+        .action-box textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+        .action-box textarea { min-height: 90px; }
+        .action-box button {
+            background: #B22234;
+            color: white;
+            border: none;
+            padding: 12px 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 700;
+        }
+        .admin-alert-item,
+        .admin-challenge-item {
+            background: #f8f9ff;
+            border-radius: 18px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+        .admin-alert-item span,
+        .admin-challenge-item span {
+            display: block;
+            color: #555;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+        @media (max-width: 768px) {
+            .quick-actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -352,6 +409,37 @@
                         <canvas id="zoneChart"></canvas>
                     </div>
                 </div>
+            </div>
+
+            <div class="data-table">
+                <div class="data-table-header">
+                    <h3><i class="fas fa-bolt"></i> Super Admin Quick Actions</h3>
+                </div>
+                <div class="quick-actions-grid" style="padding: 20px;">
+                    <div class="action-box">
+                        <h4>Create New Booth</h4>
+                        <input id="newBoothName" placeholder="Booth name">
+                        <input id="newBoothCapacity" type="number" placeholder="Capacity" value="1200">
+                        <button type="button" onclick="createBooth()">Create Booth</button>
+                    </div>
+                    <div class="action-box">
+                        <h4>Verify / Sign-in Participant</h4>
+                        <input id="verifyParticipantInput" placeholder="Participant ID, name or university">
+                        <button type="button" onclick="verifyParticipantAdmin()">Verify Participant</button>
+                    </div>
+                    <div class="action-box">
+                        <h4>Publish Challenge</h4>
+                        <input id="newChallengeName" placeholder="Challenge title">
+                        <input id="newChallengeReward" type="number" placeholder="Reward coins" value="150">
+                        <button type="button" onclick="createChallengeAdmin()">Publish Challenge</button>
+                    </div>
+                    <div class="action-box">
+                        <h4>Broadcast Alert</h4>
+                        <textarea id="newAlertMessage" placeholder="Alert message to staff or attendees"></textarea>
+                        <button type="button" onclick="broadcastAlertAdmin()">Broadcast Alert</button>
+                    </div>
+                </div>
+                <div id="adminActionFeed" style="padding: 0 20px 20px 20px;"></div>
             </div>
 
             <!-- Top Zones -->
@@ -527,6 +615,15 @@
         feedback_submit: 20
     };
 
+    let adminChallenges = [
+        { title: 'Launchpad Photo Hunt', reward: 150, zone: 'THE LAUNCHPAD', status: 'Live' },
+        { title: 'Crowd Trivia Race', reward: 200, zone: 'THE ARENA', status: 'Open' }
+    ];
+
+    let adminAlerts = [
+        { message: 'Hydration station restocked every hour at Taste of America.', time: 'Just now' }
+    ];
+
     // Hourly attendance data
     let hourlyData = [120, 450, 890, 1560, 2340, 2890, 3120, 2980, 2450, 1890, 1230, 890];
     let zoneNames = zones.map(z => z.name);
@@ -691,6 +788,38 @@
         `).join('');
     }
 
+    function renderAdminActions() {
+        const container = document.getElementById('adminActionFeed');
+        if (!container) return;
+
+        let html = '<div style="display:grid; gap:16px;">';
+        html += '<div style="font-weight:700; color:#333;">Active Challenges</div>';
+        if (adminChallenges.length) {
+            html += adminChallenges.map(challenge => `
+                <div class="admin-challenge-item">
+                    <strong>${challenge.title}</strong>
+                    <span>Zone: ${challenge.zone} · Reward: ${challenge.reward} coins · Status: ${challenge.status}</span>
+                </div>
+            `).join('');
+        } else {
+            html += '<div style="color:#666;">No active challenges yet.</div>';
+        }
+        html += '<div style="font-weight:700; color:#333; margin-top:16px;">Recent Alerts</div>';
+        if (adminAlerts.length) {
+            html += adminAlerts.map(alert => `
+                <div class="admin-alert-item">
+                    <strong>Alert</strong>
+                    <span>${alert.message}</span>
+                    <span style="color:#999;">${alert.time}</span>
+                </div>
+            `).join('');
+        } else {
+            html += '<div style="color:#666;">No alerts sent yet.</div>';
+        }
+        html += '</div>';
+
+        container.innerHTML = html;
+    }
     // ============ CHARTS ============
     let attendanceChart, zoneChart, hourlyChart, coinsChart;
 
@@ -751,8 +880,87 @@
             user.points += 50;
             renderParticipantsTable();
             renderStats();
+            renderPointsSystem();
             alert(`Awarded 50 Liberty Coins to ${user.name}`);
         }
+    }
+
+    function createBooth() {
+        const name = document.getElementById('newBoothName')?.value.trim();
+        const capacity = Number(document.getElementById('newBoothCapacity')?.value || 0);
+        if (!name || !capacity) {
+            alert('Please enter a valid booth name and capacity.');
+            return;
+        }
+        const id = Math.max(0, ...zones.map(z => z.id)) + 1;
+        zones.push({ id, name, icon: 'fa-map-marker-alt', color: '#3C3B6E', visitors: 0, points: 0, capacity, status: 'active', engagement: 0 });
+        renderZonesTable();
+        renderZonesManagement();
+        renderStats();
+        if (zoneChart) {
+            zoneChart.data.labels = zones.map(z => z.name);
+            zoneChart.data.datasets[0].data = zones.map(z => z.visitors);
+            zoneChart.update();
+        }
+        if (coinsChart) {
+            coinsChart.data.labels = zones.map(z => z.name);
+            coinsChart.data.datasets[0].data = zones.map(z => z.points);
+            coinsChart.update();
+        }
+        document.getElementById('newBoothName').value = '';
+        document.getElementById('newBoothCapacity').value = '1200';
+        alert(`Booth ${name} created successfully.`);
+    }
+
+    function verifyParticipantAdmin() {
+        const queryValue = document.getElementById('verifyParticipantInput')?.value.trim().toLowerCase();
+        if (!queryValue) {
+            alert('Enter a participant ID, name, or university.');
+            return;
+        }
+        const user = participants.find(p => p.id.toLowerCase() === queryValue || p.name.toLowerCase().includes(queryValue) || p.university.toLowerCase().includes(queryValue));
+        if (!user) {
+            alert('Participant not found.');
+            return;
+        }
+        user.visits += 1;
+        user.points += pointConfig.booth_visit;
+        renderParticipantsTable();
+        renderStats();
+        renderPointsSystem();
+        document.getElementById('verifyParticipantInput').value = '';
+        alert(`${user.name} verified and signed in. +${pointConfig.booth_visit} points awarded.`);
+    }
+
+    function createChallengeAdmin() {
+        const title = document.getElementById('newChallengeName')?.value.trim();
+        const reward = Number(document.getElementById('newChallengeReward')?.value || 0);
+        if (!title || !reward) {
+            alert('Enter a challenge title and valid reward amount.');
+            return;
+        }
+        adminChallenges.unshift({ title, reward, zone: zones[0]?.name || 'General', status: 'Live' });
+        document.getElementById('newChallengeName').value = '';
+        document.getElementById('newChallengeReward').value = '150';
+        renderAdminActions();
+        alert('Challenge published to all booths.');
+    }
+
+    function broadcastAlertAdmin() {
+        const message = document.getElementById('newAlertMessage')?.value.trim();
+        if (!message) {
+            alert('Enter an alert message.');
+            return;
+        }
+        adminAlerts.unshift({ message, time: 'Just now' });
+        document.getElementById('newAlertMessage').value = '';
+        renderAdminActions();
+        alert('Alert broadcast to the operations team.');
+    }
+
+    function savePointConfig() {
+        renderPointsSystem();
+        alert('Point configuration saved.');
     }
 
     function updatePointConfig(key) {
@@ -811,7 +1019,7 @@
         document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
         event.target.closest('.sidebar-link').classList.add('active');
 
-        if (view === 'overview') { renderStats(); renderZonesTable(); if (attendanceChart) attendanceChart.update(); }
+        if (view === 'overview') { renderStats(); renderZonesTable(); renderAdminActions(); if (attendanceChart) attendanceChart.update(); }
         if (view === 'zones') { renderZonesManagement(); }
         if (view === 'points') { renderPointsSystem(); }
         if (view === 'users') { renderParticipantsTable(); }
@@ -872,6 +1080,8 @@
         document.getElementById('mobileMenuBtn')?.addEventListener('click', () => {
             document.getElementById('sidebar').classList.toggle('mobile-open');
         });
+
+        renderAdminActions();
     });
 </script>
 </body>

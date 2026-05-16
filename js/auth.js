@@ -24,7 +24,7 @@ export async function initAuth() {
             const userDocRef = doc(db, 'users', user.uid);
             const userDoc = await getDoc(userDocRef);
 
-            let userData = { role: ROLES.PARTICIPANT, points: 0 };
+            let userData = { role: ROLES.PARTICIPANT, points: 0, badges: [], stamps: [], level: 1, xp: 0, streak: 0, activityHistory: [], qrCode: `freedom250_${user.uid}` };
             if (userDoc.exists()) {
               userData = userDoc.data();
             }
@@ -35,6 +35,13 @@ export async function initAuth() {
               displayName: user.displayName || userData.displayName || user.email.split('@')[0],
               role: userData.role || ROLES.PARTICIPANT,
               points: userData.points || 0,
+              badges: userData.badges || [],
+              stamps: userData.stamps || [],
+              level: userData.level || 1,
+              xp: userData.xp || 0,
+              streak: userData.streak || 0,
+              activityHistory: userData.activityHistory || [],
+              qrCode: userData.qrCode || `freedom250_${user.uid}`,
               ...userData
             };
 
@@ -92,7 +99,17 @@ export async function signUp(email, password, displayName = '', role = ROLES.PAR
       role: role,
       createdAt: new Date().toISOString(),
       points: 0,
-      qrCode: `freedom250_${user.uid}`
+      qrCode: `freedom250_${user.uid}`,
+      badges: [
+        { name: 'Freedom Starter', icon: 'fa-flag', unlockedAt: new Date().toISOString() }
+      ],
+      stamps: [],
+      level: 1,
+      xp: 0,
+      streak: 0,
+      activityHistory: [
+        { label: 'Account created', time: new Date().toISOString(), details: 'Welcome to Freedom 250!' }
+      ]
     };
 
     await setDoc(doc(db, 'users', user.uid), userData);
@@ -175,7 +192,17 @@ export async function signInWithGoogle() {
         role: ROLES.PARTICIPANT,
         createdAt: new Date().toISOString(),
         points: 0,
-        qrCode: `freedom250_${user.uid}`
+        qrCode: `freedom250_${user.uid}`,
+        badges: [
+          { name: 'Freedom Starter', icon: 'fa-flag', unlockedAt: new Date().toISOString() }
+        ],
+        stamps: [],
+        level: 1,
+        xp: 0,
+        streak: 0,
+        activityHistory: [
+          { label: 'Signed in with Google', time: new Date().toISOString(), details: 'Welcome to Freedom 250!' }
+        ]
       };
       await setDoc(userDocRef, userData);
     } else {

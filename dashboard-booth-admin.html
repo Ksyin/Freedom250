@@ -170,6 +170,60 @@
             font-size: 0.7rem;
         }
 
+        .action-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+            margin-top: 20px;
+        }
+        .action-grid {
+            display: grid;
+            gap: 14px;
+        }
+        .action-grid label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.88rem;
+            color: #333;
+            font-weight: 600;
+        }
+        .action-grid input,
+        .action-grid select,
+        .action-grid textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            resize: vertical;
+        }
+        .action-grid textarea { min-height: 90px; }
+        .action-grid button {
+            background: #3C3B6E;
+            color: white;
+            border: none;
+            padding: 12px 14px;
+            border-radius: 14px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .challenge-item, .alert-item {
+            background:#f8f8fb;
+            border-radius:18px;
+            padding:12px 14px;
+            margin-top:10px;
+            text-align:left;
+        }
+        .challenge-item span, .alert-item span {
+            display:block;
+            margin-top: 6px;
+            color:#555;
+            font-size:0.86rem;
+        }
+
         .chart-container { height: 200px; margin-top: 15px; }
     </style>
 </head>
@@ -206,6 +260,30 @@
                 <div style="background:#10b981; color:white; padding:8px 12px; border-radius:12px; font-weight:700;">Team Unity</div>
             </div>
             <div id="teamAssignmentsList" style="margin-top: 18px;"></div>
+        </div>
+
+        <div class="scanner-card action-card">
+            <h3><i class="fas fa-bolt"></i> Booth Actions</h3>
+            <div class="action-grid">
+                <div>
+                    <label for="verifyParticipantInput">Verify / Sign-in Participant</label>
+                    <input id="verifyParticipantInput" placeholder="Participant ID or email">
+                    <button type="button" onclick="verifyParticipant()">Verify & Sign In</button>
+                </div>
+                <div>
+                    <label for="challengeNameInput">Create Challenge</label>
+                    <input id="challengeNameInput" placeholder="Challenge title">
+                    <input id="challengeRewardInput" type="number" placeholder="Reward coins" value="150">
+                    <button type="button" onclick="createChallenge()">Publish Challenge</button>
+                </div>
+                <div>
+                    <label for="alertMessageInput">Send Booth Alert</label>
+                    <textarea id="alertMessageInput" placeholder="Enter alert for staff or visitors"></textarea>
+                    <button type="button" onclick="sendBoothAlert()">Send Alert</button>
+                </div>
+            </div>
+            <div id="activeChallengesList" style="margin-top: 16px;"></div>
+            <div id="boothAlertsList" style="margin-top: 12px;"></div>
         </div>
 
         <div style="padding: 0 15px;">
@@ -274,6 +352,15 @@
         { name: "Mercy Wanjiku", coins: 50, time: "1:30 PM" }
     ];
 
+    let activeChallenges = [
+        { title: 'Drone Soccer Final', reward: 250, status: 'Live' },
+        { title: 'Networking Sprint', reward: 100, status: 'Open' }
+    ];
+
+    let boothAlerts = [
+        { message: 'Reminder: stay hydrated and keep the line moving.', time: 'Just now' }
+    ];
+
     let todayCount = 247;
     let totalCoinsGiven = 12450;
     let boothName = "THE GARAGE";
@@ -307,6 +394,42 @@
                 <span style="color:#B22234; font-weight:700;">Assigned</span>
             </div>
         `).join('');
+    }
+
+    function renderChallenges() {
+        const container = document.getElementById('activeChallengesList');
+        if (!container) return;
+        if (!activeChallenges.length) {
+            container.innerHTML = '<p style="color:#666;">No active booth challenges yet.</p>';
+            return;
+        }
+        container.innerHTML = activeChallenges.map(challenge => `
+            <div class="challenge-item">
+                <strong>${challenge.title}</strong>
+                <span>Reward: ${challenge.reward} coins · Status: ${challenge.status}</span>
+            </div>
+        `).join('');
+    }
+
+    function renderAlerts() {
+        const container = document.getElementById('boothAlertsList');
+        if (!container) return;
+        if (!boothAlerts.length) {
+            container.innerHTML = '<p style="color:#666;">No alerts have been sent yet.</p>';
+            return;
+        }
+        container.innerHTML = boothAlerts.map(alert => `
+            <div class="alert-item">
+                <strong>Booth Alert</strong>
+                <span>${alert.message}</span>
+                <span style="color:#999;">${alert.time}</span>
+            </div>
+        `).join('');
+    }
+
+    function renderBoothExtras() {
+        renderChallenges();
+        renderAlerts();
     }
 
     function addTeamAssignment() {
@@ -352,7 +475,10 @@
         document.getElementById('analyticsSection').style.display = 'none';
         document.getElementById('rewardsSection').style.display = 'none';
 
-        if (section === 'scan') document.getElementById('scanSection').style.display = 'block';
+        if (section === 'scan') {
+            document.getElementById('scanSection').style.display = 'block';
+            renderBoothExtras();
+        }
         if (section === 'analytics') {
             document.getElementById('analyticsSection').style.display = 'block';
             renderInsights();
@@ -369,8 +495,80 @@
     };
 
     window.awardReward = function(reward) {
-        alert(`🎁 ${reward} awarded to participant!\n\n-${reward === 'Sticker' ? 50 : reward === 'Liberty Pass' ? 200 : 500} Liberty Coins`);
+        const coins = reward === 'Sticker' ? 50 : reward === 'Liberty Pass' ? 200 : 500;
+        alert(`🎁 ${reward} awarded to participant!\n\n-${coins} Liberty Coins`);
     };
+
+    async function verifyParticipant() {
+        const input = document.getElementById('verifyParticipantInput')?.value.trim();
+        if (!input) {
+            alert('Please enter a participant ID or email to verify.');
+            return;
+        }
+
+        let uid = input;
+        if (input.includes('freedom250_')) {
+            uid = input.split('freedom250_')[1].split('_')[0];
+        }
+
+        try {
+            const userRef = doc(db, 'users', uid);
+            const userDoc = await getDoc(userRef);
+            if (!userDoc.exists()) {
+                alert('Participant not found in system.');
+                return;
+            }
+
+            const userData = userDoc.data();
+            await updateDoc(userRef, {
+                points: increment(50),
+                visits: increment(1),
+                lastSignIn: serverTimestamp()
+            });
+
+            todayCount += 1;
+            totalCoinsGiven += 50;
+            document.getElementById('todayVisitors').innerText = todayCount;
+            document.getElementById('totalPoints').innerText = totalCoinsGiven.toLocaleString();
+
+            visitors.unshift({ name: userData.displayName || userData.email || uid, coins: 50, time: new Date().toLocaleTimeString() });
+            if (visitors.length > 10) visitors.pop();
+            renderVisitors();
+
+            const modal = document.getElementById('scanModal');
+            document.getElementById('scanModalMessage').innerHTML = `Participant: ${userData.displayName || userData.email || uid}<br>Verified & signed in. +50 Liberty Coins awarded!`;
+            modal.classList.add('show');
+        } catch (err) {
+            console.error(err);
+            alert('Unable to verify participant right now. Please try again.');
+        }
+    }
+
+    function createChallenge() {
+        const title = document.getElementById('challengeNameInput')?.value.trim();
+        const reward = Number(document.getElementById('challengeRewardInput')?.value || 0);
+        if (!title || !reward) {
+            alert('Please enter a challenge title and reward amount.');
+            return;
+        }
+        activeChallenges.unshift({ title, reward, status: 'Live' });
+        document.getElementById('challengeNameInput').value = '';
+        document.getElementById('challengeRewardInput').value = '150';
+        renderChallenges();
+        alert('Booth challenge created and published.');
+    }
+
+    function sendBoothAlert() {
+        const message = document.getElementById('alertMessageInput')?.value.trim();
+        if (!message) {
+            alert('Please enter an alert message.');
+            return;
+        }
+        boothAlerts.unshift({ message, time: 'Just now' });
+        document.getElementById('alertMessageInput').value = '';
+        renderAlerts();
+        alert('Booth alert broadcast successfully.');
+    }
 
     let html5QrCode;
     document.getElementById('startScannerBtn')?.addEventListener('click', async () => {
