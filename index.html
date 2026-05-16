@@ -162,17 +162,17 @@
 
         /* ===== BOOTH FLOW ===== */
         .flow-section { padding: var(--section-pad); background: var(--off-white); }
-        .flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 40px; }
-        .flow-card { background: #fff; border-radius: var(--radius-md); padding: 32px 28px; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); transition: all 0.25s; }
+        .flow-grid { display: grid; grid-template-columns: repeat(3, minmax(260px, 1fr)); gap: 28px; margin-bottom: 40px; }
+        .flow-card { background: #fff; border-radius: 28px; padding: 28px; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); transition: all 0.25s; display: flex; flex-direction: column; justify-content: space-between; aspect-ratio: 1 / 1; min-height: 320px; }
         .flow-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); border-color: rgba(10,49,97,0.15); }
-        .flow-num { width: 44px; height: 44px; border-radius: 12px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-weight: 900; font-size: 1.1rem; margin-bottom: 20px; }
-        .flow-card h3 { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--blue); margin-bottom: 10px; }
+        .flow-num { width: 44px; height: 44px; border-radius: 16px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-weight: 900; font-size: 1.1rem; margin-bottom: 20px; }
+        .flow-card h3 { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--blue); margin-bottom: 12px; }
         .flow-card p { font-size: 0.92rem; color: var(--gray-500); line-height: 1.65; }
         .flow-cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
 
         /* QR Card */
         .qr-panel { margin-top: 32px; }
-        .qr-card { background: #fff; border-radius: var(--radius-md); border: 1px solid var(--gray-200); padding: 28px 32px; display: flex; align-items: center; gap: 32px; box-shadow: var(--shadow-sm); flex-wrap: wrap; }
+        .qr-card { background: #fff; border-radius: 28px; border: 1px solid var(--gray-200); padding: 28px 32px; display: flex; align-items: center; gap: 32px; box-shadow: var(--shadow-sm); flex-wrap: wrap; }
         .qr-card-text { flex: 1; min-width: 240px; }
         .qr-card-text h3 { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--blue); margin-bottom: 8px; }
         .qr-card-text p { font-size: 0.9rem; color: var(--gray-500); }
@@ -180,25 +180,25 @@
 
         /* ===== MISSION SECTION ===== */
         .mission-section { padding: var(--section-pad); background: #fff; }
-        .mission-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
-        .mission-card { background: var(--off-white); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--gray-200); transition: all 0.3s; display: flex; flex-direction: column; }
+        .mission-grid { display: grid; grid-template-columns: repeat(2, minmax(280px, 1fr)); gap: 28px; }
+        .mission-card { background: var(--off-white); border-radius: 28px; overflow: hidden; border: 1px solid var(--gray-200); transition: all 0.3s; display: flex; flex-direction: column; justify-content: space-between; aspect-ratio: 1 / 1; min-height: 360px; }
         .mission-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); border-color: rgba(178,34,52,0.2); }
-        .mission-card-img { height: 200px; overflow: hidden; }
+        .mission-card-img { height: 45%; min-height: 170px; overflow: hidden; }
         .mission-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .mission-card:hover .mission-card-img img { transform: scale(1.06); }
-        .mission-card-body { padding: 28px 30px 30px; flex: 1; }
-        .mission-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--red-pale); color: var(--red); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 16px; }
-        .mission-card h3 { font-family: 'Sora', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--blue); margin-bottom: 10px; }
+        .mission-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .mission-icon { width: 48px; height: 48px; border-radius: 16px; background: var(--red-pale); color: var(--red); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 16px; }
+        .mission-card h3 { font-family: 'Sora', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--blue); margin-bottom: 10px; }
         .mission-card p { font-size: 0.93rem; color: var(--gray-500); line-height: 1.65; }
 
         /* ===== TENTS SECTION ===== */
         .tents-section { padding: var(--section-pad); background: var(--blue-pale); }
-        .tents-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-        .tent-card { background: #fff; border-radius: var(--radius-md); padding: 36px 32px; border: 1px solid var(--gray-200); transition: all 0.28s; position: relative; overflow: hidden; }
+        .tents-grid { display: grid; grid-template-columns: repeat(3, minmax(260px, 1fr)); gap: 24px; }
+        .tent-card { background: #fff; border-radius: 28px; padding: 28px; border: 1px solid var(--gray-200); transition: all 0.28s; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; aspect-ratio: 1 / 1; min-height: 360px; }
         .tent-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red) 0%, var(--blue) 100%); opacity: 0; transition: opacity 0.28s; }
         .tent-card:hover::before { opacity: 1; }
         .tent-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); border-color: transparent; }
-        .tent-icon { width: 60px; height: 60px; border-radius: 16px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; transition: transform 0.3s; }
+        .tent-icon { width: 60px; height: 60px; border-radius: 18px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; transition: transform 0.3s; }
         .tent-card:hover .tent-icon { transform: scale(1.1) rotate(-5deg); }
         .tent-card h3 { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--blue); margin-bottom: 10px; letter-spacing: 0.03em; }
         .tent-card p { font-size: 0.93rem; color: var(--gray-500); line-height: 1.65; margin-bottom: 20px; }
@@ -206,19 +206,19 @@
 
         /* ===== EVENTS SECTION ===== */
         .events-section { padding: var(--section-pad); background: #fff; }
-        .events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-        .event-card { background: #fff; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); cursor: pointer; transition: all 0.3s cubic-bezier(.4,0,.2,1); }
+        .events-grid { display: grid; grid-template-columns: repeat(3, minmax(280px, 1fr)); gap: 28px; }
+        .event-card { background: #fff; border-radius: 28px; overflow: hidden; border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); cursor: pointer; transition: all 0.3s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; justify-content: space-between; aspect-ratio: 1 / 1.05; min-height: 380px; }
         .event-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: rgba(10,49,97,0.15); }
-        .event-card-img { height: 210px; overflow: hidden; position: relative; background: var(--gray-100); }
+        .event-card-img { height: 45%; overflow: hidden; position: relative; background: var(--gray-100); }
         .event-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .event-card:hover .event-card-img img { transform: scale(1.06); }
         .event-card-status { position: absolute; top: 14px; right: 14px; font-family: 'Sora', sans-serif; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; }
         .status-live { background: #dcfce7; color: #166534; }
         .status-upcoming { background: var(--blue-pale); color: var(--blue); }
         .status-completed { background: var(--gray-100); color: var(--gray-500); }
-        .event-card-body { padding: 24px 26px 28px; }
+        .event-card-body { padding: 22px 24px 24px; display: flex; flex-direction: column; justify-content: space-between; flex: 1; }
         .event-card-date { font-size: 0.78rem; font-weight: 700; color: var(--red); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
-        .event-card h3 { font-family: 'Sora', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--blue); margin-bottom: 8px; line-height: 1.3; }
+        .event-card h3 { font-family: 'Sora', sans-serif; font-size: 1.18rem; font-weight: 800; color: var(--blue); margin-bottom: 8px; line-height: 1.3; }
         .event-card-tagline { font-size: 0.88rem; color: var(--gray-500); margin-bottom: 18px; line-height: 1.5; }
         .event-card-meta { display: flex; gap: 16px; font-size: 0.8rem; color: var(--gray-500); margin-bottom: 20px; flex-wrap: wrap; }
         .event-card-meta span { display: flex; align-items: center; gap: 5px; }
@@ -228,6 +228,14 @@
         .event-card-cta { font-family: 'Sora', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--red); display: flex; align-items: center; gap: 5px; }
         .event-card-cta i { font-size: 0.75rem; transition: transform 0.2s; }
         .event-card:hover .event-card-cta i { transform: translateX(3px); }
+
+        /* ===== PARTNERS MARQUEE ===== */
+        .partner-marquee { overflow: hidden; border-radius: 999px; background: var(--gray-100); border: 1px solid var(--gray-200); margin: 30px 0 24px; }
+        .partner-marquee-track { display: inline-flex; align-items: center; gap: 18px; padding: 14px 20px; animation: partnerScroll 18s linear infinite; }
+        .partner-marquee-item { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 10px; background: #fff; border-radius: 999px; padding: 12px 18px; font-size: 0.9rem; font-weight: 700; color: var(--blue); text-transform: uppercase; box-shadow: var(--shadow-sm); white-space: nowrap; border: 1px solid rgba(10,49,97,0.08); }
+        .partner-marquee-item i { color: var(--red); }
+        .partner-marquee-track:hover { animation-play-state: paused; }
+        @keyframes partnerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
         /* ===== EVENT DETAIL OVERLAY ===== */
         .event-detail-overlay { position: fixed; inset: 0; background: rgba(5,15,40,0.7); z-index: 2000; display: flex; align-items: flex-start; justify-content: center; padding: 32px 20px; overflow-y: auto; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(6px); }
@@ -401,12 +409,17 @@
           :root { --section-pad: 64px 0; }
           .hero-section h1 { font-size: 2.4rem; }
           .section-title { font-size: 2rem; }
+          .nav-container { justify-content: space-between; }
           .nav-links { display: none; }
+          .nav-actions { gap: 10px; margin-left: auto; flex-shrink: 0; }
+          .nav-actions .btn { padding: 10px 14px; white-space: nowrap; }
           .mobile-menu-btn { display: flex; }
-          .flow-grid { grid-template-columns: 1fr; }
-          .mission-grid { grid-template-columns: repeat(2, 1fr); }
-          .tents-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-          .events-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+          .flow-grid, .mission-grid, .tents-grid, .events-grid { grid-auto-flow: column; grid-template-columns: repeat(3, minmax(240px, 1fr)); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; }
+          .flow-grid > *, .mission-grid > *, .tents-grid > *, .events-grid > * { scroll-snap-align: start; }
+          .flow-grid { gap: 18px; }
+          .mission-grid { gap: 18px; }
+          .tents-grid { gap: 18px; }
+          .events-grid { gap: 18px; }
           .footer-grid { grid-template-columns: 1fr; gap: 32px; }
           .gallery-grid { grid-template-columns: repeat(2, 1fr); }
           .g-span-5, .g-span-7, .g-span-4, .g-span-8 { grid-column: span 2; }
@@ -426,11 +439,8 @@
           .hero-stats { gap: 20px; flex-wrap: wrap; }
           .countdown-digits { gap: 10px; }
           .cd-unit .num { font-size: 1.5rem; }
-          /* On very small phones, stack events/tents to single col */
-          .events-grid { grid-template-columns: 1fr; }
-          .tents-grid { grid-template-columns: 1fr; }
-          .mission-grid { grid-template-columns: 1fr; }
-          .partners-grid { grid-template-columns: repeat(2, 1fr); }
+          .flow-grid, .mission-grid, .tents-grid, .events-grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+          .partner-marquee-track { animation-duration: 16s; }
         }
     </style>
 </head>
@@ -685,7 +695,7 @@
                     <p>Food & Culture — Kenyan and American culinary fusion, cooking demos, brand tastings, and cultural food storytelling.</p>
                     <span class="tent-badge">Taste the fusion</span>
                 </div>
-                <div class="tent-card" style="grid-column: span 2;">
+                <div class="tent-card">
                     <div class="tent-icon" style="background:var(--red)"><i class="fas fa-microphone"></i></div>
                     <h3>THE MAIN STAGE</h3>
                     <p>The heartbeat of Freedom 250 — keynotes from Embassy leadership, live performances, award ceremonies, team showcases and the grand closing celebration. All the energy lands here.</p>
@@ -810,6 +820,18 @@
                 <div class="section-label">Partners</div>
                 <h2 class="section-title">Universities <span class="accent">& Partners</span></h2>
                 <p class="section-desc" style="margin:0 auto;">Join students from Kenya's leading institutions and our growing network of festival partners.</p>
+                <div class="partner-marquee">
+                    <div class="partner-marquee-track">
+                        <span class="partner-marquee-item"><i class="fas fa-star"></i> US Government</span>
+                        <span class="partner-marquee-item"><i class="fas fa-landmark"></i> US Embassy Nairobi</span>
+                        <span class="partner-marquee-item"><i class="fas fa-box-open"></i> KFC</span>
+                        <span class="partner-marquee-item"><i class="fas fa-microchip"></i> Microsoft</span>
+                        <span class="partner-marquee-item"><i class="fas fa-star"></i> US Government</span>
+                        <span class="partner-marquee-item"><i class="fas fa-landmark"></i> US Embassy Nairobi</span>
+                        <span class="partner-marquee-item"><i class="fas fa-box-open"></i> KFC</span>
+                        <span class="partner-marquee-item"><i class="fas fa-microchip"></i> Microsoft</span>
+                    </div>
+                </div>
             </div>
 
             <div class="featured-campus">
