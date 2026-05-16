@@ -1,4 +1,4 @@
-// js/auth.js - Fixed with proper role handling
+// js/auth.js - Simplified Authentication with proper role handling
 export const ROLES = {
   PARTICIPANT: 'participant',
   VOLUNTEER: 'volunteer',
@@ -83,11 +83,14 @@ export async function signUp(email, password, displayName = '', role = ROLES.PAR
     const { createUserWithEmailAndPassword, updateProfile } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
 
     if (!email || !password) return { success: false, error: 'Email and password are required' };
+    if (password.length < 6) return { success: false, error: 'Password must be at least 6 characters' };
 
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    if (displayName) await updateProfile(user, { displayName });
+    if (displayName) {
+      await updateProfile(user, { displayName });
+    }
 
     const userData = {
       uid: user.uid,
@@ -110,7 +113,15 @@ export async function signUp(email, password, displayName = '', role = ROLES.PAR
     return { success: true, user: currentUser };
   } catch (error) {
     console.error('Sign up error:', error);
-    return { success: false, error: error.message };
+    let errorMessage = 'Registration failed';
+    if (error.code === 'auth/email-already-in-use') {
+      errorMessage = 'Email already registered. Please sign in instead.';
+    } else if (error.code === 'auth/weak-password') {
+      errorMessage = 'Password is too weak. Please use a stronger password.';
+    } else if (error.code === 'auth/invalid-email') {
+      errorMessage = 'Invalid email address.';
+    }
+    return { success: false, error: errorMessage };
   }
 }
 
@@ -122,7 +133,17 @@ export async function signIn(email, password) {
     return { success: true, user: userCredential.user };
   } catch (error) {
     console.error('Sign in error:', error);
-    return { success: false, error: error.message };
+    let errorMessage = 'Login failed';
+    if (error.code === 'auth/user-not-found') {
+      errorMessage = 'No account found with this email. Please sign up first.';
+    } else if (error.code === 'auth/wrong-password') {
+      errorMessage = 'Incorrect password. Please try again.';
+    } else if (error.code === 'auth/invalid-email') {
+      errorMessage = 'Invalid email address.';
+    } else if (error.code === 'auth/too-many-requests') {
+      errorMessage = 'Too many failed attempts. Please try again later.';
+    }
+    return { success: false, error: errorMessage };
   }
 }
 
@@ -161,7 +182,7 @@ export async function signInWithGoogle() {
     return { success: true, user: currentUser };
   } catch (error) {
     console.error('Google sign in error:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: 'Google sign in failed. Please try again.' };
   }
 }
 

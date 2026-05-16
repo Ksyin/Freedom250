@@ -1,405 +1,430 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Freedom 250 | Innovation & Freedom Festival</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    /* ===== DESIGN TOKENS ===== */
-    :root {
-      --red: #B22234;
-      --red-soft: #d6394c;
-      --red-pale: #fdf2f3;
-      --blue: #0A3161;
-      --blue-mid: #1a4f8f;
-      --blue-pale: #edf2fa;
-      --white: #ffffff;
-      --off-white: #f8f9fb;
-      --gray-100: #f2f4f7;
-      --gray-200: #e5e8ef;
-      --gray-300: #cbd0dc;
-      --gray-500: #8891a5;
-      --gray-700: #3d4456;
-      --gray-900: #111827;
-      --shadow-sm: 0 1px 3px rgba(10,49,97,0.08), 0 1px 2px rgba(10,49,97,0.06);
-      --shadow-md: 0 4px 16px rgba(10,49,97,0.1), 0 2px 6px rgba(10,49,97,0.06);
-      --shadow-lg: 0 20px 48px rgba(10,49,97,0.12), 0 8px 16px rgba(10,49,97,0.08);
-      --radius-sm: 10px;
-      --radius-md: 16px;
-      --radius-lg: 24px;
-      --radius-xl: 32px;
-      --section-pad: 96px 0;
-      --container: 1180px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Freedom 250 | Innovation & Freedom Festival</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ===== DESIGN TOKENS ===== */
+        :root {
+          --red: #B22234;
+          --red-soft: #d6394c;
+          --red-pale: #fdf2f3;
+          --blue: #0A3161;
+          --blue-mid: #1a4f8f;
+          --blue-pale: #edf2fa;
+          --white: #ffffff;
+          --off-white: #f8f9fb;
+          --gray-100: #f2f4f7;
+          --gray-200: #e5e8ef;
+          --gray-300: #cbd0dc;
+          --gray-500: #8891a5;
+          --gray-700: #3d4456;
+          --gray-900: #111827;
+          --shadow-sm: 0 1px 3px rgba(10,49,97,0.08), 0 1px 2px rgba(10,49,97,0.06);
+          --shadow-md: 0 4px 16px rgba(10,49,97,0.1), 0 2px 6px rgba(10,49,97,0.06);
+          --shadow-lg: 0 20px 48px rgba(10,49,97,0.12), 0 8px 16px rgba(10,49,97,0.08);
+          --radius-sm: 10px;
+          --radius-md: 16px;
+          --radius-lg: 24px;
+          --radius-xl: 32px;
+          --section-pad: 96px 0;
+          --container: 1180px;
+        }
 
-    /* ===== RESET & BASE ===== */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--gray-900); background: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    img { max-width: 100%; display: block; }
-    a { text-decoration: none; color: inherit; }
-    button { font-family: inherit; cursor: pointer; border: none; outline: none; }
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--gray-900); background: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; outline: none; }
 
-    /* ===== CONTAINER ===== */
-    .container { max-width: var(--container); margin: 0 auto; padding: 0 28px; }
+        /* ===== CONTAINER ===== */
+        .container { max-width: var(--container); margin: 0 auto; padding: 0 28px; }
 
-    /* ===== BUTTONS ===== */
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 28px; border-radius: var(--radius-sm); font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.92rem; letter-spacing: 0.02em; cursor: pointer; transition: all 0.22s cubic-bezier(.4,0,.2,1); text-align: center; }
-    .btn-primary { background: var(--red); color: #fff; border: 2px solid var(--red); }
-    .btn-primary:hover { background: var(--red-soft); border-color: var(--red-soft); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(178,34,52,0.3); }
-    .btn-blue { background: var(--blue); color: #fff; border: 2px solid var(--blue); }
-    .btn-blue:hover { background: var(--blue-mid); border-color: var(--blue-mid); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(10,49,97,0.3); }
-    .btn-outline { background: transparent; color: var(--blue); border: 2px solid var(--gray-300); }
-    .btn-outline:hover { border-color: var(--blue); background: var(--blue-pale); }
-    .btn-outline-white { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.5); }
-    .btn-outline-white:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.8); }
-    .btn-lg { padding: 16px 36px; font-size: 1rem; border-radius: 12px; }
-    .btn-sm { padding: 9px 18px; font-size: 0.82rem; }
-    .btn-google { background: #fff; color: #333; border: 1.5px solid var(--gray-200); font-weight: 600; }
-    .btn-google:hover { background: #f5f6f8; box-shadow: var(--shadow-sm); }
-    .w-full { width: 100%; }
+        /* ===== BUTTONS ===== */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 28px; border-radius: var(--radius-sm); font-family: 'Sora', sans-serif; font-weight: 700; font-size: 0.92rem; letter-spacing: 0.02em; cursor: pointer; transition: all 0.22s cubic-bezier(.4,0,.2,1); text-align: center; }
+        .btn-primary { background: var(--red); color: #fff; border: 2px solid var(--red); }
+        .btn-primary:hover { background: var(--red-soft); border-color: var(--red-soft); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(178,34,52,0.3); }
+        .btn-blue { background: var(--blue); color: #fff; border: 2px solid var(--blue); }
+        .btn-blue:hover { background: var(--blue-mid); border-color: var(--blue-mid); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(10,49,97,0.3); }
+        .btn-outline { background: transparent; color: var(--blue); border: 2px solid var(--gray-300); }
+        .btn-outline:hover { border-color: var(--blue); background: var(--blue-pale); }
+        .btn-outline-white { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.5); }
+        .btn-outline-white:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.8); }
+        .btn-lg { padding: 16px 36px; font-size: 1rem; border-radius: 12px; }
+        .btn-sm { padding: 9px 18px; font-size: 0.82rem; }
+        .btn-google { background: #fff; color: #333; border: 1.5px solid var(--gray-200); font-weight: 600; }
+        .btn-google:hover { background: #f5f6f8; box-shadow: var(--shadow-sm); }
+        .w-full { width: 100%; }
 
-    /* ===== SECTION HEADERS ===== */
-    .section-label { display: inline-flex; align-items: center; gap: 8px; font-family: 'Sora', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); background: var(--red-pale); padding: 6px 14px; border-radius: 99px; margin-bottom: 18px; border: 1px solid rgba(178,34,52,0.12); }
-    .section-title { font-family: 'Sora', sans-serif; font-size: 2.6rem; font-weight: 900; color: var(--blue); line-height: 1.15; margin-bottom: 16px; }
-    .section-title .accent { color: var(--red); }
-    .section-desc { font-size: 1.05rem; color: var(--gray-500); line-height: 1.7; max-width: 620px; }
-    .section-header { margin-bottom: 52px; }
-    .section-header.centered { text-align: center; }
-    .section-header.centered .section-desc { margin: 0 auto; }
+        /* ===== SECTION HEADERS ===== */
+        .section-label { display: inline-flex; align-items: center; gap: 8px; font-family: 'Sora', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); background: var(--red-pale); padding: 6px 14px; border-radius: 99px; margin-bottom: 18px; border: 1px solid rgba(178,34,52,0.12); }
+        .section-title { font-family: 'Sora', sans-serif; font-size: 2.6rem; font-weight: 900; color: var(--blue); line-height: 1.15; margin-bottom: 16px; }
+        .section-title .accent { color: var(--red); }
+        .section-desc { font-size: 1.05rem; color: var(--gray-500); line-height: 1.7; max-width: 620px; }
+        .section-header { margin-bottom: 52px; }
+        .section-header.centered { text-align: center; }
+        .section-header.centered .section-desc { margin: 0 auto; }
 
-    /* ===== SKIP LINK ===== */
-    .skip-link { position: absolute; left: -9999px; top: auto; }
-    .skip-link:focus { position: static; }
+        /* ===== SKIP LINK ===== */
+        .skip-link { position: absolute; left: -9999px; top: auto; }
+        .skip-link:focus { position: static; }
 
-    /* ===== LOADING ===== */
-    .loading-overlay { position: fixed; inset: 0; background: var(--blue); display: flex; align-items: center; justify-content: center; z-index: 99999; transition: opacity 0.5s ease; }
-    .loader-ring { width: 42px; height: 42px; border: 3px solid rgba(255,255,255,0.2); border-top-color: var(--red); border-radius: 50%; animation: spin 0.9s linear infinite; margin: 0 auto 14px; }
-    .loader-label { font-family: 'Sora', sans-serif; font-weight: 700; color: #fff; font-size: 0.95rem; letter-spacing: 0.05em; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+        /* ===== LOADING ===== */
+        .loading-overlay { position: fixed; inset: 0; background: var(--blue); display: flex; align-items: center; justify-content: center; z-index: 99999; transition: opacity 0.5s ease; }
+        .loader-ring { width: 42px; height: 42px; border: 3px solid rgba(255,255,255,0.2); border-top-color: var(--red); border-radius: 50%; animation: spin 0.9s linear infinite; margin: 0 auto 14px; }
+        .loader-label { font-family: 'Sora', sans-serif; font-weight: 700; color: #fff; font-size: 0.95rem; letter-spacing: 0.05em; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ===== NAVBAR ===== */
-    .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(255,255,255,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--gray-200); transition: box-shadow 0.3s; }
-    .navbar.scrolled { box-shadow: 0 4px 24px rgba(10,49,97,0.08); }
-    .nav-container { display: flex; align-items: center; max-width: var(--container); margin: 0 auto; padding: 0 28px; height: 68px; gap: 32px; }
-    .nav-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-    .brand-flag { width: 32px; height: 20px; object-fit: cover; border-radius: 3px; box-shadow: var(--shadow-sm); }
-    .brand-text { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 900; color: var(--blue); letter-spacing: -0.02em; }
-    .brand-text .accent { color: var(--red); }
-    .nav-links { display: flex; align-items: center; gap: 4px; flex: 1; }
-    .nav-link { font-size: 0.875rem; font-weight: 600; color: var(--gray-700); padding: 8px 12px; border-radius: 8px; transition: all 0.18s; white-space: nowrap; }
-    .nav-link:hover { color: var(--blue); background: var(--blue-pale); }
-    .nav-link.active { color: var(--red); }
-    .nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-    .hidden { display: none !important; }
-    .mobile-menu-btn { background: none; border: 1.5px solid var(--gray-200); color: var(--gray-700); width: 38px; height: 38px; border-radius: 8px; display: none; align-items: center; justify-content: center; font-size: 1rem; }
+        /* ===== NAVBAR ===== */
+        .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(255,255,255,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--gray-200); transition: box-shadow 0.3s; }
+        .navbar.scrolled { box-shadow: 0 4px 24px rgba(10,49,97,0.08); }
+        .nav-container { display: flex; align-items: center; max-width: var(--container); margin: 0 auto; padding: 0 28px; height: 68px; gap: 32px; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        .brand-flag { width: 32px; height: 20px; object-fit: cover; border-radius: 3px; box-shadow: var(--shadow-sm); }
+        .brand-text { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 900; color: var(--blue); letter-spacing: -0.02em; }
+        .brand-text .accent { color: var(--red); }
+        .nav-links { display: flex; align-items: center; gap: 4px; flex: 1; }
+        .nav-link { font-size: 0.875rem; font-weight: 600; color: var(--gray-700); padding: 8px 12px; border-radius: 8px; transition: all 0.18s; white-space: nowrap; }
+        .nav-link:hover { color: var(--blue); background: var(--blue-pale); }
+        .nav-link.active { color: var(--red); }
+        .nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        .hidden { display: none !important; }
+        .mobile-menu-btn { background: none; border: 1.5px solid var(--gray-200); color: var(--gray-700); width: 38px; height: 38px; border-radius: 8px; display: none; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; }
 
-    /* ===== MOBILE MENU ===== */
-    .mobile-menu-panel { position: fixed; top: 68px; left: 0; right: 0; background: #fff; z-index: 999; padding: 20px 24px; border-bottom: 1px solid var(--gray-200); display: flex; flex-direction: column; gap: 6px; box-shadow: 0 20px 40px rgba(10,49,97,0.1); }
-    .mobile-link { font-size: 0.95rem; font-weight: 600; color: var(--gray-700); padding: 12px 16px; border-radius: 10px; display: block; transition: background 0.18s; }
-    .mobile-link:hover { background: var(--gray-100); color: var(--blue); }
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu-panel {
+          position: fixed;
+          top: 68px;
+          left: 0;
+          right: 0;
+          background: #fff;
+          z-index: 999;
+          padding: 20px 24px;
+          border-bottom: 1px solid var(--gray-200);
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          box-shadow: 0 20px 40px rgba(10,49,97,0.1);
+          transform: translateY(-100%);
+          opacity: 0;
+          transition: transform 0.3s ease, opacity 0.3s ease;
+          pointer-events: none;
+        }
+        .mobile-menu-panel.open {
+          transform: translateY(0);
+          opacity: 1;
+          pointer-events: all;
+        }
+        .mobile-link { font-size: 0.95rem; font-weight: 600; color: var(--gray-700); padding: 12px 16px; border-radius: 10px; display: block; transition: background 0.18s; cursor: pointer; }
+        .mobile-link:hover { background: var(--gray-100); color: var(--blue); }
 
-    /* ===== HERO ===== */
-    .hero-section { background: var(--blue); color: #fff; padding: 148px 0 96px; position: relative; overflow: hidden; }
-    .hero-section::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(ellipse at 70% 10%, rgba(178,34,52,0.3) 0%, transparent 55%), radial-gradient(ellipse at 10% 90%, rgba(255,255,255,0.04) 0%, transparent 50%); z-index: 0; }
-    .hero-stars { position: absolute; inset: 0; background-image: radial-gradient(1.5px 1.5px at 15% 25%, rgba(255,255,255,0.25), transparent), radial-gradient(1px 1px at 35% 60%, rgba(255,255,255,0.15), transparent), radial-gradient(2px 2px at 70% 20%, rgba(255,255,255,0.2), transparent), radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,0.12), transparent); }
-    .hero-inner { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 64px; align-items: center; position: relative; z-index: 1; }
-    .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 7px 16px; border-radius: 99px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px; }
-    .hero-section h1 { font-family: 'Sora', sans-serif; font-size: 3.8rem; font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 22px; }
-    .hero-section h1 .line-accent { color: var(--red); background: none; -webkit-text-fill-color: var(--red); }
-    .hero-section p { font-size: 1.1rem; opacity: 0.82; line-height: 1.7; margin-bottom: 36px; max-width: 540px; }
-    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
-    .hero-stats { display: flex; gap: 36px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.12); }
-    .hero-stat .val { font-family: 'Sora', sans-serif; font-size: 1.9rem; font-weight: 900; display: block; }
-    .hero-stat .lbl { font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.08em; }
+        /* ===== HERO ===== */
+        .hero-section { background: var(--blue); color: #fff; padding: 148px 0 96px; position: relative; overflow: hidden; }
+        .hero-section::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(ellipse at 70% 10%, rgba(178,34,52,0.3) 0%, transparent 55%), radial-gradient(ellipse at 10% 90%, rgba(255,255,255,0.04) 0%, transparent 50%); z-index: 0; }
+        .hero-stars { position: absolute; inset: 0; background-image: radial-gradient(1.5px 1.5px at 15% 25%, rgba(255,255,255,0.25), transparent), radial-gradient(1px 1px at 35% 60%, rgba(255,255,255,0.15), transparent), radial-gradient(2px 2px at 70% 20%, rgba(255,255,255,0.2), transparent), radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,0.12), transparent); }
+        .hero-inner { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 64px; align-items: center; position: relative; z-index: 1; }
+        .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 7px 16px; border-radius: 99px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px; }
+        .hero-section h1 { font-family: 'Sora', sans-serif; font-size: 3.8rem; font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 22px; }
+        .hero-section h1 .line-accent { color: var(--red); background: none; -webkit-text-fill-color: var(--red); }
+        .hero-section p { font-size: 1.1rem; opacity: 0.82; line-height: 1.7; margin-bottom: 36px; max-width: 540px; }
+        .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+        .hero-stats { display: flex; gap: 36px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.12); }
+        .hero-stat .val { font-family: 'Sora', sans-serif; font-size: 1.9rem; font-weight: 900; display: block; }
+        .hero-stat .lbl { font-size: 0.8rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.08em; }
 
-    /* Countdown */
-    .countdown-wrap { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 16px; padding: 18px 24px; margin-bottom: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-    .countdown-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.7; white-space: nowrap; }
-    .countdown-digits { display: flex; gap: 16px; }
-    .cd-unit { text-align: center; }
-    .cd-unit .num { font-family: 'Sora', sans-serif; font-size: 2rem; font-weight: 900; display: block; line-height: 1; }
-    .cd-unit .lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.55; margin-top: 4px; }
-    .cd-sep { font-size: 1.4rem; font-weight: 300; opacity: 0.4; align-self: center; }
+        /* Countdown */
+        .countdown-wrap { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 16px; padding: 18px 24px; margin-bottom: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .countdown-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.7; white-space: nowrap; }
+        .countdown-digits { display: flex; gap: 16px; }
+        .cd-unit { text-align: center; }
+        .cd-unit .num { font-family: 'Sora', sans-serif; font-size: 2rem; font-weight: 900; display: block; line-height: 1; }
+        .cd-unit .lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.55; margin-top: 4px; }
+        .cd-sep { font-size: 1.4rem; font-weight: 300; opacity: 0.4; align-self: center; }
 
-    /* Marquee */
-    .marquee-strip { background: rgba(255,255,255,0.07); border-radius: 99px; padding: 10px 18px; font-size: 0.85rem; font-weight: 600; opacity: 0.9; overflow: hidden; margin-bottom: 32px; }
+        /* Marquee */
+        .marquee-strip { background: rgba(255,255,255,0.07); border-radius: 99px; padding: 10px 18px; font-size: 0.85rem; font-weight: 600; opacity: 0.9; overflow: hidden; margin-bottom: 32px; }
 
-    /* Hero graphic */
-    .hero-visual { position: relative; height: 500px; }
-    .hero-img-main { position: absolute; top: 20px; left: 0; width: 68%; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1); aspect-ratio: 4/3; }
-    .hero-img-sec { position: absolute; bottom: 30px; right: 0; width: 48%; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.35); border: 2px solid rgba(255,255,255,0.1); aspect-ratio: 4/3; }
-    .hero-img-main img, .hero-img-sec img { width: 100%; height: 100%; object-fit: cover; }
-    .hero-chip { position: absolute; top: 12px; right: 12px; background: var(--red); color: #fff; font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 800; padding: 5px 10px; border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; z-index: 5; }
-    .hero-floating-badge { position: absolute; top: 200px; right: -20px; background: #fff; color: var(--blue); padding: 12px 18px; border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.25); font-family: 'Sora', sans-serif; font-weight: 800; font-size: 0.82rem; z-index: 10; display: flex; align-items: center; gap: 8px; white-space: nowrap; animation: floatBob 4s ease-in-out infinite; }
-    .hero-floating-badge .dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
-    @keyframes floatBob { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.6;transform:scale(1.4);} }
+        /* Hero graphic */
+        .hero-visual { position: relative; height: 500px; }
+        .hero-img-main { position: absolute; top: 20px; left: 0; width: 68%; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.1); aspect-ratio: 4/3; }
+        .hero-img-sec { position: absolute; bottom: 30px; right: 0; width: 48%; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.35); border: 2px solid rgba(255,255,255,0.1); aspect-ratio: 4/3; }
+        .hero-img-main img, .hero-img-sec img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-chip { position: absolute; top: 12px; right: 12px; background: var(--red); color: #fff; font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 800; padding: 5px 10px; border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; z-index: 5; }
+        .hero-floating-badge { position: absolute; top: 200px; right: -20px; background: #fff; color: var(--blue); padding: 12px 18px; border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.25); font-family: 'Sora', sans-serif; font-weight: 800; font-size: 0.82rem; z-index: 10; display: flex; align-items: center; gap: 8px; white-space: nowrap; animation: floatBob 4s ease-in-out infinite; }
+        .hero-floating-badge .dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes floatBob { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.6;transform:scale(1.4);} }
 
-    /* ===== BOOTH FLOW ===== */
-    .flow-section { padding: var(--section-pad); background: var(--off-white); }
-    .flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 40px; }
-    .flow-card { background: #fff; border-radius: var(--radius-md); padding: 32px 28px; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); transition: all 0.25s; }
-    .flow-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); border-color: rgba(10,49,97,0.15); }
-    .flow-num { width: 44px; height: 44px; border-radius: 12px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-weight: 900; font-size: 1.1rem; margin-bottom: 20px; }
-    .flow-card h3 { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--blue); margin-bottom: 10px; }
-    .flow-card p { font-size: 0.92rem; color: var(--gray-500); line-height: 1.65; }
-    .flow-cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+        /* ===== BOOTH FLOW ===== */
+        .flow-section { padding: var(--section-pad); background: var(--off-white); }
+        .flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 40px; }
+        .flow-card { background: #fff; border-radius: var(--radius-md); padding: 32px 28px; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); transition: all 0.25s; }
+        .flow-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); border-color: rgba(10,49,97,0.15); }
+        .flow-num { width: 44px; height: 44px; border-radius: 12px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-weight: 900; font-size: 1.1rem; margin-bottom: 20px; }
+        .flow-card h3 { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--blue); margin-bottom: 10px; }
+        .flow-card p { font-size: 0.92rem; color: var(--gray-500); line-height: 1.65; }
+        .flow-cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
 
-    /* QR Card */
-    .qr-panel { margin-top: 32px; }
-    .qr-card { background: #fff; border-radius: var(--radius-md); border: 1px solid var(--gray-200); padding: 28px 32px; display: flex; align-items: center; gap: 32px; box-shadow: var(--shadow-sm); flex-wrap: wrap; }
-    .qr-card-text { flex: 1; min-width: 240px; }
-    .qr-card-text h3 { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--blue); margin-bottom: 8px; }
-    .qr-card-text p { font-size: 0.9rem; color: var(--gray-500); }
-    .qr-chip { flex-shrink: 0; }
+        /* QR Card */
+        .qr-panel { margin-top: 32px; }
+        .qr-card { background: #fff; border-radius: var(--radius-md); border: 1px solid var(--gray-200); padding: 28px 32px; display: flex; align-items: center; gap: 32px; box-shadow: var(--shadow-sm); flex-wrap: wrap; }
+        .qr-card-text { flex: 1; min-width: 240px; }
+        .qr-card-text h3 { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--blue); margin-bottom: 8px; }
+        .qr-card-text p { font-size: 0.9rem; color: var(--gray-500); }
+        .qr-chip { flex-shrink: 0; }
 
-    /* ===== MISSION SECTION ===== */
-    .mission-section { padding: var(--section-pad); background: #fff; }
-    .mission-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
-    .mission-card { background: var(--off-white); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--gray-200); transition: all 0.3s; display: flex; flex-direction: column; }
-    .mission-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); border-color: rgba(178,34,52,0.2); }
-    .mission-card-img { height: 200px; overflow: hidden; }
-    .mission-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-    .mission-card:hover .mission-card-img img { transform: scale(1.06); }
-    .mission-card-body { padding: 28px 30px 30px; flex: 1; }
-    .mission-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--red-pale); color: var(--red); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 16px; }
-    .mission-card h3 { font-family: 'Sora', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--blue); margin-bottom: 10px; }
-    .mission-card p { font-size: 0.93rem; color: var(--gray-500); line-height: 1.65; }
+        /* ===== MISSION SECTION ===== */
+        .mission-section { padding: var(--section-pad); background: #fff; }
+        .mission-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+        .mission-card { background: var(--off-white); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--gray-200); transition: all 0.3s; display: flex; flex-direction: column; }
+        .mission-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); border-color: rgba(178,34,52,0.2); }
+        .mission-card-img { height: 200px; overflow: hidden; }
+        .mission-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .mission-card:hover .mission-card-img img { transform: scale(1.06); }
+        .mission-card-body { padding: 28px 30px 30px; flex: 1; }
+        .mission-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--red-pale); color: var(--red); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 16px; }
+        .mission-card h3 { font-family: 'Sora', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--blue); margin-bottom: 10px; }
+        .mission-card p { font-size: 0.93rem; color: var(--gray-500); line-height: 1.65; }
 
-    /* ===== TENTS SECTION ===== */
-    .tents-section { padding: var(--section-pad); background: var(--blue-pale); }
-    .tents-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    .tent-card { background: #fff; border-radius: var(--radius-md); padding: 36px 32px; border: 1px solid var(--gray-200); transition: all 0.28s; position: relative; overflow: hidden; }
-    .tent-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red) 0%, var(--blue) 100%); opacity: 0; transition: opacity 0.28s; }
-    .tent-card:hover::before { opacity: 1; }
-    .tent-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); border-color: transparent; }
-    .tent-icon { width: 60px; height: 60px; border-radius: 16px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; transition: transform 0.3s; }
-    .tent-card:hover .tent-icon { transform: scale(1.1) rotate(-5deg); }
-    .tent-card h3 { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--blue); margin-bottom: 10px; letter-spacing: 0.03em; }
-    .tent-card p { font-size: 0.93rem; color: var(--gray-500); line-height: 1.65; margin-bottom: 20px; }
-    .tent-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; color: var(--blue); background: var(--blue-pale); padding: 5px 12px; border-radius: 99px; border: 1px solid rgba(10,49,97,0.1); }
+        /* ===== TENTS SECTION ===== */
+        .tents-section { padding: var(--section-pad); background: var(--blue-pale); }
+        .tents-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .tent-card { background: #fff; border-radius: var(--radius-md); padding: 36px 32px; border: 1px solid var(--gray-200); transition: all 0.28s; position: relative; overflow: hidden; }
+        .tent-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--red) 0%, var(--blue) 100%); opacity: 0; transition: opacity 0.28s; }
+        .tent-card:hover::before { opacity: 1; }
+        .tent-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); border-color: transparent; }
+        .tent-icon { width: 60px; height: 60px; border-radius: 16px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; transition: transform 0.3s; }
+        .tent-card:hover .tent-icon { transform: scale(1.1) rotate(-5deg); }
+        .tent-card h3 { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--blue); margin-bottom: 10px; letter-spacing: 0.03em; }
+        .tent-card p { font-size: 0.93rem; color: var(--gray-500); line-height: 1.65; margin-bottom: 20px; }
+        .tent-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; color: var(--blue); background: var(--blue-pale); padding: 5px 12px; border-radius: 99px; border: 1px solid rgba(10,49,97,0.1); }
 
-    /* ===== EVENTS SECTION ===== */
-    .events-section { padding: var(--section-pad); background: #fff; }
-    .events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-    .event-card { background: #fff; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); cursor: pointer; transition: all 0.3s cubic-bezier(.4,0,.2,1); }
-    .event-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: rgba(10,49,97,0.15); }
-    .event-card-img { height: 210px; overflow: hidden; position: relative; background: var(--gray-100); }
-    .event-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-    .event-card:hover .event-card-img img { transform: scale(1.06); }
-    .event-card-status { position: absolute; top: 14px; right: 14px; font-family: 'Sora', sans-serif; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; }
-    .status-live { background: #dcfce7; color: #166534; }
-    .status-upcoming { background: var(--blue-pale); color: var(--blue); }
-    .status-completed { background: var(--gray-100); color: var(--gray-500); }
-    .event-card-body { padding: 24px 26px 28px; }
-    .event-card-date { font-size: 0.78rem; font-weight: 700; color: var(--red); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
-    .event-card h3 { font-family: 'Sora', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--blue); margin-bottom: 8px; line-height: 1.3; }
-    .event-card-tagline { font-size: 0.88rem; color: var(--gray-500); margin-bottom: 18px; line-height: 1.5; }
-    .event-card-meta { display: flex; gap: 16px; font-size: 0.8rem; color: var(--gray-500); margin-bottom: 20px; flex-wrap: wrap; }
-    .event-card-meta span { display: flex; align-items: center; gap: 5px; }
-    .event-card-meta i { font-size: 0.75rem; color: var(--red); }
-    .event-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 18px; border-top: 1px solid var(--gray-200); }
-    .event-card-participants { font-size: 0.8rem; font-weight: 600; color: var(--gray-700); }
-    .event-card-cta { font-family: 'Sora', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--red); display: flex; align-items: center; gap: 5px; }
-    .event-card-cta i { font-size: 0.75rem; transition: transform 0.2s; }
-    .event-card:hover .event-card-cta i { transform: translateX(3px); }
+        /* ===== EVENTS SECTION ===== */
+        .events-section { padding: var(--section-pad); background: #fff; }
+        .events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+        .event-card { background: #fff; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); cursor: pointer; transition: all 0.3s cubic-bezier(.4,0,.2,1); }
+        .event-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: rgba(10,49,97,0.15); }
+        .event-card-img { height: 210px; overflow: hidden; position: relative; background: var(--gray-100); }
+        .event-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .event-card:hover .event-card-img img { transform: scale(1.06); }
+        .event-card-status { position: absolute; top: 14px; right: 14px; font-family: 'Sora', sans-serif; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; }
+        .status-live { background: #dcfce7; color: #166534; }
+        .status-upcoming { background: var(--blue-pale); color: var(--blue); }
+        .status-completed { background: var(--gray-100); color: var(--gray-500); }
+        .event-card-body { padding: 24px 26px 28px; }
+        .event-card-date { font-size: 0.78rem; font-weight: 700; color: var(--red); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+        .event-card h3 { font-family: 'Sora', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--blue); margin-bottom: 8px; line-height: 1.3; }
+        .event-card-tagline { font-size: 0.88rem; color: var(--gray-500); margin-bottom: 18px; line-height: 1.5; }
+        .event-card-meta { display: flex; gap: 16px; font-size: 0.8rem; color: var(--gray-500); margin-bottom: 20px; flex-wrap: wrap; }
+        .event-card-meta span { display: flex; align-items: center; gap: 5px; }
+        .event-card-meta i { font-size: 0.75rem; color: var(--red); }
+        .event-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 18px; border-top: 1px solid var(--gray-200); }
+        .event-card-participants { font-size: 0.8rem; font-weight: 600; color: var(--gray-700); }
+        .event-card-cta { font-family: 'Sora', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--red); display: flex; align-items: center; gap: 5px; }
+        .event-card-cta i { font-size: 0.75rem; transition: transform 0.2s; }
+        .event-card:hover .event-card-cta i { transform: translateX(3px); }
 
-    /* ===== EVENT DETAIL OVERLAY ===== */
-    .event-detail-overlay { position: fixed; inset: 0; background: rgba(5,15,40,0.7); z-index: 2000; display: flex; align-items: flex-start; justify-content: center; padding: 32px 20px; overflow-y: auto; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(6px); }
-    .event-detail-overlay.active { opacity: 1; pointer-events: all; }
-    .event-detail-panel { background: #fff; border-radius: var(--radius-xl); max-width: 860px; width: 100%; position: relative; animation: slideUp 0.35s cubic-bezier(.4,0,.2,1); overflow: hidden; margin: auto; }
-    @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .event-detail-hero { position: relative; height: 280px; overflow: hidden; }
-    .event-detail-hero img { width: 100%; height: 100%; object-fit: cover; }
-    .event-detail-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,49,97,0.85) 0%, rgba(10,49,97,0.2) 50%, transparent 100%); }
-    .event-detail-close { position: absolute; top: 16px; right: 16px; width: 38px; height: 38px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: background 0.2s; z-index: 5; }
-    .event-detail-close:hover { background: rgba(255,255,255,0.3); }
-    .event-detail-hero-text { position: absolute; bottom: 24px; left: 32px; right: 32px; color: #fff; }
-    .event-detail-hero-text h2 { font-family: 'Sora', sans-serif; font-size: 2rem; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
-    .event-detail-hero-text p { font-size: 1rem; opacity: 0.85; }
-    .event-detail-body { padding: 36px 36px 40px; }
-    .event-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
-    .event-detail-stat { background: var(--off-white); border-radius: var(--radius-sm); padding: 18px 20px; border: 1px solid var(--gray-200); }
-    .event-detail-stat strong { display: block; font-family: 'Sora', sans-serif; font-size: 1.4rem; font-weight: 900; color: var(--blue); margin-bottom: 4px; }
-    .event-detail-stat span { font-size: 0.8rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
-    .event-detail-description { font-size: 1rem; color: var(--gray-700); line-height: 1.75; margin-bottom: 28px; }
-    .event-detail-highlights { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 36px; }
-    .event-highlight { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: var(--blue-pale); border-radius: var(--radius-sm); border: 1px solid rgba(10,49,97,0.1); }
-    .event-highlight i { color: var(--red); font-size: 0.9rem; margin-top: 2px; flex-shrink: 0; }
-    .event-highlight p { font-size: 0.88rem; color: var(--blue); font-weight: 600; line-height: 1.4; }
-    .event-detail-cta { background: linear-gradient(135deg, var(--blue) 0%, #1a4f8f 100%); border-radius: var(--radius-md); padding: 32px; text-align: center; }
-    .event-detail-cta h3 { font-family: 'Sora', sans-serif; font-size: 1.3rem; font-weight: 900; color: #fff; margin-bottom: 8px; }
-    .event-detail-cta p { font-size: 0.9rem; color: rgba(255,255,255,0.75); margin-bottom: 20px; }
-    .event-detail-cta .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        /* ===== EVENT DETAIL OVERLAY ===== */
+        .event-detail-overlay { position: fixed; inset: 0; background: rgba(5,15,40,0.7); z-index: 2000; display: flex; align-items: flex-start; justify-content: center; padding: 32px 20px; overflow-y: auto; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(6px); }
+        .event-detail-overlay.active { opacity: 1; pointer-events: all; }
+        .event-detail-panel { background: #fff; border-radius: var(--radius-xl); max-width: 860px; width: 100%; position: relative; animation: slideUp 0.35s cubic-bezier(.4,0,.2,1); overflow: hidden; margin: auto; }
+        @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .event-detail-hero { position: relative; height: 280px; overflow: hidden; }
+        .event-detail-hero img { width: 100%; height: 100%; object-fit: cover; }
+        .event-detail-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,49,97,0.85) 0%, rgba(10,49,97,0.2) 50%, transparent 100%); }
+        .event-detail-close { position: absolute; top: 16px; right: 16px; width: 38px; height: 38px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: background 0.2s; z-index: 5; }
+        .event-detail-close:hover { background: rgba(255,255,255,0.3); }
+        .event-detail-hero-text { position: absolute; bottom: 24px; left: 32px; right: 32px; color: #fff; }
+        .event-detail-hero-text h2 { font-family: 'Sora', sans-serif; font-size: 2rem; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+        .event-detail-hero-text p { font-size: 1rem; opacity: 0.85; }
+        .event-detail-body { padding: 36px 36px 40px; }
+        .event-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+        .event-detail-stat { background: var(--off-white); border-radius: var(--radius-sm); padding: 18px 20px; border: 1px solid var(--gray-200); }
+        .event-detail-stat strong { display: block; font-family: 'Sora', sans-serif; font-size: 1.4rem; font-weight: 900; color: var(--blue); margin-bottom: 4px; }
+        .event-detail-stat span { font-size: 0.8rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+        .event-detail-description { font-size: 1rem; color: var(--gray-700); line-height: 1.75; margin-bottom: 28px; }
+        .event-detail-highlights { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 36px; }
+        .event-highlight { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: var(--blue-pale); border-radius: var(--radius-sm); border: 1px solid rgba(10,49,97,0.1); }
+        .event-highlight i { color: var(--red); font-size: 0.9rem; margin-top: 2px; flex-shrink: 0; }
+        .event-highlight p { font-size: 0.88rem; color: var(--blue); font-weight: 600; line-height: 1.4; }
+        .event-detail-cta { background: linear-gradient(135deg, var(--blue) 0%, #1a4f8f 100%); border-radius: var(--radius-md); padding: 32px; text-align: center; }
+        .event-detail-cta h3 { font-family: 'Sora', sans-serif; font-size: 1.3rem; font-weight: 900; color: #fff; margin-bottom: 8px; }
+        .event-detail-cta p { font-size: 0.9rem; color: rgba(255,255,255,0.75); margin-bottom: 20px; }
+        .event-detail-cta .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
-    /* ===== LIVE ANALYTICS ===== */
-    .live-section { padding: var(--section-pad); background: var(--off-white); }
-    .live-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 28px; }
-    .live-card { background: #fff; border-radius: var(--radius-md); padding: 32px; border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); }
-    .live-card h3 { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--blue); margin-bottom: 22px; }
-    .heatmap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .heatmap-zone { border-radius: 12px; padding: 16px; text-align: center; }
-    .heatmap-zone strong { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; }
-    .heatmap-zone span { display: block; font-family: 'Sora', sans-serif; font-size: 1.5rem; font-weight: 900; line-height: 1; margin-bottom: 2px; }
-    .heatmap-zone small { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
-    .heatmap-zone.hot { background: #fff1f2; color: var(--red); border: 1px solid rgba(178,34,52,0.15); }
-    .heatmap-zone.warm { background: #fff7ed; color: #c2410c; border: 1px solid rgba(194,65,12,0.12); }
-    .heatmap-zone.cool { background: var(--blue-pale); color: var(--blue); border: 1px solid rgba(10,49,97,0.1); }
-    .analytics-metric { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--gray-200); }
-    .analytics-metric:last-child { border-bottom: none; }
-    .analytics-metric h4 { font-size: 0.9rem; color: var(--gray-700); font-weight: 600; }
-    .analytics-metric strong { font-family: 'Sora', sans-serif; font-size: 1.4rem; font-weight: 900; color: var(--blue); }
+        /* ===== LIVE ANALYTICS ===== */
+        .live-section { padding: var(--section-pad); background: var(--off-white); }
+        .live-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 28px; }
+        .live-card { background: #fff; border-radius: var(--radius-md); padding: 32px; border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); }
+        .live-card h3 { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--blue); margin-bottom: 22px; }
+        .heatmap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .heatmap-zone { border-radius: 12px; padding: 16px; text-align: center; }
+        .heatmap-zone strong { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; }
+        .heatmap-zone span { display: block; font-family: 'Sora', sans-serif; font-size: 1.5rem; font-weight: 900; line-height: 1; margin-bottom: 2px; }
+        .heatmap-zone small { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
+        .heatmap-zone.hot { background: #fff1f2; color: var(--red); border: 1px solid rgba(178,34,52,0.15); }
+        .heatmap-zone.warm { background: #fff7ed; color: #c2410c; border: 1px solid rgba(194,65,12,0.12); }
+        .heatmap-zone.cool { background: var(--blue-pale); color: var(--blue); border: 1px solid rgba(10,49,97,0.1); }
+        .analytics-metric { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--gray-200); }
+        .analytics-metric:last-child { border-bottom: none; }
+        .analytics-metric h4 { font-size: 0.9rem; color: var(--gray-700); font-weight: 600; }
+        .analytics-metric strong { font-family: 'Sora', sans-serif; font-size: 1.4rem; font-weight: 900; color: var(--blue); }
 
-    /* ===== GALLERY ===== */
-    .gallery-section { padding: var(--section-pad); background: #fff; }
-    .gallery-grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 200px; gap: 16px; }
-    .g-frame { border-radius: var(--radius-md); overflow: hidden; position: relative; cursor: pointer; }
-    .g-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-    .g-frame:hover img { transform: scale(1.07); }
-    .g-caption { position: absolute; bottom: 0; inset-x: 0; padding: 16px 18px 14px; background: linear-gradient(to top, rgba(10,49,97,0.85), transparent); color: #fff; font-family: 'Sora', sans-serif; font-size: 0.82rem; font-weight: 700; transform: translateY(8px); opacity: 0; transition: all 0.3s; }
-    .g-frame:hover .g-caption { transform: translateY(0); opacity: 1; }
-    .g-span-5 { grid-column: span 5; }
-    .g-span-7 { grid-column: span 7; }
-    .g-span-4 { grid-column: span 4; }
-    .g-span-8 { grid-column: span 8; }
-    .g-row-2 { grid-row: span 2; }
+        /* ===== GALLERY ===== */
+        .gallery-section { padding: var(--section-pad); background: #fff; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 200px; gap: 16px; }
+        .g-frame { border-radius: var(--radius-md); overflow: hidden; position: relative; cursor: pointer; }
+        .g-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .g-frame:hover img { transform: scale(1.07); }
+        .g-caption { position: absolute; bottom: 0; inset-x: 0; padding: 16px 18px 14px; background: linear-gradient(to top, rgba(10,49,97,0.85), transparent); color: #fff; font-family: 'Sora', sans-serif; font-size: 0.82rem; font-weight: 700; transform: translateY(8px); opacity: 0; transition: all 0.3s; }
+        .g-frame:hover .g-caption { transform: translateY(0); opacity: 1; }
+        .g-span-5 { grid-column: span 5; }
+        .g-span-7 { grid-column: span 7; }
+        .g-span-4 { grid-column: span 4; }
+        .g-span-8 { grid-column: span 8; }
+        .g-row-2 { grid-row: span 2; }
 
-    /* ===== PARTNERS ===== */
-    .partners-section { padding: var(--section-pad); background: var(--off-white); }
-    .featured-campus { background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 100%); color: #fff; border-radius: var(--radius-md); padding: 24px 32px; display: flex; align-items: center; gap: 24px; margin-bottom: 40px; }
-    .featured-campus-badge { width: 56px; height: 56px; background: rgba(255,255,255,0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
-    .featured-campus h4 { font-family: 'Sora', sans-serif; font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
-    .featured-campus p { font-size: 0.88rem; opacity: 0.75; }
-    .partners-subsection { margin-bottom: 40px; }
-    .partners-subsection h3 { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--blue); margin-bottom: 20px; }
-    .universities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
-    .university-card { background: #fff; border-radius: var(--radius-md); padding: 22px 24px; border: 1px solid var(--gray-200); display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow-sm); transition: all 0.25s; }
-    .university-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: rgba(10,49,97,0.15); }
-    .university-logo { width: 48px; height: 48px; background: var(--blue); color: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-weight: 900; font-size: 0.82rem; flex-shrink: 0; }
-    .university-card h4 { font-family: 'Sora', sans-serif; font-size: 0.88rem; font-weight: 800; color: var(--blue); margin-bottom: 3px; }
-    .university-card p { font-size: 0.78rem; color: var(--gray-500); }
-    .partners-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
-    .partner-card { background: #fff; border-radius: var(--radius-md); padding: 22px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); min-height: 90px; transition: all 0.25s; }
-    .partner-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .partner-card.highlight { border: 2px solid rgba(178,34,52,0.2); }
-    .partner-logo { max-width: 120px; max-height: 44px; object-fit: contain; }
+        /* ===== PARTNERS ===== */
+        .partners-section { padding: var(--section-pad); background: var(--off-white); }
+        .featured-campus { background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 100%); color: #fff; border-radius: var(--radius-md); padding: 24px 32px; display: flex; align-items: center; gap: 24px; margin-bottom: 40px; }
+        .featured-campus-badge { width: 56px; height: 56px; background: rgba(255,255,255,0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+        .featured-campus h4 { font-family: 'Sora', sans-serif; font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
+        .featured-campus p { font-size: 0.88rem; opacity: 0.75; }
+        .partners-subsection { margin-bottom: 40px; }
+        .partners-subsection h3 { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--blue); margin-bottom: 20px; }
+        .universities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+        .university-card { background: #fff; border-radius: var(--radius-md); padding: 22px 24px; border: 1px solid var(--gray-200); display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow-sm); transition: all 0.25s; }
+        .university-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: rgba(10,49,97,0.15); }
+        .university-logo { width: 48px; height: 48px; background: var(--blue); color: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-weight: 900; font-size: 0.82rem; flex-shrink: 0; }
+        .university-card h4 { font-family: 'Sora', sans-serif; font-size: 0.88rem; font-weight: 800; color: var(--blue); margin-bottom: 3px; }
+        .university-card p { font-size: 0.78rem; color: var(--gray-500); }
+        .partners-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+        .partner-card { background: #fff; border-radius: var(--radius-md); padding: 22px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); min-height: 90px; transition: all 0.25s; }
+        .partner-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        .partner-card.highlight { border: 2px solid rgba(178,34,52,0.2); }
+        .partner-logo { max-width: 120px; max-height: 44px; object-fit: contain; }
 
-    /* ===== CONTACT ===== */
-    .contact-section { padding: var(--section-pad); background: var(--blue); color: #fff; }
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
-    .contact-section h2 { font-family: 'Sora', sans-serif; font-size: 2.2rem; font-weight: 900; line-height: 1.2; margin-bottom: 16px; }
-    .contact-section p { font-size: 1rem; opacity: 0.78; line-height: 1.7; }
-    .contact-item { display: flex; align-items: center; gap: 14px; margin-top: 28px; }
-    .contact-item i { width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 11px; display: flex; align-items: center; justify-content: center; color: var(--red); font-size: 1.1rem; flex-shrink: 0; }
-    .contact-item p { font-size: 0.95rem; margin: 0; }
-    .contact-form { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-lg); padding: 40px; backdrop-filter: blur(12px); }
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; margin-bottom: 8px; }
-    .form-input { width: 100%; padding: 13px 16px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: #fff; font-family: inherit; font-size: 0.95rem; transition: border-color 0.22s; }
-    .form-input::placeholder { opacity: 0.45; }
-    .form-input:focus { outline: none; border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.1); }
-    textarea.form-input { resize: vertical; min-height: 110px; }
+        /* ===== CONTACT ===== */
+        .contact-section { padding: var(--section-pad); background: var(--blue); color: #fff; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+        .contact-section h2 { font-family: 'Sora', sans-serif; font-size: 2.2rem; font-weight: 900; line-height: 1.2; margin-bottom: 16px; }
+        .contact-section p { font-size: 1rem; opacity: 0.78; line-height: 1.7; }
+        .contact-item { display: flex; align-items: center; gap: 14px; margin-top: 28px; }
+        .contact-item i { width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 11px; display: flex; align-items: center; justify-content: center; color: var(--red); font-size: 1.1rem; flex-shrink: 0; }
+        .contact-item p { font-size: 0.95rem; margin: 0; }
+        .contact-form { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-lg); padding: 40px; backdrop-filter: blur(12px); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; margin-bottom: 8px; }
+        .form-input { width: 100%; padding: 13px 16px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: #fff; font-family: inherit; font-size: 0.95rem; transition: border-color 0.22s; }
+        .form-input::placeholder { opacity: 0.45; }
+        .form-input:focus { outline: none; border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.1); }
+        textarea.form-input { resize: vertical; min-height: 110px; }
 
-    /* ===== FOOTER ===== */
-    footer { background: #060e24; color: #fff; padding: 60px 0 32px; }
-    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
-    .footer-logo { font-family: 'Sora', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 14px; }
-    .footer-logo span { color: var(--red); }
-    footer p { font-size: 0.9rem; opacity: 0.55; line-height: 1.7; }
-    footer h4 { font-family: 'Sora', sans-serif; font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; margin-bottom: 16px; }
-    footer ul { list-style: none; }
-    footer li { margin-bottom: 10px; }
-    footer a { font-size: 0.9rem; opacity: 0.7; transition: opacity 0.18s; }
-    footer a:hover { opacity: 1; color: var(--red); }
-    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px; display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; opacity: 0.45; }
-    .social-icons { display: flex; gap: 12px; }
-    .social-icon { width: 36px; height: 36px; background: rgba(255,255,255,0.08); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; transition: background 0.2s; }
-    .social-icon:hover { background: var(--red); }
+        /* ===== FOOTER ===== */
+        footer { background: #060e24; color: #fff; padding: 60px 0 32px; }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+        .footer-logo { font-family: 'Sora', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 14px; }
+        .footer-logo span { color: var(--red); }
+        footer p { font-size: 0.9rem; opacity: 0.55; line-height: 1.7; }
+        footer h4 { font-family: 'Sora', sans-serif; font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; margin-bottom: 16px; }
+        footer ul { list-style: none; }
+        footer li { margin-bottom: 10px; }
+        footer a { font-size: 0.9rem; opacity: 0.7; transition: opacity 0.18s; text-decoration: none; color: #fff; cursor: pointer; }
+        footer a:hover { opacity: 1; color: var(--red); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px; display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; opacity: 0.45; }
+        .social-icons { display: flex; gap: 12px; }
+        .social-icon { width: 36px; height: 36px; background: rgba(255,255,255,0.08); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; transition: background 0.2s; text-decoration: none; color: #fff; }
+        .social-icon:hover { background: var(--red); }
 
-    /* ===== INNOVATION HUB ===== */
-    .hub-section { padding: var(--section-pad); background: #fff; }
-    .hub-inner { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 72px; align-items: center; }
-    .hub-mosaic { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; height: 420px; }
-    .mosaic-item { border-radius: var(--radius-md); overflow: hidden; }
-    .mosaic-item img { width: 100%; height: 100%; object-fit: cover; }
-    .mosaic-item.tall { grid-row: span 2; }
-    .hub-features { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
-    .hub-feature { display: flex; align-items: flex-start; gap: 12px; }
-    .hub-feature i { color: #10b981; font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
-    .hub-feature p { font-size: 0.95rem; color: var(--gray-700); line-height: 1.55; }
+        /* ===== INNOVATION HUB ===== */
+        .hub-section { padding: var(--section-pad); background: #fff; }
+        .hub-inner { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 72px; align-items: center; }
+        .hub-mosaic { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; height: 420px; }
+        .mosaic-item { border-radius: var(--radius-md); overflow: hidden; }
+        .mosaic-item img { width: 100%; height: 100%; object-fit: cover; }
+        .mosaic-item.tall { grid-row: span 2; }
+        .hub-features { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
+        .hub-feature { display: flex; align-items: flex-start; gap: 12px; }
+        .hub-feature i { color: #10b981; font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
+        .hub-feature p { font-size: 0.95rem; color: var(--gray-700); line-height: 1.55; }
 
-    /* ===== AUTH MODAL ===== */
-    .auth-modal { position: fixed; inset: 0; background: rgba(10,49,97,0.65); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(6px); animation: fadeIn 0.25s ease; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .auth-panel { background: #fff; border-radius: var(--radius-lg); width: 100%; max-width: 420px; padding: 36px; position: relative; box-shadow: 0 40px 80px rgba(10,49,97,0.25); animation: panelIn 0.3s cubic-bezier(.4,0,.2,1); }
-    @keyframes panelIn { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    .auth-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: var(--gray-100); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--gray-700); font-size: 0.85rem; border: none; }
-    .auth-tabs { display: flex; gap: 4px; background: var(--gray-100); padding: 4px; border-radius: 10px; margin-bottom: 28px; }
-    .auth-tab { flex: 1; padding: 9px 14px; border-radius: 8px; font-family: 'Sora', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--gray-500); cursor: pointer; border: none; background: none; transition: all 0.2s; }
-    .auth-tab.active { background: #fff; color: var(--blue); box-shadow: var(--shadow-sm); }
-    .auth-form { display: none; }
-    .auth-form.active { display: block; }
-    .auth-form h3 { font-family: 'Sora', sans-serif; font-size: 1.3rem; font-weight: 900; color: var(--blue); margin-bottom: 24px; }
-    .auth-input { width: 100%; padding: 13px 16px; border: 1.5px solid var(--gray-200); border-radius: 10px; font-family: inherit; font-size: 0.95rem; color: var(--gray-900); background: var(--gray-100); margin-bottom: 14px; transition: border-color 0.2s; }
-    .auth-input:focus { outline: none; border-color: var(--blue); background: #fff; }
-    .auth-input select { padding: 13px 16px; }
-    .auth-divider { text-align: center; font-size: 0.8rem; color: var(--gray-500); margin: 16px 0; font-weight: 600; letter-spacing: 0.05em; position: relative; }
-    .auth-divider::before, .auth-divider::after { content: ''; position: absolute; top: 50%; width: 42%; height: 1px; background: var(--gray-200); }
-    .auth-divider::before { left: 0; }
-    .auth-divider::after { right: 0; }
-    .auth-terms { font-size: 0.78rem; color: var(--gray-500); margin-bottom: 16px; line-height: 1.5; }
-    .auth-context { background: var(--blue-pale); border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--blue); font-weight: 600; border: 1px solid rgba(10,49,97,0.1); }
-    .auth-context i { color: var(--red); flex-shrink: 0; }
+        /* ===== AUTH MODAL ===== */
+        .auth-modal { position: fixed; inset: 0; background: rgba(10,49,97,0.65); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(6px); animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .auth-panel { background: #fff; border-radius: var(--radius-lg); width: 100%; max-width: 420px; padding: 36px; position: relative; box-shadow: 0 40px 80px rgba(10,49,97,0.25); animation: panelIn 0.3s cubic-bezier(.4,0,.2,1); }
+        @keyframes panelIn { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .auth-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: var(--gray-100); border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--gray-700); font-size: 0.85rem; border: none; }
+        .auth-tabs { display: flex; gap: 4px; background: var(--gray-100); padding: 4px; border-radius: 10px; margin-bottom: 28px; }
+        .auth-tab { flex: 1; padding: 9px 14px; border-radius: 8px; font-family: 'Sora', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--gray-500); cursor: pointer; border: none; background: none; transition: all 0.2s; }
+        .auth-tab.active { background: #fff; color: var(--blue); box-shadow: var(--shadow-sm); }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+        .auth-form h3 { font-family: 'Sora', sans-serif; font-size: 1.3rem; font-weight: 900; color: var(--blue); margin-bottom: 24px; }
+        .auth-input { width: 100%; padding: 13px 16px; border: 1.5px solid var(--gray-200); border-radius: 10px; font-family: inherit; font-size: 0.95rem; color: var(--gray-900); background: var(--gray-100); margin-bottom: 14px; transition: border-color 0.2s; }
+        .auth-input:focus { outline: none; border-color: var(--blue); background: #fff; }
+        .auth-input select { padding: 13px 16px; }
+        .auth-divider { text-align: center; font-size: 0.8rem; color: var(--gray-500); margin: 16px 0; font-weight: 600; letter-spacing: 0.05em; position: relative; }
+        .auth-divider::before, .auth-divider::after { content: ''; position: absolute; top: 50%; width: 42%; height: 1px; background: var(--gray-200); }
+        .auth-divider::before { left: 0; }
+        .auth-divider::after { right: 0; }
+        .auth-terms { font-size: 0.78rem; color: var(--gray-500); margin-bottom: 16px; line-height: 1.5; }
+        .auth-context { background: var(--blue-pale); border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--blue); font-weight: 600; border: 1px solid rgba(10,49,97,0.1); }
+        .auth-context i { color: var(--red); flex-shrink: 0; }
 
-    /* ===== TOAST ===== */
-    .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
-    .app-toast { background: var(--gray-900); color: #fff; padding: 13px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow-lg); opacity: 0; transform: translateX(20px); transition: all 0.3s ease; }
-    .app-toast.show { opacity: 1; transform: translateX(0); }
-    .app-toast.toast-success { background: #059669; }
-    .app-toast.toast-error { background: #dc2626; }
-    .app-toast.toast-info { background: var(--blue); }
+        /* ===== TOAST ===== */
+        .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .app-toast { background: var(--gray-900); color: #fff; padding: 13px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow-lg); opacity: 0; transform: translateX(20px); transition: all 0.3s ease; }
+        .app-toast.show { opacity: 1; transform: translateX(0); }
+        .app-toast.toast-success { background: #059669; }
+        .app-toast.toast-error { background: #dc2626; }
+        .app-toast.toast-info { background: var(--blue); }
 
-    /* ===== FAB ===== */
-    .help-fab { position: fixed; bottom: 24px; right: 24px; background: var(--red); color: #fff; width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; box-shadow: 0 8px 28px rgba(178,34,52,0.4); z-index: 5000; cursor: pointer; transition: transform 0.2s; border: none; }
-    .help-fab:hover { transform: scale(1.1); }
+        /* ===== FAB ===== */
+        .help-fab { position: fixed; bottom: 24px; right: 24px; background: var(--red); color: #fff; width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; box-shadow: 0 8px 28px rgba(178,34,52,0.4); z-index: 5000; cursor: pointer; transition: transform 0.2s; border: none; }
+        .help-fab:hover { transform: scale(1.1); }
 
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 1024px) {
-      .hero-inner, .hub-inner, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-      .hero-section { padding: 130px 0 80px; }
-      .hero-visual { height: 380px; }
-      .hero-floating-badge { right: 0; top: 160px; }
-      .events-grid { grid-template-columns: repeat(2, 1fr); }
-      .live-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 768px) {
-      :root { --section-pad: 64px 0; }
-      .hero-section h1 { font-size: 2.4rem; }
-      .section-title { font-size: 2rem; }
-      .nav-links { display: none; }
-      .mobile-menu-btn { display: flex; }
-      .flow-grid { grid-template-columns: 1fr; }
-      .mission-grid { grid-template-columns: 1fr; }
-      .tents-grid { grid-template-columns: 1fr; }
-      .events-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-      .g-span-5, .g-span-7, .g-span-4, .g-span-8 { grid-column: span 2; }
-      .event-detail-grid { grid-template-columns: repeat(2, 1fr); }
-      .event-detail-highlights { grid-template-columns: 1fr; }
-      .event-detail-body { padding: 24px; }
-      .event-detail-hero { height: 220px; }
-      .event-detail-hero-text h2 { font-size: 1.5rem; }
-    }
-    @media (max-width: 480px) {
-      .hero-stats { gap: 20px; flex-wrap: wrap; }
-      .countdown-digits { gap: 10px; }
-      .cd-unit .num { font-size: 1.5rem; }
-    }
-  </style>
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+          .hero-inner, .hub-inner, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+          .hero-section { padding: 130px 0 80px; }
+          .hero-visual { height: 380px; }
+          .hero-floating-badge { right: 0; top: 160px; }
+          .events-grid { grid-template-columns: repeat(2, 1fr); }
+          .live-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+          :root { --section-pad: 64px 0; }
+          .hero-section h1 { font-size: 2.4rem; }
+          .section-title { font-size: 2rem; }
+          .nav-links { display: none; }
+          .mobile-menu-btn { display: flex; }
+          .flow-grid { grid-template-columns: 1fr; }
+          .mission-grid { grid-template-columns: 1fr; }
+          .tents-grid { grid-template-columns: 1fr; }
+          .events-grid { grid-template-columns: 1fr; }
+          .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+          .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+          .g-span-5, .g-span-7, .g-span-4, .g-span-8 { grid-column: span 2; }
+          .event-detail-grid { grid-template-columns: repeat(2, 1fr); }
+          .event-detail-highlights { grid-template-columns: 1fr; }
+          .event-detail-body { padding: 24px; }
+          .event-detail-hero { height: 220px; }
+          .event-detail-hero-text h2 { font-size: 1.5rem; }
+          .universities-grid { grid-template-columns: 1fr; }
+          .partners-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+          .hero-stats { gap: 20px; flex-wrap: wrap; }
+          .countdown-digits { gap: 10px; }
+          .cd-unit .num { font-size: 1.5rem; }
+          .partners-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
@@ -407,711 +432,496 @@
 
 <!-- Loading -->
 <div id="loadingOverlay" class="loading-overlay">
-  <div style="text-align:center">
-    <div class="loader-ring"></div>
-    <div class="loader-label">Loading Freedom 250…</div>
-  </div>
+    <div style="text-align:center">
+        <div class="loader-ring"></div>
+        <div class="loader-label">Loading Freedom 250…</div>
+    </div>
 </div>
 
 <!-- Navbar -->
 <nav class="navbar" id="mainNavbar" role="navigation" aria-label="Main navigation">
-  <div class="nav-container">
-    <a href="/" class="nav-brand">
-      <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USA Flag" class="brand-flag">
-      <span class="brand-text">FREEDOM<span class="accent">250</span></span>
-    </a>
-    <div class="nav-links">
-      <a href="#home" class="nav-link">Home</a>
-      <a href="#about" class="nav-link">Mission</a>
-      <a href="#tents" class="nav-link">Experiences</a>
-      <a href="#hub" class="nav-link"><i class="fas fa-bolt" style="color:var(--red);margin-right:3px;font-size:.8rem"></i> Innovation Hub</a>
-      <a href="#events" class="nav-link">Events</a>
-      <a href="#gallery" class="nav-link">Gallery</a>
-      <a href="#partners" class="nav-link">Partners</a>
-      <a href="#contact" class="nav-link">Contact</a>
+    <div class="nav-container">
+        <a href="/" class="nav-brand" id="homeLink">
+            <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USA Flag" class="brand-flag">
+            <span class="brand-text">FREEDOM<span class="accent">250</span></span>
+        </a>
+        <div class="nav-links">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#about" class="nav-link">Mission</a>
+            <a href="#tents" class="nav-link">Experiences</a>
+            <a href="#hub" class="nav-link"><i class="fas fa-bolt" style="color:var(--red);margin-right:3px;font-size:.8rem"></i> Innovation Hub</a>
+            <a href="#events" class="nav-link">Events</a>
+            <a href="#gallery" class="nav-link">Gallery</a>
+            <a href="#partners" class="nav-link">Partners</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-actions">
+            <button id="getPassBtn" class="btn btn-primary btn-sm">Get Liberty Pass</button>
+            <button id="loginBtn" class="btn btn-outline btn-sm hidden">Sign In</button>
+            <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Menu"><i class="fas fa-bars"></i></button>
+        </div>
     </div>
-    <div class="nav-actions">
-      <button id="getPassBtn" class="btn btn-primary btn-sm">Get Liberty Pass</button>
-      <button id="loginBtn" class="btn btn-outline btn-sm hidden">Sign In</button>
-      <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Menu"><i class="fas fa-bars"></i></button>
-    </div>
-  </div>
 </nav>
 
 <!-- Mobile menu -->
-<div id="mobileMenuPanel" class="mobile-menu-panel hidden">
-  <a href="#home" class="mobile-link">Home</a>
-  <a href="#about" class="mobile-link">Mission</a>
-  <a href="#tents" class="mobile-link">Experiences</a>
-  <a href="#hub" class="mobile-link">Innovation Hub</a>
-  <a href="#events" class="mobile-link">Events</a>
-  <a href="#gallery" class="mobile-link">Gallery</a>
-  <a href="#partners" class="mobile-link">Partners</a>
-  <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
-    <button id="mobileGetPassBtn" class="btn btn-primary btn-sm">Get Liberty Pass</button>
-    <button id="mobileLoginBtn" class="btn btn-outline btn-sm hidden">Sign In</button>
-  </div>
+<div id="mobileMenuPanel" class="mobile-menu-panel">
+    <a href="#home" class="mobile-link">Home</a>
+    <a href="#about" class="mobile-link">Mission</a>
+    <a href="#tents" class="mobile-link">Experiences</a>
+    <a href="#hub" class="mobile-link">Innovation Hub</a>
+    <a href="#events" class="mobile-link">Events</a>
+    <a href="#gallery" class="mobile-link">Gallery</a>
+    <a href="#partners" class="mobile-link">Partners</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+    <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+        <button id="mobileGetPassBtn" class="btn btn-primary btn-sm">Get Liberty Pass</button>
+        <button id="mobileLoginBtn" class="btn btn-outline btn-sm hidden">Sign In</button>
+    </div>
 </div>
 
 <main>
-  <!-- ===== HERO ===== -->
-  <section id="home" class="hero-section">
-    <div class="hero-stars"></div>
-    <div class="container">
-      <div class="hero-inner">
-        <div class="hero-left">
-          <div class="hero-eyebrow">🇺🇸 🇰🇪 &nbsp;U.S. Embassy Nairobi Initiative</div>
-          <h1>Where <span class="line-accent">Gen Z Kenya</span><br>Meets America</h1>
-          <p>A first-of-its-kind festival fusing technology, culture, sport, and civic learning across Kenya's top universities. Celebrating 250 years of shared values.</p>
+    <!-- ===== HERO ===== -->
+    <section id="home" class="hero-section">
+        <div class="hero-stars"></div>
+        <div class="container">
+            <div class="hero-inner">
+                <div class="hero-left">
+                    <div class="hero-eyebrow">🇺🇸 🇰🇪 &nbsp;U.S. Embassy Nairobi Initiative</div>
+                    <h1>Where <span class="line-accent">Gen Z Kenya</span><br>Meets America</h1>
+                    <p>A first-of-its-kind festival fusing technology, culture, sport, and civic learning across Kenya's top universities. Celebrating 250 years of shared values.</p>
 
-          <div class="marquee-strip">
-            <marquee scrollamount="5">🔴 Live at JKUAT: Participant badges, team leaderboard, and Liberty Coins activate instantly as you scan. Register now to secure your badge and join the main stage showcase.</marquee>
-          </div>
+                    <div class="marquee-strip">
+                        <marquee scrollamount="5">🔴 Live at JKUAT: Participant badges, team leaderboard, and Liberty Coins activate instantly as you scan. Register now to secure your badge and join the main stage showcase.</marquee>
+                    </div>
 
-          <div class="countdown-wrap">
-            <span class="countdown-label">Event Starts In:</span>
-            <div class="countdown-digits">
-              <div class="cd-unit"><span class="num" id="days">--</span><span class="lbl">Days</span></div>
-              <span class="cd-sep">:</span>
-              <div class="cd-unit"><span class="num" id="hours">--</span><span class="lbl">Hrs</span></div>
-              <span class="cd-sep">:</span>
-              <div class="cd-unit"><span class="num" id="minutes">--</span><span class="lbl">Min</span></div>
+                    <div class="countdown-wrap">
+                        <span class="countdown-label">Event Starts In:</span>
+                        <div class="countdown-digits">
+                            <div class="cd-unit"><span class="num" id="days">--</span><span class="lbl">Days</span></div>
+                            <span class="cd-sep">:</span>
+                            <div class="cd-unit"><span class="num" id="hours">--</span><span class="lbl">Hrs</span></div>
+                            <span class="cd-sep">:</span>
+                            <div class="cd-unit"><span class="num" id="minutes">--</span><span class="lbl">Min</span></div>
+                        </div>
+                    </div>
+
+                    <div class="hero-ctas">
+                        <button id="heroEventBtn" class="btn btn-primary btn-lg">Get Liberty Pass <i class="fas fa-arrow-right"></i></button>
+                        <button class="btn btn-outline-white btn-lg" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Learn More</button>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div class="hero-stat"><span class="val">12+</span><span class="lbl">Universities</span></div>
+                        <div class="hero-stat"><span class="val">15K+</span><span class="lbl">Participants</span></div>
+                        <div class="hero-stat"><span class="val">7</span><span class="lbl">Experience Tents</span></div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="hero-img-main">
+                        <span class="hero-chip">🔴 LIVE</span>
+                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80" alt="Students Innovating">
+                    </div>
+                    <div class="hero-img-sec">
+                        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=500&q=80" alt="Tech Collaboration">
+                    </div>
+                    <div class="hero-floating-badge">
+                        <div class="dot"></div>
+                        2,847 registered participants
+                    </div>
+                </div>
             </div>
-          </div>
+        </div>
+    </section>
 
-          <div class="hero-ctas">
-            <button id="heroEventBtn" class="btn btn-primary btn-lg">Get Liberty Pass <i class="fas fa-arrow-right"></i></button>
-            <button class="btn btn-outline-white btn-lg" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Learn More</button>
-          </div>
-
-          <div class="hero-stats">
-            <div class="hero-stat"><span class="val">12+</span><span class="lbl">Universities</span></div>
-            <div class="hero-stat"><span class="val">15K+</span><span class="lbl">Participants</span></div>
-            <div class="hero-stat"><span class="val">7</span><span class="lbl">Experience Tents</span></div>
-          </div>
-        </div>
-
-        <div class="hero-visual">
-          <div class="hero-img-main">
-            <span class="hero-chip">🔴 LIVE</span>
-            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80" alt="Students Innovating">
-          </div>
-          <div class="hero-img-sec">
-            <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=500&q=80" alt="Tech Collaboration">
-          </div>
-          <div class="hero-floating-badge">
-            <div class="dot"></div>
-            2,847 registered participants
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== BOOTH FLOW ===== -->
-  <section id="booth-flow" class="flow-section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label"><i class="fas fa-qrcode"></i> Booth Flow</div>
-        <h2 class="section-title">Scan. <span class="accent">Team.</span> Earn. Repeat.</h2>
-        <p class="section-desc">Every booth is event-ready with secure participant QR badge check-in, team assignments, instant rewards, and live heat-map insights.</p>
-      </div>
-
-      <div class="flow-grid">
-        <article class="flow-card">
-          <div class="flow-num">1</div>
-          <h3>Participant Ready</h3>
-          <p>Register once, get a secure QR badge, and join the event with your team assigned automatically. Everything syncs in real time.</p>
-        </article>
-        <article class="flow-card">
-          <div class="flow-num">2</div>
-          <h3>Booth Check-In</h3>
-          <p>Present your QR badge at any booth. The scanner updates your points instantly and records the interaction in real time.</p>
-        </article>
-        <article class="flow-card">
-          <div class="flow-num">3</div>
-          <h3>Live Rewards</h3>
-          <p>Earn points, redeem Liberty Coins, and watch team engagement rise across the festival through live analytics and leaderboards.</p>
-        </article>
-      </div>
-
-      <div class="flow-cta-row" style="margin-top:28px;">
-        <button class="btn btn-blue" id="boothStartBtn">Start Your Booth Flow</button>
-        <button class="btn btn-outline" id="boothTeamBtn">Manage Your Team</button>
-      </div>
-
-      <div class="qr-panel" id="participantQrCard">
-        <div class="qr-card">
-          <div class="qr-card-text">
-            <div class="section-label" style="margin-bottom:10px;">Participant Badge</div>
-            <h3>Your QR badge is ready once you sign in.</h3>
-            <p>Scan this badge at any booth to collect rewards, mark attendance, and keep your team progress live.</p>
-          </div>
-          <button class="btn btn-primary" id="badgeSignInBtn">Sign In to Generate Badge</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== MISSION / ABOUT ===== -->
-  <section id="about" class="mission-section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">Our Mission</div>
-        <h2 class="section-title">What is <span class="accent">Freedom 250</span>?</h2>
-        <p class="section-desc">A U.S. Embassy Nairobi-led initiative empowering Kenya's next generation of innovators, leaders, and changemakers through experiential learning.</p>
-      </div>
-
-      <div class="mission-grid">
-        <div class="mission-card">
-          <div class="mission-card-img">
-            <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=600&q=80" alt="Innovation">
-          </div>
-          <div class="mission-card-body">
-            <div class="mission-icon"><i class="fas fa-lightbulb"></i></div>
-            <h3>Innovation</h3>
-            <p>Hands-on tech experiences including Drone Soccer, Robotics Challenges, and VR explorations at The Garage tent — where ideas become real.</p>
-          </div>
-        </div>
-        <div class="mission-card">
-          <div class="mission-card-img">
-            <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=600&q=80" alt="Collaboration">
-          </div>
-          <div class="mission-card-body">
-            <div class="mission-icon"><i class="fas fa-handshake"></i></div>
-            <h3>Collaboration</h3>
-            <p>Direct engagement with American brands, Embassy leadership, and industry mentors from companies shaping the global economy.</p>
-          </div>
-        </div>
-        <div class="mission-card">
-          <div class="mission-card-img">
-            <img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=600&q=80" alt="Civic Engagement">
-          </div>
-          <div class="mission-card-body">
-            <div class="mission-icon"><i class="fas fa-landmark"></i></div>
-            <h3>Civic Engagement</h3>
-            <p>Democracy simulations, voting booths, and leadership workshops at The Townhall tent — making your voice count from day one.</p>
-          </div>
-        </div>
-        <div class="mission-card">
-          <div class="mission-card-img">
-            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80" alt="Culture">
-          </div>
-          <div class="mission-card-body">
-            <div class="mission-icon"><i class="fas fa-music"></i></div>
-            <h3>Culture & Music</h3>
-            <p>Live performances, art installations, and the "Garden of Heroes" mural experience celebrating the freedom that connects our nations.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== EXPERIENCE TENTS ===== -->
-  <section id="tents" class="tents-section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">The Experience</div>
-        <h2 class="section-title">7 Themed <span class="accent">Experience Tents</span></h2>
-        <p class="section-desc">Each tent offers a unique journey into American-Kenyan innovation, sports, culture, and democracy.</p>
-      </div>
-
-      <div class="tents-grid">
-        <div class="tent-card">
-          <div class="tent-icon"><i class="fas fa-microchip"></i></div>
-          <h3>THE GARAGE</h3>
-          <p>Innovation & MakerLab — Drone soccer, robotics challenge, VR headsets, and live tech demos. Where builders come to build.</p>
-          <span class="tent-badge"><i class="fas fa-star" style="color:var(--red);font-size:.7rem"></i> Host your tech club here</span>
-        </div>
-        <div class="tent-card">
-          <div class="tent-icon"><i class="fas fa-chart-line"></i></div>
-          <h3>THE LAUNCHPAD</h3>
-          <p>Entrepreneurship & Business — Student fashion, arts, business showcases with U.S. partnerships and VC connections.</p>
-          <span class="tent-badge">Pitch your startup</span>
-        </div>
-        <div class="tent-card">
-          <div class="tent-icon"><i class="fas fa-graduation-cap"></i></div>
-          <h3>THE VARSITY LOUNGE</h3>
-          <p>Education & Alumni — USA university map, study abroad information, mascot games, and exclusive merch drops.</p>
-          <span class="tent-badge">Find your U.S. school</span>
-        </div>
-        <div class="tent-card">
-          <div class="tent-icon"><i class="fas fa-landmark"></i></div>
-          <h3>THE TOWNHALL</h3>
-          <p>Democracy & Leadership — Voting booths, Founder's Museum, and the Paint-by-Numbers collaborative mural experience.</p>
-          <span class="tent-badge">Make your voice heard</span>
-        </div>
-        <div class="tent-card">
-          <div class="tent-icon"><i class="fas fa-basketball-ball"></i></div>
-          <h3>THE ARENA</h3>
-          <p>Sports & Wellness — Basketball, baseball challenge, disc golf, and high-intensity fitness competitions across teams.</p>
-          <span class="tent-badge">Compete & play</span>
-        </div>
-        <div class="tent-card">
-          <div class="tent-icon"><i class="fas fa-utensils"></i></div>
-          <h3>THE KITCHEN</h3>
-          <p>Food & Culture — Kenyan and American culinary fusion, cooking demos, brand tastings, and cultural food storytelling.</p>
-          <span class="tent-badge">Taste the fusion</span>
-        </div>
-        <div class="tent-card" style="grid-column: span 2;">
-          <div class="tent-icon" style="background:var(--red)"><i class="fas fa-microphone"></i></div>
-          <h3>THE MAIN STAGE</h3>
-          <p>The heartbeat of Freedom 250 — keynotes from Embassy leadership, live performances, award ceremonies, team showcases and the grand closing celebration. All the energy lands here.</p>
-          <span class="tent-badge" style="background:var(--red-pale);color:var(--red);border-color:rgba(178,34,52,0.15)">Featured Stage</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== EVENTS ===== -->
-  <section id="events" class="events-section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label"><i class="fas fa-calendar-star"></i> Upcoming Events</div>
-        <h2 class="section-title">Choose Your <span class="accent">Experience</span></h2>
-        <p class="section-desc">Click any event to explore full details, highlights, and get your Liberty Pass. No login required to browse.</p>
-      </div>
-
-      <div class="events-grid" id="eventsGrid">
-        <!-- Rendered by JS -->
-        <div class="event-card" data-event-id="freedom250" onclick="openEventDetail('freedom250')">
-          <div class="event-card-img">
-            <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&h=400&fit=crop" alt="Freedom 250 Festival" loading="lazy">
-            <span class="event-card-status status-live">● Live</span>
-          </div>
-          <div class="event-card-body">
-            <div class="event-card-date">June 11–12, 2026</div>
-            <h3>Freedom 250 Festival</h3>
-            <p class="event-card-tagline">Where Gen Z Kenya meets America — the flagship festival experience.</p>
-            <div class="event-card-meta">
-              <span><i class="fas fa-map-marker-alt"></i> JKUAT Main Campus</span>
-              <span><i class="fas fa-users"></i> 2,847 registered</span>
+    <!-- ===== BOOTH FLOW ===== -->
+    <section id="booth-flow" class="flow-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label"><i class="fas fa-qrcode"></i> Booth Flow</div>
+                <h2 class="section-title">Scan. <span class="accent">Team.</span> Earn. Repeat.</h2>
+                <p class="section-desc">Every booth is event-ready with secure participant QR badge check-in, team assignments, instant rewards, and live heat-map insights.</p>
             </div>
-            <div class="event-card-footer">
-              <span class="event-card-participants">🏆 342 Liberty Coins awarded</span>
-              <span class="event-card-cta">View Details <i class="fas fa-arrow-right"></i></span>
+
+            <div class="flow-grid">
+                <article class="flow-card">
+                    <div class="flow-num">1</div>
+                    <h3>Participant Ready</h3>
+                    <p>Register once, get a secure QR badge, and join the event with your team assigned automatically. Everything syncs in real time.</p>
+                </article>
+                <article class="flow-card">
+                    <div class="flow-num">2</div>
+                    <h3>Booth Check-In</h3>
+                    <p>Present your QR badge at any booth. The scanner updates your points instantly and records the interaction in real time.</p>
+                </article>
+                <article class="flow-card">
+                    <div class="flow-num">3</div>
+                    <h3>Live Rewards</h3>
+                    <p>Earn points, redeem Liberty Coins, and watch team engagement rise across the festival through live analytics and leaderboards.</p>
+                </article>
             </div>
-          </div>
-        </div>
 
-        <div class="event-card" data-event-id="tech-frontier" onclick="openEventDetail('tech-frontier')">
-          <div class="event-card-img">
-            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop" alt="Tech Frontier Summit" loading="lazy">
-            <span class="event-card-status status-upcoming">Upcoming</span>
-          </div>
-          <div class="event-card-body">
-            <div class="event-card-date">September 15–17, 2026</div>
-            <h3>Tech Frontier Summit</h3>
-            <p class="event-card-tagline">Exploring the future of technology with Kenya's brightest minds.</p>
-            <div class="event-card-meta">
-              <span><i class="fas fa-map-marker-alt"></i> University of Nairobi</span>
-              <span><i class="fas fa-users"></i> 1,250 registered</span>
+            <div class="flow-cta-row" style="margin-top:28px;">
+                <button class="btn btn-blue" id="boothStartBtn">Start Your Booth Flow</button>
+                <button class="btn btn-outline" id="boothTeamBtn">Manage Your Team</button>
             </div>
-            <div class="event-card-footer">
-              <span class="event-card-participants">⚡ 98 Liberty Coins awarded</span>
-              <span class="event-card-cta">View Details <i class="fas fa-arrow-right"></i></span>
+
+            <div class="qr-panel" id="participantQrCard">
+                <div class="qr-card">
+                    <div class="qr-card-text">
+                        <div class="section-label" style="margin-bottom:10px;">Participant Badge</div>
+                        <h3>Your QR badge is ready once you sign in.</h3>
+                        <p>Scan this badge at any booth to collect rewards, mark attendance, and keep your team progress live.</p>
+                    </div>
+                    <button class="btn btn-primary" id="badgeSignInBtn">Sign In to Generate Badge</button>
+                </div>
             </div>
-          </div>
         </div>
+    </section>
 
-        <div class="event-card" data-event-id="innovation-week" onclick="openEventDetail('innovation-week')">
-          <div class="event-card-img">
-            <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=600&h=400&fit=crop" alt="Innovation Week" loading="lazy">
-            <span class="event-card-status status-upcoming">Upcoming</span>
-          </div>
-          <div class="event-card-body">
-            <div class="event-card-date">October 5–7, 2026</div>
-            <h3>Innovation Week</h3>
-            <p class="event-card-tagline">Drone Soccer, Robotics Challenge, and maker culture at full tilt.</p>
-            <div class="event-card-meta">
-              <span><i class="fas fa-map-marker-alt"></i> Strathmore University</span>
-              <span><i class="fas fa-users"></i> 890 registered</span>
+    <!-- ===== MISSION / ABOUT ===== -->
+    <section id="about" class="mission-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Our Mission</div>
+                <h2 class="section-title">What is <span class="accent">Freedom 250</span>?</h2>
+                <p class="section-desc">A U.S. Embassy Nairobi-led initiative empowering Kenya's next generation of innovators, leaders, and changemakers through experiential learning.</p>
             </div>
-            <div class="event-card-footer">
-              <span class="event-card-participants">🤖 45 Liberty Coins awarded</span>
-              <span class="event-card-cta">View Details <i class="fas fa-arrow-right"></i></span>
+
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <div class="mission-card-img">
+                        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=600&q=80" alt="Innovation">
+                    </div>
+                    <div class="mission-card-body">
+                        <div class="mission-icon"><i class="fas fa-lightbulb"></i></div>
+                        <h3>Innovation</h3>
+                        <p>Hands-on tech experiences including Drone Soccer, Robotics Challenges, and VR explorations at The Garage tent — where ideas become real.</p>
+                    </div>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-card-img">
+                        <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=600&q=80" alt="Collaboration">
+                    </div>
+                    <div class="mission-card-body">
+                        <div class="mission-icon"><i class="fas fa-handshake"></i></div>
+                        <h3>Collaboration</h3>
+                        <p>Direct engagement with American brands, Embassy leadership, and industry mentors from companies shaping the global economy.</p>
+                    </div>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-card-img">
+                        <img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=600&q=80" alt="Civic Engagement">
+                    </div>
+                    <div class="mission-card-body">
+                        <div class="mission-icon"><i class="fas fa-landmark"></i></div>
+                        <h3>Civic Engagement</h3>
+                        <p>Democracy simulations, voting booths, and leadership workshops at The Townhall tent — making your voice count from day one.</p>
+                    </div>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-card-img">
+                        <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80" alt="Culture">
+                    </div>
+                    <div class="mission-card-body">
+                        <div class="mission-icon"><i class="fas fa-music"></i></div>
+                        <h3>Culture & Music</h3>
+                        <p>Live performances, art installations, and the "Garden of Heroes" mural experience celebrating the freedom that connects our nations.</p>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== INNOVATION HUB ===== -->
-  <section id="hub" class="hub-section">
-    <div class="container">
-      <div class="hub-inner">
-        <div class="hub-mosaic">
-          <div class="mosaic-item tall">
-            <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=500&q=80" alt="Hub 1">
-          </div>
-          <div class="mosaic-item">
-            <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80" alt="Hub 2">
-          </div>
-          <div class="mosaic-item">
-            <img src="https://images.unsplash.com/photo-1535303311164-664fc9ec6532?auto=format&fit=crop&w=400&q=80" alt="Hub 3">
-          </div>
-        </div>
-        <div>
-          <div class="section-label">Next-Gen Tech</div>
-          <h2 class="section-title">The Horizon <span class="accent">Innovation Hub</span></h2>
-          <p class="section-desc">Step inside a vibrant ecosystem where emerging technologies interface with real economic pathways. Co-create alongside software engineers, mechanical innovators, and venture capital leads.</p>
-          <ul class="hub-features">
-            <li class="hub-feature"><i class="fas fa-check-circle"></i><p>Rapid prototyping setups with active hardware access and expert mentors on standby.</p></li>
-            <li class="hub-feature"><i class="fas fa-check-circle"></i><p>Direct pipeline access to international development programs and U.S. startup ecosystems.</p></li>
-            <li class="hub-feature"><i class="fas fa-check-circle"></i><p>Live mentorship sandboxes covering AI engineering, IoT system scaling, and product design.</p></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- ===== EXPERIENCE TENTS ===== -->
+    <section id="tents" class="tents-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">The Experience</div>
+                <h2 class="section-title">7 Themed <span class="accent">Experience Tents</span></h2>
+                <p class="section-desc">Each tent offers a unique journey into American-Kenyan innovation, sports, culture, and democracy.</p>
+            </div>
 
-  <!-- ===== LIVE ANALYTICS ===== -->
-  <section id="live" class="live-section">
-    <div class="container">
-      <div class="section-header centered">
-        <div class="section-label"><i class="fas fa-signal"></i> Live Pulse</div>
-        <h2 class="section-title">Real-Time Booth <span class="accent">Analytics</span></h2>
-        <p class="section-desc" style="margin:0 auto;">Track booth traffic by zone, team progress, and engagement hotspots across the festival grounds.</p>
-      </div>
-      <div class="live-grid">
-        <div class="live-card">
-          <h3>Event Heat Map</h3>
-          <div class="heatmap-grid">
-            <div class="heatmap-zone hot"><strong>The Garage</strong><span>320</span><small>scans</small></div>
-            <div class="heatmap-zone warm"><strong>The Townhall</strong><span>240</span><small>scans</small></div>
-            <div class="heatmap-zone cool"><strong>The Arena</strong><span>180</span><small>scans</small></div>
-            <div class="heatmap-zone warm"><strong>Launchpad</strong><span>212</span><small>scans</small></div>
-            <div class="heatmap-zone cool"><strong>Varsity Lounge</strong><span>150</span><small>scans</small></div>
-            <div class="heatmap-zone hot"><strong>Main Stage</strong><span>312</span><small>scans</small></div>
-          </div>
+            <div class="tents-grid">
+                <div class="tent-card">
+                    <div class="tent-icon"><i class="fas fa-microchip"></i></div>
+                    <h3>THE GARAGE</h3>
+                    <p>Innovation & MakerLab — Drone soccer, robotics challenge, VR headsets, and live tech demos. Where builders come to build.</p>
+                    <span class="tent-badge"><i class="fas fa-star" style="color:var(--red);font-size:.7rem"></i> Host your tech club here</span>
+                </div>
+                <div class="tent-card">
+                    <div class="tent-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>THE LAUNCHPAD</h3>
+                    <p>Entrepreneurship & Business — Student fashion, arts, business showcases with U.S. partnerships and VC connections.</p>
+                    <span class="tent-badge">Pitch your startup</span>
+                </div>
+                <div class="tent-card">
+                    <div class="tent-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>THE VARSITY LOUNGE</h3>
+                    <p>Education & Alumni — USA university map, study abroad information, mascot games, and exclusive merch drops.</p>
+                    <span class="tent-badge">Find your U.S. school</span>
+                </div>
+                <div class="tent-card">
+                    <div class="tent-icon"><i class="fas fa-landmark"></i></div>
+                    <h3>THE TOWNHALL</h3>
+                    <p>Democracy & Leadership — Voting booths, Founder's Museum, and the Paint-by-Numbers collaborative mural experience.</p>
+                    <span class="tent-badge">Make your voice heard</span>
+                </div>
+                <div class="tent-card">
+                    <div class="tent-icon"><i class="fas fa-basketball-ball"></i></div>
+                    <h3>THE ARENA</h3>
+                    <p>Sports & Wellness — Basketball, baseball challenge, disc golf, and high-intensity fitness competitions across teams.</p>
+                    <span class="tent-badge">Compete & play</span>
+                </div>
+                <div class="tent-card">
+                    <div class="tent-icon"><i class="fas fa-utensils"></i></div>
+                    <h3>TASTE OF AMERICA</h3>
+                    <p>Food & Culture — Kenyan and American culinary fusion, cooking demos, brand tastings, and cultural food storytelling.</p>
+                    <span class="tent-badge">Taste the fusion</span>
+                </div>
+                <div class="tent-card" style="grid-column: span 2;">
+                    <div class="tent-icon" style="background:var(--red)"><i class="fas fa-microphone"></i></div>
+                    <h3>THE MAIN STAGE</h3>
+                    <p>The heartbeat of Freedom 250 — keynotes from Embassy leadership, live performances, award ceremonies, team showcases and the grand closing celebration. All the energy lands here.</p>
+                    <span class="tent-badge" style="background:var(--red-pale);color:var(--red);border-color:rgba(178,34,52,0.15)">Featured Stage</span>
+                </div>
+            </div>
         </div>
-        <div class="live-card">
-          <h3>Quick Metrics</h3>
-          <div class="analytics-metric"><div><h4>Live Check-ins</h4></div><strong>1,864</strong></div>
-          <div class="analytics-metric"><div><h4>Team Engagement</h4></div><strong>92%</strong></div>
-          <div class="analytics-metric"><div><h4>Points Redeemed</h4></div><strong>5,420</strong></div>
-          <div class="analytics-metric"><div><h4>Hot Booths</h4></div><strong>4</strong></div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== GALLERY ===== -->
-  <section id="gallery" class="gallery-section">
-    <div class="container">
-      <div class="section-header centered">
-        <div class="section-label">Moments</div>
-        <h2 class="section-title">Festival <span class="accent">Vibe Deck</span></h2>
-        <p class="section-desc" style="margin:0 auto;">A glimpse of the energy, creations, and high-octane competitive sprints from previous iterations.</p>
-      </div>
-      <div class="gallery-grid">
-        <div class="g-frame g-span-7 g-row-2">
-          <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Tech Presentation">
-          <div class="g-caption">Maker Collective</div>
-        </div>
-        <div class="g-frame g-span-5">
-          <img src="https://images.unsplash.com/photo-1560439514-4e9645039924?auto=format&fit=crop&w=600&q=80" alt="Keynote">
-          <div class="g-caption">Townhall Keynote</div>
-        </div>
-        <div class="g-frame g-span-5">
-          <img src="https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=600&q=80" alt="Festival Grounds">
-          <div class="g-caption">Festival Grounds</div>
-        </div>
-        <div class="g-frame g-span-8">
-          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80" alt="Hackathon Teams">
-          <div class="g-caption">Co-Creation Matrix</div>
-        </div>
-        <div class="g-frame g-span-4">
-          <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80" alt="Workshop">
-          <div class="g-caption">Workshop Sprint</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- ===== EVENTS ===== -->
+    <section id="events" class="events-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label"><i class="fas fa-calendar-star"></i> Upcoming Events</div>
+                <h2 class="section-title">Choose Your <span class="accent">Experience</span></h2>
+                <p class="section-desc">Click any event to explore full details, highlights, and get your Liberty Pass. No login required to browse.</p>
+            </div>
 
-  <!-- ===== PARTNERS ===== -->
-  <section id="partners" class="partners-section">
-    <div class="container">
-      <div class="section-header centered">
-        <div class="section-label">Partners</div>
-        <h2 class="section-title">Universities <span class="accent">& Partners</span></h2>
-        <p class="section-desc" style="margin:0 auto;">Join students from Kenya's leading institutions and our growing network of festival partners.</p>
-      </div>
-
-      <div class="featured-campus">
-        <div class="featured-campus-badge">🎓</div>
-        <div>
-          <h4>Lead Campus: JKUAT</h4>
-          <p>Jomo Kenyatta University of Agriculture and Technology — Host campus and primary partner for Freedom 250.</p>
+            <div class="events-grid" id="eventsGrid">
+                <!-- Rendered by JS -->
+            </div>
         </div>
-      </div>
+    </section>
 
-      <div class="partners-subsection">
-        <h3>Partner Universities</h3>
-        <div id="universitiesGrid" class="universities-grid"></div>
-      </div>
-
-      <div class="partners-subsection">
-        <h3>Festival Partners & Sponsors</h3>
-        <div id="partnersGrid" class="partners-grid"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== CONTACT ===== -->
-  <section id="contact" class="contact-section">
-    <div class="container contact-grid">
-      <div>
-        <div class="section-label" style="background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.15);">Get In Touch</div>
-        <h2>Have Questions?<br><span style="color:var(--red)">Get Connected.</span></h2>
-        <p>Want to track site setup schedules, apply for a regional validation booth, or collaborate on tech sprints? Reach out to our organizing committee directly.</p>
-        <div class="contact-item">
-          <i class="fas fa-map-marker-alt"></i>
-          <div>
-            <strong>American Corner Mtaani</strong>
-            <p style="margin:0;font-size:.88rem;opacity:.65">Nairobi, Kenya</p>
-          </div>
+    <!-- ===== INNOVATION HUB ===== -->
+    <section id="hub" class="hub-section">
+        <div class="container">
+            <div class="hub-inner">
+                <div class="hub-mosaic">
+                    <div class="mosaic-item tall">
+                        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=500&q=80" alt="Hub 1">
+                    </div>
+                    <div class="mosaic-item">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80" alt="Hub 2">
+                    </div>
+                    <div class="mosaic-item">
+                        <img src="https://images.unsplash.com/photo-1535303311164-664fc9ec6532?auto=format&fit=crop&w=400&q=80" alt="Hub 3">
+                    </div>
+                </div>
+                <div>
+                    <div class="section-label">Next-Gen Tech</div>
+                    <h2 class="section-title">The Horizon <span class="accent">Innovation Hub</span></h2>
+                    <p class="section-desc">Step inside a vibrant ecosystem where emerging technologies interface with real economic pathways. Co-create alongside software engineers, mechanical innovators, and venture capital leads.</p>
+                    <ul class="hub-features">
+                        <li class="hub-feature"><i class="fas fa-check-circle"></i><p>Rapid prototyping setups with active hardware access and expert mentors on standby.</p></li>
+                        <li class="hub-feature"><i class="fas fa-check-circle"></i><p>Direct pipeline access to international development programs and U.S. startup ecosystems.</p></li>
+                        <li class="hub-feature"><i class="fas fa-check-circle"></i><p>Live mentorship sandboxes covering AI engineering, IoT system scaling, and product design.</p></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="contact-item">
-          <i class="fas fa-envelope"></i>
-          <div>
-            <strong>info@freedom250.org</strong>
-            <p style="margin:0;font-size:.88rem;opacity:.65">Response within 24 hours</p>
-          </div>
+    </section>
+
+    <!-- ===== LIVE ANALYTICS ===== -->
+    <section id="live" class="live-section">
+        <div class="container">
+            <div class="section-header centered">
+                <div class="section-label"><i class="fas fa-signal"></i> Live Pulse</div>
+                <h2 class="section-title">Real-Time Booth <span class="accent">Analytics</span></h2>
+                <p class="section-desc" style="margin:0 auto;">Track booth traffic by zone, team progress, and engagement hotspots across the festival grounds.</p>
+            </div>
+            <div class="live-grid">
+                <div class="live-card">
+                    <h3>Event Heat Map</h3>
+                    <div class="heatmap-grid">
+                        <div class="heatmap-zone hot"><strong>The Garage</strong><span>320</span><small>scans</small></div>
+                        <div class="heatmap-zone warm"><strong>The Townhall</strong><span>240</span><small>scans</small></div>
+                        <div class="heatmap-zone cool"><strong>The Arena</strong><span>180</span><small>scans</small></div>
+                        <div class="heatmap-zone warm"><strong>Launchpad</strong><span>212</span><small>scans</small></div>
+                        <div class="heatmap-zone cool"><strong>Varsity Lounge</strong><span>150</span><small>scans</small></div>
+                        <div class="heatmap-zone hot"><strong>Main Stage</strong><span>312</span><small>scans</small></div>
+                    </div>
+                </div>
+                <div class="live-card" id="metricsContainer">
+                    <h3>Quick Metrics</h3>
+                    <div class="analytics-metric"><div><h4>Live Check-ins</h4></div><strong>1,864</strong></div>
+                    <div class="analytics-metric"><div><h4>Team Engagement</h4></div><strong>92%</strong></div>
+                    <div class="analytics-metric"><div><h4>Points Redeemed</h4></div><strong>5,420</strong></div>
+                    <div class="analytics-metric"><div><h4>Hot Booths</h4></div><strong>4</strong></div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div>
-        <form onsubmit="event.preventDefault();" class="contact-form">
-          <div class="form-group">
-            <label>Your Name</label>
-            <input type="text" placeholder="Alex Kenya" class="form-input">
-          </div>
-          <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" placeholder="alex@university.ac.ke" class="form-input">
-          </div>
-          <div class="form-group">
-            <label>Message</label>
-            <textarea placeholder="Tell us about your project or community group…" rows="4" class="form-input"></textarea>
-          </div>
-          <button class="btn btn-primary w-full" style="margin-top:8px;">Send Message <i class="fas fa-paper-plane"></i></button>
-        </form>
-      </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- ===== GALLERY ===== -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <div class="section-header centered">
+                <div class="section-label">Moments</div>
+                <h2 class="section-title">Festival <span class="accent">Vibe Deck</span></h2>
+                <p class="section-desc" style="margin:0 auto;">A glimpse of the energy, creations, and high-octane competitive sprints from previous iterations.</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="g-frame g-span-7 g-row-2">
+                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Tech Presentation">
+                    <div class="g-caption">Maker Collective</div>
+                </div>
+                <div class="g-frame g-span-5">
+                    <img src="https://images.unsplash.com/photo-1560439514-4e9645039924?auto=format&fit=crop&w=600&q=80" alt="Keynote">
+                    <div class="g-caption">Townhall Keynote</div>
+                </div>
+                <div class="g-frame g-span-5">
+                    <img src="https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=600&q=80" alt="Festival Grounds">
+                    <div class="g-caption">Festival Grounds</div>
+                </div>
+                <div class="g-frame g-span-8">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80" alt="Hackathon Teams">
+                    <div class="g-caption">Co-Creation Matrix</div>
+                </div>
+                <div class="g-frame g-span-4">
+                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80" alt="Workshop">
+                    <div class="g-caption">Workshop Sprint</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PARTNERS ===== -->
+    <section id="partners" class="partners-section">
+        <div class="container">
+            <div class="section-header centered">
+                <div class="section-label">Partners</div>
+                <h2 class="section-title">Universities <span class="accent">& Partners</span></h2>
+                <p class="section-desc" style="margin:0 auto;">Join students from Kenya's leading institutions and our growing network of festival partners.</p>
+            </div>
+
+            <div class="featured-campus">
+                <div class="featured-campus-badge">🎓</div>
+                <div>
+                    <h4>Lead Campus: JKUAT</h4>
+                    <p>Jomo Kenyatta University of Agriculture and Technology — Host campus and primary partner for Freedom 250.</p>
+                </div>
+            </div>
+
+            <div class="partners-subsection">
+                <h3>Partner Universities</h3>
+                <div id="universitiesGrid" class="universities-grid"></div>
+            </div>
+
+            <div class="partners-subsection">
+                <h3>Festival Partners & Sponsors</h3>
+                <div id="partnersGrid" class="partners-grid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" class="contact-section">
+        <div class="container contact-grid">
+            <div>
+                <div class="section-label" style="background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.15);">Get In Touch</div>
+                <h2>Have Questions?<br><span style="color:var(--red)">Get Connected.</span></h2>
+                <p>Want to track site setup schedules, apply for a regional validation booth, or collaborate on tech sprints? Reach out to our organizing committee directly.</p>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <strong>American Corner Mtaani</strong>
+                        <p style="margin:0;font-size:.88rem;opacity:.65">Nairobi, Kenya</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <strong>info@freedom250.org</strong>
+                        <p style="margin:0;font-size:.88rem;opacity:.65">Response within 24 hours</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <form onsubmit="event.preventDefault();" class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" placeholder="Alex Kenya" class="form-input" id="contactName">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="alex@university.ac.ke" class="form-input" id="contactEmail">
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea placeholder="Tell us about your project or community group…" rows="4" class="form-input" id="contactMessage"></textarea>
+                    </div>
+                    <button class="btn btn-primary w-full" style="margin-top:8px;" id="contactSubmitBtn">Send Message <i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </section>
 </main>
 
 <!-- ===== FOOTER ===== -->
 <footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-logo">FREEDOM<span>250</span></div>
-        <p>A U.S. Embassy Nairobi initiative celebrating innovation, democracy, and the enduring partnership between Kenya and the United States.</p>
-        <div class="social-icons" style="margin-top:20px;">
-          <a class="social-icon" href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-          <a class="social-icon" href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a class="social-icon" href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a class="social-icon" href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-logo">FREEDOM<span>250</span></div>
+                <p>A U.S. Embassy Nairobi initiative celebrating innovation, democracy, and the enduring partnership between Kenya and the United States.</p>
+                <div class="social-icons" style="margin-top:20px;">
+                    <a class="social-icon" href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a class="social-icon" href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a class="social-icon" href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="social-icon" href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">Mission</a></li>
+                    <li><a href="#tents">Experiences</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Get Involved</h4>
+                <ul>
+                    <li><a href="#" id="footerSignUp">Register as Participant</a></li>
+                    <li><a href="#" id="footerVolunteer">Become a Volunteer</a></li>
+                    <li><a href="#" id="footerBooth">Host a Booth</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </div>
         </div>
-      </div>
-      <div>
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">Mission</a></li>
-          <li><a href="#tents">Experiences</a></li>
-          <li><a href="#events">Events</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Get Involved</h4>
-        <ul>
-          <li><a href="#" id="footerSignUp">Register as Participant</a></li>
-          <li><a href="#" id="footerVolunteer">Become a Volunteer</a></li>
-          <li><a href="#" id="footerBooth">Host a Booth</a></li>
-          <li><a href="#contact">Contact Us</a></li>
-        </ul>
-      </div>
+        <div class="footer-bottom">
+            <span>© 2026 Freedom 250 — U.S. Embassy Nairobi Initiative</span>
+            <span>Made with 🇺🇸 🇰🇪</span>
+        </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2026 Freedom 250 — U.S. Embassy Nairobi Initiative</span>
-      <span>Made with 🇺🇸 🇰🇪</span>
-    </div>
-  </div>
 </footer>
 
 <!-- ===== EVENT DETAIL OVERLAY ===== -->
 <div id="eventDetailOverlay" class="event-detail-overlay" role="dialog" aria-modal="true">
-  <div class="event-detail-panel" id="eventDetailPanel">
-    <button class="event-detail-close" id="closeEventDetail" aria-label="Close"><i class="fas fa-times"></i></button>
-    <!-- Content injected by JS -->
-  </div>
+    <div class="event-detail-panel" id="eventDetailPanel">
+        <button class="event-detail-close" id="closeEventDetail" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
 </div>
-
-<!-- ===== AUTH MODAL placeholder (created by JS) ===== -->
-
-<!-- ===== FAB ===== -->
-<button class="help-fab" id="assistantFab" aria-label="Get help"><i class="fas fa-question"></i></button>
 
 <!-- ===== TOAST ===== -->
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- ===== INLINE SCRIPTS ===== -->
-<script>
-  // Navbar scroll
-  window.addEventListener('scroll', () => {
-    document.getElementById('mainNavbar').classList.toggle('scrolled', window.scrollY > 40);
-  });
-
-  // Platform data (mirrors main.js)
-  const EVENTS_DATA = {
-    'freedom250': {
-      name: 'Freedom 250 Festival',
-      tagline: 'Where Gen Z Kenya Meets America',
-      date: 'June 11–12, 2026',
-      location: 'JKUAT Main Campus, Nairobi',
-      participants: 2847,
-      status: 'live',
-      points: 342,
-      image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1000&h=400&fit=crop',
-      description: 'A premier festival activating Nairobi\'s next generation of leaders through immersive civic engagement, innovation showcases, and cross-cultural exchange. 7 themed experience tents, live performances, drone soccer, robotics, and embassy keynotes — all in one electrifying weekend at JKUAT.',
-      highlights: [
-        'Drone Soccer & Robotics Challenge at The Garage',
-        'Embassy leadership keynotes on the Main Stage',
-        'Entrepreneurship pitches at The Launchpad',
-        'Democracy simulations at The Townhall',
-        'Study abroad info at The Varsity Lounge',
-        'Live art, music, and the Garden of Heroes mural',
-        'Live team leaderboards & Liberty Coins rewards',
-        'QR badge check-in and instant point tracking'
-      ]
-    },
-    'tech-frontier': {
-      name: 'Tech Frontier Summit',
-      tagline: 'Exploring the Future of Technology',
-      date: 'September 15–17, 2026',
-      location: 'University of Nairobi, Nairobi',
-      participants: 1250,
-      status: 'upcoming',
-      points: 98,
-      image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1000&h=400&fit=crop',
-      description: 'Three days of deep-dive technology programming — from AI and machine learning workshops to hardware prototyping sprints. Connect with engineers, founders, and policymakers shaping the digital frontier across East Africa and beyond.',
-      highlights: [
-        'AI & Machine Learning workshops',
-        'Hardware prototyping labs',
-        'Startup pitch competition',
-        'VC networking sessions',
-        'Policy & ethics in tech panels',
-        'Student showcase & demos',
-        'Liberty Coins rewards system',
-        'International speaker lineup'
-      ]
-    },
-    'innovation-week': {
-      name: 'Innovation Week',
-      tagline: 'Drone Soccer & Robotics at Full Tilt',
-      date: 'October 5–7, 2026',
-      location: 'Strathmore University, Nairobi',
-      participants: 890,
-      status: 'upcoming',
-      points: 45,
-      image: 'https://images.unsplash.com/photo-1562774053-701939374585?w=1000&h=400&fit=crop',
-      description: 'A three-day maker festival packed with drone competitions, robotics challenges, and hands-on engineering. Teams compete in high-energy head-to-head events while building real-world projects with mentorship from leading engineers and innovation leaders.',
-      highlights: [
-        'National Drone Soccer Championship',
-        'Robotics design & build challenge',
-        'Rapid prototyping bootcamp',
-        'Electronics & IoT workshops',
-        'Team leaderboard competition',
-        'Prizes & scholarship pathways',
-        'Mentorship from engineers',
-        'Liberty Coins & badge rewards'
-      ]
-    }
-  };
-
-  // Open event detail — NO login required
-  window.openEventDetail = function(eventId) {
-    const event = EVENTS_DATA[eventId];
-    if (!event) return;
-
-    const panel = document.getElementById('eventDetailPanel');
-    const statusClass = event.status === 'live' ? 'status-live' : 'status-upcoming';
-    const statusLabel = event.status === 'live' ? '● Live Now' : 'Upcoming';
-
-    panel.innerHTML = `
-      <button class="event-detail-close" id="closeEventDetail" aria-label="Close"><i class="fas fa-times"></i></button>
-      <div class="event-detail-hero">
-        <img src="${event.image}" alt="${event.name}">
-        <div class="event-detail-hero-overlay"></div>
-        <div class="event-detail-hero-text">
-          <span class="event-card-status ${statusClass}" style="position:relative;top:auto;right:auto;display:inline-block;margin-bottom:10px;">${statusLabel}</span>
-          <h2>${event.name}</h2>
-          <p>${event.tagline}</p>
-        </div>
-      </div>
-      <div class="event-detail-body">
-        <div class="event-detail-grid">
-          <div class="event-detail-stat"><strong><i class="fas fa-calendar" style="font-size:1rem;color:var(--red)"></i></strong><span>Date</span><div style="margin-top:6px;font-size:.9rem;font-weight:700;color:var(--blue)">${event.date}</div></div>
-          <div class="event-detail-stat"><strong><i class="fas fa-map-marker-alt" style="font-size:1rem;color:var(--red)"></i></strong><span>Location</span><div style="margin-top:6px;font-size:.9rem;font-weight:700;color:var(--blue)">${event.location}</div></div>
-          <div class="event-detail-stat"><strong>${event.participants.toLocaleString()}</strong><span>Registered</span></div>
-        </div>
-        <p class="event-detail-description">${event.description}</p>
-        <div class="event-detail-highlights">
-          ${event.highlights.map(h => `<div class="event-highlight"><i class="fas fa-check-circle"></i><p>${h}</p></div>`).join('')}
-        </div>
-        <div class="event-detail-cta">
-          <h3>Ready to Join ${event.name}?</h3>
-          <p>Get your Liberty Pass to register, earn points, and unlock your participant badge.</p>
-          <div class="cta-buttons">
-            <button class="btn btn-primary btn-lg" onclick="closeEventDetailAndAuth('${eventId}')">Get Liberty Pass <i class="fas fa-ticket-alt"></i></button>
-            <button class="btn btn-outline-white btn-lg" onclick="document.getElementById('eventDetailOverlay').classList.remove('active')">Maybe Later</button>
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Re-bind close button
-    document.getElementById('closeEventDetail').onclick = () => {
-      document.getElementById('eventDetailOverlay').classList.remove('active');
-    };
-
-    document.getElementById('eventDetailOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-  };
-
-  // Close overlay + open auth modal
-  window.closeEventDetailAndAuth = function(eventId) {
-    document.getElementById('eventDetailOverlay').classList.remove('active');
-    document.body.style.overflow = '';
-    // Show auth modal with context
-    if (typeof showAuthModal === 'function') {
-      showAuthModal(eventId);
-    } else {
-      // Fallback: try again shortly (module may still loading)
-      setTimeout(() => { if (typeof showAuthModal === 'function') showAuthModal(eventId); }, 300);
-    }
-  };
-
-  // Close overlay on backdrop click
-  document.getElementById('eventDetailOverlay').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('eventDetailOverlay')) {
-      document.getElementById('eventDetailOverlay').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  });
-
-  // Close overlay on ESC
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.getElementById('eventDetailOverlay').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  });
-</script>
+<!-- ===== FAB ===== -->
+<button class="help-fab" id="assistantFab" aria-label="Get help"><i class="fas fa-question"></i></button>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 <script type="module" src="js/main.js"></script>
