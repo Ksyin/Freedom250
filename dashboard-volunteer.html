@@ -150,8 +150,15 @@
 <body>
 <div class="dash-mobile">
     <div class="volunteer-header">
-        <h1><i class="fas fa-handshake"></i> Volunteer Hub</h1>
-        <p style="opacity: 0.7; margin-top: 5px;">Freedom 250 Festival · JKUAT</p>
+        <div>
+            <h1><i class="fas fa-handshake"></i> Volunteer Hub</h1>
+            <p style="opacity: 0.7; margin-top: 5px;">Freedom 250 Festival · JKUAT</p>
+            <p id="volunteerRoleBadge" style="opacity:0.85; font-size:0.9rem; margin-top:4px;">Role: Volunteer</p>
+        </div>
+        <button id="signOutBtn" style="background:#fff; color:#1a1a2e; border:none; border-radius:18px; padding:10px 16px; font-weight:700; cursor:pointer;">Sign out</button>
+    </div>
+    <div style="margin: 0 15px 10px; padding:14px 16px; border-radius:20px; background:#fff; box-shadow:0 10px 30px rgba(0,0,0,0.05); font-size:0.92rem; color:#333;">
+        Use this volunteer dashboard at <strong>dashboard-volunteer.html</strong>. Participants sign in to <strong>dashboard-participant.html</strong>, booth staff use <strong>dashboard-booth-admin.html</strong>, and admins use <strong>dashboard-admin.html</strong>.
     </div>
 
     <div class="stats-row">
@@ -365,14 +372,22 @@
         alert("📞 Volunteer Support\n\n📍 Volunteer Tent: Near Main Entrance\n📞 Shift Coordinator: +254 700 000 001\n\nNeed help with QR scanning? Ask at the Info Desk!");
     });
 
+    document.getElementById('signOutBtn')?.addEventListener('click', async () => {
+        await signOutUser();
+        window.location.href = 'login.html';
+    });
+
     // Check auth
     onAuthStateChange((user) => {
-        if (!user) window.location.href = '/';
-        else {
+        if (!user) {
+            window.location.href = 'login.html';
+        } else {
             renderTasks();
             document.querySelector('.volunteer-header h1').innerHTML = `<i class="fas fa-handshake"></i> Welcome, ${user.displayName || user.email.split('@')[0]}!`;
+            document.getElementById('volunteerRoleBadge').innerText = `Role: ${user.role.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase())}`;
         }
     });
+
 </script>
 </body>
 </html>

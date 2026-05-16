@@ -237,12 +237,12 @@ export function onAuthStateChange(callback) {
 }
 
 export function getDashboardPath(user) {
-  if (!user) return '/';
+  if (!user) return 'login.html';
   switch (user.role) {
-    case ROLES.ADMIN: return '/admin';
-    case ROLES.ORGANIZER: return '/organizer';
-    case ROLES.BOOTH_ADMIN: return '/booth-admin';
-    case ROLES.VOLUNTEER: return '/volunteer';
-    default: return '/participant';
+    case ROLES.ADMIN: return 'dashboard-admin.html';
+    case ROLES.ORGANIZER: return 'dashboard-admin.html';
+    case ROLES.BOOTH_ADMIN: return 'dashboard-booth-admin.html';
+    case ROLES.VOLUNTEER: return 'dashboard-volunteer.html';
+    default: return 'dashboard-participant.html';
   }
 }
