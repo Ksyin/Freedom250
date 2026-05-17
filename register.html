@@ -8,270 +8,89 @@
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    :root {
-      --red:   #B22234;
-      --blue:  #3C3B6E;
-      --white: #FFFFFF;
-      --black: #0D0D0D;
-      --gray:  #F5F5F7;
-      --gray2: #E8E8EC;
-      --text:  #1A1A2E;
-      --muted: #6B7280;
-      --red-light: rgba(178,34,52,0.08);
-      --blue-light: rgba(60,59,110,0.06);
-    }
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { height:100%; }
+    :root{--red:#B22234;--blue:#3C3B6E;--white:#fff;--black:#0D0D0D;--gray:#F5F5F7;--gray2:#E8E8EC;--text:#1A1A2E;--muted:#6B7280}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{height:100%}
+    body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);min-height:100vh;display:flex;overflow-x:hidden}
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--white);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      overflow-x: hidden;
-    }
+    .panel-left{display:none;width:42%;background:var(--red);position:relative;overflow:hidden;flex-direction:column;justify-content:space-between;padding:48px 52px}
+    @media(min-width:900px){.panel-left{display:flex}}
+    .panel-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 80%,rgba(60,59,110,.45) 0%,transparent 55%),radial-gradient(ellipse at 15% 10%,rgba(255,255,255,.08) 0%,transparent 50%)}
+    .stripe-top{position:absolute;top:0;left:0;right:0;height:6px;background:repeating-linear-gradient(90deg,var(--blue) 0px,var(--blue) 20px,#fff 20px,#fff 40px)}
+    .left-logo{position:relative;z-index:1}
+    .left-logo .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .left-logo .brand-name{font-family:'Sora',sans-serif;font-size:1.35rem;font-weight:800;color:#fff}
+    .left-logo .brand-name span{color:rgba(255,255,255,.65)}
+    .left-hero{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0}
+    .left-headline{font-family:'Sora',sans-serif;font-size:2.5rem;font-weight:900;color:#fff;line-height:1.12;margin-bottom:18px;letter-spacing:-.03em}
+    .left-sub{font-size:1rem;color:rgba(255,255,255,.72);line-height:1.65;margin-bottom:28px;max-width:340px}
+    .left-perks{display:flex;flex-direction:column;gap:10px}
+    .left-perk{display:flex;align-items:center;gap:12px;color:#fff;font-size:.85rem}
+    .left-perk i{width:20px;opacity:.8}
+    .left-footer{position:relative;z-index:1;font-size:.78rem;color:rgba(255,255,255,.35)}
 
-    /* ── LEFT PANEL ── */
-    .panel-left {
-      display: none;
-      width: 42%;
-      background: var(--red);
-      position: relative;
-      overflow: hidden;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 48px 52px;
-    }
-    @media (min-width: 900px) { .panel-left { display: flex; } }
+    .panel-right{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;background:var(--white);position:relative;overflow-y:auto}
+    .panel-right::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--red) 0%,var(--blue) 50%,var(--red) 100%)}
+    .form-wrap{width:100%;max-width:440px}
+    .mobile-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;justify-content:center}
+    @media(min-width:900px){.mobile-logo{display:none}}
+    .mobile-logo span{font-family:'Sora',sans-serif;font-size:1.25rem;font-weight:800;color:var(--blue)}
+    .mobile-logo span em{color:var(--red);font-style:normal}
+    .flag-bar{display:flex;gap:4px;margin-bottom:28px}
+    .flag-bar span{flex:1;height:3px;border-radius:2px}
+    .fb-red{background:var(--red)}.fb-blue{background:var(--blue)}.fb-w{background:var(--gray2)}
+    .form-head{margin-bottom:28px}
+    .form-head h1{font-family:'Sora',sans-serif;font-size:1.9rem;font-weight:900;color:var(--black);letter-spacing:-.03em;margin-bottom:6px}
+    .form-head h1 .accent{color:var(--red)}
+    .form-head p{font-size:.88rem;color:var(--muted);line-height:1.6}
 
-    .panel-left::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 80% 80%, rgba(60,59,110,0.45) 0%, transparent 55%),
-        radial-gradient(ellipse at 15% 10%, rgba(255,255,255,0.08) 0%, transparent 50%);
-    }
+    /* Participant-only notice */
+    .participant-notice{background:rgba(60,59,110,.06);border:1.5px solid rgba(60,59,110,.15);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--blue);margin-bottom:20px}
+    .participant-notice i{flex-shrink:0;font-size:.95rem}
 
-    .stripe-top {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 6px;
-      background: repeating-linear-gradient(90deg, var(--blue) 0px, var(--blue) 20px, #fff 20px, #fff 40px);
-    }
+    .form-divider{display:flex;align-items:center;gap:14px;margin:18px 0}
+    .form-divider::before,.form-divider::after{content:'';flex:1;height:1px;background:var(--gray2)}
+    .form-divider span{font-size:.75rem;color:var(--muted);font-weight:600;letter-spacing:.06em}
 
-    .left-logo { position: relative; z-index: 1; }
-    .left-logo .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .left-logo .brand-name { font-family: 'Sora', sans-serif; font-size: 1.35rem; font-weight: 800; color: #fff; }
-    .left-logo .brand-name span { color: rgba(255,255,255,0.65); }
+    .btn-google{width:100%;padding:13px;background:var(--white);border:1.5px solid var(--gray2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:border-color .2s,box-shadow .2s;margin-bottom:18px}
+    .btn-google:hover{border-color:#aaa;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+    .btn-google .g-logo{width:18px}
+    .btn-google:disabled{opacity:.6;cursor:not-allowed}
 
-    .left-hero { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px 0; }
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .field{margin-bottom:16px}
+    .field label{display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:7px}
+    .field .input-wrap{position:relative}
+    .field .input-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem}
+    .field input{width:100%;padding:12px 14px 12px 38px;border:1.5px solid var(--gray2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:var(--white);transition:border-color .2s,box-shadow .2s}
+    .field input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(178,34,52,.1)}
+    .field .pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:.85rem}
 
-    .left-headline {
-      font-family: 'Sora', sans-serif;
-      font-size: 2.5rem;
-      font-weight: 900;
-      color: #fff;
-      line-height: 1.12;
-      margin-bottom: 18px;
-      letter-spacing: -0.03em;
-    }
+    /* Role badge (read-only — always Participant) */
+    .role-badge{display:flex;align-items:center;gap:12px;background:rgba(178,34,52,.06);border:1.5px solid rgba(178,34,52,.15);border-radius:12px;padding:14px 16px;margin-bottom:20px}
+    .role-badge .rb-icon{width:38px;height:38px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;flex-shrink:0}
+    .role-badge .rb-name{font-family:'Sora',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);display:block}
+    .role-badge .rb-desc{font-size:.72rem;color:var(--muted)}
 
-    .left-sub { font-size: 1rem; color: rgba(255,255,255,0.72); line-height: 1.65; margin-bottom: 36px; max-width: 340px; }
+    .btn-submit{width:100%;padding:14px;background:var(--red);border:none;border-radius:12px;color:#fff;font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:.02em;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+    .btn-submit:hover{background:#9a1d2d;transform:translateY(-1px)}
+    .btn-submit:active{transform:translateY(0)}
+    .btn-submit:disabled{opacity:.65;cursor:not-allowed;transform:none}
 
-    /* Role chips */
-    .role-chips { display: flex; flex-direction: column; gap: 10px; }
-    .role-chip {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 14px;
-      padding: 14px 18px;
-      color: #fff;
-    }
-    .role-chip .chip-icon {
-      width: 36px; height: 36px;
-      background: rgba(255,255,255,0.18);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem;
-      flex-shrink: 0;
-    }
-    .role-chip .chip-title { font-family: 'Sora', sans-serif; font-size: 0.88rem; font-weight: 700; display: block; margin-bottom: 2px; }
-    .role-chip .chip-desc { font-size: 0.75rem; opacity: 0.65; }
-
-    .left-footer { position: relative; z-index: 1; font-size: 0.78rem; color: rgba(255,255,255,0.35); }
-
-    /* ── RIGHT PANEL ── */
-    .panel-right {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 40px 24px;
-      background: var(--white);
-      position: relative;
-      overflow-y: auto;
-    }
-    .panel-right::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--red) 0%, var(--blue) 50%, var(--red) 100%);
-    }
-
-    .form-wrap { width: 100%; max-width: 440px; }
-
-    .mobile-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; justify-content: center; }
-    @media (min-width: 900px) { .mobile-logo { display: none; } }
-    .mobile-logo span { font-family: 'Sora', sans-serif; font-size: 1.25rem; font-weight: 800; color: var(--blue); }
-    .mobile-logo span em { color: var(--red); font-style: normal; }
-
-    .flag-bar { display: flex; gap: 4px; margin-bottom: 28px; }
-    .flag-bar span { flex: 1; height: 3px; border-radius: 2px; }
-    .flag-bar .fb-red  { background: var(--red); }
-    .flag-bar .fb-blue { background: var(--blue); }
-    .flag-bar .fb-w    { background: var(--gray2); }
-
-    .form-head { margin-bottom: 28px; }
-    .form-head h1 { font-family: 'Sora', sans-serif; font-size: 1.9rem; font-weight: 900; color: var(--black); letter-spacing: -0.03em; margin-bottom: 6px; }
-    .form-head h1 .accent { color: var(--red); }
-    .form-head p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
-
-    .form-divider { display: flex; align-items: center; gap: 14px; margin: 18px 0; }
-    .form-divider::before, .form-divider::after { content: ''; flex: 1; height: 1px; background: var(--gray2); }
-    .form-divider span { font-size: 0.75rem; color: var(--muted); font-weight: 600; letter-spacing: 0.06em; }
-
-    .btn-google {
-      width: 100%;
-      padding: 13px;
-      background: var(--white);
-      border: 1.5px solid var(--gray2);
-      border-radius: 12px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      margin-bottom: 18px;
-    }
-    .btn-google:hover { border-color: #aaa; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
-    .btn-google .g-logo { width: 18px; }
-
-    /* Two column layout for some fields */
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-    .field { margin-bottom: 16px; }
-    .field label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 7px; }
-    .field .input-wrap { position: relative; }
-    .field .input-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.85rem; }
-    .field input, .field select {
-      width: 100%;
-      padding: 12px 14px 12px 38px;
-      border: 1.5px solid var(--gray2);
-      border-radius: 12px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text);
-      background: var(--white);
-      transition: border-color 0.2s, box-shadow 0.2s;
-      appearance: none;
-    }
-    .field input:focus, .field select:focus {
-      outline: none;
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(178,34,52,0.1);
-    }
-    .field .pw-toggle { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--muted); font-size: 0.85rem; }
-
-    /* Role selector cards */
-    .role-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-    .role-option { display: none; }
-    .role-option + label {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 8px;
-      padding: 14px 10px;
-      border: 1.5px solid var(--gray2);
-      border-radius: 14px;
-      cursor: pointer;
-      transition: all 0.2s;
-      background: var(--white);
-    }
-    .role-option + label .r-icon {
-      width: 38px; height: 38px;
-      border-radius: 10px;
-      background: var(--gray);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-      transition: background 0.2s;
-    }
-    .role-option + label .r-name { font-family: 'Sora', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--text); }
-    .role-option + label .r-desc { font-size: 0.68rem; color: var(--muted); line-height: 1.4; }
-    .role-option:checked + label { border-color: var(--blue); background: var(--blue-light); }
-    .role-option:checked + label .r-icon { background: var(--blue); color: #fff; }
-
-    .role-label { font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 10px; display: block; }
-
-    .btn-submit {
-      width: 100%;
-      padding: 14px;
-      background: var(--red);
-      border: none;
-      border-radius: 12px;
-      color: #fff;
-      font-family: 'Sora', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.02em;
-      transition: background 0.2s, transform 0.15s;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      margin-top: 4px;
-    }
-    .btn-submit:hover { background: #9a1d2d; transform: translateY(-1px); }
-    .btn-submit:active { transform: translateY(0); }
-    .btn-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
-
-    .error-box {
-      background: rgba(178,34,52,0.07);
-      border: 1px solid rgba(178,34,52,0.25);
-      border-left: 3px solid var(--red);
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 0.85rem;
-      color: var(--red);
-      margin-bottom: 18px;
-      display: none;
-      align-items: center;
-      gap: 10px;
-    }
-    .error-box.show { display: flex; }
-
-    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.6s linear infinite; display: none; }
-    .btn-submit.loading .spinner { display: block; }
-    .btn-submit.loading .btn-text { display: none; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .form-footer { text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--muted); }
-    .form-footer a { color: var(--blue); text-decoration: none; font-weight: 700; }
-    .form-footer a:hover { text-decoration: underline; }
-
-    /* Terms note */
-    .terms-note { font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 14px; line-height: 1.5; }
-    .terms-note a { color: var(--blue); text-decoration: none; }
+    .error-box{background:rgba(178,34,52,.07);border:1px solid rgba(178,34,52,.25);border-left:3px solid var(--red);border-radius:10px;padding:12px 16px;font-size:.85rem;color:var(--red);margin-bottom:18px;display:none;align-items:center;gap:10px}
+    .error-box.show{display:flex}
+    .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none}
+    .btn-submit.loading .spinner{display:block}
+    .btn-submit.loading .btn-text{display:none}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .form-footer{text-align:center;margin-top:20px;font-size:.85rem;color:var(--muted)}
+    .form-footer a{color:var(--blue);text-decoration:none;font-weight:700}
+    .form-footer a:hover{text-decoration:underline}
+    .terms-note{font-size:.75rem;color:var(--muted);text-align:center;margin-top:14px;line-height:1.5}
+    .terms-note a{color:var(--blue);text-decoration:none}
+    .staff-note{text-align:center;margin-top:14px;font-size:.75rem;color:var(--muted)}
+    .staff-note a{color:var(--muted);text-decoration:none;opacity:.65}
+    .staff-note a:hover{opacity:1;color:var(--blue)}
   </style>
 </head>
 <body>
@@ -279,43 +98,23 @@
   <!-- ═══ LEFT PANEL ═══ -->
   <div class="panel-left">
     <div class="stripe-top"></div>
-
     <div class="left-logo">
       <a href="index.html" class="brand">
         <span style="font-size:2rem">🇺🇸</span>
         <span class="brand-name">Freedom<span>250</span></span>
       </a>
     </div>
-
     <div class="left-hero">
       <h2 class="left-headline">Join the<br>Freedom<br>Community.</h2>
-      <p class="left-sub">Register once. Get your Liberty Pass QR code. Access all 7 tents, earn badges, and compete for prizes.</p>
-
-      <div class="role-chips">
-        <div class="role-chip">
-          <div class="chip-icon">🎓</div>
-          <div>
-            <span class="chip-title">Participant</span>
-            <span class="chip-desc">Explore tents, earn stamps & XP, compete in challenges</span>
-          </div>
-        </div>
-        <div class="role-chip">
-          <div class="chip-icon">🙋</div>
-          <div>
-            <span class="chip-title">Volunteer</span>
-            <span class="chip-desc">Manage zones, scan participants, track crowd flow</span>
-          </div>
-        </div>
-        <div class="role-chip">
-          <div class="chip-icon">🏕️</div>
-          <div>
-            <span class="chip-title">Booth Staff</span>
-            <span class="chip-desc">Run your tent, award points, manage activities</span>
-          </div>
-        </div>
+      <p class="left-sub">Register for free. Get your Liberty Pass QR code. Explore all 7 experience tents and compete for prizes.</p>
+      <div class="left-perks">
+        <div class="left-perk"><i class="fas fa-qrcode"></i> Instant Liberty Pass QR code on signup</div>
+        <div class="left-perk"><i class="fas fa-trophy"></i> Compete in challenges & earn Liberty Coins</div>
+        <div class="left-perk"><i class="fas fa-map-marked-alt"></i> Access all 7 Freedom Zones & collect stamps</div>
+        <div class="left-perk"><i class="fas fa-gift"></i> Redeem coins for merch, VIP access & prizes</div>
+        <div class="left-perk"><i class="fas fa-chart-line"></i> Climb the live leaderboard</div>
       </div>
     </div>
-
     <div class="left-footer">© 2025 Freedom 250 · U.S. Embassy Nairobi</div>
   </div>
 
@@ -334,10 +133,16 @@
 
       <div class="form-head">
         <h1>Create your <span class="accent">account.</span></h1>
-        <p>Choose your role to land on the right dashboard after sign-up.</p>
+        <p>Register as a participant to access your Liberty Pass and all festival features.</p>
       </div>
 
       <div class="error-box" id="errorBox"><i class="fas fa-circle-exclamation"></i> <span id="errorText"></span></div>
+
+      <!-- Participant-only notice -->
+      <div class="participant-notice">
+        <i class="fas fa-info-circle"></i>
+        <span>This registration is for <strong>participants only</strong>. Staff, volunteers &amp; booth teams register via the <a href="login.html#staff" style="color:var(--blue);font-weight:600">staff portal</a>.</span>
+      </div>
 
       <!-- Google -->
       <button class="btn-google" id="googleBtn">
@@ -381,37 +186,18 @@
           </div>
         </div>
 
-        <!-- Role selector -->
-        <span class="role-label">Select your role</span>
-        <div class="role-selector">
-          <input type="radio" name="role" id="r-participant" class="role-option" value="participant" checked>
-          <label for="r-participant">
-            <div class="r-icon">🎓</div>
-            <span class="r-name">Participant</span>
-            <span class="r-desc">Attend & compete</span>
-          </label>
-
-          <input type="radio" name="role" id="r-volunteer" class="role-option" value="volunteer">
-          <label for="r-volunteer">
-            <div class="r-icon">🙋</div>
-            <span class="r-name">Volunteer</span>
-            <span class="r-desc">Help run events</span>
-          </label>
-
-          <input type="radio" name="role" id="r-booth" class="role-option" value="booth_admin">
-          <label for="r-booth">
-            <div class="r-icon">🏕️</div>
-            <span class="r-name">Booth Staff</span>
-            <span class="r-desc">Manage a tent</span>
-          </label>
-
-          <input type="radio" name="role" id="r-organizer" class="role-option" value="organizer">
-          <label for="r-organizer">
-            <div class="r-icon">⚙️</div>
-            <span class="r-name">Organizer</span>
-            <span class="r-desc">Full access</span>
-          </label>
+        <!-- Role badge — locked to Participant, not selectable -->
+        <div style="margin-bottom:8px;font-size:.82rem;font-weight:600;color:var(--text)">Your role</div>
+        <div class="role-badge">
+          <div class="rb-icon">🎓</div>
+          <div>
+            <span class="rb-name">Participant</span>
+            <span class="rb-desc">Explore zones, earn Liberty Coins, compete in challenges</span>
+          </div>
         </div>
+
+        <!-- Hidden role field always sends 'participant' -->
+        <input type="hidden" id="role" value="participant">
 
         <button type="submit" class="btn-submit" id="submitBtn">
           <div class="spinner" id="spinner"></div>
@@ -420,8 +206,9 @@
       </form>
 
       <p class="terms-note">By creating an account you agree to Freedom 250's <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
-
       <div class="form-footer">Already have an account? <a href="login.html">Sign in here</a></div>
+      <div class="staff-note">Staff or volunteer? <a href="login.html#staff">Use the staff portal →</a></div>
+
     </div>
   </div>
 
@@ -440,14 +227,8 @@
     const pwToggle  = document.getElementById('pwToggle');
     const pwIcon    = document.getElementById('pwIcon');
 
-    function showError(msg) {
-      errorText.textContent = msg;
-      errorBox.classList.add('show');
-    }
-    function setLoading(on) {
-      submitBtn.disabled = on;
-      submitBtn.classList.toggle('loading', on);
-    }
+    function showError(msg) { errorText.textContent = msg; errorBox.classList.add('show'); }
+    function setLoading(on) { submitBtn.disabled = on; submitBtn.classList.toggle('loading', on); }
 
     pwToggle.addEventListener('click', () => {
       const inp = document.getElementById('password');
@@ -461,18 +242,18 @@
       const name     = document.getElementById('name').value.trim();
       const email    = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
-      const role     = document.querySelector('input[name="role"]:checked')?.value || 'participant';
+      // Role is always 'participant' — hardcoded, cannot be changed by user
+      const role     = 'participant';
 
       if (!name || !email || !password) { showError('Please fill in all fields.'); return; }
       if (password.length < 6) { showError('Password must be at least 6 characters.'); return; }
 
       errorBox.classList.remove('show');
       setLoading(true);
-
       try {
         const result = await signUp(email, password, name, role);
         if (!result.success) throw new Error(result.error);
-        /* pageNavigator handles redirect based on role */
+        // pageNavigator handles redirect
       } catch (err) {
         showError(err.message || 'Failed to create account. Please try again.');
         setLoading(false);
@@ -484,7 +265,8 @@
       googleBtn.disabled = true;
       googleBtn.textContent = 'Signing up…';
       try {
-        const result = await signInWithGoogle();
+        // Always registers as participant via Google
+        const result = await signInWithGoogle(['participant']);
         if (!result.success) throw new Error(result.error);
       } catch (err) {
         showError(err.message || 'Google sign-up failed.');
