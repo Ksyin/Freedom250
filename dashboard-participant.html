@@ -1,864 +1,1002 @@
-<!-- dashboard-participant.html - Complete Working Participant Dashboard -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Freedom Passport | Freedom 250</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #f5f5f5; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Freedom Passport | Freedom 250</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --red: #B22234; --navy: #1a1a2e; --gold: #FFD700;
+      --bg: #f0f2f5; --white: #fff; --radius: 20px;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:var(--bg); }
+    .app { max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:80px; }
 
-        .dash-mobile { max-width: 500px; margin: 0 auto; background: #f5f5f5; min-height: 100vh; padding-bottom: 80px; }
+    /* ── PASSPORT HEADER ── */
+    .passport-header {
+      background:linear-gradient(135deg,var(--navy) 0%,#16213e 100%);
+      color:#fff; padding:20px; position:relative; overflow:hidden;
+    }
+    .passport-header::before {
+      content:"★"; position:absolute; right:-15px; top:-15px;
+      font-size:110px; opacity:.06;
+    }
+    .passport-badge {
+      display:inline-block; background:rgba(255,215,0,.18);
+      border:1px solid gold; padding:3px 12px; border-radius:20px;
+      font-size:.68rem; margin-bottom:12px; letter-spacing:.5px;
+    }
+    .passport-header h1 { font-size:1.5rem; margin-bottom:2px; }
+    .passport-header p { font-size:.75rem; opacity:.7; }
+    .user-stats-row {
+      display:flex; gap:10px; margin-top:16px;
+    }
+    .stat-pill {
+      background:rgba(255,255,255,.1); border-radius:30px;
+      padding:8px 14px; text-align:center; flex:1;
+    }
+    .stat-pill .val { font-size:1.2rem; font-weight:800; color:gold; }
+    .stat-pill .lbl { font-size:.6rem; opacity:.7; }
+    .rank-chip {
+      background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18);
+      border-radius:24px; padding:14px 18px; margin-top:12px; display:grid; gap:10px;
+    }
+    .rank-chip strong { font-size:.9rem; }
+    .rank-chip .sub { font-size:.72rem; color:rgba(255,255,255,.7); }
+    .level-bar-wrap { display:flex; align-items:center; gap:8px; margin-top:6px; }
+    .level-bar { flex:1; height:8px; background:rgba(255,255,255,.15); border-radius:999px; overflow:hidden; }
+    .level-bar-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--red)); transition:width .4s; }
+    .badge-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+    .badge-pill {
+      display:inline-flex; align-items:center; gap:5px;
+      background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
+      color:#fff; padding:5px 10px; border-radius:999px; font-size:.68rem;
+    }
 
-        /* Passport Header */
-        .passport-header {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: white;
-            padding: 25px 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        .passport-header::before {
-            content: "★";
-            position: absolute;
-            right: -20px;
-            top: -20px;
-            font-size: 120px;
-            opacity: 0.08;
-        }
-        .passport-badge {
-            display: inline-block;
-            background: rgba(255,215,0,0.2);
-            border: 1px solid gold;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            margin-bottom: 15px;
-        }
-        .passport-header h1 { font-size: 1.6rem; margin-bottom: 5px; }
-        .user-stats-row {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            gap: 15px;
-        }
-        .stat-pill {
-            background: rgba(255,255,255,0.1);
-            border-radius: 30px;
-            padding: 8px 16px;
-            text-align: center;
-            flex: 1;
-            backdrop-filter: blur(10px);
-        }
-        .stat-pill .value { font-size: 1.3rem; font-weight: 800; color: gold; }
-        .stat-pill .label { font-size: 0.65rem; opacity: 0.7; }
+    /* ── QR SECTION ── */
+    .qr-section {
+      background:var(--white); margin:14px; padding:20px;
+      border-radius:var(--radius); text-align:center;
+      box-shadow:0 4px 14px rgba(0,0,0,.07);
+    }
+    .qr-section h3 { font-size:.95rem; margin-bottom:4px; }
+    .qr-box {
+      width:160px; height:160px; margin:12px auto;
+      background:#f5f5f5; border-radius:16px;
+      display:flex; align-items:center; justify-content:center; overflow:hidden;
+    }
+    .qr-box img { width:100%; height:100%; object-fit:contain; }
+    .freedom-id-label {
+      font-size:.7rem; font-weight:700; letter-spacing:1px;
+      color:var(--navy); margin-bottom:4px;
+    }
+    .qr-sub { font-size:.68rem; color:#888; margin-bottom:12px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center;
+      gap:6px; border-radius:999px; padding:10px 18px; font-size:.8rem;
+      font-weight:700; cursor:pointer; transition:transform .15s; border:none; }
+    .btn:active { transform:scale(.97); }
+    .btn-red { background:var(--red); color:#fff; }
+    .btn-outline { background:transparent; border:1.5px solid var(--red); color:var(--red); }
+    .btn-gold { background:var(--gold); color:var(--navy); }
 
-        .passport-summary {
-            padding: 0 15px 20px;
-        }
-        .passport-chip {
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.14);
-            border-radius: 24px;
-            padding: 18px;
-            display: grid;
-            gap: 14px;
-            box-shadow: 0 10px 24px rgba(0,0,0,0.08);
-        }
-        .passport-chip strong { font-size: 0.96rem; color: #fff; }
-        .progress-box { display: grid; gap: 8px; }
-        .progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: rgba(255,255,255,0.8); }
-        .level-bar { width: 100%; height: 10px; background: rgba(255,255,255,0.12); border-radius: 999px; overflow: hidden; }
-        .level-bar div { height: 100%; background: linear-gradient(90deg, #FFD700, #B22234); transition: width 0.4s ease; }
+    /* ── SECTIONS ── */
+    .section-hdr {
+      padding:0 15px; margin:22px 0 10px;
+      display:flex; justify-content:space-between; align-items:baseline;
+    }
+    .section-hdr h2 { font-size:1rem; color:var(--navy); font-weight:700; }
+    .section-hdr a { font-size:.75rem; color:var(--red); text-decoration:none; }
+    .cards-grid { display:grid; gap:12px; padding:0 15px; }
 
-        .badge-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-        .badge-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.12);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.18);
-            padding: 8px 12px;
-            border-radius: 999px;
-            font-size: 0.75rem;
-        }
+    /* ── ZONE CARD ── */
+    .zone-card {
+      background:var(--white); border-radius:var(--radius); padding:14px;
+      display:flex; align-items:center; gap:14px;
+      box-shadow:0 3px 10px rgba(0,0,0,.06); cursor:pointer;
+    }
+    .zone-icon {
+      width:52px; height:52px; border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.4rem; color:#fff; flex-shrink:0;
+    }
+    .zone-info { flex:1; }
+    .zone-info h4 { font-size:.85rem; font-weight:700; }
+    .zone-info p { font-size:.68rem; color:#777; margin-top:2px; }
+    .zone-stamp {
+      background:var(--gold); color:var(--navy); padding:4px 10px;
+      border-radius:20px; font-size:.68rem; font-weight:700; flex-shrink:0;
+    }
+    .zone-stamp.visited { background:#e8f5e9; color:#2e7d32; }
 
-        .notification-card {
-            background: white;
-            border-radius: 24px;
-            padding: 18px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            margin: 0 15px 18px;
-        }
-        .notification-card h3 { font-size: 0.95rem; margin-bottom: 10px; }
-        .notification-item { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
-        .notification-item:last-child { margin-bottom: 0; }
-        .notification-item small { color: #999; font-size: 0.75rem; }
+    /* ── CHALLENGE CARD ── */
+    .ch-card {
+      background:var(--white); border-radius:var(--radius); padding:14px;
+      display:flex; gap:12px; align-items:center;
+      box-shadow:0 3px 10px rgba(0,0,0,.06); cursor:pointer;
+    }
+    .ch-ring {
+      width:50px; height:50px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:800; font-size:.85rem; flex-shrink:0;
+      background:#f0f0f0; color:#555;
+    }
+    .ch-ring.done { background:#dcfce7; color:#166534; }
+    .ch-info { flex:1; }
+    .ch-info h4 { font-size:.85rem; font-weight:700; }
+    .ch-info p { font-size:.68rem; color:#777; }
+    .ch-bar { height:5px; background:#eee; border-radius:3px; margin-top:6px; overflow:hidden; }
+    .ch-bar-fill { height:100%; background:var(--red); border-radius:3px; }
 
-        .toast-container {
-            position: fixed;
-            bottom: 90px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: min(420px, calc(100% - 30px));
-            z-index: 400;
-            display: grid;
-            gap: 10px;
-        }
-        .toast-item {
-            background: rgba(0,0,0,0.9);
-            color: white;
-            border-radius: 16px;
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 16px 30px rgba(0,0,0,0.2);
-            animation: slideUp 0.35s ease;
-        }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    /* ── LEADERBOARD ── */
+    .lb-item {
+      background:var(--white); border-radius:14px; padding:12px 15px;
+      margin:0 15px 8px; display:flex; justify-content:space-between;
+      align-items:center; box-shadow:0 2px 6px rgba(0,0,0,.05);
+    }
+    .lb-rank { font-weight:800; color:var(--gold); width:30px; }
+    .lb-name { flex:1; }
+    .lb-name small { color:#999; display:block; font-size:.68rem; }
+    .lb-pts { color:var(--red); font-weight:700; }
 
-        .btn-primary,
-        .btn-outline {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 999px;
-            border: none;
-            padding: 12px 16px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: transform 0.2s ease;
-        }
-        .btn-primary { background: #B22234; color: white; }
-        .btn-outline { background: transparent; border: 1px solid #B22234; color: #B22234; }
-        .btn-primary:active, .btn-outline:active { transform: scale(0.98); }
+    /* ── TABS ── */
+    .tab-bar {
+      display:flex; gap:8px; padding:0 15px; margin-bottom:12px; overflow-x:auto;
+      scrollbar-width:none;
+    }
+    .tab-bar::-webkit-scrollbar { display:none; }
+    .tab {
+      padding:6px 14px; border-radius:999px; font-size:.75rem;
+      font-weight:600; cursor:pointer; white-space:nowrap;
+      background:#e8e8e8; color:#555; border:none;
+    }
+    .tab.active { background:var(--red); color:#fff; }
 
-        @media (min-width: 768px) {
-            .cards-grid { grid-template-columns: repeat(2, 1fr); }
-        }
+    /* ── REWARDS ── */
+    .reward-card {
+      background:var(--white); border-radius:var(--radius); padding:16px;
+      box-shadow:0 3px 10px rgba(0,0,0,.06);
+    }
+    .reward-card h4 { font-size:.88rem; font-weight:700; }
+    .reward-card p { font-size:.7rem; color:#777; margin:4px 0 10px; }
+    .reward-cost {
+      display:inline-block; background:#fff3cd; color:#856404;
+      padding:3px 10px; border-radius:20px; font-size:.7rem; font-weight:700;
+    }
 
-        /* QR Section */
-        .qr-section {
-            background: white;
-            margin: 15px;
-            padding: 20px;
-            border-radius: 24px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        .qr-code { width: 140px; height: 140px; margin: 15px auto; background: #f0f0f0; border-radius: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .qr-code img { width: 100%; height: 100%; object-fit: contain; }
+    /* ── NOTIFICATIONS ── */
+    .notif-card {
+      background:var(--white); border-radius:var(--radius); padding:16px;
+      margin:0 15px 10px; box-shadow:0 3px 10px rgba(0,0,0,.06);
+    }
+    .notif-card .notif-title { font-size:.85rem; font-weight:700; }
+    .notif-card .notif-body { font-size:.72rem; color:#555; margin-top:2px; }
+    .notif-card .notif-time { font-size:.65rem; color:#aaa; margin-top:4px; }
+    .notif-card.unread { border-left:3px solid var(--red); }
 
-        /* Section Headers */
-        .section-header { padding: 0 15px; margin: 25px 0 12px; display: flex; justify-content: space-between; align-items: baseline; }
-        .section-header h2 { font-size: 1.1rem; color: #1a1a2e; font-weight: 700; }
+    /* ── PROFILE ── */
+    .profile-card {
+      background:var(--white); border-radius:var(--radius); padding:24px;
+      margin:14px; text-align:center; box-shadow:0 4px 14px rgba(0,0,0,.07);
+    }
+    .profile-avatar {
+      width:80px; height:80px; border-radius:50%; background:var(--navy);
+      display:flex; align-items:center; justify-content:center;
+      font-size:2rem; color:#fff; margin:0 auto 14px;
+    }
+    .profile-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:16px 0; }
+    .profile-stat { text-align:center; }
+    .profile-stat .val { font-size:1.2rem; font-weight:800; color:var(--navy); }
+    .profile-stat .lbl { font-size:.62rem; color:#888; }
 
-        /* Cards Grid */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            padding: 0 15px;
-        }
+    /* ── STAMPS ── */
+    .stamps-grid {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:0 15px;
+    }
+    .stamp {
+      aspect-ratio:1; border-radius:14px; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; font-size:1.4rem;
+      background:#eee; position:relative;
+    }
+    .stamp.earned { background:linear-gradient(135deg,var(--navy),var(--red)); }
+    .stamp span { font-size:.5rem; margin-top:3px; color:#fff; text-align:center; line-height:1.2; }
+    .stamp.earned::after { content:"✓"; position:absolute; top:3px; right:5px; font-size:.55rem; color:gold; }
 
-        /* Feature Card */
-        .feature-card {
-            background: white;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .feature-card:active { transform: scale(0.98); }
-        .feature-img {
-            height: 120px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-        .feature-img .overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.7));
-            padding: 15px;
-            color: white;
-        }
-        .feature-content { padding: 18px; }
-        .feature-content h3 { font-size: 1rem; margin-bottom: 6px; }
-        .feature-content p { font-size: 0.75rem; color: #666; margin-bottom: 12px; }
-        .reward-badge { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      position:fixed; bottom:0; left:0; right:0; background:var(--white);
+      display:flex; justify-content:space-around; padding:10px 10px 14px;
+      border-top:1px solid #eee; max-width:480px; margin:0 auto; z-index:200;
+    }
+    .nav-item { text-align:center; color:#aaa; font-size:.62rem; cursor:pointer; }
+    .nav-item.active { color:var(--red); }
+    .nav-item i { font-size:1.2rem; display:block; margin-bottom:3px; }
 
-        /* Zone Card */
-        .zone-card {
-            background: white;
-            border-radius: 20px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            cursor: pointer;
-        }
-        .zone-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: white;
-        }
-        .zone-info { flex: 1; }
-        .zone-info h4 { font-size: 0.9rem; margin-bottom: 4px; }
-        .zone-info p { font-size: 0.7rem; color: #666; }
-        .zone-stamp {
-            background: gold;
-            color: #1a1a2e;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-        }
+    /* ── NOTIF BELL ── */
+    .notif-bell {
+      position:absolute; top:20px; right:20px; color:#fff;
+      font-size:1.2rem; cursor:pointer;
+    }
+    .notif-badge {
+      position:absolute; top:-4px; right:-4px; background:var(--red);
+      color:#fff; font-size:.55rem; width:16px; height:16px;
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+    }
 
-        /* Challenge Card */
-        .challenge-card {
-            background: white;
-            border-radius: 20px;
-            padding: 15px;
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        .challenge-progress {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-        }
+    /* ── TOAST ── */
+    .toast-wrap {
+      position:fixed; bottom:90px; left:50%; transform:translateX(-50%);
+      width:min(440px, calc(100% - 28px)); z-index:500; display:grid; gap:8px;
+    }
+    .toast {
+      background:rgba(20,20,30,.93); color:#fff; border-radius:14px;
+      padding:12px 16px; font-size:.82rem; display:flex;
+      align-items:center; justify-content:space-between;
+      box-shadow:0 10px 24px rgba(0,0,0,.2);
+      animation:toastIn .3s ease;
+    }
+    @keyframes toastIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 
-        /* Leaderboard Item */
-        .leaderboard-item {
-            background: white;
-            border-radius: 16px;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
+    /* ── MODAL ── */
+    .modal {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,.6); z-index:400;
+      align-items:center; justify-content:center;
+    }
+    .modal.open { display:flex; }
+    .modal-box {
+      background:#fff; border-radius:24px; padding:24px;
+      width:min(400px,90vw); max-height:85vh; overflow-y:auto;
+    }
 
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 20px 14px;
-            border-top: 1px solid #eee;
-            max-width: 500px;
-            margin: 0 auto;
-            z-index: 100;
-        }
-        .nav-item { text-align: center; color: #999; text-decoration: none; font-size: 0.7rem; cursor: pointer; }
-        .nav-item.active { color: #B22234; }
-        .nav-item i { font-size: 1.3rem; display: block; margin-bottom: 4px; }
+    /* ── SECTION PAGES ── */
+    .page { display:none; }
+    .page.active { display:block; }
 
-        /* Help FAB */
-        .help-fab {
-            position: fixed;
-            bottom: 70px;
-            right: 20px;
-            background: #B22234;
-            color: white;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            cursor: pointer;
-            z-index: 200;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 300;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal.show { display: flex; }
-        .modal-content {
-            background: white;
-            margin: 20px;
-            padding: 25px;
-            border-radius: 24px;
-            max-width: 400px;
-            width: 90%;
-        }
-
-        @media (min-width: 768px) {
-            .dash-mobile { max-width: 800px; }
-            .cards-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-    </style>
+    /* ── HELP FAB ── */
+    .help-fab {
+      position:fixed; bottom:74px; right:16px;
+      background:var(--red); color:#fff; width:50px; height:50px;
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 16px rgba(0,0,0,.22); cursor:pointer; z-index:300;
+      font-size:1.1rem;
+    }
+  </style>
 </head>
 <body>
-<div class="dash-mobile" id="app">
-    <!-- Passport Header -->
-    <div class="passport-header">
-        <div class="passport-badge"><i class="fas fa-passport"></i> DIGITAL FREEDOM PASSPORT</div>
-        <h1>Hello, <span id="userName">Explorer</span>!</h1>
-        <p>Freedom 250 Festival · JKUAT Main Campus</p>
-        <div class="user-stats-row">
-            <div class="stat-pill"><div class="value" id="libertyCoins">0</div><div class="label"><i class="fas fa-coins"></i> Liberty Coins</div></div>
-            <div class="stat-pill"><div class="value" id="passportLevel">1</div><div class="label"><i class="fas fa-star"></i> Freedom Rank</div></div>
-            <div class="stat-pill"><div class="value" id="stampsCount">0</div><div class="label"><i class="fas fa-stamp"></i> Stamps</div></div>
+<div class="app" id="app">
+
+  <!-- ─── PASSPORT HEADER ─── -->
+  <div class="passport-header">
+    <div class="passport-badge"><i class="fas fa-passport"></i> DIGITAL FREEDOM PASSPORT</div>
+    <h1>Hello, <span id="userName">Explorer</span>! 👋</h1>
+    <p>Freedom 250 Festival · JKUAT Main Campus</p>
+    <div class="user-stats-row">
+      <div class="stat-pill"><div class="val" id="hdrCoins">0</div><div class="lbl">Liberty Coins</div></div>
+      <div class="stat-pill"><div class="val" id="hdrLevel">1</div><div class="lbl">Level</div></div>
+      <div class="stat-pill"><div class="val" id="hdrStamps">0</div><div class="lbl">Stamps</div></div>
+    </div>
+    <div class="rank-chip">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <strong id="rankTitle">Freedom Explorer</strong>
+          <div class="sub">Journey Progress</div>
         </div>
-        <div class="passport-summary">
-            <div class="passport-chip">
-                <div style="display:flex; justify-content:space-between; align-items:center; gap: 10px;">
-                    <div>
-                        <strong id="profileRank">Freedom Explorer</strong>
-                        <div style="font-size:0.75rem; color: rgba(255,255,255,0.75);">Freedom Passport Progress</div>
-                    </div>
-                    <div class="badge-row" id="badgeRow"></div>
-                </div>
-                <div class="progress-box">
-                    <div class="progress-label"><span>Next Rank in</span><span id="xpToNext">500 XP</span></div>
-                    <div class="level-bar"><div id="levelProgress" style="width: 0%;"></div></div>
-                </div>
-            </div>
+        <div class="badge-row" id="badgeRow"></div>
+      </div>
+      <div>
+        <div class="level-bar-wrap">
+          <div class="level-bar"><div class="level-bar-fill" id="levelFill" style="width:0%"></div></div>
+          <span style="font-size:.65rem;opacity:.8" id="xpLabel">0 / 500 XP</span>
         </div>
+      </div>
     </div>
-
-    <!-- Digital Passport QR -->
-    <div class="qr-section" id="qrSection">
-        <h3>🎫 My Entry Pass</h3>
-        <div class="qr-code" id="qrCodeDisplay"><i class="fas fa-qrcode" style="font-size: 3rem; color: #999;"></i></div>
-        <p id="freedomIdLabel" style="font-size: 0.72rem; font-weight: 700; color: #1a1a2e; letter-spacing: 1px; margin-top: 6px;">Loading ID…</p>
-        <p style="font-size: 0.7rem; color: #666;">Scan at any booth to earn Liberty Coins</p>
-        <button class="btn-outline" id="showFullQrBtn" style="margin-top: 10px; font-size: 0.75rem;">Show Full QR</button>
+    <!-- notification bell -->
+    <div class="notif-bell" id="bellBtn" onclick="showPage('notifications')">
+      <i class="fas fa-bell"></i>
+      <div class="notif-badge" id="notifBadge">0</div>
     </div>
+  </div>
 
-    <!-- Main Content Sections -->
-    <div id="homeSection">
-        <div class="section-header"><h2>🏕️ Freedom Zones</h2><a href="#" id="viewAllZones">View All →</a></div>
-        <div class="cards-grid" id="zonesGrid"></div>
-
-        <div class="section-header"><h2>⚡ Live Challenges</h2><a href="#" id="viewAllChallenges">View All</a></div>
-        <div class="cards-grid" id="challengesGrid"></div>
-
-        <div class="section-header"><h2>🏆 Liberty Leaderboard</h2><a href="#" id="viewFullLeaderboard">View Full →</a></div>
-        <div id="leaderboardPreview"></div>
-        <div class="notification-card" id="notificationFeed">
-            <h3>🔔 Live Announcements</h3>
-            <div class="notification-item"><div>Freedom Bonus Active!</div><small>+10% bonus points on all zone visits this hour.</small></div>
-        </div>
-        <div class="section-header"><h2>📜 Activity History</h2></div>
-        <div id="activityHistorySection" class="cards-grid"></div>
+  <!-- ─── QR ENTRY PASS ─── -->
+  <div class="qr-section">
+    <h3>🎫 My Entry Pass</h3>
+    <div class="qr-box" id="qrBox">
+      <i class="fas fa-qrcode" style="font-size:2.8rem;color:#ccc"></i>
     </div>
-
-    <div id="challengesSection" style="display: none;">
-        <div class="section-header"><h2>🏆 Active Challenges</h2><a href="#" id="backToHome1">← Back</a></div>
-        <div id="allChallengesList"></div>
+    <div class="freedom-id-label" id="freedomIdLabel">Generating…</div>
+    <div class="qr-sub">Show at any booth to earn Liberty Coins</div>
+    <div style="display:flex;gap:8px;justify-content:center">
+      <button class="btn btn-red" id="showQrBtn"><i class="fas fa-expand"></i> Full Screen</button>
+      <button class="btn btn-outline" id="dlQrBtn"><i class="fas fa-download"></i> Download</button>
     </div>
+  </div>
 
-    <div id="leaderboardSection" style="display: none;">
-        <div class="section-header"><h2>🏆 Full Leaderboard</h2><a href="#" id="backToHome2">← Back</a></div>
-        <div id="fullLeaderboardList"></div>
+  <!-- ═══════════ HOME PAGE ═══════════ -->
+  <div class="page active" id="pg-home">
+
+    <!-- Freedom Zones -->
+    <div class="section-hdr"><h2>🏕️ Freedom Zones</h2><a href="#" id="viewAllZonesBtn">View All →</a></div>
+    <div class="cards-grid" id="zonesGrid"></div>
+
+    <!-- Challenges -->
+    <div class="section-hdr"><h2>⚡ Live Challenges</h2><a href="#" id="viewAllChBtn">View All</a></div>
+    <div class="cards-grid" id="challengePreview"></div>
+
+    <!-- Leaderboard preview -->
+    <div class="section-hdr"><h2>🏆 Liberty Leaderboard</h2><a href="#" id="viewLbBtn">View Full →</a></div>
+    <div id="lbPreview"></div>
+
+    <!-- Announcements -->
+    <div class="section-hdr"><h2>🔔 Announcements</h2></div>
+    <div id="announceFeed"></div>
+
+    <!-- Activity -->
+    <div class="section-hdr"><h2>📜 Activity History</h2></div>
+    <div class="cards-grid" id="activityGrid"></div>
+    <div style="height:10px"></div>
+  </div>
+
+  <!-- ═══════════ CHALLENGES PAGE ═══════════ -->
+  <div class="page" id="pg-challenges">
+    <div class="section-hdr"><h2>🏆 All Challenges</h2><a href="#" onclick="showPage('home')">← Back</a></div>
+    <div class="cards-grid" id="allChallenges"></div>
+    <div style="height:10px"></div>
+  </div>
+
+  <!-- ═══════════ LEADERBOARD PAGE ═══════════ -->
+  <div class="page" id="pg-leaderboard">
+    <div class="section-hdr"><h2>🏆 Leaderboard</h2><a href="#" onclick="showPage('home')">← Back</a></div>
+    <div class="tab-bar">
+      <button class="tab active" onclick="switchLbTab('overall',this)">Overall</button>
+      <button class="tab" onclick="switchLbTab('daily',this)">Daily</button>
+      <button class="tab" onclick="switchLbTab('zone',this)">By Zone</button>
+      <button class="tab" onclick="switchLbTab('team',this)">Teams</button>
+      <button class="tab" onclick="switchLbTab('session',this)">Sessions</button>
     </div>
+    <div id="fullLbList"></div>
+    <div style="height:10px"></div>
+  </div>
 
-    <div id="profileSection" style="display: none;">
-        <div class="section-header"><h2>👤 My Profile</h2><a href="#" id="backToHome3">← Back</a></div>
-        <div class="qr-section" style="margin-top: 0;">
-            <div class="qr-code" id="profileQrCode"></div>
-            <h3 id="profileName"></h3>
-            <p id="profileEmail"></p>
-            <p id="profilePoints"></p>
-            <button class="btn-primary" id="logoutBtn" style="margin-top: 15px;">Logout</button>
-        </div>
+  <!-- ═══════════ STAMPS PAGE ═══════════ -->
+  <div class="page" id="pg-stamps">
+    <div class="section-hdr"><h2>🗺️ Freedom Stamps</h2><a href="#" onclick="showPage('home')">← Back</a></div>
+    <p style="padding:0 15px;font-size:.75rem;color:#777;margin-bottom:12px;">
+      Visit all 7 zones to collect every stamp and unlock the <strong>Freedom Traveler</strong> badge!
+    </p>
+    <div class="stamps-grid" id="stampsGrid"></div>
+    <div style="height:10px"></div>
+  </div>
+
+  <!-- ═══════════ REWARDS PAGE ═══════════ -->
+  <div class="page" id="pg-rewards">
+    <div class="section-hdr"><h2>🎁 Rewards Store</h2><a href="#" onclick="showPage('home')">← Back</a></div>
+    <p style="padding:0 15px;font-size:.75rem;color:#777;margin-bottom:4px;">
+      Your balance: <strong id="rewardBalance">0</strong> Liberty Coins
+    </p>
+    <div class="tab-bar">
+      <button class="tab active" onclick="switchRewardTab('all',this)">All</button>
+      <button class="tab" onclick="switchRewardTab('merchandise',this)">Merch</button>
+      <button class="tab" onclick="switchRewardTab('coupon',this)">Coupons</button>
+      <button class="tab" onclick="switchRewardTab('vip',this)">VIP</button>
+      <button class="tab" onclick="switchRewardTab('certificate',this)">Certificates</button>
     </div>
+    <div class="cards-grid" id="rewardsGrid"></div>
+    <div style="height:10px"></div>
+  </div>
 
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <div class="nav-item active" data-nav="home"><i class="fas fa-passport"></i><span>Passport</span></div>
-        <div class="nav-item" data-nav="challenges"><i class="fas fa-trophy"></i><span>Challenges</span></div>
-        <div class="nav-item" data-nav="leaderboard"><i class="fas fa-chart-line"></i><span>Rank</span></div>
-        <div class="nav-item" data-nav="profile"><i class="fas fa-user"></i><span>Profile</span></div>
+  <!-- ═══════════ NOTIFICATIONS PAGE ═══════════ -->
+  <div class="page" id="pg-notifications">
+    <div class="section-hdr"><h2>🔔 Notifications</h2><a href="#" onclick="showPage('home')">← Back</a></div>
+    <div id="notifList"></div>
+    <div style="height:10px"></div>
+  </div>
+
+  <!-- ═══════════ PROFILE PAGE ═══════════ -->
+  <div class="page" id="pg-profile">
+    <div class="section-hdr"><h2>👤 My Profile</h2><a href="#" onclick="showPage('home')">← Back</a></div>
+    <div class="profile-card">
+      <div class="profile-avatar"><i class="fas fa-user"></i></div>
+      <h3 id="profileName">—</h3>
+      <p style="font-size:.75rem;color:#888" id="profileEmail">—</p>
+      <p style="font-size:.7rem;color:#aaa;margin-top:4px" id="profileFreedomId">—</p>
+      <div class="profile-stats">
+        <div class="profile-stat"><div class="val" id="pCoins">0</div><div class="lbl">Coins</div></div>
+        <div class="profile-stat"><div class="val" id="pLevel">1</div><div class="lbl">Level</div></div>
+        <div class="profile-stat"><div class="val" id="pZones">0</div><div class="lbl">Zones</div></div>
+      </div>
+      <!-- QR on profile -->
+      <div class="qr-box" id="profileQrBox" style="margin:0 auto 16px;"></div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-gold" onclick="showPage('stamps')"><i class="fas fa-stamp"></i> My Stamps</button>
+        <button class="btn btn-red" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
     </div>
+    <div class="badge-row" id="profileBadges" style="padding:0 15px;"></div>
+    <div style="height:10px"></div>
+  </div>
 
-    <div class="help-fab" id="helpFab"><i class="fas fa-headset"></i></div>
-    <div class="toast-container" id="toastContainer"></div>
+</div><!-- /app -->
+
+<!-- ── BOTTOM NAV ── -->
+<div class="bottom-nav">
+  <div class="nav-item active" data-page="home" onclick="showPage('home')"><i class="fas fa-passport"></i>Passport</div>
+  <div class="nav-item" data-page="challenges" onclick="showPage('challenges')"><i class="fas fa-trophy"></i>Challenges</div>
+  <div class="nav-item" data-page="leaderboard" onclick="showPage('leaderboard')"><i class="fas fa-chart-line"></i>Rank</div>
+  <div class="nav-item" data-page="rewards" onclick="showPage('rewards')"><i class="fas fa-gift"></i>Rewards</div>
+  <div class="nav-item" data-page="profile" onclick="showPage('profile')"><i class="fas fa-user"></i>Profile</div>
 </div>
 
-<!-- Challenge Modal -->
-<div id="challengeModal" class="modal">
-    <div class="modal-content">
-        <h3 id="modalTitle"></h3>
-        <p id="modalDesc"></p>
-        <p id="modalReward" style="color: gold; font-weight: 700; margin: 10px 0;"></p>
-        <div id="modalProgress"></div>
-        <button class="btn-primary" id="startChallengeBtn" style="margin-top: 15px;">Start Challenge</button>
-        <button class="btn-outline" onclick="closeModal()" style="margin-top: 10px;">Close</button>
+<!-- ── HELP FAB ── -->
+<div class="help-fab" onclick="helpDialog()"><i class="fas fa-headset"></i></div>
+
+<!-- ── TOAST CONTAINER ── -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ── QR FULLSCREEN MODAL ── -->
+<div class="modal" id="qrModal">
+  <div class="modal-box" style="text-align:center;max-width:320px" onclick="event.stopPropagation()">
+    <h3 style="margin-bottom:6px">🎫 My Entry Pass</h3>
+    <div class="freedom-id-label" id="modalFreedomId">—</div>
+    <div class="qr-box" id="modalQrBox" style="width:230px;height:230px;margin:14px auto;"></div>
+    <p style="font-size:.7rem;color:#888;margin-bottom:14px">Show this QR at any booth to check in and earn Liberty Coins</p>
+    <div style="display:flex;gap:8px;justify-content:center">
+      <button class="btn btn-red" id="modalDlBtn"><i class="fas fa-download"></i> Download</button>
+      <button class="btn btn-outline" onclick="closeModal('qrModal')">Close</button>
     </div>
+  </div>
 </div>
 
-<!-- Full-screen QR Modal -->
-<div id="qrModal" class="modal" style="background:rgba(0,0,0,0.85);" onclick="this.classList.remove('show')">
-    <div class="modal-content" style="text-align:center;padding:30px;max-width:320px;" onclick="event.stopPropagation()">
-        <h3 style="margin-bottom:4px;">🎫 My Entry Pass</h3>
-        <p id="qrModalFreedomId" style="font-size:0.75rem;font-weight:700;color:#1a1a2e;letter-spacing:1px;margin-bottom:16px;"></p>
-        <div id="qrModalCode" style="width:250px;height:250px;margin:0 auto;background:#f0f0f0;border-radius:16px;display:flex;align-items:center;justify-content:center;overflow:hidden;"></div>
-        <p style="font-size:0.7rem;color:#666;margin-top:12px;">Show this at any booth to earn Liberty Coins</p>
-        <button class="btn-outline" id="downloadQrBtn" style="margin-top:14px;font-size:0.8rem;">⬇ Download QR</button>
-        <button class="btn-outline" onclick="document.getElementById('qrModal').classList.remove('show')" style="margin-top:8px;font-size:0.8rem;">Close</button>
+<!-- ── CHALLENGE MODAL ── -->
+<div class="modal" id="challengeModal" onclick="closeModal('challengeModal')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <h3 id="chModalTitle"></h3>
+    <p id="chModalDesc" style="font-size:.8rem;color:#555;margin:8px 0"></p>
+    <p id="chModalReward" style="color:goldenrod;font-weight:700;margin-bottom:10px"></p>
+    <div id="chModalProgress"></div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn btn-red" id="chStartBtn">Start / Progress</button>
+      <button class="btn btn-outline" onclick="closeModal('challengeModal')">Close</button>
     </div>
+  </div>
+</div>
+
+<!-- ── REWARD MODAL ── -->
+<div class="modal" id="rewardModal" onclick="closeModal('rewardModal')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <h3 id="rwModalTitle"></h3>
+    <p id="rwModalDesc" style="font-size:.8rem;color:#555;margin:8px 0"></p>
+    <p id="rwModalCost" style="font-weight:700;margin-bottom:10px"></p>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn btn-red" id="rwRedeemBtn">Redeem</button>
+      <button class="btn btn-outline" onclick="closeModal('rewardModal')">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <script type="module">
-    import { getCurrentUser, signOutUser, onAuthStateChange } from './js/auth.js';
-    import { generateFreedomId, displayQRCode } from './js/qr-generator.js';
+import { getCurrentUser, signOutUser, onAuthStateChange, initAuth } from './js/auth.js';
+import { generateFreedomId, renderQRInto, generateQRCode } from './js/qr-generator.js';
 
-    // Data
-    const zones = [
-        { name: "THE GARAGE", icon: "fas fa-microchip", color: "#3C3B6E", desc: "Innovation & MakerLab - Drone Soccer, Robotics", reward: 50 },
-        { name: "THE LAUNCHPAD", icon: "fas fa-chart-line", color: "#B22234", desc: "Entrepreneurship & Business", reward: 50 },
-        { name: "THE VARSITY LOUNGE", icon: "fas fa-graduation-cap", color: "#3C3B6E", desc: "Education & Alumni - Study in USA", reward: 50 },
-        { name: "THE TOWNHALL", icon: "fas fa-landmark", color: "#B22234", desc: "Democracy & Leadership - Voting Booth", reward: 50 },
-        { name: "THE ARENA", icon: "fas fa-basketball-ball", color: "#3C3B6E", desc: "Sports & Wellness - Basketball, Disc Golf", reward: 50 },
-        { name: "TASTE OF AMERICA", icon: "fas fa-utensils", color: "#B22234", desc: "Food Court - American Bites", reward: 50 },
-        { name: "CULTURE & MUSIC", icon: "fas fa-music", color: "#3C3B6E", desc: "Main Stage - Live Performances", reward: 50 }
-    ];
+// ────────────────────────────────────────────────────────
+//  DATA
+// ────────────────────────────────────────────────────────
+const ZONES = [
+  { name:"THE GARAGE",       icon:"fas fa-microchip",      color:"#3C3B6E", desc:"Innovation & MakerLab — Drone Soccer, Robotics", pts:50 },
+  { name:"THE LAUNCHPAD",    icon:"fas fa-rocket",          color:"#B22234", desc:"Entrepreneurship & Business Pitches",            pts:50 },
+  { name:"THE VARSITY LOUNGE",icon:"fas fa-graduation-cap", color:"#3C3B6E", desc:"Education & Alumni — Study in USA",              pts:50 },
+  { name:"THE TOWNHALL",     icon:"fas fa-landmark",        color:"#B22234", desc:"Democracy & Leadership — Voting Booth",          pts:50 },
+  { name:"THE ARENA",        icon:"fas fa-basketball-ball", color:"#3C3B6E", desc:"Sports & Wellness — Basketball, Disc Golf",      pts:50 },
+  { name:"TASTE OF AMERICA", icon:"fas fa-utensils",        color:"#B22234", desc:"Food Court — American Bites & Culture",         pts:50 },
+  { name:"CULTURE & MUSIC",  icon:"fas fa-music",           color:"#3C3B6E", desc:"Main Stage — Live Performances & Art",          pts:50 }
+];
 
-    const challenges = [
-        { id: 1, name: "🏆 Drone Soccer Champion", desc: "Win a match at The Garage tent", reward: 250, progress: 0, target: 1, completed: false },
-        { id: 2, name: "🔍 Hidden QR Hunt", desc: "Find and scan 5 secret QR codes around the venue", reward: 100, progress: 2, target: 5, completed: false },
-        { id: 3, name: "🤝 Networking Master", desc: "Connect with 10 other participants", reward: 150, progress: 4, target: 10, completed: false },
-        { id: 4, name: "🎤 Session Explorer", desc: "Attend 3 keynote sessions", reward: 200, progress: 1, target: 3, completed: false },
-        { id: 5, name: "📸 Freedom Selfie", desc: "Take a selfie at the Freedom Mural", reward: 75, progress: 0, target: 1, completed: false },
-        { id: 6, name: "🌍 All Zones Explorer", desc: "Visit all 7 Freedom Zones", reward: 500, progress: 3, target: 7, completed: false }
-    ];
+let CHALLENGES = [
+  { id:1, name:"🏆 Drone Soccer Champion", desc:"Win a match at The Garage tent",            pts:250, prog:0, target:1, done:false },
+  { id:2, name:"🔍 Hidden QR Hunt",        desc:"Find and scan 5 secret QR codes",           pts:100, prog:2, target:5, done:false },
+  { id:3, name:"🤝 Networking Master",     desc:"Connect with 10 other participants",         pts:150, prog:4, target:10,done:false },
+  { id:4, name:"🎤 Session Explorer",      desc:"Attend 3 keynote sessions",                  pts:200, prog:1, target:3, done:false },
+  { id:5, name:"📸 Freedom Selfie",        desc:"Take a selfie at the Freedom Mural",         pts:75,  prog:0, target:1, done:false },
+  { id:6, name:"🌍 All Zones Explorer",    desc:"Visit all 7 Freedom Zones",                  pts:500, prog:0, target:7, done:false }
+];
 
-    const leaderboard = [
-        { name: "Sarah Kamau", points: 2840, rank: 1, university: "JKUAT" },
-        { name: "James Omondi", points: 2750, rank: 2, university: "UoN" },
-        { name: "Faith Njeri", points: 2680, rank: 3, university: "Strathmore" },
-        { name: "Brian Otieno", points: 2590, rank: 4, university: "JKUAT" },
-        { name: "Mercy Wanjiku", points: 2450, rank: 5, university: "DeKUT" },
-        { name: "Peter Mwangi", points: 2320, rank: 6, university: "UoN" },
-        { name: "Lucy Akinyi", points: 2180, rank: 7, university: "Machakos" },
-        { name: "John Maina", points: 2050, rank: 8, university: "JKUAT" }
-    ];
+const REWARDS = [
+  { id:1,  name:"Freedom 250 T-Shirt",     type:"merchandise",  cost:500,  desc:"Official event T-Shirt",                    stock:50 },
+  { id:2,  name:"10% Food Coupon",         type:"coupon",       cost:100,  desc:"Discount at Taste of America food court",   stock:200 },
+  { id:3,  name:"VIP Lounge Access",       type:"vip",          cost:1000, desc:"Exclusive VIP lounge for the day",          stock:20 },
+  { id:4,  name:"Freedom Gift Hamper",     type:"merchandise",  cost:800,  desc:"Curated hamper of Freedom 250 goodies",     stock:30 },
+  { id:5,  name:"Completion Certificate",  type:"certificate",  cost:200,  desc:"Digital certificate of participation",      stock:999 },
+  { id:6,  name:"Free Coffee Voucher",     type:"coupon",       cost:50,   desc:"One free coffee from Taste of America",     stock:100 },
+  { id:7,  name:"Drone Soccer Session",    type:"vip",          cost:600,  desc:"Private 30-min drone soccer session",       stock:10 },
+  { id:8,  name:"Sponsor Prize Pack",      type:"merchandise",  cost:1200, desc:"Exclusive sponsor giveaway bundle",         stock:15 }
+];
 
-    let userPoints = 0;
-    let visitedZones = [];
-    let badges = [
-        { name: 'Freedom Starter', icon: 'fa-flag', earned: true }
-    ];
-    let activityHistory = [];
-    let notifications = [
-        { title: 'Welcome to Freedom 250!', details: 'Your digital passport is ready to start your journey.', time: 'Now' }
-    ];
-    let dailyMission = { title: 'Find the Freedom Mural', reward: 75, progress: 0, target: 1, completed: false };
+const LEADERBOARD_DATA = {
+  overall: [
+    { name:"Sarah Kamau",   pts:2840, rank:1, sub:"JKUAT" },
+    { name:"James Omondi",  pts:2750, rank:2, sub:"UoN" },
+    { name:"Faith Njeri",   pts:2680, rank:3, sub:"Strathmore" },
+    { name:"Brian Otieno",  pts:2590, rank:4, sub:"JKUAT" },
+    { name:"Mercy Wanjiku", pts:2450, rank:5, sub:"DeKUT" },
+    { name:"Peter Mwangi",  pts:2320, rank:6, sub:"UoN" },
+    { name:"Lucy Akinyi",   pts:2180, rank:7, sub:"Machakos" },
+    { name:"John Maina",    pts:2050, rank:8, sub:"JKUAT" }
+  ],
+  daily: [
+    { name:"Brian Otieno",  pts:420, rank:1, sub:"Today's top earner" },
+    { name:"Faith Njeri",   pts:380, rank:2, sub:"Today's top earner" },
+    { name:"Mercy Wanjiku", pts:310, rank:3, sub:"Today's top earner" }
+  ],
+  zone: [
+    { name:"THE GARAGE",        pts:1240, rank:1, sub:"Most visited zone" },
+    { name:"TASTE OF AMERICA",  pts:980,  rank:2, sub:"2nd most visited" },
+    { name:"THE ARENA",         pts:870,  rank:3, sub:"3rd most visited" }
+  ],
+  team: [
+    { name:"Team Innovate",  pts:8200, rank:1, sub:"JKUAT — 12 members" },
+    { name:"Team Visionary", pts:7400, rank:2, sub:"UoN — 10 members" },
+    { name:"Team Pioneer",   pts:6800, rank:3, sub:"Strathmore — 8 members" }
+  ],
+  session: [
+    { name:"Keynote: Future of AI",   pts:520, rank:1, sub:"Main Stage — 260 attendees" },
+    { name:"Entrepreneurship Panel",  pts:440, rank:2, sub:"Launchpad — 220 attendees" },
+    { name:"Study in USA Workshop",   pts:380, rank:3, sub:"Varsity Lounge — 190 attendees" }
+  ]
+};
 
-    function notify(title, details) {
-        const container = document.getElementById('toastContainer');
-        if (!container) return;
-        const toast = document.createElement('div');
-        toast.className = 'toast-item';
-        toast.innerHTML = `<div><strong>${title}</strong><div style="font-size:0.85rem; color:#ddd; margin-top:4px;">${details}</div></div>`;
-        container.appendChild(toast);
-        setTimeout(() => toast.remove(), 4200);
-    }
+let NOTIFICATIONS = [
+  { title:"🎉 Welcome to Freedom 250!", body:"Your digital passport is ready. Start exploring zones to earn Liberty Coins!", time:"Just now", read:false },
+  { title:"⚡ Double Points Hour!",     body:"+10% bonus on all zone visits this hour. Rush to earn more coins!",          time:"5 min ago", read:false },
+  { title:"🏆 Drone Soccer Finals",     body:"Finals start at The Garage in 30 minutes. Come watch!",                      time:"10 min ago",read:true },
+  { title:"📢 Free Food at Taste of America", body:"First 100 participants get a free snack voucher. Head over now!",      time:"20 min ago",read:true }
+];
 
-    function renderBadges() {
-        const row = document.getElementById('badgeRow');
-        if (!row) return;
-        row.innerHTML = badges.map(b => `<span class="badge-pill"><i class="fas ${b.icon}"></i> ${b.name}</span>`).join('');
-    }
+// ─── State ───────────────────────────────────────────────
+let userPoints = 0, visitedZones = [], badges = [{name:'Freedom Starter',icon:'fa-flag'}];
+let activityHistory = [], redeemedRewards = [], currentPage = 'home';
+let currentUser = null, freedomId = null, qrDataUrl = null;
+let activeLbTab = 'overall', activeRewardTab = 'all';
 
-    function renderNotifications() {
-        const container = document.getElementById('notificationFeed');
-        if (!container) return;
-        const items = notifications.slice(0, 3).map(note => `
-            <div class="notification-item"><div><strong>${note.title}</strong><br>${note.details}</div><small>${note.time}</small></div>
-        `).join('');
-        container.innerHTML = `<h3>🔔 Live Announcements</h3>${items}`;
-    }
+// ────────────────────────────────────────────────────────
+//  INIT
+// ────────────────────────────────────────────────────────
+async function init() {
+  await initAuth();
+  onAuthStateChange(async (user) => {
+    if (!user) { window.location.replace('login.html'); return; }
+    currentUser = user;
+    freedomId = user.freedomId || generateFreedomId(user.uid);
+    loadState();
+    renderAll();
+    await generateAndShowQR();
+  });
+}
 
-    function renderActivityHistory() {
-        const historySection = document.getElementById('activityHistorySection');
-        if (!historySection) return;
-        historySection.innerHTML = activityHistory.slice(0, 5).map(entry => `
-            <div class="feature-card" style="padding:14px;">
-                <div class="feature-content">
-                    <h3>${entry.label}</h3>
-                    <p>${entry.details}</p>
-                    <small style="color:#999;">${new Date(entry.time).toLocaleString()}</small>
-                </div>
-            </div>
-        `).join('');
-    }
+async function generateAndShowQR() {
+  // Show Freedom ID immediately
+  const qrText = `FREEDOM250:${freedomId}:${currentUser.uid}`;
+  document.getElementById('freedomIdLabel').textContent = freedomId;
+  document.getElementById('modalFreedomId').textContent = freedomId;
 
-    function addActivity(label, details) {
-        activityHistory.unshift({ label, details, time: new Date().toISOString() });
-        renderActivityHistory();
-    }
+  // Generate QR in parallel for both boxes
+  const qrBox = document.getElementById('qrBox');
+  const profileQrBox = document.getElementById('profileQrBox');
+  const modalQrBox = document.getElementById('modalQrBox');
 
-    function updatePassportProgress() {
-        const level = Math.floor(userPoints / 500) + 1;
-        const xp = userPoints % 500;
-        document.getElementById('passportLevel').innerText = level;
-        document.getElementById('profileRank').innerText = level <= 2 ? 'Freedom Explorer' : level <= 4 ? 'Freedom Trailblazer' : 'Liberty Legend';
-        document.getElementById('xpToNext').innerText = `${500 - xp} XP`;
-        document.getElementById('levelProgress').style.width = `${(xp / 500) * 100}%`;
-    }
+  // Start generating
+  try {
+    const dataUrl = await generateQRCode(qrText, { width: 280 });
+    qrDataUrl = dataUrl;
 
-    function applyBonus(amount) {
-        // simulate active bonus window
-        const bonus = 1.1;
-        return Math.round(amount * bonus);
-    }
+    // Render into all QR containers
+    const img1 = makeQRImg(dataUrl, '100%');
+    const img2 = makeQRImg(dataUrl, '100%');
+    const img3 = makeQRImg(dataUrl, '100%');
 
-    function addBadge(name, icon) {
-        if (!badges.some(b => b.name === name)) {
-            badges.push({ name, icon, earned: true });
-            renderBadges();
-            notify('Badge unlocked', name);
-            addActivity('Badge unlocked', `Earned ${name}`);
-        }
-    }
+    qrBox.innerHTML = ''; qrBox.appendChild(img1);
+    profileQrBox.innerHTML = ''; profileQrBox.appendChild(img2);
+    modalQrBox.innerHTML = ''; modalQrBox.appendChild(img3);
 
-    function triggerDailyMission() {
-        if (!dailyMission.completed) {
-            notifications.unshift({ title: 'Daily Mission Available', details: dailyMission.title, time: 'Now' });
-            renderNotifications();
-            notify('New mission unlocked', dailyMission.title);
-        }
-    }
+    toast('✅ QR Code Ready', 'Your entry pass has been generated!');
+  } catch(e) {
+    console.error('QR generation error:', e);
+    // Try renderQRInto as fallback
+    await renderQRInto(qrBox, qrText, { width: 160 });
+  }
+}
 
-    // Render Zones
-    function renderZones() {
-        const container = document.getElementById('zonesGrid');
-        container.innerHTML = zones.map(zone => `
-            <div class="zone-card" onclick="visitZone('${zone.name}', ${zone.reward})">
-                <div class="zone-icon" style="background: ${zone.color}"><i class="${zone.icon}"></i></div>
-                <div class="zone-info">
-                    <h4>${zone.name}</h4>
-                    <p>${zone.desc}</p>
-                </div>
-                <div class="zone-stamp">+${zone.reward}</div>
-            </div>
-        `).join('');
-    }
+function makeQRImg(src, width) {
+  const img = document.createElement('img');
+  img.src = src;
+  img.style.cssText = `width:${width};height:100%;object-fit:contain;border-radius:8px;display:block;`;
+  img.alt = 'QR Code';
+  return img;
+}
 
-    // Render Challenges
-    function renderChallenges() {
-        const container = document.getElementById('challengesGrid');
-        container.innerHTML = challenges.slice(0, 3).map(ch => `
-            <div class="challenge-card" onclick="openChallenge(${ch.id})">
-                <div class="challenge-progress" style="background: ${ch.completed ? '#10b981' : '#f0f0f0'}; color: ${ch.completed ? 'white' : '#666'}">
-                    ${ch.completed ? '✓' : `${ch.progress}/${ch.target}`}
-                </div>
-                <div class="zone-info" style="flex:1">
-                    <h4>${ch.name}</h4>
-                    <p>${ch.desc}</p>
-                </div>
-                <div class="zone-stamp">+${ch.reward}</div>
-            </div>
-        `).join('');
-    }
+// ────────────────────────────────────────────────────────
+//  STATE PERSISTENCE (localStorage)
+// ────────────────────────────────────────────────────────
+function storeKey(k) { return `f250_${k}_${currentUser?.uid||'guest'}`; }
 
-    function renderAllChallenges() {
-        const container = document.getElementById('allChallengesList');
-        container.innerHTML = `
-            <div class="cards-grid">
-                ${challenges.map(ch => `
-                    <div class="feature-card" onclick="openChallenge(${ch.id})">
-                        <div class="feature-img" style="background: linear-gradient(135deg, #B22234, #3C3B6E); height: 100px;">
-                            <div class="overlay"><i class="fas fa-flag-checkered"></i></div>
-                        </div>
-                        <div class="feature-content">
-                            <h3>${ch.name}</h3>
-                            <p>${ch.desc}</p>
-                            <div class="reward-badge">+${ch.reward} Liberty Coins</div>
-                            <div class="progress-bar" style="background:#eee; height:6px; border-radius:3px; margin-top:10px;"><div style="width:${(ch.progress/ch.target)*100}%; height:6px; background:#B22234; border-radius:3px;"></div></div>
-                            <div style="font-size:0.7rem; margin-top:8px;">Progress: ${ch.progress}/${ch.target}</div>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-    }
+function loadState() {
+  const u = currentUser;
+  userPoints    = parseInt(localStorage.getItem(storeKey('pts'))) || 0;
+  visitedZones  = JSON.parse(localStorage.getItem(storeKey('zones'))||'[]');
+  badges        = JSON.parse(localStorage.getItem(storeKey('badges'))||'[{"name":"Freedom Starter","icon":"fa-flag"}]');
+  activityHistory = JSON.parse(localStorage.getItem(storeKey('history'))||'[]');
+  redeemedRewards = JSON.parse(localStorage.getItem(storeKey('rewards'))||'[]');
+  CHALLENGES    = JSON.parse(localStorage.getItem(storeKey('challenges'))||JSON.stringify(CHALLENGES));
+}
 
-    // Render Leaderboard
-    function renderLeaderboardPreview() {
-        const container = document.getElementById('leaderboardPreview');
-        container.innerHTML = leaderboard.slice(0, 5).map(u => `
-            <div class="leaderboard-item">
-                <div><span style="font-weight: 800; color: gold; margin-right: 12px;">#${u.rank}</span><strong>${u.name}</strong><br><small style="color:#999;">${u.university}</small></div>
-                <div><span style="color: #B22234; font-weight: 700;">${u.points}</span> <i class="fas fa-coins" style="color: gold;"></i></div>
-            </div>
-        `).join('');
-    }
+function saveState() {
+  if (!currentUser) return;
+  localStorage.setItem(storeKey('pts'),       String(userPoints));
+  localStorage.setItem(storeKey('zones'),     JSON.stringify(visitedZones));
+  localStorage.setItem(storeKey('badges'),    JSON.stringify(badges));
+  localStorage.setItem(storeKey('history'),   JSON.stringify(activityHistory));
+  localStorage.setItem(storeKey('rewards'),   JSON.stringify(redeemedRewards));
+  localStorage.setItem(storeKey('challenges'),JSON.stringify(CHALLENGES));
+}
 
-    function renderFullLeaderboard() {
-        const container = document.getElementById('fullLeaderboardList');
-        container.innerHTML = leaderboard.map(u => `
-            <div class="leaderboard-item">
-                <div><span style="font-weight: 800; color: gold; margin-right: 12px;">#${u.rank}</span><strong>${u.name}</strong><br><small style="color:#999;">${u.university}</small></div>
-                <div><span style="color: #B22234; font-weight: 700;">${u.points}</span> <i class="fas fa-coins" style="color: gold;"></i></div>
-            </div>
-        `).join('');
-    }
+window.addEventListener('beforeunload', saveState);
 
-    // Actions
-    window.visitZone = function(zoneName, reward) {
-        if (visitedZones.includes(zoneName)) {
-            notify('Zone already visited', `You've already checked in at ${zoneName}. Keep exploring!`);
-            return;
-        }
-        visitedZones.push(zoneName);
-        const awarded = applyBonus(reward);
-        userPoints += awarded;
-        addActivity('Zone visited', `Checked in at ${zoneName} and earned ${awarded} coins.`);
-        renderNotifications();
-        updateUserData();
-        saveUserData();
-        notify('Zone checked in', `+${awarded} Liberty Coins from ${zoneName}`);
-        if (visitedZones.length === 3) addBadge('Zone Explorer', 'fa-map-marker-alt');
-        if (visitedZones.length === zones.length) addBadge('Freedom Traveler', 'fa-globe');
-    };
+// ────────────────────────────────────────────────────────
+//  RENDER ALL
+// ────────────────────────────────────────────────────────
+function renderAll() {
+  renderHeader();
+  renderZones();
+  renderChallengePreview();
+  renderAllChallenges();
+  renderLbPreview();
+  renderFullLb(activeLbTab);
+  renderAnnouncements();
+  renderActivity();
+  renderStamps();
+  renderRewards(activeRewardTab);
+  renderNotifications();
+  renderProfile();
+}
 
-    window.openChallenge = function(challengeId) {
-        const ch = challenges.find(c => c.id === challengeId);
-        const modal = document.getElementById('challengeModal');
-        document.getElementById('modalTitle').innerText = ch.name;
-        document.getElementById('modalDesc').innerText = ch.desc;
-        document.getElementById('modalReward').innerHTML = `🏆 Reward: ${ch.reward} Liberty Coins`;
-        document.getElementById('modalProgress').innerHTML = `
-            <div style="margin-top:10px;">
-                <div style="font-size:0.8rem; margin-bottom:5px;">Progress: ${ch.progress}/${ch.target}</div>
-                <div class="progress-bar" style="background:#eee; height:8px; border-radius:4px;"><div style="width:${(ch.progress/ch.target)*100}%; height:8px; background:#B22234; border-radius:4px;"></div></div>
-            </div>
-        `;
-        document.getElementById('startChallengeBtn').onclick = () => {
-            if (!ch.completed) {
-                ch.progress = Math.min(ch.target, ch.progress + 1);
-                if (ch.progress >= ch.target) {
-                    ch.completed = true;
-                    userPoints += ch.reward;
-                    addActivity('Challenge completed', `${ch.name} completed for +${ch.reward} coins.`);
-                    renderChallenges();
-                    renderAllChallenges();
-                    notify('Challenge complete', `You earned ${ch.reward} Liberty Coins!`);
-                    if (ch.name.includes('Networking')) addBadge('Connector', 'fa-hands-helping');
-                    if (ch.name.includes('Hidden QR') || ch.name.includes('All Zones')) addBadge('Explorer', 'fa-binoculars');
-                    renderNotifications();
-                    saveUserData();
-                } else {
-                    addActivity('Challenge progress', `${ch.name} progress updated (${ch.progress}/${ch.target}).`);
-                    notify('Challenge progress', `Progress: ${ch.progress}/${ch.target}`);
-                    renderChallenges();
-                    renderAllChallenges();
-                }
-                updateUserData();
-            }
-            closeModal();
-        };
-        modal.classList.add('show');
-    };
+function renderHeader() {
+  const level = Math.floor(userPoints / 500) + 1;
+  const xp = userPoints % 500;
+  const ranks = ['Freedom Starter','Freedom Explorer','Freedom Trailblazer','Freedom Champion','Liberty Legend'];
+  document.getElementById('userName').textContent = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'Explorer';
+  document.getElementById('hdrCoins').textContent = userPoints;
+  document.getElementById('hdrLevel').textContent = level;
+  document.getElementById('hdrStamps').textContent = visitedZones.length;
+  document.getElementById('rankTitle').textContent = ranks[Math.min(level-1, ranks.length-1)];
+  document.getElementById('levelFill').style.width = `${(xp/500)*100}%`;
+  document.getElementById('xpLabel').textContent = `${xp} / 500 XP`;
+  document.getElementById('badgeRow').innerHTML = badges.slice(0,3).map(b =>
+    `<span class="badge-pill"><i class="fas ${b.icon}"></i> ${b.name}</span>`).join('');
+  // Notif badge
+  const unread = NOTIFICATIONS.filter(n=>!n.read).length;
+  document.getElementById('notifBadge').textContent = unread;
+  document.getElementById('notifBadge').style.display = unread ? 'flex' : 'none';
+}
 
-    window.closeModal = function() {
-        document.getElementById('challengeModal').classList.remove('show');
-    };
+function renderZones() {
+  document.getElementById('zonesGrid').innerHTML = ZONES.map(z => `
+    <div class="zone-card" onclick="visitZone('${z.name}',${z.pts})">
+      <div class="zone-icon" style="background:${z.color}"><i class="${z.icon}"></i></div>
+      <div class="zone-info"><h4>${z.name}</h4><p>${z.desc}</p></div>
+      <div class="zone-stamp ${visitedZones.includes(z.name)?'visited':''}">${visitedZones.includes(z.name)?'✓ Visited':'+'+z.pts}</div>
+    </div>`).join('');
+}
 
-    function updateUserData() {
-        document.getElementById('libertyCoins').innerText = userPoints;
-        document.getElementById('stampsCount').innerText = visitedZones.length;
-        document.getElementById('passportLevel').innerText = Math.floor(userPoints / 500) + 1;
-        updatePassportProgress();
-        renderBadges();
-        renderNotifications();
-        renderActivityHistory();
+function renderChallengePreview() {
+  document.getElementById('challengePreview').innerHTML = CHALLENGES.slice(0,3).map(ch => chCard(ch)).join('');
+}
 
-        const user = getCurrentUser();
-        if (user) {
-            document.getElementById('profileName').innerText = user.displayName || user.email;
-            document.getElementById('profileEmail').innerText = user.email;
-            document.getElementById('profilePoints').innerHTML = `<i class="fas fa-coins" style="color:gold;"></i> ${userPoints} Liberty Coins`;
-        }
-    }
+function renderAllChallenges() {
+  document.getElementById('allChallenges').innerHTML = CHALLENGES.map(ch => chCard(ch)).join('');
+}
 
-    // Navigation
-    function showSection(section) {
-        document.getElementById('homeSection').style.display = 'none';
-        document.getElementById('challengesSection').style.display = 'none';
-        document.getElementById('leaderboardSection').style.display = 'none';
-        document.getElementById('profileSection').style.display = 'none';
+function chCard(ch) {
+  const pct = Math.round((ch.prog/ch.target)*100);
+  return `<div class="ch-card" onclick="openChallenge(${ch.id})">
+    <div class="ch-ring ${ch.done?'done':''}">${ch.done?'✓':`${ch.prog}/${ch.target}`}</div>
+    <div class="ch-info">
+      <h4>${ch.name}</h4><p>${ch.desc}</p>
+      <div class="ch-bar"><div class="ch-bar-fill" style="width:${pct}%"></div></div>
+      <div style="font-size:.65rem;color:#999;margin-top:4px">+${ch.pts} coins on completion</div>
+    </div></div>`;
+}
 
-        if (section === 'home') document.getElementById('homeSection').style.display = 'block';
-        if (section === 'challenges') { document.getElementById('challengesSection').style.display = 'block'; renderAllChallenges(); }
-        if (section === 'leaderboard') { document.getElementById('leaderboardSection').style.display = 'block'; renderFullLeaderboard(); }
-        if (section === 'profile') { document.getElementById('profileSection').style.display = 'block'; }
+function renderLbPreview() {
+  document.getElementById('lbPreview').innerHTML = LEADERBOARD_DATA.overall.slice(0,5).map(u => lbItem(u)).join('');
+}
 
-        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-        document.querySelector(`.nav-item[data-nav="${section}"]`).classList.add('active');
-    }
+function renderFullLb(tab) {
+  const data = LEADERBOARD_DATA[tab] || LEADERBOARD_DATA.overall;
+  document.getElementById('fullLbList').innerHTML = data.map(u => lbItem(u)).join('');
+}
 
-    // Load User Data
-    function loadUserData() {
-        const user = getCurrentUser();
-        if (user) {
-            document.getElementById('userName').innerText = user.displayName || user.email.split('@')[0];
-            const savedPoints = localStorage.getItem(`f250_points_${user.uid}`);
-            const savedZones = localStorage.getItem(`f250_zones_${user.uid}`);
-            const savedBadges = localStorage.getItem(`f250_badges_${user.uid}`);
-            const savedHistory = localStorage.getItem(`f250_history_${user.uid}`);
-            const savedChallenges = localStorage.getItem(`f250_challenges_${user.uid}`);
-            if (savedPoints) userPoints = parseInt(savedPoints, 10);
-            if (savedZones) visitedZones = JSON.parse(savedZones);
-            if (savedBadges) badges = JSON.parse(savedBadges);
-            if (savedHistory) activityHistory = JSON.parse(savedHistory);
-            if (savedChallenges) challenges = JSON.parse(savedChallenges);
-            renderBadges();
-            renderNotifications();
-            renderActivityHistory();
-            updateUserData();
+function lbItem(u) {
+  const medal = u.rank===1?'🥇':u.rank===2?'🥈':u.rank===3?'🥉':`#${u.rank}`;
+  return `<div class="lb-item">
+    <div class="lb-rank">${medal}</div>
+    <div class="lb-name">${u.name}<small>${u.sub}</small></div>
+    <div class="lb-pts">${u.pts} <i class="fas fa-coins" style="color:gold;font-size:.75rem"></i></div>
+  </div>`;
+}
 
-            const qrContainer = document.getElementById('qrCodeDisplay');
-            const profileQr = document.getElementById('profileQrCode');
-            // Use stable Freedom ID as QR payload (not a one-time timestamp)
-            const freedomId = generateFreedomId(user.uid);
-            const qrText = `FREEDOM250:${freedomId}:${user.uid}`;
-            // Show Freedom ID label if element exists
-            const freedomIdEl = document.getElementById('freedomIdLabel');
-            if (freedomIdEl) freedomIdEl.textContent = freedomId;
-            // Generate real QR codes using qrcodejs library
-            await displayQRCode(qrText, qrContainer, { width: 140, borderRadius: '12px' });
-            if (profileQr) await displayQRCode(qrText, profileQr, { width: 140, borderRadius: '12px' });
-            notify('Passport ready', 'Your digital passport and QR code are loaded.');
-            triggerDailyMission();
-        }
-    }
+function renderAnnouncements() {
+  document.getElementById('announceFeed').innerHTML = NOTIFICATIONS.slice(0,3).map(n => `
+    <div class="notif-card ${n.read?'':'unread'}" style="margin:0 15px 10px;">
+      <div class="notif-title">${n.title}</div>
+      <div class="notif-body">${n.body}</div>
+      <div class="notif-time">${n.time}</div>
+    </div>`).join('');
+}
 
-    function saveUserData() {
-        const user = getCurrentUser();
-        if (user) {
-            localStorage.setItem(`f250_points_${user.uid}`, String(userPoints));
-            localStorage.setItem(`f250_zones_${user.uid}`, JSON.stringify(visitedZones));
-            localStorage.setItem(`f250_badges_${user.uid}`, JSON.stringify(badges));
-            localStorage.setItem(`f250_history_${user.uid}`, JSON.stringify(activityHistory));
-            localStorage.setItem(`f250_challenges_${user.uid}`, JSON.stringify(challenges));
-        }
-    }
+function renderNotifications() {
+  const list = document.getElementById('notifList');
+  if (!list) return;
+  list.innerHTML = NOTIFICATIONS.map((n,i) => `
+    <div class="notif-card ${n.read?'':'unread'}" onclick="markRead(${i})">
+      <div class="notif-title">${n.title}</div>
+      <div class="notif-body">${n.body}</div>
+      <div class="notif-time">${n.time}</div>
+    </div>`).join('');
+}
 
-    // Event Listeners
-    document.getElementById('showFullQrBtn')?.addEventListener('click', async () => {
-        const user = getCurrentUser();
-        if (!user) return;
-        const freedomId = generateFreedomId(user.uid);
-        const qrText = `FREEDOM250:${freedomId}:${user.uid}`;
-        const modal = document.getElementById('qrModal');
-        const modalCode = document.getElementById('qrModalCode');
-        const modalId = document.getElementById('qrModalFreedomId');
-        if (modalId) modalId.textContent = freedomId;
-        modal.classList.add('show');
-        await displayQRCode(qrText, modalCode, { width: 250, borderRadius: '12px' });
-    });
+window.markRead = function(i) {
+  NOTIFICATIONS[i].read = true;
+  renderNotifications(); renderHeader(); renderAnnouncements();
+};
 
-    document.getElementById('downloadQrBtn')?.addEventListener('click', () => {
-        const { downloadQRCode: dlQR } = window._qrUtils || {};
-        const modalCode = document.getElementById('qrModalCode');
-        const user = getCurrentUser();
-        const freedomId = user ? generateFreedomId(user.uid) : 'freedom-pass';
-        const img = modalCode && modalCode.querySelector('img');
-        if (!img) { alert('QR not ready yet.'); return; }
-        const link = document.createElement('a');
-        link.href = img.src;
-        link.download = `${freedomId}.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
+function renderActivity() {
+  document.getElementById('activityGrid').innerHTML = activityHistory.slice(0,6).map(e => `
+    <div style="background:#fff;border-radius:16px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,.05)">
+      <strong style="font-size:.85rem">${e.label}</strong>
+      <p style="font-size:.7rem;color:#777;margin-top:2px">${e.details}</p>
+      <small style="color:#bbb;font-size:.65rem">${new Date(e.time).toLocaleString()}</small>
+    </div>`).join('') || `<p style="padding:0 15px;font-size:.8rem;color:#aaa">No activity yet. Start exploring zones!</p>`;
+}
 
-    document.getElementById('viewAllZones')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        let zonesList = "🏕️ FREEDOM ZONES\n\n";
-        zones.forEach(z => { zonesList += `📍 ${z.name}\n   ${z.desc}\n   Reward: +${z.reward} coins\n\n`; });
-        alert(zonesList);
-    });
+function renderStamps() {
+  document.getElementById('stampsGrid').innerHTML = ZONES.map(z => {
+    const earned = visitedZones.includes(z.name);
+    return `<div class="stamp ${earned?'earned':''}">
+      <i class="${z.icon}" style="color:${earned?'#fff':'#ccc'}"></i>
+      <span style="color:${earned?'#fff':'#aaa'}">${z.name.split(' ').slice(0,2).join(' ')}</span>
+    </div>`;
+  }).join('');
+}
 
-    document.getElementById('viewAllChallenges')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        showSection('challenges');
-    });
+function renderRewards(tab) {
+  const filtered = tab==='all' ? REWARDS : REWARDS.filter(r=>r.type===tab);
+  document.getElementById('rewardsGrid').innerHTML = filtered.map(r => {
+    const redeemed = redeemedRewards.includes(r.id);
+    const canAfford = userPoints >= r.cost;
+    return `<div class="reward-card">
+      <h4>${r.name}</h4>
+      <p>${r.desc} · Stock: ${r.stock}</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+        <span class="reward-cost">${r.cost} coins</span>
+        ${redeemed
+          ? `<span style="font-size:.72rem;color:#2e7d32;font-weight:700">✓ Redeemed</span>`
+          : `<button class="btn ${canAfford?'btn-red':'btn-outline'}" style="font-size:.72rem;padding:6px 12px"
+               onclick="openReward(${r.id})" ${canAfford?'':'disabled'}>
+               ${canAfford?'Redeem':'Need more coins'}
+             </button>`}
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('rewardBalance').textContent = userPoints;
+}
 
-    document.getElementById('viewFullLeaderboard')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        showSection('leaderboard');
-    });
+function renderProfile() {
+  if (!currentUser) return;
+  document.getElementById('profileName').textContent = currentUser.displayName || currentUser.email.split('@')[0];
+  document.getElementById('profileEmail').textContent = currentUser.email;
+  document.getElementById('profileFreedomId').textContent = freedomId || '—';
+  document.getElementById('pCoins').textContent = userPoints;
+  document.getElementById('pLevel').textContent = Math.floor(userPoints/500)+1;
+  document.getElementById('pZones').textContent = visitedZones.length;
+  document.getElementById('profileBadges').innerHTML = badges.map(b =>
+    `<span class="badge-pill"><i class="fas ${b.icon}"></i> ${b.name}</span>`).join('');
+}
 
-    document.getElementById('backToHome1')?.addEventListener('click', (e) => { e.preventDefault(); showSection('home'); });
-    document.getElementById('backToHome2')?.addEventListener('click', (e) => { e.preventDefault(); showSection('home'); });
-    document.getElementById('backToHome3')?.addEventListener('click', (e) => { e.preventDefault(); showSection('home'); });
+// ────────────────────────────────────────────────────────
+//  ACTIONS
+// ────────────────────────────────────────────────────────
+window.visitZone = function(name, pts) {
+  if (visitedZones.includes(name)) { toast('Already visited', `You checked in at ${name} earlier!`); return; }
+  visitedZones.push(name);
+  const bonus = Math.round(pts * 1.1);
+  userPoints += bonus;
+  addActivity('Zone Visited', `Checked in at ${name} · +${bonus} Liberty Coins`);
+  addPushNotif(`🗺️ Checked in at ${name}!`, `+${bonus} Liberty Coins earned.`);
+  if (visitedZones.length===3) unlockBadge('Zone Explorer','fa-map-marker-alt');
+  if (visitedZones.length===ZONES.length) unlockBadge('Freedom Traveler','fa-globe');
+  // Update zone challenge
+  const zoneCh = CHALLENGES.find(c=>c.id===6);
+  if (zoneCh && !zoneCh.done) { zoneCh.prog = visitedZones.length; if(zoneCh.prog>=zoneCh.target){zoneCh.done=true;userPoints+=zoneCh.pts;} }
+  saveState(); renderAll();
+  toast('🗺️ Zone checked in!', `+${bonus} Liberty Coins from ${name}`);
+};
 
-    document.querySelectorAll('.nav-item').forEach(nav => {
-        nav.addEventListener('click', () => showSection(nav.dataset.nav));
-    });
+window.openChallenge = function(id) {
+  const ch = CHALLENGES.find(c=>c.id===id);
+  document.getElementById('chModalTitle').textContent = ch.name;
+  document.getElementById('chModalDesc').textContent = ch.desc;
+  document.getElementById('chModalReward').textContent = `🏆 Reward: ${ch.pts} Liberty Coins`;
+  document.getElementById('chModalProgress').innerHTML = `
+    <div class="ch-bar" style="height:8px"><div class="ch-bar-fill" style="width:${Math.round((ch.prog/ch.target)*100)}%"></div></div>
+    <p style="font-size:.72rem;color:#777;margin-top:6px">Progress: ${ch.prog} / ${ch.target}</p>`;
+  document.getElementById('chStartBtn').onclick = () => progressChallenge(id);
+  openModal('challengeModal');
+};
 
-    document.getElementById('helpFab')?.addEventListener('click', () => {
-        alert("📞 Need Help?\n\n📍 Info Desk: The Varsity Lounge\n📧 Email: support@freedom250.com\n📞 Phone: +254 700 000 000\n\nScan any QR code to earn points!");
-    });
+function progressChallenge(id) {
+  const ch = CHALLENGES.find(c=>c.id===id);
+  if (ch.done) { toast('Already done','You completed this challenge!'); closeModal('challengeModal'); return; }
+  ch.prog = Math.min(ch.target, ch.prog+1);
+  if (ch.prog>=ch.target) {
+    ch.done = true;
+    userPoints += ch.pts;
+    addActivity('Challenge Completed', `${ch.name} — +${ch.pts} Liberty Coins`);
+    addPushNotif('🏆 Challenge Complete!', `You earned ${ch.pts} coins from ${ch.name}`);
+    if (ch.name.includes('Networking')) unlockBadge('Connector','fa-hands-helping');
+    if (ch.name.includes('Hidden QR'))  unlockBadge('QR Hunter','fa-qrcode');
+    toast('🏆 Challenge complete!', `+${ch.pts} Liberty Coins`);
+  } else {
+    addActivity('Challenge Progress', `${ch.name}: ${ch.prog}/${ch.target}`);
+    toast('Progress saved', `${ch.name}: ${ch.prog}/${ch.target}`);
+  }
+  saveState(); closeModal('challengeModal'); renderAll();
+}
 
-    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
-        saveUserData();
-        if (confirm('Logout from Freedom 250?')) {
-            await signOutUser();
-            window.location.href = '/';
-        }
-    });
+window.openReward = function(id) {
+  const r = REWARDS.find(x=>x.id===id);
+  document.getElementById('rwModalTitle').textContent = r.name;
+  document.getElementById('rwModalDesc').textContent = r.desc;
+  document.getElementById('rwModalCost').textContent = `Cost: ${r.cost} Liberty Coins (You have: ${userPoints})`;
+  document.getElementById('rwRedeemBtn').onclick = () => redeemReward(id);
+  openModal('rewardModal');
+};
 
-    // Save data before unload
-    window.addEventListener('beforeunload', () => saveUserData());
+function redeemReward(id) {
+  const r = REWARDS.find(x=>x.id===id);
+  if (userPoints < r.cost) { toast('Not enough coins','Earn more Liberty Coins first!'); closeModal('rewardModal'); return; }
+  if (redeemedRewards.includes(id)) { toast('Already redeemed','You already claimed this reward!'); closeModal('rewardModal'); return; }
+  userPoints -= r.cost;
+  redeemedRewards.push(id);
+  r.stock--;
+  addActivity('Reward Redeemed', `${r.name} — spent ${r.cost} Liberty Coins`);
+  addPushNotif('🎁 Reward Redeemed!', `${r.name} is yours! Show this to the reward desk.`);
+  unlockBadge('Redeemer','fa-gift');
+  saveState(); closeModal('rewardModal'); renderAll();
+  toast('🎁 Redeemed!', `${r.name} — show this notification at the reward desk`);
+}
 
-    // Initialize
-    onAuthStateChange((user) => {
-        if (user) {
-            loadUserData();
-            renderZones();
-            renderChallenges();
-            renderLeaderboardPreview();
-        } else {
-            window.location.href = '/';
-        }
-    });
+// ────────────────────────────────────────────────────────
+//  HELPERS
+// ────────────────────────────────────────────────────────
+function addActivity(label, details) {
+  activityHistory.unshift({ label, details, time: new Date().toISOString() });
+}
+
+function addPushNotif(title, body) {
+  NOTIFICATIONS.unshift({ title, body, time:'Just now', read:false });
+}
+
+function unlockBadge(name, icon) {
+  if (!badges.some(b=>b.name===name)) {
+    badges.push({ name, icon });
+    toast('🏅 Badge unlocked!', name);
+    addActivity('Badge Unlocked', `Earned: ${name}`);
+  }
+}
+
+// ────────────────────────────────────────────────────────
+//  NAVIGATION
+// ────────────────────────────────────────────────────────
+window.showPage = function(page) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(`pg-${page}`)?.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    n.classList.toggle('active', n.dataset.page===page);
+  });
+  currentPage = page;
+  if (page==='profile') renderProfile();
+  if (page==='stamps') renderStamps();
+  if (page==='notifications') renderNotifications();
+  window.scrollTo(0,0);
+};
+
+window.switchLbTab = function(tab, btn) {
+  activeLbTab = tab;
+  document.querySelectorAll('.tab-bar .tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderFullLb(tab);
+};
+
+window.switchRewardTab = function(tab, btn) {
+  activeRewardTab = tab;
+  document.querySelectorAll('#pg-rewards .tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderRewards(tab);
+};
+
+// ────────────────────────────────────────────────────────
+//  MODAL
+// ────────────────────────────────────────────────────────
+window.openModal = function(id) { document.getElementById(id).classList.add('open'); };
+window.closeModal = function(id) { document.getElementById(id).classList.remove('open'); };
+
+// ────────────────────────────────────────────────────────
+//  TOAST
+// ────────────────────────────────────────────────────────
+function toast(title, body) {
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = `<div><strong>${title}</strong><div style="font-size:.75rem;color:#ccc;margin-top:2px">${body}</div></div>`;
+  wrap.appendChild(el);
+  setTimeout(()=>el.remove(), 4000);
+}
+
+// ────────────────────────────────────────────────────────
+//  QR BUTTONS
+// ────────────────────────────────────────────────────────
+document.getElementById('showQrBtn').addEventListener('click', async () => {
+  openModal('qrModal');
+  if (qrDataUrl) {
+    const img = makeQRImg(qrDataUrl, '100%');
+    const box = document.getElementById('modalQrBox');
+    box.innerHTML=''; box.appendChild(img);
+  }
+});
+
+document.getElementById('dlQrBtn').addEventListener('click', () => {
+  if (!qrDataUrl) { toast('QR not ready','Please wait a moment.'); return; }
+  const a = document.createElement('a');
+  a.href = qrDataUrl; a.download = `${freedomId}.png`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+});
+
+document.getElementById('modalDlBtn').addEventListener('click', () => {
+  if (!qrDataUrl) { toast('QR not ready','Please wait a moment.'); return; }
+  const a = document.createElement('a');
+  a.href = qrDataUrl; a.download = `${freedomId}.png`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+});
+
+// Close QR modal when clicking backdrop
+document.getElementById('qrModal').addEventListener('click', (e) => {
+  if (e.target===document.getElementById('qrModal')) closeModal('qrModal');
+});
+
+// ────────────────────────────────────────────────────────
+//  MISC BUTTONS
+// ────────────────────────────────────────────────────────
+document.getElementById('viewAllZonesBtn').addEventListener('click', e => { e.preventDefault(); showPage('stamps'); });
+document.getElementById('viewAllChBtn').addEventListener('click', e => { e.preventDefault(); showPage('challenges'); });
+document.getElementById('viewLbBtn').addEventListener('click', e => { e.preventDefault(); showPage('leaderboard'); });
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  saveState();
+  if (confirm('Logout from Freedom 250?')) {
+    await signOutUser();
+    window.location.replace('login.html');
+  }
+});
+
+window.helpDialog = function() {
+  toast('📞 Need Help?','Info Desk: The Varsity Lounge | support@freedom250.com | +254 700 000 000');
+};
+
+// ────────────────────────────────────────────────────────
+//  BOOT
+// ────────────────────────────────────────────────────────
+init();
 </script>
 </body>
 </html>
