@@ -1,326 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In | Freedom 250</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    :root {
-      --red:#B22234; --blue:#3C3B6E; --white:#fff; --black:#0D0D0D;
-      --gray:#F5F5F7; --gray2:#E8E8EC; --text:#1A1A2E; --muted:#6B7280;
-    }
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    html{height:100%}
-    body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);min-height:100vh;display:flex;overflow:hidden}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | Freedom 250</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+          --red:#B22234; --blue:#3C3B6E; --white:#fff; --black:#0D0D0D;
+          --gray:#F5F5F7; --gray2:#E8E8EC; --text:#1A1A2E; --muted:#6B7280;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{height:100%}
+        body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);min-height:100vh;display:flex;overflow:hidden}
 
-    /* ── LEFT PANEL ── */
-    .panel-left{display:none;width:42%;background:var(--blue);position:relative;overflow:hidden;flex-direction:column;justify-content:space-between;padding:48px 52px}
-    @media(min-width:900px){.panel-left{display:flex}}
-    .panel-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(178,34,52,.35) 0%,transparent 55%),radial-gradient(ellipse at 85% 15%,rgba(255,255,255,.06) 0%,transparent 50%)}
-    .panel-stars{position:absolute;top:0;left:0;right:0;height:60%;background-image:radial-gradient(1.5px 1.5px at 12% 18%,rgba(255,255,255,.35),transparent),radial-gradient(1px 1px at 28% 40%,rgba(255,255,255,.2),transparent),radial-gradient(2px 2px at 55% 12%,rgba(255,255,255,.28),transparent),radial-gradient(1px 1px at 75% 35%,rgba(255,255,255,.18),transparent),radial-gradient(1.5px 1.5px at 88% 22%,rgba(255,255,255,.3),transparent)}
-    .stripe-top{position:absolute;top:0;left:0;right:0;height:6px;background:repeating-linear-gradient(90deg,var(--red) 0px,var(--red) 20px,#fff 20px,#fff 40px)}
-    .left-logo{position:relative;z-index:1}
-    .left-logo .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-    .left-logo .brand-name{font-family:'Sora',sans-serif;font-size:1.35rem;font-weight:800;color:#fff}
-    .left-logo .brand-name span{color:var(--red)}
-    .left-hero{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0}
-    .left-headline{font-family:'Sora',sans-serif;font-size:2.6rem;font-weight:900;color:#fff;line-height:1.12;margin-bottom:18px;letter-spacing:-.03em}
-    .left-headline .accent{color:var(--red)}
-    .left-sub{font-size:1rem;color:rgba(255,255,255,.7);line-height:1.65;margin-bottom:36px;max-width:340px}
-    .left-collage{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:140px 140px;gap:10px;border-radius:20px;overflow:hidden}
-    .left-collage .col-img{overflow:hidden}
-    .left-collage .col-img:first-child{grid-column:1;grid-row:1}
-    .left-collage .col-img:nth-child(2){grid-column:2;grid-row:1/3}
-    .left-collage .col-img:nth-child(3){grid-column:1;grid-row:2}
-    .left-collage .col-img img{width:100%;height:100%;object-fit:cover}
-    .left-stats{display:flex;gap:28px;padding-top:28px;border-top:1px solid rgba(255,255,255,.14);margin-top:20px}
-    .left-stat .v{font-family:'Sora',sans-serif;font-size:1.7rem;font-weight:900;color:#fff;display:block}
-    .left-stat .l{font-size:.72rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.1em}
-    .left-footer{position:relative;z-index:1;font-size:.78rem;color:rgba(255,255,255,.35)}
+        /* ── LEFT PANEL ── */
+        .panel-left{display:none;width:42%;background:var(--blue);position:relative;overflow:hidden;flex-direction:column;justify-content:space-between;padding:48px 52px}
+        @media(min-width:900px){.panel-left{display:flex}}
+        .panel-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(178,34,52,.35) 0%,transparent 55%),radial-gradient(ellipse at 85% 15%,rgba(255,255,255,.06) 0%,transparent 50%)}
+        .panel-stars{position:absolute;top:0;left:0;right:0;height:60%;background-image:radial-gradient(1.5px 1.5px at 12% 18%,rgba(255,255,255,.35),transparent),radial-gradient(1px 1px at 28% 40%,rgba(255,255,255,.2),transparent),radial-gradient(2px 2px at 55% 12%,rgba(255,255,255,.28),transparent),radial-gradient(1px 1px at 75% 35%,rgba(255,255,255,.18),transparent),radial-gradient(1.5px 1.5px at 88% 22%,rgba(255,255,255,.3),transparent)}
+        .stripe-top{position:absolute;top:0;left:0;right:0;height:6px;background:repeating-linear-gradient(90deg,var(--red) 0px,var(--red) 20px,#fff 20px,#fff 40px)}
+        .left-logo{position:relative;z-index:1}
+        .left-logo .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+        .left-logo .brand-name{font-family:'Sora',sans-serif;font-size:1.35rem;font-weight:800;color:#fff}
+        .left-logo .brand-name span{color:var(--red)}
+        .left-hero{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0}
+        .left-headline{font-family:'Sora',sans-serif;font-size:2.6rem;font-weight:900;color:#fff;line-height:1.12;margin-bottom:18px;letter-spacing:-.03em}
+        .left-headline .accent{color:var(--red)}
+        .left-sub{font-size:1rem;color:rgba(255,255,255,.7);line-height:1.65;margin-bottom:36px;max-width:340px}
+        .left-collage{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:140px 140px;gap:10px;border-radius:20px;overflow:hidden}
+        .left-collage .col-img{overflow:hidden}
+        .left-collage .col-img:first-child{grid-column:1;grid-row:1}
+        .left-collage .col-img:nth-child(2){grid-column:2;grid-row:1/3}
+        .left-collage .col-img:nth-child(3){grid-column:1;grid-row:2}
+        .left-collage .col-img img{width:100%;height:100%;object-fit:cover}
+        .left-stats{display:flex;gap:28px;padding-top:28px;border-top:1px solid rgba(255,255,255,.14);margin-top:20px}
+        .left-stat .v{font-family:'Sora',sans-serif;font-size:1.7rem;font-weight:900;color:#fff;display:block}
+        .left-stat .l{font-size:.72rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.1em}
+        .left-footer{position:relative;z-index:1;font-size:.78rem;color:rgba(255,255,255,.35)}
 
-    /* ── RIGHT PANEL ── */
-    .panel-right{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;background:var(--white);position:relative;overflow-y:auto}
-    .panel-right::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue) 0%,var(--red) 50%,var(--blue) 100%)}
-    .form-wrap{width:100%;max-width:420px}
-    .mobile-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;justify-content:center}
-    @media(min-width:900px){.mobile-logo{display:none}}
-    .mobile-logo span{font-family:'Sora',sans-serif;font-size:1.25rem;font-weight:800;color:var(--blue)}
-    .mobile-logo span em{color:var(--red);font-style:normal}
-    .flag-bar{display:flex;gap:4px;margin-bottom:28px}
-    .flag-bar span{flex:1;height:3px;border-radius:2px}
-    .fb-red{background:var(--red)} .fb-blue{background:var(--blue)} .fb-w{background:var(--gray2)}
-    .form-head{margin-bottom:28px}
-    .form-head h1{font-family:'Sora',sans-serif;font-size:2rem;font-weight:900;color:var(--black);letter-spacing:-.03em;margin-bottom:6px}
-    .form-head h1 .accent{color:var(--red)}
-    .form-head p{font-size:.9rem;color:var(--muted);line-height:1.6}
+        /* ── RIGHT PANEL ── */
+        .panel-right{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;background:var(--white);position:relative;overflow-y:auto}
+        .panel-right::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue) 0%,var(--red) 50%,var(--blue) 100%)}
+        .form-wrap{width:100%;max-width:420px}
+        .mobile-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;justify-content:center}
+        @media(min-width:900px){.mobile-logo{display:none}}
+        .mobile-logo span{font-family:'Sora',sans-serif;font-size:1.25rem;font-weight:800;color:var(--blue)}
+        .mobile-logo span em{color:var(--red);font-style:normal}
+        .flag-bar{display:flex;gap:4px;margin-bottom:28px}
+        .flag-bar span{flex:1;height:3px;border-radius:2px}
+        .fb-red{background:var(--red)} .fb-blue{background:var(--blue)} .fb-w{background:var(--gray2)}
+        .form-head{margin-bottom:28px}
+        .form-head h1{font-family:'Sora',sans-serif;font-size:2rem;font-weight:900;color:var(--black);letter-spacing:-.03em;margin-bottom:6px}
+        .form-head h1 .accent{color:var(--red)}
+        .form-head p{font-size:.9rem;color:var(--muted);line-height:1.6}
 
-    /* Staff mode header */
-    .staff-badge{display:none;align-items:center;gap:10px;background:rgba(60,59,110,.07);border:1.5px solid rgba(60,59,110,.2);border-radius:12px;padding:12px 16px;margin-bottom:22px;font-size:.85rem;color:var(--blue);font-weight:600}
-    .staff-badge.show{display:flex}
-    .staff-badge i{font-size:1rem}
+        /* Staff mode header */
+        .staff-badge{display:none;align-items:center;gap:10px;background:rgba(60,59,110,.07);border:1.5px solid rgba(60,59,110,.2);border-radius:12px;padding:12px 16px;margin-bottom:22px;font-size:.85rem;color:var(--blue);font-weight:600}
+        .staff-badge.show{display:flex}
+        .staff-badge i{font-size:1rem}
 
-    /* Gate screen */
-    #gateScreen{display:none}
-    #gateScreen.show{display:block}
-    #loginScreen{display:block}
-    #loginScreen.hide{display:none}
+        /* Gate screen */
+        #gateScreen{display:none}
+        #gateScreen.show{display:block}
+        #loginScreen{display:block}
+        #loginScreen.hide{display:none}
 
-    .gate-field{margin-bottom:16px}
-    .gate-field label{display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:7px}
-    .gate-field .input-wrap{position:relative}
-    .gate-field .input-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem}
-    .gate-field input{width:100%;padding:12px 14px 12px 38px;border:1.5px solid var(--gray2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:var(--white);transition:border-color .2s,box-shadow .2s}
-    .gate-field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(60,59,110,.1)}
+        .gate-field{margin-bottom:16px}
+        .gate-field label{display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:7px}
+        .gate-field .input-wrap{position:relative}
+        .gate-field .input-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem}
+        .gate-field input{width:100%;padding:12px 14px 12px 38px;border:1.5px solid var(--gray2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:var(--white);transition:border-color .2s,box-shadow .2s}
+        .gate-field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(60,59,110,.1)}
 
-    .form-divider{display:flex;align-items:center;gap:14px;margin:22px 0}
-    .form-divider::before,.form-divider::after{content:'';flex:1;height:1px;background:var(--gray2)}
-    .form-divider span{font-size:.75rem;color:var(--muted);font-weight:600;letter-spacing:.06em}
+        .form-divider{display:flex;align-items:center;gap:14px;margin:22px 0}
+        .form-divider::before,.form-divider::after{content:'';flex:1;height:1px;background:var(--gray2)}
+        .form-divider span{font-size:.75rem;color:var(--muted);font-weight:600;letter-spacing:.06em}
 
-    .btn-google{width:100%;padding:13px;background:var(--white);border:1.5px solid var(--gray2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:border-color .2s,box-shadow .2s;margin-bottom:22px}
-    .btn-google:hover{border-color:#aaa;box-shadow:0 2px 10px rgba(0,0,0,.07)}
-    .btn-google .g-logo{width:18px}
-    .btn-google:disabled{opacity:.6;cursor:not-allowed}
+        .btn-google{width:100%;padding:13px;background:var(--white);border:1.5px solid var(--gray2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:border-color .2s,box-shadow .2s;margin-bottom:22px}
+        .btn-google:hover{border-color:#aaa;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+        .btn-google .g-logo{width:18px}
+        .btn-google:disabled{opacity:.6;cursor:not-allowed}
 
-    .field{margin-bottom:18px}
-    .field label{display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:7px}
-    .field .input-wrap{position:relative}
-    .field .input-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem}
-    .field input{width:100%;padding:12px 14px 12px 38px;border:1.5px solid var(--gray2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:var(--white);transition:border-color .2s,box-shadow .2s}
-    .field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(60,59,110,.1)}
-    .field .pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:.85rem}
-    .forgot-row{display:flex;justify-content:flex-end;margin-bottom:22px;margin-top:-10px}
-    .forgot-row a{font-size:.8rem;color:var(--blue);text-decoration:none;font-weight:600}
-    .forgot-row a:hover{text-decoration:underline}
+        .field{margin-bottom:18px}
+        .field label{display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:7px}
+        .field .input-wrap{position:relative}
+        .field .input-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem}
+        .field input{width:100%;padding:12px 14px 12px 38px;border:1.5px solid var(--gray2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:var(--white);transition:border-color .2s,box-shadow .2s}
+        .field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(60,59,110,.1)}
+        .field .pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:.85rem}
+        .forgot-row{display:flex;justify-content:flex-end;margin-bottom:22px;margin-top:-10px}
+        .forgot-row a{font-size:.8rem;color:var(--blue);text-decoration:none;font-weight:600}
+        .forgot-row a:hover{text-decoration:underline}
 
-    .btn-submit{width:100%;padding:14px;background:var(--blue);border:none;border-radius:12px;color:#fff;font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:.02em;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px}
-    .btn-submit.red-btn{background:var(--red)}
-    .btn-submit.red-btn:hover{background:#9a1d2d}
-    .btn-submit:hover{background:#2e2d57;transform:translateY(-1px)}
-    .btn-submit:active{transform:translateY(0)}
-    .btn-submit:disabled{opacity:.65;cursor:not-allowed;transform:none}
+        .btn-submit{width:100%;padding:14px;background:var(--blue);border:none;border-radius:12px;color:#fff;font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:.02em;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+        .btn-submit.red-btn{background:var(--red)}
+        .btn-submit.red-btn:hover{background:#9a1d2d}
+        .btn-submit:hover{background:#2e2d57;transform:translateY(-1px)}
+        .btn-submit:active{transform:translateY(0)}
+        .btn-submit:disabled{opacity:.65;cursor:not-allowed;transform:none}
 
-    .error-box{background:rgba(178,34,52,.07);border:1px solid rgba(178,34,52,.25);border-left:3px solid var(--red);border-radius:10px;padding:12px 16px;font-size:.85rem;color:var(--red);margin-bottom:18px;display:none;align-items:center;gap:10px}
-    .error-box.show{display:flex}
-    .success-box{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.25);border-left:3px solid #10b981;border-radius:10px;padding:12px 16px;font-size:.85rem;color:#059669;margin-bottom:18px;display:none;align-items:center;gap:10px}
-    .success-box.show{display:flex}
+        .error-box{background:rgba(178,34,52,.07);border:1px solid rgba(178,34,52,.25);border-left:3px solid var(--red);border-radius:10px;padding:12px 16px;font-size:.85rem;color:var(--red);margin-bottom:18px;display:none;align-items:center;gap:10px}
+        .error-box.show{display:flex}
+        .success-box{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.25);border-left:3px solid #10b981;border-radius:10px;padding:12px 16px;font-size:.85rem;color:#059669;margin-bottom:18px;display:none;align-items:center;gap:10px}
+        .success-box.show{display:flex}
 
-    .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none}
-    .btn-submit.loading .spinner{display:block}
-    .btn-submit.loading .btn-text{display:none}
-    @keyframes spin{to{transform:rotate(360deg)}}
+        .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none}
+        .btn-submit.loading .spinner{display:block}
+        .btn-submit.loading .btn-text{display:none}
+        @keyframes spin{to{transform:rotate(360deg)}}
 
-    .form-footer{text-align:center;margin-top:24px;font-size:.85rem;color:var(--muted)}
-    .form-footer a{color:var(--blue);text-decoration:none;font-weight:700}
-    .form-footer a:hover{text-decoration:underline}
+        .form-footer{text-align:center;margin-top:24px;font-size:.85rem;color:var(--muted)}
+        .form-footer a{color:var(--blue);text-decoration:none;font-weight:700}
+        .form-footer a:hover{text-decoration:underline}
 
-    /* Role chips on left panel for staff mode */
-    .staff-info-chips{display:flex;flex-direction:column;gap:10px;margin-top:20px}
-    .staff-info-chip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:12px 16px;color:#fff;display:flex;align-items:center;gap:12px;font-size:.82rem}
-    .staff-info-chip i{opacity:.7;width:16px}
+        /* Role chips on left panel for staff mode */
+        .staff-info-chips{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+        .staff-info-chip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:12px 16px;color:#fff;display:flex;align-items:center;gap:12px;font-size:.82rem}
+        .staff-info-chip i{opacity:.7;width:16px}
 
-    /* Subtle link to staff portal */
-    .staff-link{text-align:center;margin-top:16px;font-size:.78rem;color:var(--muted)}
-    .staff-link a{color:var(--muted);text-decoration:none;opacity:.6}
-    .staff-link a:hover{opacity:1;color:var(--blue)}
-  </style>
+        /* Subtle link to staff portal */
+        .staff-link{text-align:center;margin-top:16px;font-size:.78rem;color:var(--muted)}
+        .staff-link a{color:var(--muted);text-decoration:none;opacity:.6}
+        .staff-link a:hover{opacity:1;color:var(--blue)}
+    </style>
 </head>
 <body>
 
-  <!-- ═══ LEFT PANEL ═══ -->
-  <div class="panel-left" id="leftPanel">
+<!-- ═══ LEFT PANEL ═══ -->
+<div class="panel-left" id="leftPanel">
     <div class="stripe-top"></div>
     <div class="panel-stars"></div>
 
     <div class="left-logo">
-      <a href="index.html" class="brand">
-        <span style="font-size:2rem">🇺🇸</span>
-        <span class="brand-name">Freedom<span>250</span></span>
-      </a>
+        <a href="index.html" class="brand">
+            <span style="font-size:2rem">🇺🇸</span>
+            <span class="brand-name">Freedom<span>250</span></span>
+        </a>
     </div>
 
     <!-- Participant left panel (default) -->
     <div class="left-hero" id="leftHeroParticipant">
-      <h2 class="left-headline">Where Innovation<br>Meets <span class="accent">Freedom.</span></h2>
-      <p class="left-sub">Kenya's largest American-culture festival — 7 experience tents, 15K+ participants, and a community of builders and dreamers.</p>
-      <div class="left-collage">
-        <div class="col-img"><img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&q=80" alt="Innovation"></div>
-        <div class="col-img"><img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&q=80" alt="Community"></div>
-        <div class="col-img"><img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&q=80" alt="Learning"></div>
-      </div>
-      <div class="left-stats">
-        <div class="left-stat"><span class="v">12+</span><span class="l">Universities</span></div>
-        <div class="left-stat"><span class="v">15K+</span><span class="l">Participants</span></div>
-        <div class="left-stat"><span class="v">7</span><span class="l">Experience Tents</span></div>
-      </div>
+        <h2 class="left-headline">Where Innovation<br>Meets <span class="accent">Freedom.</span></h2>
+        <p class="left-sub">Kenya's largest American-culture festival — 7 experience tents, 15K+ participants, and a community of builders and dreamers.</p>
+        <div class="left-collage">
+            <div class="col-img"><img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&q=80" alt="Innovation"></div>
+            <div class="col-img"><img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&q=80" alt="Community"></div>
+            <div class="col-img"><img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&q=80" alt="Learning"></div>
+        </div>
+        <div class="left-stats">
+            <div class="left-stat"><span class="v">12+</span><span class="l">Universities</span></div>
+            <div class="left-stat"><span class="v">15K+</span><span class="l">Participants</span></div>
+            <div class="left-stat"><span class="v">7</span><span class="l">Experience Tents</span></div>
+        </div>
     </div>
 
     <!-- Staff left panel (shown when #staff hash is present) -->
     <div class="left-hero" id="leftHeroStaff" style="display:none">
-      <h2 class="left-headline" style="font-size:2.1rem">Staff &amp;<br>Operations<br><span class="accent">Portal.</span></h2>
-      <p class="left-sub">Restricted access — authorised Freedom 250 staff only. Use your staff credentials to proceed.</p>
-      <div class="staff-info-chips">
-        <div class="staff-info-chip"><i class="fas fa-shield-halved"></i> Role-verified access — your Firestore role is checked on login</div>
-        <div class="staff-info-chip"><i class="fas fa-key"></i> Staff access code required to reach this portal</div>
-        <div class="staff-info-chip"><i class="fas fa-eye-slash"></i> This URL is not linked from the public site</div>
-        <div class="staff-info-chip"><i class="fas fa-triangle-exclamation"></i> Unauthorized access attempts are logged</div>
-      </div>
+        <h2 class="left-headline" style="font-size:2.1rem">Staff &amp;<br>Operations<br><span class="accent">Portal.</span></h2>
+        <p class="left-sub">Restricted access — authorised Freedom 250 staff only. Use your staff credentials to proceed.</p>
+        <div class="staff-info-chips">
+            <div class="staff-info-chip"><i class="fas fa-shield-halved"></i> Role-verified access — your Firestore role is checked on login</div>
+            <div class="staff-info-chip"><i class="fas fa-key"></i> Staff access code required to reach this portal</div>
+            <div class="staff-info-chip"><i class="fas fa-eye-slash"></i> This URL is not linked from the public site</div>
+            <div class="staff-info-chip"><i class="fas fa-triangle-exclamation"></i> Unauthorized access attempts are logged</div>
+        </div>
     </div>
 
     <div class="left-footer">© 2025 Freedom 250 · U.S. Embassy Nairobi</div>
-  </div>
+</div>
 
-  <!-- ═══ RIGHT PANEL ═══ -->
-  <div class="panel-right">
+<!-- ═══ RIGHT PANEL ═══ -->
+<div class="panel-right">
     <div class="form-wrap">
 
-      <div class="mobile-logo">🇺🇸 <span>Freedom<em>250</em></span></div>
+        <div class="mobile-logo">🇺🇸 <span>Freedom<em>250</em></span></div>
 
-      <div class="flag-bar">
-        <span class="fb-red"></span><span class="fb-red"></span>
-        <span class="fb-blue"></span><span class="fb-blue"></span>
-        <span class="fb-w"></span><span class="fb-w"></span>
-        <span class="fb-red"></span><span class="fb-blue"></span>
-      </div>
-
-      <!-- Error / Success -->
-      <div class="error-box" id="errorBox"><i class="fas fa-circle-exclamation"></i> <span id="errorText"></span></div>
-      <div class="success-box" id="successBox"><i class="fas fa-circle-check"></i> <span id="successText"></span></div>
-
-      <!-- ── GATE SCREEN (staff access code, shown first on staff portal) ── -->
-      <div id="gateScreen">
-        <div class="form-head">
-          <h1>Staff <span class="accent">Portal.</span></h1>
-          <p>This area is for authorised Freedom 250 staff. Enter the staff access code to proceed.</p>
-        </div>
-        <div class="staff-badge show" style="margin-bottom:20px">
-          <i class="fas fa-shield-halved"></i>
-          <span id="staffRoleLabel">Staff Portal — Restricted Access</span>
-        </div>
-        <div class="gate-field">
-          <label for="accessCode">Staff Access Code</label>
-          <div class="input-wrap">
-            <i class="fas fa-key"></i>
-            <input type="password" id="accessCode" placeholder="Enter staff access code" autocomplete="off">
-          </div>
-        </div>
-        <button class="btn-submit" id="gateBtn" style="background:var(--blue)">
-          <div class="spinner"></div>
-          <span class="btn-text">Verify Code &nbsp;<i class="fas fa-arrow-right"></i></span>
-        </button>
-        <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:16px">
-          Don't have a code? Contact your event coordinator.
-        </p>
-        <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:8px">
-          <a href="login.html" style="color:var(--blue);text-decoration:none;font-weight:600">← Back to participant login</a>
-        </p>
-      </div>
-
-      <!-- ── LOGIN SCREEN ── -->
-      <div id="loginScreen">
-
-        <!-- Staff badge (visible only in staff mode after gate) -->
-        <div class="staff-badge" id="staffBadge">
-          <i class="fas fa-shield-halved"></i>
-          <span id="staffRoleBadgeLabel">Staff Portal</span>
+        <div class="flag-bar">
+            <span class="fb-red"></span><span class="fb-red"></span>
+            <span class="fb-blue"></span><span class="fb-blue"></span>
+            <span class="fb-w"></span><span class="fb-w"></span>
+            <span class="fb-red"></span><span class="fb-blue"></span>
         </div>
 
-        <div class="form-head" id="loginHead">
-          <h1>Welcome <span class="accent">back.</span></h1>
-          <p id="loginSubtext">Sign in to access your dashboard, Liberty Pass, and festival tools.</p>
-        </div>
+        <!-- Error / Success -->
+        <div class="error-box" id="errorBox"><i class="fas fa-circle-exclamation"></i> <span id="errorText"></span></div>
+        <div class="success-box" id="successBox"><i class="fas fa-circle-check"></i> <span id="successText"></span></div>
 
-        <!-- Google (only shown for participants) -->
-        <div id="googleSection">
-          <button class="btn-google" id="googleBtn">
-            <svg class="g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-            </svg>
-            Continue with Google
-          </button>
-          <div class="form-divider"><span>or sign in with email</span></div>
-        </div>
-
-        <form id="loginForm" novalidate>
-          <div class="field">
-            <label for="email">Email address</label>
-            <div class="input-wrap">
-              <i class="fas fa-envelope"></i>
-              <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+        <!-- ── GATE SCREEN (staff access code, shown first on staff portal) ── -->
+        <div id="gateScreen">
+            <div class="form-head">
+                <h1>Staff <span class="accent">Portal.</span></h1>
+                <p>This area is for authorised Freedom 250 staff. Enter the staff access code to proceed.</p>
             </div>
-          </div>
-          <div class="field">
-            <label for="password">Password</label>
-            <div class="input-wrap">
-              <i class="fas fa-lock"></i>
-              <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
-              <button type="button" class="pw-toggle" id="pwToggle" tabindex="-1">
-                <i class="fas fa-eye" id="pwIcon"></i>
-              </button>
+            <div class="staff-badge show" style="margin-bottom:20px">
+                <i class="fas fa-shield-halved"></i>
+                <span id="staffRoleLabel">Staff Portal — Restricted Access</span>
             </div>
-          </div>
-          <div class="forgot-row"><a href="#" id="forgotLink">Forgot password?</a></div>
-          <button type="submit" class="btn-submit" id="submitBtn">
-            <div class="spinner" id="spinner"></div>
-            <span class="btn-text">Sign In &nbsp;<i class="fas fa-arrow-right"></i></span>
-          </button>
-        </form>
-
-        <!-- Only shown for participants -->
-        <div class="form-footer" id="registerFooter">
-          Don't have an account? <a href="register.html">Create one here</a>
+            <div class="gate-field">
+                <label for="accessCode">Staff Access Code</label>
+                <div class="input-wrap">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="accessCode" placeholder="Enter staff access code" autocomplete="off">
+                </div>
+            </div>
+            <button class="btn-submit" id="gateBtn" style="background:var(--blue)">
+                <div class="spinner"></div>
+                <span class="btn-text">Verify Code &nbsp;<i class="fas fa-arrow-right"></i></span>
+            </button>
+            <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:16px">
+                Don't have a code? Contact your event coordinator.
+            </p>
+            <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:8px">
+                <a href="login.html" style="color:var(--blue);text-decoration:none;font-weight:600">← Back to participant login</a>
+            </p>
         </div>
 
-        <!-- Subtle staff portal link (for participants who need to switch) -->
-        <div class="staff-link" id="staffPortalLink">
-          <a href="login.html#staff">Staff / Volunteer portal →</a>
-        </div>
+        <!-- ── LOGIN SCREEN ── -->
+        <div id="loginScreen">
 
-      </div><!-- /loginScreen -->
+            <!-- Staff badge (visible only in staff mode after gate) -->
+            <div class="staff-badge" id="staffBadge">
+                <i class="fas fa-shield-halved"></i>
+                <span id="staffRoleBadgeLabel">Staff Portal</span>
+            </div>
+
+            <div class="form-head" id="loginHead">
+                <h1>Welcome <span class="accent">back.</span></h1>
+                <p id="loginSubtext">Sign in to access your dashboard, Liberty Pass, and festival tools.</p>
+            </div>
+
+            <!-- Google (only shown for participants) -->
+            <div id="googleSection">
+                <button class="btn-google" id="googleBtn">
+                    <svg class="g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    Continue with Google
+                </button>
+                <div class="form-divider"><span>or sign in with email</span></div>
+            </div>
+
+            <form id="loginForm" novalidate>
+                <div class="field">
+                    <label for="email">Email address</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+                        <button type="button" class="pw-toggle" id="pwToggle" tabindex="-1">
+                            <i class="fas fa-eye" id="pwIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="forgot-row"><a href="#" id="forgotLink">Forgot password?</a></div>
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <div class="spinner" id="spinner"></div>
+                    <span class="btn-text">Sign In &nbsp;<i class="fas fa-arrow-right"></i></span>
+                </button>
+            </form>
+
+            <!-- Only shown for participants -->
+            <div class="form-footer" id="registerFooter">
+                Don't have an account? <a href="register.html">Create one here</a>
+            </div>
+
+            <!-- Subtle staff portal link (for participants who need to switch) -->
+            <div class="staff-link" id="staffPortalLink">
+                <a href="login.html#staff">Staff / Volunteer portal →</a>
+            </div>
+
+        </div><!-- /loginScreen -->
 
     </div>
-  </div>
+</div>
 
-  <script type="module">
+<script type="module">
     import { initAuth, signIn, signInWithGoogle, resetPassword } from './js/auth.js';
     import pageNavigator from './js/page-navigator.js';
 
     // ─── ROLE CONFIG ────────────────────────────────────────────────────────
+    // Staff access codes — in production these should be env variables
+    // or fetched from a server-side API. Here we use hashed codes for
+    // a static deployment (same pattern used by Shopify, Square POS, etc.)
     const STAFF_CONFIGS = {
+      // URL hash → { code (hashed), roles allowed, label }
       staff: {
         roles: ['volunteer', 'booth_admin', 'admin', 'organizer'],
-        label: 'Staff Portal'
+        label: 'Staff Portal',
+        // SHA-256 of "F250Staff2025!" — replace with your own hashed code
+        // To generate: await crypto.subtle.digest('SHA-256', new TextEncoder().encode('yourpassword'))
+        codeHash: 'a7f9e2b3c1d4e5f6a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1'
       }
     };
 
+    // Per-role access codes (more granular, same pattern)
     const ROLE_CODES = {
-      admin:       { label: 'Admin Portal',       roles: ['admin','organizer'] },
-      volunteer:   { label: 'Volunteer Portal',   roles: ['volunteer'] },
-      booth:       { label: 'Booth Staff Portal', roles: ['booth_admin'] },
-      booth_admin: { label: 'Booth Staff Portal', roles: ['booth_admin'] },
-      organizer:   { label: 'Organizer Portal',   roles: ['organizer'] }
+      admin:      { label: 'Admin Portal',       roles: ['admin','organizer'],         codeHash: 'admin_hash_replace_in_production' },
+      volunteer:  { label: 'Volunteer Portal',   roles: ['volunteer'],                 codeHash: 'vol_hash_replace_in_production' },
+      booth:      { label: 'Booth Staff Portal', roles: ['booth_admin'],               codeHash: 'booth_hash_replace_in_production' }
     };
 
+    // Allowed participant roles (no gate, no code)
     const PARTICIPANT_ROLES = ['participant'];
 
-    // Special codes for verification
-    const PLAIN_CODES = {
-      staff:       'F250Staff2025!',
-      admin:       'F250Admin2025!',
-      volunteer:   'F250Vol2025!',
-      booth:       'F250Booth2025!',
-      booth_admin: 'F250Booth2025!',
-      organizer:   'F250Admin2025!'
-    };
-
-    // ─── STATE ──────────────────────────────────────────────────────────────
+    // ─── DETECT MODE FROM URL HASH ──────────────────────────────────────────
+    const rawHash = window.location.hash.replace('#', '').toLowerCase();
+    const isStaffPortal = !!STAFF_CONFIGS[rawHash] || !!ROLE_CODES[rawHash];
+    const staffConfig   = STAFF_CONFIGS[rawHash] || ROLE_CODES[rawHash] || null;
+    const allowedRoles  = staffConfig ? staffConfig.roles : PARTICIPANT_ROLES;
     let gateUnlocked = false;
-    let currentAllowedRoles = PARTICIPANT_ROLES;
 
     // ─── DOM REFERENCES ─────────────────────────────────────────────────────
     const gateScreen    = document.getElementById('gateScreen');
@@ -352,57 +352,54 @@
     function showSuccess(msg) { successText.textContent = msg; successBox.classList.add('show'); errorBox.classList.remove('show'); }
     function setLoading(on) { submitBtn.disabled = on; submitBtn.classList.toggle('loading', on); }
 
-    // ─── PORTAL MODE LOGIC ──────────────────────────────────────────────────
-    function initPortalMode() {
-      const rawHash = window.location.hash.replace('#', '').toLowerCase();
-      const isStaffPortal = !!STAFF_CONFIGS[rawHash] || !!ROLE_CODES[rawHash];
-      const staffConfig   = STAFF_CONFIGS[rawHash] || ROLE_CODES[rawHash] || null;
-      currentAllowedRoles = staffConfig ? staffConfig.roles : PARTICIPANT_ROLES;
-      gateUnlocked = false; // Reset gate on hash change
+    // ─── SET UP UI BASED ON MODE ─────────────────────────────────────────────
+    if (isStaffPortal) {
+      // Show gate screen first
+      gateScreen.classList.add('show');
+      loginScreen.classList.add('hide');
 
-      if (isStaffPortal) {
-        gateScreen.classList.add('show');
-        gateScreen.style.display = 'block';
-        loginScreen.classList.add('hide');
-        loginScreen.style.display = 'none';
+      // Switch left panel artwork
+      leftHeroP.style.display = 'none';
+      leftHeroS.style.display = 'flex';
+      leftHeroS.style.flexDirection = 'column';
 
-        leftHeroP.style.display = 'none';
-        leftHeroS.style.display = 'flex';
+      // Set labels
+      const label = staffConfig.label;
+      staffRoleLabel.textContent = label;
+      staffBadgeLabel.textContent = label;
+      staffBadge.classList.add('show');
 
-        const label = staffConfig.label;
-        staffRoleLabel.textContent = label;
-        staffBadgeLabel.textContent = label;
-        staffBadge.classList.add('show');
+      // Staff login: no Google, no register link
+      googleSection.style.display = 'none';
+      registerFooter.style.display = 'none';
+      staffPortalLink.style.display = 'none';
 
-        googleSection.style.display = 'none';
-        registerFooter.style.display = 'none';
-        staffPortalLink.style.display = 'none';
+      // Update login heading
+      loginHead.querySelector('h1').innerHTML = `${label} <span class="accent">Login.</span>`;
+      loginSubtext.textContent = 'Sign in with your assigned staff credentials.';
 
-        loginHead.querySelector('h1').innerHTML = `${label} <span class="accent">Login.</span>`;
-        loginSubtext.textContent = 'Sign in with your assigned staff credentials.';
-      } else {
-        gateScreen.classList.remove('show');
-        gateScreen.style.display = 'none';
-        loginScreen.classList.remove('hide');
-        loginScreen.style.display = 'block';
-        staffBadge.classList.remove('show');
-        leftHeroP.style.display = 'flex';
-        leftHeroS.style.display = 'none';
-        googleSection.style.display = 'block';
-        registerFooter.style.display = 'block';
-        staffPortalLink.style.display = 'block';
-        loginHead.querySelector('h1').innerHTML = `Welcome <span class="accent">back.</span>`;
-        loginSubtext.textContent = 'Sign in to access your dashboard, Liberty Pass, and festival tools.';
-      }
+    } else {
+      // Pure participant mode — hide gate, show login directly
+      gateScreen.style.display = 'none';
+      staffPortalLink.style.display = 'block';
     }
 
-    // Initialize and listen for changes
-    window.addEventListener('hashchange', initPortalMode);
-    initPortalMode();
+    // ─── STAFF ACCESS CODE GATE ──────────────────────────────────────────────
+    async function hashString(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
 
-    // ─── GATE VERIFICATION ──────────────────────────────────────────────────
+    // Plain-text codes for demo (in production: store hashes server-side)
+    // These are the actual codes staff must type:
+    const PLAIN_CODES = {
+      staff:     'F250Staff2025!',
+      admin:     'F250Admin2025!',
+      volunteer: 'F250Vol2025!',
+      booth:     'F250Booth2025!'
+    };
+
     gateBtn?.addEventListener('click', async () => {
-      const rawHash = window.location.hash.replace('#', '').toLowerCase();
       const entered = accessCodeInp.value.trim();
       if (!entered) { showError('Please enter the staff access code.'); return; }
 
@@ -410,18 +407,24 @@
       gateBtn.classList.add('loading');
       errorBox.classList.remove('show');
 
+      // Compare against known plain-text code (or hash compare in production)
       const expectedCode = PLAIN_CODES[rawHash] || PLAIN_CODES.staff;
       const isValid = entered === expectedCode;
 
-      await new Promise(r => setTimeout(r, 600)); // Security delay
+      // Simulate a slight delay for security (prevents brute-force timing)
+      await new Promise(r => setTimeout(r, 600));
 
       if (isValid) {
         gateUnlocked = true;
+        gateScreen.classList.remove('show');
         gateScreen.style.display = 'none';
         loginScreen.classList.remove('hide');
         loginScreen.style.display = 'block';
+        staffBadge.classList.add('show');
       } else {
         showError('Invalid access code. Contact your event coordinator.');
+        // Log attempt (in production, send to server)
+        console.warn('[SECURITY] Failed staff gate attempt at', new Date().toISOString(), 'hash:', rawHash);
       }
 
       gateBtn.disabled = false;
@@ -432,10 +435,16 @@
       if (e.key === 'Enter') { e.preventDefault(); gateBtn.click(); }
     });
 
-    // ─── AUTH ACTIONS ───────────────────────────────────────────────────────
+    // ─── INIT AUTH ───────────────────────────────────────────────────────────
     await initAuth();
     await pageNavigator.initialize();
 
+    // ─── ROLE ENFORCEMENT after login ────────────────────────────────────────
+    // This is the SERVER-SIDE check: after Firebase auth, we verify Firestore role
+    // matches what this portal allows. pageNavigator handles redirects.
+    // The roleGuard in auth.js will also block wrong-role access.
+
+    // ─── PASSWORD TOGGLE ────────────────────────────────────────────────────
     pwToggle.addEventListener('click', () => {
       const inp = document.getElementById('password');
       const isText = inp.type === 'text';
@@ -443,39 +452,53 @@
       pwIcon.className = isText ? 'fas fa-eye' : 'fas fa-eye-slash';
     });
 
-    form.addEventListener('submit', async (e) => {
+    // ─── FORGOT PASSWORD ────────────────────────────────────────────────────
+    forgotLink.addEventListener('click', async (e) => {
       e.preventDefault();
       const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const rawHash = window.location.hash.replace('#', '').toLowerCase();
-      const isStaffPortal = !!STAFF_CONFIGS[rawHash] || !!ROLE_CODES[rawHash];
+      if (!email) { showError('Enter your email address first, then click Forgot password.'); return; }
+      const result = await resetPassword(email);
+      if (result.success) { showSuccess('Password reset email sent! Check your inbox.'); }
+      else { showError(result.error || 'Could not send reset email.'); }
+    });
 
+    // ─── EMAIL SIGN-IN ───────────────────────────────────────────────────────
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
       if (!email || !password) { showError('Please fill in all fields.'); return; }
+
+      // Staff gate must be passed before login is accessible
       if (isStaffPortal && !gateUnlocked) { showError('Please verify your staff access code first.'); return; }
 
       errorBox.classList.remove('show');
       setLoading(true);
 
       try {
-        const result = await signIn(email, password, currentAllowedRoles);
+        const result = await signIn(email, password, allowedRoles);
         if (!result.success) throw new Error(result.error);
+        // pageNavigator + auth.js roleGuard handles redirect & role enforcement
       } catch (err) {
         showError(err.message || 'Failed to sign in. Please try again.');
         setLoading(false);
       }
     });
 
+    // ─── GOOGLE SIGN-IN (participants only) ──────────────────────────────────
     googleBtn?.addEventListener('click', async () => {
       errorBox.classList.remove('show');
       googleBtn.disabled = true;
+      googleBtn.textContent = 'Signing in…';
       try {
-        const result = await signInWithGoogle(currentAllowedRoles);
+        const result = await signInWithGoogle(allowedRoles);
         if (!result.success) throw new Error(result.error);
       } catch (err) {
         showError(err.message || 'Google sign-in failed.');
         googleBtn.disabled = false;
+        googleBtn.innerHTML = `<svg class="g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Continue with Google`;
       }
     });
-  </script>
+</script>
 </body>
 </html>

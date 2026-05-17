@@ -1,218 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Account | Freedom 250</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    :root{--red:#B22234;--blue:#3C3B6E;--white:#fff;--black:#0D0D0D;--gray:#F5F5F7;--gray2:#E8E8EC;--text:#1A1A2E;--muted:#6B7280}
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    html{height:100%}
-    body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);min-height:100vh;display:flex;overflow-x:hidden}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Freedom 250</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root{--red:#B22234;--blue:#3C3B6E;--white:#fff;--black:#0D0D0D;--gray:#F5F5F7;--gray2:#E8E8EC;--text:#1A1A2E;--muted:#6B7280}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{height:100%}
+        body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);min-height:100vh;display:flex;overflow-x:hidden}
 
-    .panel-left{display:none;width:42%;background:var(--red);position:relative;overflow:hidden;flex-direction:column;justify-content:space-between;padding:48px 52px}
-    @media(min-width:900px){.panel-left{display:flex}}
-    .panel-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 80%,rgba(60,59,110,.45) 0%,transparent 55%),radial-gradient(ellipse at 15% 10%,rgba(255,255,255,.08) 0%,transparent 50%)}
-    .stripe-top{position:absolute;top:0;left:0;right:0;height:6px;background:repeating-linear-gradient(90deg,var(--blue) 0px,var(--blue) 20px,#fff 20px,#fff 40px)}
-    .left-logo{position:relative;z-index:1}
-    .left-logo .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-    .left-logo .brand-name{font-family:'Sora',sans-serif;font-size:1.35rem;font-weight:800;color:#fff}
-    .left-logo .brand-name span{color:rgba(255,255,255,.65)}
-    .left-hero{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0}
-    .left-headline{font-family:'Sora',sans-serif;font-size:2.5rem;font-weight:900;color:#fff;line-height:1.12;margin-bottom:18px;letter-spacing:-.03em}
-    .left-sub{font-size:1rem;color:rgba(255,255,255,.72);line-height:1.65;margin-bottom:28px;max-width:340px}
-    .left-perks{display:flex;flex-direction:column;gap:10px}
-    .left-perk{display:flex;align-items:center;gap:12px;color:#fff;font-size:.85rem}
-    .left-perk i{width:20px;opacity:.8}
-    .left-footer{position:relative;z-index:1;font-size:.78rem;color:rgba(255,255,255,.35)}
+        .panel-left{display:none;width:42%;background:var(--red);position:relative;overflow:hidden;flex-direction:column;justify-content:space-between;padding:48px 52px}
+        @media(min-width:900px){.panel-left{display:flex}}
+        .panel-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 80%,rgba(60,59,110,.45) 0%,transparent 55%),radial-gradient(ellipse at 15% 10%,rgba(255,255,255,.08) 0%,transparent 50%)}
+        .stripe-top{position:absolute;top:0;left:0;right:0;height:6px;background:repeating-linear-gradient(90deg,var(--blue) 0px,var(--blue) 20px,#fff 20px,#fff 40px)}
+        .left-logo{position:relative;z-index:1}
+        .left-logo .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+        .left-logo .brand-name{font-family:'Sora',sans-serif;font-size:1.35rem;font-weight:800;color:#fff}
+        .left-logo .brand-name span{color:rgba(255,255,255,.65)}
+        .left-hero{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0}
+        .left-headline{font-family:'Sora',sans-serif;font-size:2.5rem;font-weight:900;color:#fff;line-height:1.12;margin-bottom:18px;letter-spacing:-.03em}
+        .left-sub{font-size:1rem;color:rgba(255,255,255,.72);line-height:1.65;margin-bottom:28px;max-width:340px}
+        .left-perks{display:flex;flex-direction:column;gap:10px}
+        .left-perk{display:flex;align-items:center;gap:12px;color:#fff;font-size:.85rem}
+        .left-perk i{width:20px;opacity:.8}
+        .left-footer{position:relative;z-index:1;font-size:.78rem;color:rgba(255,255,255,.35)}
 
-    .panel-right{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;background:var(--white);position:relative;overflow-y:auto}
-    .panel-right::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--red) 0%,var(--blue) 50%,var(--red) 100%)}
-    .form-wrap{width:100%;max-width:440px}
-    .mobile-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;justify-content:center}
-    @media(min-width:900px){.mobile-logo{display:none}}
-    .mobile-logo span{font-family:'Sora',sans-serif;font-size:1.25rem;font-weight:800;color:var(--blue)}
-    .mobile-logo span em{color:var(--red);font-style:normal}
-    .flag-bar{display:flex;gap:4px;margin-bottom:28px}
-    .flag-bar span{flex:1;height:3px;border-radius:2px}
-    .fb-red{background:var(--red)}.fb-blue{background:var(--blue)}.fb-w{background:var(--gray2)}
-    .form-head{margin-bottom:28px}
-    .form-head h1{font-family:'Sora',sans-serif;font-size:1.9rem;font-weight:900;color:var(--black);letter-spacing:-.03em;margin-bottom:6px}
-    .form-head h1 .accent{color:var(--red)}
-    .form-head p{font-size:.88rem;color:var(--muted);line-height:1.6}
+        .panel-right{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;background:var(--white);position:relative;overflow-y:auto}
+        .panel-right::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--red) 0%,var(--blue) 50%,var(--red) 100%)}
+        .form-wrap{width:100%;max-width:440px}
+        .mobile-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;justify-content:center}
+        @media(min-width:900px){.mobile-logo{display:none}}
+        .mobile-logo span{font-family:'Sora',sans-serif;font-size:1.25rem;font-weight:800;color:var(--blue)}
+        .mobile-logo span em{color:var(--red);font-style:normal}
+        .flag-bar{display:flex;gap:4px;margin-bottom:28px}
+        .flag-bar span{flex:1;height:3px;border-radius:2px}
+        .fb-red{background:var(--red)}.fb-blue{background:var(--blue)}.fb-w{background:var(--gray2)}
+        .form-head{margin-bottom:28px}
+        .form-head h1{font-family:'Sora',sans-serif;font-size:1.9rem;font-weight:900;color:var(--black);letter-spacing:-.03em;margin-bottom:6px}
+        .form-head h1 .accent{color:var(--red)}
+        .form-head p{font-size:.88rem;color:var(--muted);line-height:1.6}
 
-    /* Participant-only notice */
-    .participant-notice{background:rgba(60,59,110,.06);border:1.5px solid rgba(60,59,110,.15);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--blue);margin-bottom:20px}
-    .participant-notice i{flex-shrink:0;font-size:.95rem}
+        /* Participant-only notice */
+        .participant-notice{background:rgba(60,59,110,.06);border:1.5px solid rgba(60,59,110,.15);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--blue);margin-bottom:20px}
+        .participant-notice i{flex-shrink:0;font-size:.95rem}
 
-    .form-divider{display:flex;align-items:center;gap:14px;margin:18px 0}
-    .form-divider::before,.form-divider::after{content:'';flex:1;height:1px;background:var(--gray2)}
-    .form-divider span{font-size:.75rem;color:var(--muted);font-weight:600;letter-spacing:.06em}
+        .form-divider{display:flex;align-items:center;gap:14px;margin:18px 0}
+        .form-divider::before,.form-divider::after{content:'';flex:1;height:1px;background:var(--gray2)}
+        .form-divider span{font-size:.75rem;color:var(--muted);font-weight:600;letter-spacing:.06em}
 
-    .btn-google{width:100%;padding:13px;background:var(--white);border:1.5px solid var(--gray2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:border-color .2s,box-shadow .2s;margin-bottom:18px}
-    .btn-google:hover{border-color:#aaa;box-shadow:0 2px 10px rgba(0,0,0,.07)}
-    .btn-google .g-logo{width:18px}
-    .btn-google:disabled{opacity:.6;cursor:not-allowed}
+        .btn-google{width:100%;padding:13px;background:var(--white);border:1.5px solid var(--gray2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:border-color .2s,box-shadow .2s;margin-bottom:18px}
+        .btn-google:hover{border-color:#aaa;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+        .btn-google .g-logo{width:18px}
+        .btn-google:disabled{opacity:.6;cursor:not-allowed}
 
-    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .field{margin-bottom:16px}
-    .field label{display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:7px}
-    .field .input-wrap{position:relative}
-    .field .input-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem}
-    .field input{width:100%;padding:12px 14px 12px 38px;border:1.5px solid var(--gray2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:var(--white);transition:border-color .2s,box-shadow .2s}
-    .field input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(178,34,52,.1)}
-    .field .pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:.85rem}
+        .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+        .field{margin-bottom:16px}
+        .field label{display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:7px}
+        .field .input-wrap{position:relative}
+        .field .input-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem}
+        .field input{width:100%;padding:12px 14px 12px 38px;border:1.5px solid var(--gray2);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:var(--white);transition:border-color .2s,box-shadow .2s}
+        .field input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(178,34,52,.1)}
+        .field .pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--muted);font-size:.85rem}
 
-    /* Role badge (read-only — always Participant) */
-    .role-badge{display:flex;align-items:center;gap:12px;background:rgba(178,34,52,.06);border:1.5px solid rgba(178,34,52,.15);border-radius:12px;padding:14px 16px;margin-bottom:20px}
-    .role-badge .rb-icon{width:38px;height:38px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;flex-shrink:0}
-    .role-badge .rb-name{font-family:'Sora',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);display:block}
-    .role-badge .rb-desc{font-size:.72rem;color:var(--muted)}
+        /* Role badge (read-only — always Participant) */
+        .role-badge{display:flex;align-items:center;gap:12px;background:rgba(178,34,52,.06);border:1.5px solid rgba(178,34,52,.15);border-radius:12px;padding:14px 16px;margin-bottom:20px}
+        .role-badge .rb-icon{width:38px;height:38px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;flex-shrink:0}
+        .role-badge .rb-name{font-family:'Sora',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);display:block}
+        .role-badge .rb-desc{font-size:.72rem;color:var(--muted)}
 
-    .btn-submit{width:100%;padding:14px;background:var(--red);border:none;border-radius:12px;color:#fff;font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:.02em;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
-    .btn-submit:hover{background:#9a1d2d;transform:translateY(-1px)}
-    .btn-submit:active{transform:translateY(0)}
-    .btn-submit:disabled{opacity:.65;cursor:not-allowed;transform:none}
+        .btn-submit{width:100%;padding:14px;background:var(--red);border:none;border-radius:12px;color:#fff;font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;letter-spacing:.02em;transition:background .2s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+        .btn-submit:hover{background:#9a1d2d;transform:translateY(-1px)}
+        .btn-submit:active{transform:translateY(0)}
+        .btn-submit:disabled{opacity:.65;cursor:not-allowed;transform:none}
 
-    .error-box{background:rgba(178,34,52,.07);border:1px solid rgba(178,34,52,.25);border-left:3px solid var(--red);border-radius:10px;padding:12px 16px;font-size:.85rem;color:var(--red);margin-bottom:18px;display:none;align-items:center;gap:10px}
-    .error-box.show{display:flex}
-    .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none}
-    .btn-submit.loading .spinner{display:block}
-    .btn-submit.loading .btn-text{display:none}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .form-footer{text-align:center;margin-top:20px;font-size:.85rem;color:var(--muted)}
-    .form-footer a{color:var(--blue);text-decoration:none;font-weight:700}
-    .form-footer a:hover{text-decoration:underline}
-    .terms-note{font-size:.75rem;color:var(--muted);text-align:center;margin-top:14px;line-height:1.5}
-    .terms-note a{color:var(--blue);text-decoration:none}
-    .staff-note{text-align:center;margin-top:14px;font-size:.75rem;color:var(--muted)}
-    .staff-note a{color:var(--muted);text-decoration:none;opacity:.65}
-    .staff-note a:hover{opacity:1;color:var(--blue)}
-  </style>
+        .error-box{background:rgba(178,34,52,.07);border:1px solid rgba(178,34,52,.25);border-left:3px solid var(--red);border-radius:10px;padding:12px 16px;font-size:.85rem;color:var(--red);margin-bottom:18px;display:none;align-items:center;gap:10px}
+        .error-box.show{display:flex}
+        .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none}
+        .btn-submit.loading .spinner{display:block}
+        .btn-submit.loading .btn-text{display:none}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .form-footer{text-align:center;margin-top:20px;font-size:.85rem;color:var(--muted)}
+        .form-footer a{color:var(--blue);text-decoration:none;font-weight:700}
+        .form-footer a:hover{text-decoration:underline}
+        .terms-note{font-size:.75rem;color:var(--muted);text-align:center;margin-top:14px;line-height:1.5}
+        .terms-note a{color:var(--blue);text-decoration:none}
+        .staff-note{text-align:center;margin-top:14px;font-size:.75rem;color:var(--muted)}
+        .staff-note a{color:var(--muted);text-decoration:none;opacity:.65}
+        .staff-note a:hover{opacity:1;color:var(--blue)}
+    </style>
 </head>
 <body>
 
-  <!-- ═══ LEFT PANEL ═══ -->
-  <div class="panel-left">
+<!-- ═══ LEFT PANEL ═══ -->
+<div class="panel-left">
     <div class="stripe-top"></div>
     <div class="left-logo">
-      <a href="index.html" class="brand">
-        <span style="font-size:2rem">🇺🇸</span>
-        <span class="brand-name">Freedom<span>250</span></span>
-      </a>
+        <a href="index.html" class="brand">
+            <span style="font-size:2rem">🇺🇸</span>
+            <span class="brand-name">Freedom<span>250</span></span>
+        </a>
     </div>
     <div class="left-hero">
-      <h2 class="left-headline">Join the<br>Freedom<br>Community.</h2>
-      <p class="left-sub">Register for free. Get your Liberty Pass QR code. Explore all 7 experience tents and compete for prizes.</p>
-      <div class="left-perks">
-        <div class="left-perk"><i class="fas fa-qrcode"></i> Instant Liberty Pass QR code on signup</div>
-        <div class="left-perk"><i class="fas fa-trophy"></i> Compete in challenges & earn Liberty Coins</div>
-        <div class="left-perk"><i class="fas fa-map-marked-alt"></i> Access all 7 Freedom Zones & collect stamps</div>
-        <div class="left-perk"><i class="fas fa-gift"></i> Redeem coins for merch, VIP access & prizes</div>
-        <div class="left-perk"><i class="fas fa-chart-line"></i> Climb the live leaderboard</div>
-      </div>
+        <h2 class="left-headline">Join the<br>Freedom<br>Community.</h2>
+        <p class="left-sub">Register for free. Get your Liberty Pass QR code. Explore all 7 experience tents and compete for prizes.</p>
+        <div class="left-perks">
+            <div class="left-perk"><i class="fas fa-qrcode"></i> Instant Liberty Pass QR code on signup</div>
+            <div class="left-perk"><i class="fas fa-trophy"></i> Compete in challenges & earn Liberty Coins</div>
+            <div class="left-perk"><i class="fas fa-map-marked-alt"></i> Access all 7 Freedom Zones & collect stamps</div>
+            <div class="left-perk"><i class="fas fa-gift"></i> Redeem coins for merch, VIP access & prizes</div>
+            <div class="left-perk"><i class="fas fa-chart-line"></i> Climb the live leaderboard</div>
+        </div>
     </div>
     <div class="left-footer">© 2025 Freedom 250 · U.S. Embassy Nairobi</div>
-  </div>
+</div>
 
-  <!-- ═══ RIGHT PANEL ═══ -->
-  <div class="panel-right">
+<!-- ═══ RIGHT PANEL ═══ -->
+<div class="panel-right">
     <div class="form-wrap">
 
-      <div class="mobile-logo">🇺🇸 <span>Freedom<em>250</em></span></div>
+        <div class="mobile-logo">🇺🇸 <span>Freedom<em>250</em></span></div>
 
-      <div class="flag-bar">
-        <span class="fb-red"></span><span class="fb-red"></span>
-        <span class="fb-blue"></span><span class="fb-blue"></span>
-        <span class="fb-w"></span><span class="fb-w"></span>
-        <span class="fb-red"></span><span class="fb-blue"></span>
-      </div>
-
-      <div class="form-head">
-        <h1>Create your <span class="accent">account.</span></h1>
-        <p>Register as a participant to access your Liberty Pass and all festival features.</p>
-      </div>
-
-      <div class="error-box" id="errorBox"><i class="fas fa-circle-exclamation"></i> <span id="errorText"></span></div>
-
-      <!-- Participant-only notice -->
-      <div class="participant-notice">
-        <i class="fas fa-info-circle"></i>
-        <span>This registration is for <strong>participants only</strong>. Staff, volunteers &amp; booth teams register via the <a href="login.html#staff" style="color:var(--blue);font-weight:600">staff portal</a>.</span>
-      </div>
-
-      <!-- Google -->
-      <button class="btn-google" id="googleBtn">
-        <svg class="g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-        </svg>
-        Continue with Google
-      </button>
-
-      <div class="form-divider"><span>or register with email</span></div>
-
-      <form id="registerForm" novalidate>
-        <div class="field-row">
-          <div class="field">
-            <label for="name">Full Name</label>
-            <div class="input-wrap">
-              <i class="fas fa-user"></i>
-              <input type="text" id="name" placeholder="Jane Wanjiru" required autocomplete="name">
-            </div>
-          </div>
-          <div class="field">
-            <label for="email">Email</label>
-            <div class="input-wrap">
-              <i class="fas fa-envelope"></i>
-              <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
-            </div>
-          </div>
+        <div class="flag-bar">
+            <span class="fb-red"></span><span class="fb-red"></span>
+            <span class="fb-blue"></span><span class="fb-blue"></span>
+            <span class="fb-w"></span><span class="fb-w"></span>
+            <span class="fb-red"></span><span class="fb-blue"></span>
         </div>
 
-        <div class="field">
-          <label for="password">Password <span style="color:var(--muted);font-weight:400">(min. 6 characters)</span></label>
-          <div class="input-wrap">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="password" placeholder="••••••••" required autocomplete="new-password">
-            <button type="button" class="pw-toggle" id="pwToggle" tabindex="-1">
-              <i class="fas fa-eye" id="pwIcon"></i>
-            </button>
-          </div>
+        <div class="form-head">
+            <h1>Create your <span class="accent">account.</span></h1>
+            <p>Register as a participant to access your Liberty Pass and all festival features.</p>
         </div>
 
-        <!-- Role badge — locked to Participant, not selectable -->
-        <div style="margin-bottom:8px;font-size:.82rem;font-weight:600;color:var(--text)">Your role</div>
-        <div class="role-badge">
-          <div class="rb-icon">🎓</div>
-          <div>
-            <span class="rb-name">Participant</span>
-            <span class="rb-desc">Explore zones, earn Liberty Coins, compete in challenges</span>
-          </div>
+        <div class="error-box" id="errorBox"><i class="fas fa-circle-exclamation"></i> <span id="errorText"></span></div>
+
+        <!-- Participant-only notice -->
+        <div class="participant-notice">
+            <i class="fas fa-info-circle"></i>
+            <span>This registration is for <strong>participants only</strong>. Staff, volunteers &amp; booth teams register via the <a href="login.html#staff" style="color:var(--blue);font-weight:600">staff portal</a>.</span>
         </div>
 
-        <!-- Hidden role field always sends 'participant' -->
-        <input type="hidden" id="role" value="participant">
-
-        <button type="submit" class="btn-submit" id="submitBtn">
-          <div class="spinner" id="spinner"></div>
-          <span class="btn-text">Create Account &nbsp;<i class="fas fa-arrow-right"></i></span>
+        <!-- Google -->
+        <button class="btn-google" id="googleBtn">
+            <svg class="g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Continue with Google
         </button>
-      </form>
 
-      <p class="terms-note">By creating an account you agree to Freedom 250's <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
-      <div class="form-footer">Already have an account? <a href="login.html">Sign in here</a></div>
-      <div class="staff-note">Staff or volunteer? <a href="login.html#staff">Use the staff portal →</a></div>
+        <div class="form-divider"><span>or register with email</span></div>
+
+        <form id="registerForm" novalidate>
+            <div class="field-row">
+                <div class="field">
+                    <label for="name">Full Name</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="name" placeholder="Jane Wanjiru" required autocomplete="name">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="password">Password <span style="color:var(--muted);font-weight:400">(min. 6 characters)</span></label>
+                <div class="input-wrap">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="••••••••" required autocomplete="new-password">
+                    <button type="button" class="pw-toggle" id="pwToggle" tabindex="-1">
+                        <i class="fas fa-eye" id="pwIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Role badge — locked to Participant, not selectable -->
+            <div style="margin-bottom:8px;font-size:.82rem;font-weight:600;color:var(--text)">Your role</div>
+            <div class="role-badge">
+                <div class="rb-icon">🎓</div>
+                <div>
+                    <span class="rb-name">Participant</span>
+                    <span class="rb-desc">Explore zones, earn Liberty Coins, compete in challenges</span>
+                </div>
+            </div>
+
+            <!-- Hidden role field always sends 'participant' -->
+            <input type="hidden" id="role" value="participant">
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <div class="spinner" id="spinner"></div>
+                <span class="btn-text">Create Account &nbsp;<i class="fas fa-arrow-right"></i></span>
+            </button>
+        </form>
+
+        <p class="terms-note">By creating an account you agree to Freedom 250's <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+        <div class="form-footer">Already have an account? <a href="login.html">Sign in here</a></div>
+        <div class="staff-note">Staff or volunteer? <a href="login.html#staff">Use the staff portal →</a></div>
 
     </div>
-  </div>
+</div>
 
-  <script type="module">
+<script type="module">
     import { initAuth, signUp, signInWithGoogle } from './js/auth.js';
     import pageNavigator from './js/page-navigator.js';
 
@@ -274,6 +274,6 @@
         googleBtn.innerHTML = `<svg class="g-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Continue with Google`;
       }
     });
-  </script>
+</script>
 </body>
 </html>
