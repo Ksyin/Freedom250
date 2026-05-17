@@ -45,25 +45,33 @@ class PageNavigator {
     const currentPagePath = window.location.pathname;
     const isAuthPage = currentPagePath.includes('login') || currentPagePath.includes('register');
     const isDashboardPage = currentPagePath.includes('dashboard');
+    const hasPortalHash = window.location.hash.length > 1;
 
     console.log('[Navigator] Handling auth change:', {
       isAuthenticated,
       isAuthPage,
       isDashboardPage,
-      userRole: user?.role
+      userRole: user?.role,
+      hasPortalHash
     });
 
     if (isAuthenticated && user) {
-      // User is authenticated
       if (isAuthPage) {
-        // User is on login/register page but is authenticated - redirect to dashboard
-        console.log('[Navigator] User authenticated on auth page, redirecting to dashboard');
-        this.redirectToDashboard(user);
+        // If they are a participant and trying to access a staff portal hash, 
+        // stay on login page so they can switch accounts.
+        // If they are NOT a participant (i.e. staff) OR there is no hash, redirect.
+        const isParticipant = (user.role === ROLES.PARTICIPANT || !user.role);
+        
+        if (hasPortalHash && isParticipant) {
+          console.log('[Navigator] Participant on portal-specific page, allowing account switch');
+        } else {
+          console.log('[Navigator] User authenticated, redirecting to dashboard');
+          this.redirectToDashboard(user);
+        }
       }
     } else {
       // User is not authenticated
-      if (isDashboardPage || (!isAuthPage && !currentPagePath.includes('index'))) {
-        // User is on a protected page but not authenticated - redirect to login
+      if (isDashboardPage || (!isAuthPage && !currentPagePath.includes('index') && currentPagePath !== '/')) {
         console.log('[Navigator] User not authenticated on protected page, redirecting to login');
         this.redirectToLogin();
       }
@@ -76,15 +84,16 @@ class PageNavigator {
   handleInitialRoute(user, currentPagePath) {
     const isAuthPage = currentPagePath.includes('login') || currentPagePath.includes('register');
     const isDashboardPage = currentPagePath.includes('dashboard');
-    const isPublicPage = currentPagePath.includes('index') || currentPagePath === '/';
+    const hasPortalHash = window.location.hash.length > 1;
 
     if (user && isAuthPage) {
-      // User is logged in but on auth page
-      console.log('[Navigator] Initial route: user on auth page, redirecting to dashboard');
-      this.redirectToDashboard(user);
-    } else if (!user && (isDashboardPage)) {
-      // User not logged in but on dashboard
-      console.log('[Navigator] Initial route: no user on protected page, redirecting to login');
+      const isParticipant = (user.role === ROLES.PARTICIPANT || !user.role);
+      if (!(hasPortalHash && isParticipant)) {
+        console.log('[Navigator] Initial route: redirecting to dashboard');
+        this.redirectToDashboard(user);
+      }
+    } else if (!user && isDashboardPage) {
+      console.log('[Navigator] Initial route: redirecting to login');
       this.redirectToLogin();
     }
   }
@@ -99,8 +108,6 @@ class PageNavigator {
     try {
       const dashboardPath = getDashboardPath(user);
       console.log('[Navigator] Redirecting to dashboard:', dashboardPath, 'for role:', user.role);
-      
-      // Use replace to avoid back button issues
       window.location.replace(dashboardPath);
     } catch (error) {
       console.error('[Navigator] Error redirecting to dashboard:', error);
@@ -129,30 +136,21 @@ class PageNavigator {
    */
   async navigateTo(path) {
     const user = getCurrentUser();
-    
-    // Check if path requires authentication
     const isProtectedPath = path.includes('dashboard') || path.includes('admin');
     
     if (isProtectedPath && !user) {
-      console.log('[Navigator] Navigation to protected page without user, redirecting to login');
       this.redirectToLogin();
       return;
     }
 
-    console.log('[Navigator] Navigating to:', path);
     window.location.href = path;
   }
 
-  /**
-   * Get the current page URL
-   */
   getCurrentPage() {
     return window.location.pathname;
   }
 }
 
-// Create singleton instance
 const pageNavigator = new PageNavigator();
-
 export default pageNavigator;
 export { PageNavigator };
