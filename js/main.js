@@ -1,7 +1,34 @@
 // js/main.js - Main Application Logic
 import { initAuth, signUp, signIn, resetPassword, signInWithGoogle, signOutUser, getCurrentUser, onAuthStateChange, ROLES, getDashboardPath } from './auth.js';
+import pageNavigator from './page-navigator.js';
 import { initFCM, sendTestNotificationToServer } from './push-email.js';
 import { db, collection, getDocs, addDoc, query, orderBy } from './firebase-config.js';
+
+// Initialize page navigator and auth on page load
+async function initializeApp() {
+  try {
+    // Initialize auth first
+    await initAuth();
+    console.log('[Main] Auth initialized');
+    
+    // Initialize page navigator (handles routing based on auth state)
+    await pageNavigator.initialize();
+    console.log('[Main] Page navigator initialized');
+    
+    // Initialize Firebase Cloud Messaging
+    await initFCM();
+    console.log('[Main] FCM initialized');
+  } catch (error) {
+    console.error('[Main] Initialization error:', error);
+  }
+}
+
+// Run initialization when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+  initializeApp();
+}
 
 // Platform Data
 const platformData = {

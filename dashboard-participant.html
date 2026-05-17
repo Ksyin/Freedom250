@@ -430,6 +430,7 @@
 
 <script type="module">
     import { getCurrentUser, signOutUser, onAuthStateChange } from './js/auth.js';
+    import { displayUserQRCode, updateUserProfile, displayBadges } from './js/dashboard-utils.js';
 
     // Data
     const zones = [
@@ -806,12 +807,26 @@
     window.addEventListener('beforeunload', () => saveUserData());
 
     // Initialize
-    onAuthStateChange((user) => {
+    onAuthStateChange(async (user) => {
         if (user) {
+            // Display user's QR code
+            await displayUserQRCode('qrCodeDisplay');
+            
+            // Update profile information
+            updateUserProfile(user);
+            
+            // Display badges
+            displayBadges(user);
+            
+            // Load local data
             loadUserData();
+            
+            // Render dashboard sections
             renderZones();
             renderChallenges();
             renderLeaderboardPreview();
+            
+            console.log('[Dashboard] Initialized for user:', user.email, 'Freedom ID:', user.freedomId);
         } else {
             window.location.href = '/';
         }

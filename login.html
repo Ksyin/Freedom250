@@ -146,6 +146,15 @@
         <div class="loading" id="loading"><span class="spinner"></span> Signing in...</div>
       </form>
 
+      <div style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 16px; margin-top: 18px; color: #d7d7d7; font-size: 13px; line-height: 1.5;">
+        <strong>Hosted URLs</strong><br>
+        Base app: <code>https://freedom250.vercel.app</code><br>
+        Participant dashboard: <code>https://freedom250.vercel.app/dashboard-participant.html</code><br>
+        Volunteer dashboard: <code>https://freedom250.vercel.app/dashboard-volunteer.html</code><br>
+        Booth staff dashboard: <code>https://freedom250.vercel.app/dashboard-booth-admin.html</code><br>
+        Admin dashboard: <code>https://freedom250.vercel.app/dashboard-admin.html</code>
+      </div>
+
       <div class="divider"><span class="divider-text">OR</span></div>
       <button class="google-btn" id="googleBtn"><i class="fab fa-google"></i> Sign in with Google</button>
       <div class="auth-footer">Don't have an account? <a href="register.html">Create one here</a></div>
@@ -153,23 +162,19 @@
   </div>
 
   <script type="module">
-    import { initAuth, signIn, signInWithGoogle, getDashboardPath, getCurrentUser } from './js/auth.js';
+    import { initAuth, signIn, signInWithGoogle } from './js/auth.js';
+    import pageNavigator from './js/page-navigator.js';
 
     // Initialize Auth
     await initAuth();
+    
+    // Initialize page navigator (handles auth-based routing)
+    await pageNavigator.initialize();
 
     const loginForm = document.getElementById('loginForm');
     const googleBtn = document.getElementById('googleBtn');
     const errorMessage = document.getElementById('errorMessage');
     const loading = document.getElementById('loading');
-
-    function redirectToDashboard() {
-      const user = getCurrentUser();
-      if (user) {
-        const path = getDashboardPath(user);
-        window.location.href = path;
-      }
-    }
 
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -181,8 +186,8 @@
         errorMessage.classList.remove('show');
         const result = await signIn(email, password);
         if (result.success) {
-          // Wait briefly for the auth state listener to update the user data
-          setTimeout(redirectToDashboard, 800);
+          // Page navigator will handle the redirect based on auth state change
+          // No manual redirect needed
         } else {
           throw new Error(result.error);
         }
@@ -199,7 +204,8 @@
         errorMessage.classList.remove('show');
         const result = await signInWithGoogle();
         if (result.success) {
-          setTimeout(redirectToDashboard, 800);
+          // Page navigator will handle the redirect based on auth state change
+          // No manual redirect needed
         } else {
           throw new Error(result.error);
         }

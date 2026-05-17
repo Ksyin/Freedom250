@@ -1,4 +1,6 @@
-// js/auth.js - Working Authentication
+// js/auth.js - Working Authentication with QR Code Support
+import { generateQRCode, generateFreedomId } from './qr-generator.js';
+
 export const ROLES = {
   PARTICIPANT: 'participant',
   VOLUNTEER: 'volunteer',
@@ -12,7 +14,7 @@ let authCallbacks = [];
 
 export async function initAuth() {
   try {
-    const { auth, db, doc, getDoc } = await import('./firebase-config.js');
+    const { auth, db, doc, getDoc, updateDoc } = await import('./firebase-config.js');
     const { onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
 
     return new Promise((resolve) => {
@@ -24,9 +26,38 @@ export async function initAuth() {
             const userDocRef = doc(db, 'users', user.uid);
             const userDoc = await getDoc(userDocRef);
 
-            let userData = { role: ROLES.PARTICIPANT, points: 0, badges: [], stamps: [], level: 1, xp: 0, streak: 0, activityHistory: [], qrCode: `freedom250_${user.uid}` };
+            let userData = { 
+              role: ROLES.PARTICIPANT, 
+              points: 0, 
+              badges: [], 
+              stamps: [], 
+              level: 1, 
+              xp: 0, 
+              streak: 0, 
+              activityHistory: [],
+              freedomId: generateFreedomId(user.uid)
+            };
+
             if (userDoc.exists()) {
               userData = userDoc.data();
+            }
+
+            // Generate QR code if it doesn't exist
+            if (!userData.qrCode) {
+              console.log('Generating QR code for user:', user.uid);
+              try {
+                const freedomId = userData.freedomId || generateFreedomId(user.uid);
+                const qrDataUrl = await generateQRCode(freedomId);
+                userData.qrCode = qrDataUrl;
+                // Save QR code to Firestore
+                await updateDoc(userDocRef, { 
+                  qrCode: qrDataUrl,
+                  freedomId: freedomId
+                });
+              } catch (qrError) {
+                console.error('Error generating QR code:', qrError);
+                // Continue without QR code - user can still proceed
+              }
             }
 
             currentUser = {
@@ -41,11 +72,12 @@ export async function initAuth() {
               xp: userData.xp || 0,
               streak: userData.streak || 0,
               activityHistory: userData.activityHistory || [],
-              qrCode: userData.qrCode || `freedom250_${user.uid}`,
+              freedomId: userData.freedomId || generateFreedomId(user.uid),
+              qrCode: userData.qrCode,
               ...userData
             };
 
-            console.log("User loaded:", currentUser.email);
+            console.log("User loaded:", currentUser.email, "Freedom ID:", currentUser.freedomId);
             authCallbacks.forEach(cb => cb(currentUser, true));
             resolve(currentUser);
           } catch (error) {
@@ -55,7 +87,8 @@ export async function initAuth() {
               email: user.email,
               displayName: user.email.split('@')[0],
               role: ROLES.PARTICIPANT,
-              points: 0
+              points: 0,
+              freedomId: generateFreedomId(user.uid)
             };
             authCallbacks.forEach(cb => cb(currentUser, true));
             resolve(currentUser);
@@ -92,6 +125,18 @@ export async function signUp(email, password, displayName = '', role = ROLES.PAR
       await updateProfile(user, { displayName });
     }
 
+    // Generate Freedom ID and QR Code
+    const freedomId = generateFreedomId(user.uid);
+    let qrCode = null;
+    
+    try {
+      qrCode = await generateQRCode(freedomId);
+      console.log('QR code generated successfully for:', freedomId);
+    } catch (qrError) {
+      console.warn('Failed to generate QR code:', qrError);
+      // Continue without QR code - it can be generated later
+    }
+
     const userData = {
       uid: user.uid,
       email: user.email,
@@ -99,7 +144,8 @@ export async function signUp(email, password, displayName = '', role = ROLES.PAR
       role: role,
       createdAt: new Date().toISOString(),
       points: 0,
-      qrCode: `freedom250_${user.uid}`,
+      freedomId: freedomId,
+      qrCode: qrCode,
       badges: [
         { name: 'Freedom Starter', icon: 'fa-flag', unlockedAt: new Date().toISOString() }
       ],
@@ -113,7 +159,7 @@ export async function signUp(email, password, displayName = '', role = ROLES.PAR
     };
 
     await setDoc(doc(db, 'users', user.uid), userData);
-    currentUser = userData;
+    currentUser = { uid: user.uid, ...userData };
     authCallbacks.forEach(cb => cb(currentUser, true));
 
     return { success: true, user: currentUser };
@@ -173,7 +219,7 @@ export async function resetPassword(email) {
 
 export async function signInWithGoogle() {
   try {
-    const { auth, db, doc, getDoc, setDoc } = await import('./firebase-config.js');
+    const { auth, db, doc, getDoc, setDoc, updateDoc } = await import('./firebase-config.js');
     const { signInWithPopup, GoogleAuthProvider } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
 
     const provider = new GoogleAuthProvider();
@@ -184,7 +230,19 @@ export async function signInWithGoogle() {
     const userDoc = await getDoc(userDocRef);
 
     let userData;
+    let isNewUser = false;
+    
     if (!userDoc.exists()) {
+      // New user via Google sign-in
+      const freedomId = generateFreedomId(user.uid);
+      let qrCode = null;
+      
+      try {
+        qrCode = await generateQRCode(freedomId);
+      } catch (qrError) {
+        console.warn('Failed to generate QR code:', qrError);
+      }
+      
       userData = {
         uid: user.uid,
         email: user.email,
@@ -192,7 +250,8 @@ export async function signInWithGoogle() {
         role: ROLES.PARTICIPANT,
         createdAt: new Date().toISOString(),
         points: 0,
-        qrCode: `freedom250_${user.uid}`,
+        freedomId: freedomId,
+        qrCode: qrCode,
         badges: [
           { name: 'Freedom Starter', icon: 'fa-flag', unlockedAt: new Date().toISOString() }
         ],
@@ -205,13 +264,29 @@ export async function signInWithGoogle() {
         ]
       };
       await setDoc(userDocRef, userData);
+      isNewUser = true;
     } else {
       userData = userDoc.data();
+      
+      // Check if QR code exists; if not, generate it
+      if (!userData.qrCode) {
+        const freedomId = userData.freedomId || generateFreedomId(user.uid);
+        try {
+          const qrCode = await generateQRCode(freedomId);
+          userData.qrCode = qrCode;
+          await updateDoc(userDocRef, { 
+            qrCode: qrCode,
+            freedomId: freedomId 
+          });
+        } catch (qrError) {
+          console.warn('Failed to generate QR code:', qrError);
+        }
+      }
     }
 
     currentUser = { uid: user.uid, ...userData };
     authCallbacks.forEach(cb => cb(currentUser, true));
-    return { success: true, user: currentUser };
+    return { success: true, user: currentUser, isNewUser };
   } catch (error) {
     console.error('Google sign in error:', error);
     return { success: false, error: 'Google sign in failed. Please try again.' };
