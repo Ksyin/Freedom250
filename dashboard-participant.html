@@ -361,6 +361,7 @@
     <div class="qr-section" id="qrSection">
         <h3>🎫 My Entry Pass</h3>
         <div class="qr-code" id="qrCodeDisplay"><i class="fas fa-qrcode" style="font-size: 3rem; color: #999;"></i></div>
+        <p id="freedomIdLabel" style="font-size: 0.72rem; font-weight: 700; color: #1a1a2e; letter-spacing: 1px; margin-top: 6px;">Loading ID…</p>
         <p style="font-size: 0.7rem; color: #666;">Scan at any booth to earn Liberty Coins</p>
         <button class="btn-outline" id="showFullQrBtn" style="margin-top: 10px; font-size: 0.75rem;">Show Full QR</button>
     </div>
@@ -428,9 +429,21 @@
     </div>
 </div>
 
+<!-- Full-screen QR Modal -->
+<div id="qrModal" class="modal" style="background:rgba(0,0,0,0.85);" onclick="this.classList.remove('show')">
+    <div class="modal-content" style="text-align:center;padding:30px;max-width:320px;" onclick="event.stopPropagation()">
+        <h3 style="margin-bottom:4px;">🎫 My Entry Pass</h3>
+        <p id="qrModalFreedomId" style="font-size:0.75rem;font-weight:700;color:#1a1a2e;letter-spacing:1px;margin-bottom:16px;"></p>
+        <div id="qrModalCode" style="width:250px;height:250px;margin:0 auto;background:#f0f0f0;border-radius:16px;display:flex;align-items:center;justify-content:center;overflow:hidden;"></div>
+        <p style="font-size:0.7rem;color:#666;margin-top:12px;">Show this at any booth to earn Liberty Coins</p>
+        <button class="btn-outline" id="downloadQrBtn" style="margin-top:14px;font-size:0.8rem;">⬇ Download QR</button>
+        <button class="btn-outline" onclick="document.getElementById('qrModal').classList.remove('show')" style="margin-top:8px;font-size:0.8rem;">Close</button>
+    </div>
+</div>
+
 <script type="module">
     import { getCurrentUser, signOutUser, onAuthStateChange } from './js/auth.js';
-    import { displayUserQRCode, updateUserProfile, displayBadges } from './js/dashboard-utils.js';
+    import { generateFreedomId, displayQRCode } from './js/qr-generator.js';
 
     // Data
     const zones = [
@@ -741,10 +754,15 @@
 
             const qrContainer = document.getElementById('qrCodeDisplay');
             const profileQr = document.getElementById('profileQrCode');
-            const qrText = `F250:${user.uid}:${new Date().toISOString()}`;
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(qrText)}`;
-            qrContainer.innerHTML = `<img src="${qrUrl}" style="width:100%;height:100%;object-fit:contain;">`;
-            if (profileQr) profileQr.innerHTML = `<img src="${qrUrl}" style="width:100%;height:100%;object-fit:contain;">`;
+            // Use stable Freedom ID as QR payload (not a one-time timestamp)
+            const freedomId = generateFreedomId(user.uid);
+            const qrText = `FREEDOM250:${freedomId}:${user.uid}`;
+            // Show Freedom ID label if element exists
+            const freedomIdEl = document.getElementById('freedomIdLabel');
+            if (freedomIdEl) freedomIdEl.textContent = freedomId;
+            // Generate real QR codes using qrcodejs library
+            await displayQRCode(qrText, qrContainer, { width: 140, borderRadius: '12px' });
+            if (profileQr) await displayQRCode(qrText, profileQr, { width: 140, borderRadius: '12px' });
             notify('Passport ready', 'Your digital passport and QR code are loaded.');
             triggerDailyMission();
         }
@@ -762,8 +780,32 @@
     }
 
     // Event Listeners
-    document.getElementById('showFullQrBtn')?.addEventListener('click', () => {
-        alert('📱 Show this QR code at any booth to check in and earn Liberty Coins!');
+    document.getElementById('showFullQrBtn')?.addEventListener('click', async () => {
+        const user = getCurrentUser();
+        if (!user) return;
+        const freedomId = generateFreedomId(user.uid);
+        const qrText = `FREEDOM250:${freedomId}:${user.uid}`;
+        const modal = document.getElementById('qrModal');
+        const modalCode = document.getElementById('qrModalCode');
+        const modalId = document.getElementById('qrModalFreedomId');
+        if (modalId) modalId.textContent = freedomId;
+        modal.classList.add('show');
+        await displayQRCode(qrText, modalCode, { width: 250, borderRadius: '12px' });
+    });
+
+    document.getElementById('downloadQrBtn')?.addEventListener('click', () => {
+        const { downloadQRCode: dlQR } = window._qrUtils || {};
+        const modalCode = document.getElementById('qrModalCode');
+        const user = getCurrentUser();
+        const freedomId = user ? generateFreedomId(user.uid) : 'freedom-pass';
+        const img = modalCode && modalCode.querySelector('img');
+        if (!img) { alert('QR not ready yet.'); return; }
+        const link = document.createElement('a');
+        link.href = img.src;
+        link.download = `${freedomId}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     });
 
     document.getElementById('viewAllZones')?.addEventListener('click', (e) => {
@@ -807,26 +849,12 @@
     window.addEventListener('beforeunload', () => saveUserData());
 
     // Initialize
-    onAuthStateChange(async (user) => {
+    onAuthStateChange((user) => {
         if (user) {
-            // Display user's QR code
-            await displayUserQRCode('qrCodeDisplay');
-            
-            // Update profile information
-            updateUserProfile(user);
-            
-            // Display badges
-            displayBadges(user);
-            
-            // Load local data
             loadUserData();
-            
-            // Render dashboard sections
             renderZones();
             renderChallenges();
             renderLeaderboardPreview();
-            
-            console.log('[Dashboard] Initialized for user:', user.email, 'Freedom ID:', user.freedomId);
         } else {
             window.location.href = '/';
         }
