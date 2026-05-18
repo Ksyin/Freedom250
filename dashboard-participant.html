@@ -10,517 +10,344 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --red: #B22234; --navy: #1a1a2e; --gold: #FFD700;
-            --bg: #f0f2f5; --white: #fff; --radius: 28px;
+            --bg: #f0f2f5; --white: #fff; --radius: 20px;
             --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --info: #3b82f6;
-            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); padding-bottom: 90px; color: var(--navy); overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); padding-bottom: 80px; color: var(--navy); }
         .app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
 
-        /* Passport Evolution Header */
         .passport-header {
             background: linear-gradient(135deg, var(--navy) 0%, #16213e 100%);
-            color: #fff; padding: 35px 20px 50px; position: relative; overflow: hidden;
-            border-bottom-left-radius: 35px; border-bottom-right-radius: 35px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            color: #fff; padding: 25px 20px; position: relative; overflow: hidden;
         }
         .passport-header::before {
-            content: "★"; position: absolute; right: -20px; top: -20px; font-size: 160px; opacity: 0.06; transform: rotate(15deg);
+            content: "★"; position: absolute; right: -15px; top: -15px; font-size: 100px; opacity: 0.08;
         }
-        .user-profile-summary { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; position: relative; z-index: 2; }
-        .avatar-ring { 
-            width: 70px; height: 70px; border-radius: 50%; padding: 4px; 
-            background: linear-gradient(45deg, var(--gold), var(--red), var(--info));
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-            animation: ringGlow 3s infinite alternate;
-        }
-        @keyframes ringGlow { from { box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); } to { box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); } }
-        
-        .avatar-ring .placeholder-avatar { 
-            width: 100%; height: 100%; border-radius: 50%; 
-            background: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 900;
-            color: #fff;
-        }
-        .user-meta h1 { font-size: 1.3rem; font-weight: 900; letter-spacing: -0.5px; }
-        .user-meta .rank-badge { 
-            display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 215, 0, 0.2); 
-            color: var(--gold); padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; margin-top: 5px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
+        .passport-header h1 { font-size: 1.4rem; font-weight: 800; margin-bottom: 4px; }
+        .passport-header p { font-size: 0.75rem; opacity: 0.7; }
 
-        /* Level Progression */
-        .progression-card {
-            background: rgba(255, 255, 255, 0.08); border-radius: 22px; padding: 22px;
-            backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1);
-            position: relative; z-index: 2;
-        }
-        .level-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
-        .level-title { font-size: 0.75rem; font-weight: 800; opacity: 0.9; letter-spacing: 1px; }
-        .level-number { font-size: 1.8rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 10px rgba(255,215,0,0.3); }
-        .xp-bar-container { height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); }
-        .xp-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #ffb703, var(--red)); width: 0%; transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .xp-text { font-size: 0.7rem; opacity: 0.8; font-weight: 700; text-align: right; letter-spacing: 0.5px; }
-
-        /* Floating Stats Row */
-        .stats-row { display: flex; gap: 15px; margin-top: -30px; padding: 0 20px; position: relative; z-index: 10; }
+        .stats-row { display: flex; gap: 10px; margin-top: 20px; }
         .stat-card {
-            background: var(--white); border-radius: 20px; padding: 18px 10px;
-            flex: 1; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.01);
-            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.1); border-radius: 14px; padding: 12px 8px;
+            flex: 1; text-align: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.1);
         }
-        .stat-card:active { transform: scale(0.92); }
-        .stat-card .value { font-size: 1.5rem; font-weight: 900; color: var(--red); display: block; }
-        .stat-card .label { font-size: 0.65rem; color: #888; text-transform: uppercase; font-weight: 800; margin-top: 5px; }
+        .stat-card .value { font-size: 1.4rem; font-weight: 900; color: var(--gold); display: block; }
+        .stat-card .label { font-size: 0.6rem; opacity: 0.8; text-transform: uppercase; font-weight: 700; margin-top: 2px; }
 
-        /* Section Headings */
-        .section-header { padding: 0 20px; margin: 35px 0 18px; display: flex; justify-content: space-between; align-items: center; }
-        .section-header h3 { font-size: 1.15rem; font-weight: 900; letter-spacing: -0.4px; }
-        .section-link { font-size: 0.8rem; color: var(--red); font-weight: 800; text-decoration: none; }
+        .qr-section {
+            background: var(--white); margin: 20px 15px; padding: 25px; border-radius: 24px;
+            text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        .qr-section h3 { font-size: 1rem; color: var(--navy); margin-bottom: 15px; font-weight: 800; }
+        .qr-box {
+            width: 180px; height: 180px; margin: 0 auto; background: #fff; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); border: 1px solid #f0f0f0;
+        }
+        .qr-box canvas, .qr-box img { width: 100% !important; height: 100% !important; object-fit: contain; padding: 10px; }
+        .freedom-id { font-size: 0.85rem; font-weight: 800; color: var(--navy); margin-top: 12px; font-family: monospace; letter-spacing: 1px; }
 
-        /* Interactive QR Card */
-        .qr-card {
-            background: var(--white); margin: 0 20px; padding: 35px; border-radius: 32px;
-            text-align: center; box-shadow: var(--card-shadow); position: relative;
-            border: 1px solid rgba(0,0,0,0.02);
-        }
-        .qr-card::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: #f0f0f0; z-index: 0; border-style: dashed; }
-        .qr-wrapper { 
-            width: 200px; height: 200px; margin: 0 auto 25px; background: #fff; padding: 12px; border-radius: 24px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08); position: relative; z-index: 1; border: 1px solid #f5f5f5;
-        }
-        .qr-wrapper canvas { width: 100% !important; height: 100% !important; border-radius: 15px; }
-        .id-badge { display: inline-block; background: #f1f5f9; padding: 10px 20px; border-radius: 15px; font-family: 'JetBrains Mono', monospace; font-weight: 800; color: var(--navy); font-size: 1rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        .section-header { padding: 0 20px; margin: 25px 0 15px; display: flex; justify-content: space-between; align-items: baseline; }
+        .section-header h3 { font-size: 1.1rem; font-weight: 900; color: var(--navy); }
+        .section-link { font-size: 0.75rem; color: var(--red); font-weight: 700; cursor: pointer; }
 
-        /* Card Designs */
-        .cards-grid { display: grid; gap: 15px; padding: 0 20px; }
-        .action-card {
-            background: var(--white); border-radius: 22px; padding: 20px; display: flex;
-            align-items: center; gap: 18px; box-shadow: var(--card-shadow);
-            border: 1px solid rgba(0,0,0,0.01); transition: var(--transition);
+        .cards-grid { display: grid; gap: 12px; padding: 0 15px; }
+        .card {
+            background: var(--white); border-radius: 18px; padding: 16px; display: flex;
+            align-items: center; gap: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            cursor: pointer; transition: all 0.2s; border: 1px solid rgba(0,0,0,0.02);
         }
-        .action-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,0.08); }
-        .icon-box { 
-            width: 55px; height: 55px; border-radius: 18px; display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; color: #fff; flex-shrink: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .card-body { flex: 1; }
-        .card-body h4 { font-size: 1rem; font-weight: 800; color: var(--navy); }
-        .card-body p { font-size: 0.78rem; color: #777; margin-top: 4px; line-height: 1.3; }
+        .card:active { transform: scale(0.97); }
+        .card-icon { width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #fff; flex-shrink: 0; }
+        .card-info { flex: 1; }
+        .card-info h4 { font-size: 0.9rem; font-weight: 800; margin-bottom: 4px; color: var(--navy); }
+        .card-info p { font-size: 0.75rem; color: #666; }
+        .card-badge { font-size: 0.7rem; font-weight: 800; padding: 5px 12px; border-radius: 20px; background: var(--gold); color: var(--navy); }
 
-        /* Badge Collection */
-        .badges-container { display: flex; gap: 15px; overflow-x: auto; padding: 5px 20px 25px; scrollbar-width: none; }
-        .badges-container::-webkit-scrollbar { display: none; }
-        .badge-slot { flex-shrink: 0; width: 75px; text-align: center; opacity: 0.35; filter: grayscale(1); transition: var(--transition); }
-        .badge-slot.unlocked { opacity: 1; filter: grayscale(0); transform: scale(1.1); }
-        .badge-visual { 
-            width: 65px; height: 65px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center;
-            font-size: 1.6rem; margin: 0 auto 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 2px solid #f8f8f8;
-            position: relative;
-        }
-        .badge-slot.unlocked .badge-visual { border-color: var(--gold); background: linear-gradient(135deg, #fff 0%, #fff9e6 100%); }
-        .badge-slot span { font-size: 0.65rem; font-weight: 800; color: var(--navy); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-        /* Event Map Mini */
-        .map-preview {
-            background: #e2e8f0; height: 200px; border-radius: 28px; margin: 0 20px 20px;
-            position: relative; overflow: hidden; border: 4px solid #fff; box-shadow: var(--card-shadow);
-        }
-        .map-point { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--red); border: 2px solid #fff; box-shadow: 0 0 10px var(--red); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
-
-        /* Bottom Navigation Bar */
         .bottom-nav {
             position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px;
-            background: rgba(255, 255, 255, 0.96); display: flex; justify-content: space-around; padding: 12px 10px 32px;
-            border-top: 1px solid #f1f1f1; z-index: 1000; backdrop-filter: blur(20px); box-shadow: 0 -8px 30px rgba(0,0,0,0.04);
+            background: rgba(255, 255, 255, 0.95); display: flex; justify-content: space-around; padding: 12px 10px 30px;
+            border-top: 1px solid #eee; z-index: 1000; backdrop-filter: blur(10px);
         }
-        .nav-item { text-align: center; color: #cbd5e1; font-size: 0.7rem; cursor: pointer; transition: var(--transition); font-weight: 800; position: relative; flex: 1; }
+        .nav-item { text-align: center; color: #bbb; font-size: 0.65rem; cursor: pointer; transition: 0.2s; font-weight: 700; }
         .nav-item.active { color: var(--red); }
-        .nav-item.active::after { content: ""; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 20px; height: 4px; background: var(--red); border-radius: 0 0 4px 4px; }
-        .nav-item i { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+        .nav-item i { font-size: 1.4rem; display: block; margin-bottom: 5px; }
 
-        /* Page Tab Visibility */
-        .tab-content { display: none; animation: pageFade 0.5s ease; }
-        .tab-content.active { display: block; }
-        @keyframes pageFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .page { display: none; }
+        .page.active { display: block; }
 
-        /* Sidebar Panels */
-        .slide-panel {
-            position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100vh;
-            background: #fff; z-index: 2100; transition: var(--transition);
-            box-shadow: -15px 0 50px rgba(0,0,0,0.15);
+        .profile-card { background: var(--white); border-radius: 28px; margin: 0 15px; padding: 30px 25px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); }
+        .profile-avatar { width: 90px; height: 90px; background: linear-gradient(135deg, var(--navy), var(--red)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2.5rem; color: #fff; box-shadow: 0 5px 15px rgba(178, 34, 52, 0.2); }
+        .logout-btn { background: var(--danger); color: #fff; border: none; padding: 15px; border-radius: 16px; font-weight: 800; width: 100%; cursor: pointer; margin-top: 25px; font-size: 0.9rem; }
+
+        .stat-line { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f5f5f5; }
+        .stat-line span { color: #666; font-size: 0.85rem; }
+        .stat-line strong { color: var(--navy); font-size: 0.9rem; font-weight: 800; }
+
+        .notification-panel {
+            position: fixed; top: 0; right: -100%; width: 100%; max-width: 380px; height: 100vh;
+            background: var(--white); box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
+            z-index: 2000; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto;
         }
-        .slide-panel.open { right: 0; }
-        .panel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; display: none; backdrop-filter: blur(5px); }
-        .panel-overlay.active { display: block; }
-
-        /* Leaderboard Styling */
-        .leaderboard-item {
-            display: flex; align-items: center; gap: 15px; padding: 18px; background: #fff; border-radius: 20px;
-            margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #f8f8f8;
-        }
-        .rank-number { width: 35px; height: 35px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.1rem; }
-        .rank-1 { background: #fff9e6; color: var(--gold); border: 1px solid var(--gold); }
-        .rank-2 { background: #f8f8f8; color: #94a3b8; }
-        .rank-3 { background: #fff5f2; color: #d97706; }
-
-        /* Notifications */
-        .notif-item { padding: 18px; border-radius: 18px; margin-bottom: 12px; background: #f8fafc; border-left: 5px solid var(--info); }
-        .notif-item.success { border-left-color: var(--success); }
-        .notif-item.alert { border-left-color: var(--red); }
-        .notif-title { font-weight: 800; font-size: 0.9rem; margin-bottom: 5px; color: var(--navy); }
-        .notif-msg { font-size: 0.75rem; color: #64748b; line-height: 1.4; }
-
-        /* Utility */
-        .btn-action { background: var(--navy); color: #fff; border: none; padding: 12px 20px; border-radius: 15px; font-weight: 800; font-size: 0.85rem; width: 100%; margin-top: 15px; cursor: pointer; transition: var(--transition); }
-        .btn-action:hover { background: var(--red); transform: translateY(-2px); }
-        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
-        @keyframes shimmer { 100% { background-position: -200% 0; } }
+        .notification-panel.open { right: 0; }
+        .notification-header { background: var(--navy); color: #fff; padding: 25px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+        .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); z-index: 1500; display: none; backdrop-filter: blur(3px); }
+        .overlay.active { display: block; }
     </style>
 </head>
 <body>
 
 <div class="app">
-    <!-- Immersive Digital Passport Header -->
     <header class="passport-header">
-        <div class="user-profile-summary">
-            <div class="avatar-ring">
-                <div class="placeholder-avatar" id="avatarInitial">U</div>
-            </div>
-            <div class="user-meta">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
                 <h1 id="userName">Explorer</h1>
-                <div class="rank-badge" id="userRank"><i class="fas fa-medal"></i> Freedom Pioneer</div>
+                <p>Freedom 250 Digital Passport</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button id="logoutBtn" style="background:rgba(255,255,255,0.15); color:#fff; border:none; padding:8px 15px; border-radius:12px; font-size:0.75rem; font-weight:700; cursor:pointer; backdrop-filter:blur(5px);">Logout</button>
             </div>
         </div>
-
-        <div class="progression-card">
-            <div class="level-header">
-                <span class="level-title">FREEDOM PROGRESSION</span>
-                <span class="level-number">LEVEL <span id="userLevel">1</span></span>
-            </div>
-            <div class="xp-bar-container">
-                <div class="xp-bar-fill" id="xpFill"></div>
-            </div>
-            <div class="xp-text" id="xpStatus">350 / 500 XP to Level Up</div>
+        <div class="stats-row">
+            <div class="stat-card"><span class="value" id="userPoints">0</span><span class="label">Coins</span></div>
+            <div class="stat-card"><span class="value" id="userStamps">0</span><span class="label">Stamps</span></div>
+            <div class="stat-card"><span class="value" id="userLevel">1</span><span class="label">Level</span></div>
         </div>
     </header>
 
-    <!-- Essential Stats Widget -->
-    <div class="stats-row">
-        <div class="stat-card" onclick="showPage('profile')">
-            <span class="value" id="userPoints">0</span>
-            <span class="label">Coins</span>
+    <div class="qr-section">
+        <h3>🎫 My Entry Pass</h3>
+        <div class="qr-box" id="qrBox">
+            <i class="fas fa-qrcode" style="font-size: 3rem; color: #eee;"></i>
         </div>
-        <div class="stat-card" onclick="showPage('home')">
-            <span class="value" id="userStamps">0</span>
-            <span class="label">Stamps</span>
-        </div>
-        <div class="stat-card" onclick="showPage('leaderboard')">
-            <span class="value" id="userRankPos">--</span>
-            <span class="label">Rank</span>
+        <div class="freedom-id" id="freedomId">Generating...</div>
+        <p style="font-size: 0.65rem; color: #999; margin-top: 10px; font-weight: 500;">Scan at any booth to collect stamps & coins</p>
+    </div>
+
+    <!-- Home Page -->
+    <div id="page-home" class="page active">
+        <div class="section-header"><h3>🏕️ Experience Zones</h3></div>
+        <div class="cards-grid" id="zonesList"></div>
+        <div class="section-header"><h3>⚡ Active Challenges</h3><span class="section-link" onclick="showPage('leaderboard')">Ranking →</span></div>
+        <div class="cards-grid" id="challengesPreview"></div>
+    </div>
+
+    <!-- Rewards Page -->
+    <div id="page-rewards" class="page">
+        <div class="section-header"><h3>🎁 Rewards Store</h3></div>
+        <div id="rewardsList" class="cards-grid"></div>
+    </div>
+
+    <!-- Leaderboard Page -->
+    <div id="page-leaderboard" class="page">
+        <div class="section-header"><h3>🏆 Top Explorers</h3></div>
+        <div id="leaderboardList" style="padding-bottom: 20px;"></div>
+    </div>
+
+    <!-- Profile Page -->
+    <div id="page-profile" class="page">
+        <div class="section-header"><h3>👤 My Profile</h3></div>
+        <div class="profile-card">
+            <div class="profile-avatar"><i class="fas fa-user"></i></div>
+            <h3 id="profileName">---</h3>
+            <p id="profileEmail" style="color: #777; font-size: 0.85rem; margin-top: 5px;">---</p>
+            <div style="margin: 25px 0; text-align: left; background: #fcfcfc; padding: 15px; border-radius: 20px; border: 1px solid #f0f0f0;">
+                <div class="stat-line"><span>Total Coins:</span><strong id="profilePoints">0</strong></div>
+                <div class="stat-line"><span>Stamps Collected:</span><strong id="profileStamps">0</strong></div>
+                <div class="stat-line" style="border:none;"><span>ID:</span><strong id="profileFreedomId" style="font-family:monospace;">---</strong></div>
+            </div>
+            <button class="logout-btn" id="profileLogoutBtn">Sign Out</button>
         </div>
     </div>
 
-    <!-- ═══ TAB: PASSPORT (HOME) ═══ -->
-    <div id="tab-home" class="tab-content active">
-        <div class="section-header"><h3>🎫 Digital Entry Pass</h3></div>
-        <div class="qr-card">
-            <div class="qr-wrapper" id="qrContainer">
-                <i class="fas fa-qrcode" style="font-size: 3rem; color: #f0f0f0; margin-top: 75px;"></i>
-            </div>
-            <div class="id-badge" id="freedomId">F250-XXXXXX</div>
-            <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 15px; font-weight: 700;">Show this QR at booths to collect coins</p>
-        </div>
-
-        <div class="section-header"><h3>🏅 Achievement Gallery</h3><a href="#" class="section-link" onclick="showPage('profile')">View All</a></div>
-        <div class="badges-container" id="badgesDisplay">
-            <!-- Badges loaded dynamically -->
-            <div class="badge-slot unlocked"><div class="badge-visual" style="color:#3b82f6"><i class="fas fa-flag-usa"></i></div><span>Starter</span></div>
-            <div class="badge-slot"><div class="badge-visual"><i class="fas fa-camera"></i></div><span>Explorer</span></div>
-            <div class="badge-slot"><div class="badge-visual"><i class="fas fa-handshake"></i></div><span>Social</span></div>
-            <div class="badge-slot"><div class="badge-visual"><i class="fas fa-rocket"></i></div><span>Innovator</span></div>
-            <div class="badge-slot"><div class="badge-visual"><i class="fas fa-brain"></i></div><span>Genius</span></div>
-        </div>
-
-        <div class="section-header"><h3>📍 Event Map & Hotspots</h3></div>
-        <div class="map-preview" id="miniMap">
-            <img src="https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?auto=format&fit=crop&q=80&w=800" style="width:100%; height:100%; object-fit:cover; opacity:0.4; filter:grayscale(0.5);" />
-            <div class="map-point" style="top:30%; left:25%;" title="The Garage"></div>
-            <div class="map-point" style="top:60%; left:70%;" title="The Arena"></div>
-            <div class="map-point" style="top:45%; left:50%;" title="Main Stage"></div>
-        </div>
-
-        <div class="section-header"><h3>⚡ Active Missions</h3></div>
-        <div class="cards-grid" id="missionsPreview">
-            <div class="action-card">
-                <div class="icon-box" style="background:var(--red)"><i class="fas fa-map-marked-alt"></i></div>
-                <div class="card-body"><h4>Zone Explorer</h4><p>Visit 3 different experience zones</p></div>
-                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
-            </div>
-            <div class="action-card">
-                <div class="icon-box" style="background:var(--navy)"><i class="fas fa-users"></i></div>
-                <div class="card-body"><h4>Connect & Link</h4><p>Scan 5 other participants' QR codes</p></div>
-                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ TAB: MARKET (REWARDS) ═══ -->
-    <div id="tab-rewards" class="tab-content">
-        <div class="section-header"><h3>🎁 Freedom Rewards Market</h3><div class="id-badge" style="font-size:0.75rem; background:var(--navy); color:#fff;">Coins: <span id="marketBalance">0</span></div></div>
-        <div class="cards-grid" id="rewardsCatalog">
-            <!-- Rewards loaded via JS -->
-        </div>
-    </div>
-
-    <!-- ═══ TAB: RANKINGS (LEADERBOARD) ═══ -->
-    <div id="tab-leaderboard" class="tab-content">
-        <div class="section-header"><h3>🏆 Global Rankings</h3></div>
-        <div style="padding: 0 20px;" id="leaderboardList">
-            <!-- Leaderboard items -->
-        </div>
-    </div>
-
-    <!-- ═══ TAB: IDENTITY (PROFILE) ═══ -->
-    <div id="tab-profile" class="tab-content">
-        <div class="section-header"><h3>👤 Participant Identity</h3></div>
-        <div class="card" style="text-align:center; padding:40px 25px;">
-            <div class="avatar-ring" style="width:110px; height:110px; margin:0 auto 20px;">
-                <div class="placeholder-avatar" style="font-size:2.5rem;" id="profileInitial">U</div>
-            </div>
-            <h2 id="pName" style="font-size:1.5rem; font-weight:900;">Explorer Name</h2>
-            <p id="pEmail" style="color:#94a3b8; font-size:0.9rem; margin-top:5px;">explorer@freedom250.com</p>
-            
-            <div style="margin:30px 0; text-align:left; background:#f8fafc; padding:25px; border-radius:24px; border:1px solid #f1f5f9;">
-                <div style="display:flex; justify-content:space-between; padding-bottom:15px; border-bottom:1px solid #f1f5f9;">
-                    <span style="font-size:0.85rem; color:#64748b; font-weight:700;">Account Tier</span>
-                    <strong style="color:var(--success); font-size:0.85rem;">PREMIUM</strong>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid #f1f5f9;">
-                    <span style="font-size:0.85rem; color:#64748b; font-weight:700;">Total Earned</span>
-                    <strong id="pTotalPoints" style="font-size:0.85rem;">0 Coins</strong>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid #f1f5f9;">
-                    <span style="font-size:0.85rem; color:#64748b; font-weight:700;">Experience</span>
-                    <strong id="pTotalXP" style="font-size:0.85rem;">0 XP</strong>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding-top:15px;">
-                    <span style="font-size:0.85rem; color:#64748b; font-weight:700;">Passport ID</span>
-                    <strong id="pFreedomId" style="font-family:monospace; font-size:0.85rem;">---</strong>
-                </div>
-            </div>
-
-            <button class="btn-action" id="pLogoutBtn" style="background:var(--danger);"><i class="fas fa-sign-out-alt"></i> SIGN OUT</button>
-        </div>
-
-        <div class="section-header"><h3>📜 Activity Timeline</h3></div>
-        <div style="padding: 0 20px;" id="activityTimeline">
-            <p style="text-align:center; padding:20px; color:#94a3b8; font-size:0.8rem;">Scanning history...</p>
-        </div>
-    </div>
-
-    <!-- Persistent Interactions -->
     <nav class="bottom-nav">
-        <div class="nav-item active" onclick="showPage('home')"><i class="fas fa-passport"></i><span>Passport</span></div>
-        <div class="nav-item" onclick="showPage('rewards')"><i class="fas fa-gift"></i><span>Rewards</span></div>
-        <div class="nav-item" onclick="showPage('leaderboard')"><i class="fas fa-chart-bar"></i><span>Rank</span></div>
-        <div class="nav-item" onclick="showPage('profile')"><i class="fas fa-fingerprint"></i><span>Identity</span></div>
-        <div class="nav-item" onclick="toggleNotifications()"><i class="fas fa-bell"></i><span>Alerts</span><span id="notifBadge" style="position:absolute; top:-5px; right:12px; background:var(--red); color:#fff; font-size:0.6rem; padding:2px 6px; border-radius:10px; display:none;">0</span></div>
+        <div class="nav-item active" data-page="home" onclick="showPage('home')"><i class="fas fa-passport"></i><span>Passport</span></div>
+        <div class="nav-item" data-page="rewards" onclick="showPage('rewards')"><i class="fas fa-gift"></i><span>Rewards</span></div>
+        <div class="nav-item" data-page="leaderboard" onclick="showPage('leaderboard')"><i class="fas fa-chart-line"></i><span>Rank</span></div>
+        <div class="nav-item" data-page="profile" onclick="showPage('profile')"><i class="fas fa-user"></i><span>Profile</span></div>
+        <div class="nav-item" onclick="toggleNotifications()"><i class="fas fa-bell"></i><span>Alerts</span><span id="notifBadge" class="nav-badge" style="display: none;">0</span></div>
     </nav>
 
-    <div id="overlay" class="panel-overlay" onclick="toggleNotifications()"></div>
-    <div id="notifPanel" class="slide-panel">
-        <div style="background:var(--navy); color:#fff; padding:30px 20px; display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-weight:900; font-size:1.1rem;"><i class="fas fa-bolt" style="color:var(--gold)"></i> Live Feed</span>
-            <i class="fas fa-times" onclick="toggleNotifications()" style="cursor:pointer; opacity:0.7;"></i>
+    <div id="notificationPanel" class="notification-panel">
+        <div class="notification-header">
+            <span style="font-weight: 800; font-size: 1.1rem;"><i class="fas fa-bell"></i> Alerts</span>
+            <i class="fas fa-times" onclick="toggleNotifications()" style="cursor: pointer; opacity: 0.7;"></i>
         </div>
-        <div id="notifsList" style="padding:20px;">
-            <!-- Notifications dynamic -->
-        </div>
+        <div id="notificationsList" style="padding: 10px 15px;"></div>
     </div>
+
+    <div id="overlay" class="overlay" onclick="closeModals()"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 <script type="module">
     import { guardDashboard, signOutUser, onAuthStateChange } from './js/auth.js';
-    import { db, doc, onSnapshot, collection, query, where, orderBy, limit, getDocs } from './js/firebase-config.js';
-    import { calculateLevel, getXpToNextLevel, getFreedomRank } from './js/points-system.js';
+    import { db, doc, onSnapshot, collection, query, where, orderBy, limit } from './js/firebase-config.js';
 
     let currentUser = null;
-    let qrActive = false;
+    let qrRendered = false;
+
+    function renderQR(text) {
+        if (!text || qrRendered) return;
+        const container = document.getElementById('qrBox');
+        if (typeof QRCode === 'undefined') {
+            setTimeout(() => renderQR(text), 500);
+            return;
+        }
+        QRCode.toCanvas(text, { width: 180, margin: 2, color: { dark: '#1a1a2e', light: '#ffffff' } }, (err, canvas) => {
+            if (err) return console.error(err);
+            container.innerHTML = '';
+            container.appendChild(canvas);
+            qrRendered = true;
+        });
+    }
+
+    function updateUI(data) {
+        if (!data) return;
+
+        const points = data.points || 0;
+        const stamps = data.stamps || [];
+        const level = Math.floor(points / 500) + 1;
+        const freedomId = data.freedomId || (currentUser ? `FREEDOM-${new Date().getFullYear()}-${currentUser.uid.slice(-5)}` : '---');
+
+        // Safe element updates
+        const setVal = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+
+        setVal('userPoints', points.toLocaleString());
+        setVal('userStamps', stamps.length);
+        setVal('userLevel', level);
+        setVal('profilePoints', points.toLocaleString());
+        setVal('profileStamps', stamps.length);
+        setVal('profileName', data.displayName || 'Explorer');
+        setVal('profileEmail', data.email || (currentUser ? currentUser.email : '---'));
+        setVal('profileFreedomId', freedomId);
+        setVal('userName', `Hello, ${data.displayName || 'Explorer'}`);
+        setVal('freedomId', freedomId);
+
+        if (freedomId && freedomId !== '---') renderQR(freedomId);
+    }
 
     async function init() {
         const user = await guardDashboard(['participant', 'volunteer', 'booth_admin', 'admin']);
         if (!user) return;
         currentUser = user;
+        updateUI(user);
 
-        updatePassportUI(user);
-
-        // Real-time synchronization
+        // Sync real-time changes
         onSnapshot(doc(db, 'users', user.uid), (snap) => {
-            if (snap.exists()) updatePassportUI(snap.data());
+            if (snap.exists()) updateUI(snap.data());
         });
 
-        loadLeaderboard();
-        loadRewards();
         loadNotifications();
-        loadTimeline();
+        loadLeaderboard();
+        loadChallenges();
+        loadZones();
+        loadRewards();
     }
 
-    function updatePassportUI(data) {
-        const points = data.points || 0;
-        const xp = data.xp || (points * 10);
-        const level = calculateLevel(xp);
-        const nextXp = (level * 500); // 500 XP per level
-        const currentLevelXp = xp % 500;
-        const progress = (currentLevelXp / 500) * 100;
-        const rank = getFreedomRank(level);
-        const stamps = data.stamps || [];
-        const freedomId = data.freedomId || `F250-${currentUser.uid.slice(-6).toUpperCase()}`;
+    function loadNotifications() {
+        onSnapshot(query(collection(db, 'notifications'), where('userId', '==', currentUser.uid), orderBy('createdAt', 'desc'), limit(15)), (snap) => {
+            const container = document.getElementById('notificationsList');
+            const badge = document.getElementById('notifBadge');
+            const unread = snap.docs.filter(d => !d.data().read).length;
+            badge.style.display = unread > 0 ? 'block' : 'none';
+            badge.textContent = unread;
 
-        // Header Updates
-        document.getElementById('userName').textContent = `Hello, ${data.displayName?.split(' ')[0] || 'Explorer'}`;
-        document.getElementById('userLevel').textContent = level;
-        document.getElementById('userRank').innerHTML = `<i class="fas fa-shield-alt"></i> ${rank}`;
-        document.getElementById('xpFill').style.width = `${progress}%`;
-        document.getElementById('xpStatus').textContent = `${currentLevelXp} / 500 XP to Level ${level + 1}`;
-        document.getElementById('avatarInitial').textContent = (data.displayName || 'E').charAt(0).toUpperCase();
-
-        // Stats
-        document.getElementById('userPoints').textContent = points.toLocaleString();
-        document.getElementById('userStamps').textContent = stamps.length;
-        document.getElementById('marketBalance').textContent = points.toLocaleString();
-
-        // Profile Tab
-        document.getElementById('pName').textContent = data.displayName || 'Explorer';
-        document.getElementById('pEmail').textContent = data.email;
-        document.getElementById('pTotalPoints').textContent = `${points.toLocaleString()} Coins`;
-        document.getElementById('pTotalXP').textContent = `${xp.toLocaleString()} XP`;
-        document.getElementById('pFreedomId').textContent = freedomId;
-        document.getElementById('freedomId').textContent = freedomId;
-        document.getElementById('profileInitial').textContent = (data.displayName || 'E').charAt(0).toUpperCase();
-
-        // QR Code Generation (once)
-        if (!qrActive) {
-            QRCode.toCanvas(freedomId, { 
-                width: 200, margin: 1, 
-                color: { dark: '#1a1a2e', light: '#ffffff' } 
-            }, (err, canvas) => {
-                if (!err) {
-                    const container = document.getElementById('qrContainer');
-                    container.innerHTML = '';
-                    container.appendChild(canvas);
-                    qrActive = true;
-                }
-            });
-        }
-        
-        // Update rank position (requires finding index in list - simple estimate for now)
-        document.getElementById('userRankPos').textContent = points > 0 ? "TOP 10" : "--";
+            if (snap.empty) {
+                container.innerHTML = '<p style="padding:30px;color:#999;text-align:center;">No alerts</p>';
+                return;
+            }
+            container.innerHTML = snap.docs.map(doc => {
+                const n = doc.data();
+                return `<div style="padding:15px; border-bottom:1px solid #f5f5f5; border-left:3px solid ${!n.read ? 'var(--red)' : 'transparent'}; background:${!n.read ? '#fff9f9' : '#fff'};">
+                    <div style="font-weight:800; font-size:0.85rem; margin-bottom:3px;">${n.title}</div>
+                    <div style="font-size:0.75rem; color:#666;">${n.message}</div>
+                </div>`;
+            }).join('');
+        });
     }
 
     function loadLeaderboard() {
-        onSnapshot(query(collection(db, 'users'), where('role', '==', 'participant'), orderBy('points', 'desc'), limit(15)), snap => {
+        onSnapshot(query(collection(db, 'users'), where('role', '==', 'participant'), orderBy('points', 'desc'), limit(20)), (snap) => {
             const list = document.getElementById('leaderboardList');
             let rank = 1;
             list.innerHTML = snap.docs.map(doc => {
                 const u = doc.data();
                 const isMe = doc.id === currentUser.uid;
-                const rClass = rank <= 3 ? `rank-${rank}` : '';
-                return `<div class="leaderboard-item" ${isMe ? 'style="border:1px solid var(--red); background:#fff5f5;"' : ''}>
-                    <div class="rank-number ${rClass}">${rank++}</div>
-                    <div class="card-body">
-                        <h4>${u.displayName || 'Explorer'}</h4>
-                        <p>LVL ${calculateLevel(u.xp || 0)} · ${getFreedomRank(calculateLevel(u.xp || 0))}</p>
-                    </div>
+                return `<div class="card" style="margin:0 15px 10px; ${isMe ? 'border:1px solid var(--red); background:#fff9f9;' : ''}">
+                    <div style="width:30px; font-weight:900; color:${rank<=3 ? 'var(--red)' : '#ccc'};">${rank++}</div>
+                    <div class="card-info"><h4>${u.displayName || 'Explorer'}</h4><p>Level ${Math.floor((u.points||0)/500)+1}</p></div>
                     <div style="font-weight:900; color:var(--red);">${(u.points || 0).toLocaleString()}</div>
                 </div>`;
-            }).join('') || '<p style="text-align:center; padding:40px; color:#94a3b8;">Preparing the podium...</p>';
+            }).join('') || '<p style="padding:20px;text-align:center;color:#999;">Waiting for explorers...</p>';
+        });
+    }
+
+    function loadZones() {
+        const zones = [
+            { id: 'garage', name: 'THE GARAGE', icon: 'fa-microchip', color: '#3C3B6E', desc: 'Innovation & MakerLab' },
+            { id: 'launchpad', name: 'THE LAUNCHPAD', icon: 'fa-chart-line', color: '#B22234', desc: 'Entrepreneurship' },
+            { id: 'varsity', name: 'VARSITY LOUNGE', icon: 'fa-graduation-cap', color: '#3C3B6E', desc: 'Education & Alumni' },
+            { id: 'townhall', name: 'THE TOWNHALL', icon: 'fa-landmark', color: '#B22234', desc: 'Democracy & Leadership' }
+        ];
+        document.getElementById('zonesList').innerHTML = zones.map(z => `<div class="card">
+            <div class="card-icon" style="background:${z.color}"><i class="fas ${z.icon}"></i></div>
+            <div class="card-info"><h4>${z.name}</h4><p>${z.desc}</p></div>
+        </div>`).join('');
+    }
+
+    function loadChallenges() {
+        onSnapshot(query(collection(db, 'boothChallenges'), where('status', '==', 'active'), limit(3)), snap => {
+            const preview = document.getElementById('challengesPreview');
+            preview.innerHTML = snap.docs.map(doc => {
+                const c = doc.data();
+                return `<div class="card">
+                    <div class="card-icon" style="background:var(--success)"><i class="fas fa-trophy"></i></div>
+                    <div class="card-info"><h4>${c.title}</h4><p>${c.boothName}</p></div>
+                    <div class="card-badge">${c.points}</div>
+                </div>`;
+            }).join('') || '<p style="padding:15px; color:#999; font-size:0.75rem; text-align:center; width:100%;">No active challenges.</p>';
         });
     }
 
     function loadRewards() {
         onSnapshot(collection(db, 'rewards'), snap => {
-            const catalog = document.getElementById('rewardsCatalog');
-            catalog.innerHTML = snap.docs.map(doc => {
-                const r = doc.data();
-                return `<div class="action-card" style="flex-direction:column; align-items:stretch;">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                        <h4>${r.name}</h4>
-                        <strong style="color:var(--gold);"><i class="fas fa-coins"></i> ${r.cost}</strong>
-                    </div>
-                    <p style="margin:10px 0 15px;">${r.description || 'Exclusive event souvenir'}</p>
-                    <button class="btn-action" onclick="alert('Visit the Rewards Hub to claim this!')">REDEEM ITEM</button>
-                </div>`;
-            }).join('') || '<p style="text-align:center; padding:40px; color:#94a3b8;">Stocking the market...</p>';
-        });
-    }
-
-    function loadNotifications() {
-        onSnapshot(query(collection(db, 'notifications'), where('userId', '==', currentUser.uid), orderBy('createdAt', 'desc'), limit(10)), snap => {
-            const badge = document.getElementById('notifBadge');
-            const unread = snap.docs.filter(d => !d.data().read).length;
-            badge.textContent = unread;
-            badge.style.display = unread > 0 ? 'block' : 'none';
-
-            const list = document.getElementById('notifsList');
-            if (snap.empty) {
-                list.innerHTML = '<p style="text-align:center; color:#94a3b8; margin-top:50px;">No new alerts</p>';
-                return;
-            }
+            const list = document.getElementById('rewardsList');
             list.innerHTML = snap.docs.map(doc => {
-                const n = doc.data();
-                const nClass = n.type === 'alert' ? 'alert' : (n.type === 'success' ? 'success' : '');
-                return `<div class="notif-item ${nClass}">
-                    <div class="notif-title">${n.title}</div>
-                    <div class="notif-msg">${n.message}</div>
-                    <div style="font-size:0.6rem; color:#cbd5e1; margin-top:8px; font-weight:700;">${n.createdAt?.toDate().toLocaleTimeString()}</div>
-                </div>`;
-            }).join('');
-        });
-    }
-
-    function loadTimeline() {
-        onSnapshot(query(collection(db, 'scans'), where('userId', '==', currentUser.uid), orderBy('scannedAt', 'desc'), limit(10)), snap => {
-            const container = document.getElementById('activityTimeline');
-            if (snap.empty) return;
-            container.innerHTML = snap.docs.map(doc => {
-                const s = doc.data();
-                return `<div style="padding:15px 0; border-bottom:1px solid #f8fafc; display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <div style="font-size:0.85rem; font-weight:800; color:var(--navy);">${s.boothName || 'Verification'}</div>
-                        <div style="font-size:0.65rem; color:#94a3b8;">${s.scannedAt?.toDate().toLocaleString()}</div>
+                const r = doc.data();
+                return `<div class="card" style="flex-direction:column; align-items:flex-start; gap:10px;">
+                    <div style="width:100%; display:flex; justify-content:space-between; align-items:center;">
+                        <h4 style="margin:0;">${r.name}</h4>
+                        <span style="font-weight:900; color:var(--gold);">${r.cost}</span>
                     </div>
-                    <div style="color:var(--success); font-weight:900; font-size:0.85rem;">+${s.pointsAwarded} Coins</div>
+                    <button style="width:100%; padding:8px; border-radius:10px; border:none; background:var(--navy); color:#fff; font-weight:700; font-size:0.7rem;" onclick="alert('Redeem at any prize booth!')">Redeem</button>
                 </div>`;
-            }).join('');
+            }).join('') || '<p style="padding:20px;text-align:center;color:#999;width:100%;">Rewards coming soon!</p>';
         });
     }
 
-    window.showPage = (id) => {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    window.showPage = (page) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(`page-${page}`).classList.add('active');
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById(`tab-${id}`).classList.add('active');
-        
-        const navs = document.querySelectorAll('.nav-item');
-        navs.forEach(nav => {
-            if (nav.getAttribute('onclick').includes(id)) nav.classList.add('active');
-        });
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const activeNav = document.querySelector(`.nav-item[data-page="${page}"]`);
+        if (activeNav) activeNav.classList.add('active');
+        window.scrollTo(0, 0);
     };
 
     window.toggleNotifications = () => {
-        document.getElementById('notifPanel').classList.toggle('open');
+        document.getElementById('notificationPanel').classList.toggle('open');
         document.getElementById('overlay').classList.toggle('active');
     };
 
-    document.getElementById('pLogoutBtn').addEventListener('click', async () => {
-        if (confirm('Logout of your Passport?')) {
-            await signOutUser();
-            window.location.replace('login.html');
-        }
-    });
+    window.closeModals = () => {
+        document.getElementById('notificationPanel').classList.remove('open');
+        document.getElementById('overlay').classList.remove('active');
+    };
+
+    const logout = async () => { if (confirm('Logout?')) { await signOutUser(); window.location.replace('login.html'); } };
+    document.getElementById('logoutBtn').addEventListener('click', logout);
+    document.getElementById('profileLogoutBtn').addEventListener('click', logout);
 
     init();
 </script>

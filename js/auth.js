@@ -1,5 +1,6 @@
+// js/auth.js - Updated with signup bonus and fixed role routing
 // js/auth.js — Freedom 250 Authentication with Role-Based Access Control
-import { 
+import {
   auth, db, doc, getDoc, setDoc, updateDoc, increment, serverTimestamp, collection, query, where, getDocs
 } from './firebase-config.js';
 import {
@@ -21,19 +22,25 @@ export const ROLES = {
   ADMIN:       'admin'
 };
 
+const SIGNUP_BONUS_POINTS = 100; // Increased bonus for better engagement
+
 let currentUser = null;
 let authCallbacks = [];
 let authPromise = null;
 let isInitialized = false;
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  ROLE GUARD
+//  ROLE GUARD - FIXED to prevent incorrect redirects
 // ─────────────────────────────────────────────────────────────────────────────
 export function validateRoleAccess(userRole, allowedRoles) {
   if (!allowedRoles || allowedRoles.length === 0) return true;
-  const normalised = (userRole || ROLES.PARTICIPANT).toLowerCase();
-  const allowed = allowedRoles.map(r => r.toLowerCase());
+
+  const normalised = (userRole || ROLES.PARTICIPANT).toLowerCase().replace(/[-_]/g, '');
+  const allowed = allowedRoles.map(r => r.toLowerCase().replace(/[-_]/g, ''));
+
+  // Special handling for legacy 'organizer' role mapping to admin
   if (normalised === 'organizer' && allowed.includes('admin')) return true;
+
   return allowed.includes(normalised);
 }
 
@@ -52,16 +59,21 @@ export async function initAuth() {
 
           let userData = {
             role: ROLES.PARTICIPANT,
-            points: 50,  // SIGNUP BONUS - 50 Liberty Coins
+            points: SIGNUP_BONUS_POINTS,
             badges: [{ name: 'Freedom Starter', icon: 'fa-flag', unlockedAt: new Date().toISOString() }],
             stamps: [],
             tasksCompleted: [],
+            challengesCompleted: 0,
+            missionsCompleted: 0,
             level: 1,
-            xp: 50,
-            streak: 0,
+            xp: SIGNUP_BONUS_POINTS,
+            streak: 1,
             scansCount: 0,
             activityHistory: [],
-            freedomId: generateFreedomId(user.uid)
+            freedomId: generateFreedomId(user.uid),
+            loginStreak: 1,
+            lastDailyBonus: new Date().toISOString(),
+            redeemedRewards: []
           };
 
           let isNewUser = false;
@@ -69,13 +81,12 @@ export async function initAuth() {
           if (userDoc.exists()) {
             userData = { ...userData, ...userDoc.data() };
           } else {
-            // New user - award signup bonus and create initial data
             isNewUser = true;
             userData.signupBonusReceived = true;
             userData.activityHistory = [{
               label: 'Account Created',
               time: new Date().toISOString(),
-              details: 'Welcome to Freedom 250! +50 Liberty Coins'
+              details: `Welcome to Freedom 250! +${SIGNUP_BONUS_POINTS} Liberty Coins`
             }];
           }
 
@@ -90,7 +101,6 @@ export async function initAuth() {
             }
           }
 
-          // Save or update user
           if (isNewUser) {
             await setDoc(userDocRef, userData);
           }
@@ -100,6 +110,7 @@ export async function initAuth() {
             email:       user.email,
             displayName: user.displayName || userData.displayName || user.email.split('@')[0],
             role:        userData.role || ROLES.PARTICIPANT,
+            points:      userData.points || SIGNUP_BONUS_POINTS,
             ...userData
           };
 
@@ -112,7 +123,7 @@ export async function initAuth() {
             uid: user.uid, email: user.email,
             displayName: user.email.split('@')[0],
             role: ROLES.PARTICIPANT,
-            points: 30,
+            points: SIGNUP_BONUS_POINTS,
             freedomId: generateFreedomId(user.uid)
           };
           isInitialized = true;
@@ -134,7 +145,7 @@ export async function initAuth() {
 export function getCurrentUser() { return currentUser; }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  SIGN UP
+//  SIGN UP - Enhanced with bonus points
 // ─────────────────────────────────────────────────────────────────────────────
 export async function signUp(email, password, displayName = '', role = ROLES.PARTICIPANT) {
   try {
@@ -156,24 +167,29 @@ export async function signUp(email, password, displayName = '', role = ROLES.PAR
       displayName: displayName || email.split('@')[0],
       role,
       createdAt: serverTimestamp(),
-      points: 50,
+      points: SIGNUP_BONUS_POINTS,
       freedomId,
       qrCode,
       badges: [{ name: 'Freedom Starter', icon: 'fa-flag', unlockedAt: new Date().toISOString() }],
       stamps: [],
       tasksCompleted: [],
+      challengesCompleted: 0,
+      missionsCompleted: 0,
       level: 1,
-      xp: 50,
-      streak: 0,
+      xp: SIGNUP_BONUS_POINTS,
+      streak: 1,
       scansCount: 0,
+      loginStreak: 1,
+      lastDailyBonus: new Date().toISOString(),
+      redeemedRewards: [],
       signupBonusReceived: true,
-      activityHistory: [{ label: 'Account created', time: new Date().toISOString(), details: 'Welcome to Freedom 250! +50 Liberty Coins' }]
+      activityHistory: [{ label: 'Account created', time: new Date().toISOString(), details: `Welcome to Freedom 250! +${SIGNUP_BONUS_POINTS} Liberty Coins` }]
     };
 
     await setDoc(doc(db, 'users', user.uid), userData);
     currentUser = { ...userData };
     authCallbacks.forEach(cb => cb(currentUser, true));
-    return { success: true, user: currentUser };
+    return { success: true, user: currentUser, bonusPoints: SIGNUP_BONUS_POINTS };
 
   } catch (err) {
     console.error('[Auth] signUp error:', err);
@@ -258,18 +274,23 @@ export async function signInWithGoogle(defaultRole = ROLES.PARTICIPANT) {
         displayName: user.displayName || user.email.split('@')[0],
         role: defaultRole,
         createdAt: serverTimestamp(),
-        points: 50,
+        points: SIGNUP_BONUS_POINTS,
         freedomId,
         qrCode,
         badges: [{ name: 'Freedom Starter', icon: 'fa-flag', unlockedAt: new Date().toISOString() }],
         stamps: [],
         tasksCompleted: [],
+        challengesCompleted: 0,
+        missionsCompleted: 0,
         level: 1,
-        xp: 50,
-        streak: 0,
+        xp: SIGNUP_BONUS_POINTS,
+        streak: 1,
         scansCount: 0,
+        loginStreak: 1,
+        lastDailyBonus: new Date().toISOString(),
+        redeemedRewards: [],
         signupBonusReceived: true,
-        activityHistory: [{ label: 'Signed in with Google', time: new Date().toISOString(), details: 'Welcome to Freedom 250! +50 Liberty Coins' }]
+        activityHistory: [{ label: 'Signed in with Google', time: new Date().toISOString(), details: `Welcome to Freedom 250! +${SIGNUP_BONUS_POINTS} Liberty Coins` }]
       };
       await setDoc(userDocRef, userData);
       isNewUser = true;
@@ -287,7 +308,7 @@ export async function signInWithGoogle(defaultRole = ROLES.PARTICIPANT) {
 
     currentUser = { uid: user.uid, ...userData };
     authCallbacks.forEach(cb => cb(currentUser, true));
-    return { success: true, user: currentUser, isNewUser };
+    return { success: true, user: currentUser, isNewUser, bonusPoints: isNewUser ? SIGNUP_BONUS_POINTS : 0 };
 
   } catch (err) {
     console.error('[Auth] Google sign-in error:', err);
@@ -318,13 +339,16 @@ export function onAuthStateChange(callback) {
   if (isInitialized) callback(currentUser, currentUser !== null);
 }
 
+// FIXED: Correct dashboard routing - prevents booth_admin from being redirected to participant
 export function getDashboardPath(user) {
   if (!user) return 'login.html';
+
   const role = (user.role || ROLES.PARTICIPANT).toLowerCase();
 
+  // Exact role matching for correct dashboard routing
   if (role === 'admin' || role === 'organizer') return 'dashboard-admin.html';
-  if (role === 'booth_admin') return 'dashboard-booth-admin.html';
-  if (role === 'volunteer')   return 'dashboard-volunteer.html';
+  if (role === 'booth_admin' || role === 'boothadmin') return 'dashboard-booth-admin.html';
+  if (role === 'volunteer') return 'dashboard-volunteer.html';
 
   return 'dashboard-participant.html';
 }
@@ -338,6 +362,7 @@ export async function guardDashboard(requiredRoles) {
   }
 
   if (requiredRoles && !validateRoleAccess(user.role, requiredRoles)) {
+    // Redirect to appropriate dashboard based on actual role
     window.location.replace(getDashboardPath(user));
     return null;
   }

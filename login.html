@@ -107,6 +107,12 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .staff-badge { display: flex; align-items: center; gap: 10px; background: rgba(178,34,52,0.06); border: 1.5px solid rgba(178,34,52,0.15); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; font-size: 0.82rem; color: var(--red); font-weight: 700; }
         .staff-badge i { font-size: 1rem; }
+
+        /* Already Logged In UI */
+        #loggedInNotice { display: none; background: var(--gray); border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 24px; border: 1.5px solid var(--gray2); }
+        #loggedInNotice p { font-size: 0.9rem; margin-bottom: 16px; color: var(--muted); }
+        #loggedInNotice .user-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--white); padding: 8px 16px; border-radius: 30px; border: 1px solid var(--gray2); margin-bottom: 20px; font-weight: 600; font-size: 0.85rem; }
+        #loggedInNotice .actions { display: flex; flex-direction: column; gap: 10px; }
     </style>
 </head>
 <body>
@@ -149,6 +155,22 @@
 
         <div class="error-box" id="errorBox"><i class="fas fa-circle-exclamation"></i> <span id="errorText"></span></div>
         <div class="success-box" id="successBox"><i class="fas fa-circle-check"></i> <span id="successText"></span></div>
+
+        <div id="loggedInNotice">
+            <div class="form-head" style="margin-bottom:15px">
+                <h1>You're <span class="accent">signed in.</span></h1>
+            </div>
+            <p>You are currently logged into an account:</p>
+            <div class="user-pill">
+                <i class="fas fa-circle-user"></i>
+                <span id="currentUserName">Loading...</span>
+            </div>
+            <div class="actions">
+                <button class="btn-submit" id="goToDashboardBtn">Go to My Dashboard</button>
+                <button class="btn-google" id="signOutBtn" style="margin-bottom:0">Sign out to switch accounts</button>
+            </div>
+            <div class="form-divider"><span>or sign in to another account</span></div>
+        </div>
 
         <div id="loginArea">
             <div class="form-head">
@@ -227,13 +249,14 @@
 </div>
 
 <script type="module">
-    import { initAuth, signIn, signInWithGoogle, resetPassword } from './js/auth.js';
+    import { initAuth, signIn, signInWithGoogle, resetPassword, signOutUser, onAuthStateChange } from './js/auth.js';
     import pageNavigator from './js/page-navigator.js';
 
     // Initialize
-    await initAuth();
+    const user = await initAuth();
     await pageNavigator.initialize();
 
+    const loginArea = document.getElementById('loginArea');
     const loginForm = document.getElementById('loginForm');
     const googleBtn = document.getElementById('googleBtn');
     const submitBtn = document.getElementById('submitBtn');
@@ -248,6 +271,12 @@
     const staffSection = document.getElementById('staffCodeSection');
     const staffCodeInp = document.getElementById('staffCode');
     const verifyBtn = document.getElementById('verifyCodeBtn');
+    
+    // Logged in UI elements
+    const loggedInNotice = document.getElementById('loggedInNotice');
+    const currentUserName = document.getElementById('currentUserName');
+    const goToDashboardBtn = document.getElementById('goToDashboardBtn');
+    const signOutBtn = document.getElementById('signOutBtn');
 
     // Consolidated Staff Codes
     const STAFF_CODES = {
@@ -272,6 +301,32 @@
         btn.disabled = on; 
         btn.classList.toggle('loading', on); 
     }
+
+    function updateUIForAuthState(user) {
+        if (user) {
+            loggedInNotice.style.display = 'block';
+            currentUserName.textContent = `${user.displayName} (${user.role})`;
+        } else {
+            loggedInNotice.style.display = 'none';
+        }
+    }
+
+    // Initial check
+    updateUIForAuthState(user);
+    
+    // Listen for changes (e.g. if user signs out)
+    onAuthStateChange((newUser) => {
+        updateUIForAuthState(newUser);
+    });
+
+    goToDashboardBtn.addEventListener('click', () => {
+        pageNavigator.redirectToDashboard(user);
+    });
+
+    signOutBtn.addEventListener('click', async () => {
+        await signOutUser();
+        showSuccess('Signed out successfully. You can now log in with a different account.');
+    });
 
     // Password Toggle
     pwToggle.addEventListener('click', () => {
@@ -327,7 +382,9 @@
             const result = await signIn(email, password);
             if (result.success) {
                 showSuccess('Welcome back! Redirecting...');
-                // pageNavigator will handle the redirect
+                setTimeout(() => {
+                    pageNavigator.redirectToDashboard(result.user);
+                }, 1000);
             } else {
                 showError(result.error || 'Login failed.');
                 setLoading(submitBtn, false);
@@ -350,6 +407,9 @@
             const result = await signInWithGoogle();
             if (result.success) {
                 showSuccess('Signed in with Google! Redirecting...');
+                setTimeout(() => {
+                    pageNavigator.redirectToDashboard(result.user);
+                }, 1000);
             } else {
                 showError(result.error || 'Google sign-in failed.');
                 setLoading(googleBtn, false);

@@ -3,125 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Staff Operations | Freedom 250</title>
+    <title>Staff Portal | Freedom 250</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --red: #B22234; --navy: #1a1a2e; --gold: #FFD700;
-            --bg: #f0f2f5; --white: #fff; --radius: 24px;
-            --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --info: #3b82f6;
-            --card-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg: #f0f2f5; --white: #fff; --radius: 20px;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Inter',sans-serif; background:var(--bg); color: var(--navy); padding-bottom: 90px; overflow-x: hidden; }
-        .app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color: #1a1a2e; }
+        .app { max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:100px; position: relative; }
 
-        /* Modern Staff Header */
-        .staff-header {
+        /* ── HEADER ── */
+        .header {
             background: linear-gradient(135deg, var(--navy) 0%, #16213e 100%);
-            color: #fff; padding: 30px 20px 45px; position: relative; overflow: hidden;
-            border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
+            color: #fff; padding: 25px 20px; position: relative; overflow: hidden;
         }
-        .staff-header::after {
-            content: "🤝"; position: absolute; right: -10px; bottom: -10px; font-size: 80px; opacity: 0.1; transform: rotate(-10deg);
+        .header::before {
+            content: "🤝"; position: absolute; right: -15px; top: -15px;
+            font-size: 100px; opacity: 0.1;
         }
-        .staff-identity { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; position: relative; z-index: 1; }
-        .staff-badge { background: rgba(255, 255, 255, 0.15); color: #fff; padding: 5px 12px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); }
-        .staff-header h1 { font-size: 1.4rem; font-weight: 900; margin-top: 10px; }
-        .staff-header p { font-size: 0.75rem; opacity: 0.7; }
-
-        /* Stats Dashboard Widget */
-        .stats-strip { display: flex; gap: 12px; margin-top: -25px; padding: 0 20px; position: relative; z-index: 10; }
-        .stat-widget {
-            background: var(--white); border-radius: 20px; padding: 18px 10px; flex: 1; text-align: center;
-            box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.02); transition: var(--transition);
+        .badge {
+            display: inline-block; background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2); padding: 4px 12px; border-radius: 20px;
+            font-size: .65rem; margin-bottom: 12px; font-weight: 700; letter-spacing: 0.5px;
         }
-        .stat-widget .val { font-size: 1.4rem; font-weight: 900; color: var(--red); display: block; }
-        .stat-widget .lbl { font-size: 0.6rem; color: #888; text-transform: uppercase; font-weight: 800; margin-top: 4px; }
+        .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+        .header p { font-size: .75rem; opacity: .7; }
 
-        /* Tab Navigation */
-        .section-nav { display: flex; gap: 10px; padding: 25px 20px 10px; overflow-x: auto; scrollbar-width: none; }
-        .section-nav::-webkit-scrollbar { display: none; }
-        .nav-pill { 
-            padding: 10px 20px; border-radius: 15px; background: #e5e7eb; color: #666; font-size: 0.75rem; 
-            font-weight: 800; white-space: nowrap; cursor: pointer; border: none; transition: var(--transition);
+        /* ── STATS ROW ── */
+        .stats-row {
+            display: flex; gap: 10px; padding: 0 15px; margin-top: -25px;
         }
-        .nav-pill.active { background: var(--red); color: #fff; box-shadow: 0 5px 15px rgba(178, 34, 52, 0.2); }
-
-        /* Interactive Sections */
-        .page { display: none; padding: 0 20px; animation: slideIn 0.4s ease-out; }
-        .page.active { display: block; }
-        @keyframes slideIn { from { opacity:0; transform: translateY(15px); } to { opacity:1; transform: translateY(0); } }
-
-        .card { background: var(--white); border-radius: 24px; padding: 25px; margin-bottom: 20px; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.01); }
-        .card-title { font-size: 1rem; font-weight: 900; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-
-        /* Scanner Experience */
-        .scanner-viewport {
-            width: 100%; aspect-ratio: 1; background: #000; border-radius: 20px; overflow: hidden;
-            position: relative; border: 4px solid #f0f0f0; margin-bottom: 20px;
+        .stat-pill {
+            background: var(--white); border-radius: 18px; padding: 15px 10px;
+            text-align: center; flex: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
-        .scanner-laser {
-            position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--red);
-            box-shadow: 0 0 15px var(--red); animation: scanLine 2s infinite linear; z-index: 5;
-        }
-        @keyframes scanLine { 0% { top: 0%; } 100% { top: 100%; } }
+        .stat-pill .val { font-size: 1.3rem; font-weight: 800; color: var(--red); display: block; }
+        .stat-pill .lbl { font-size: .6rem; color: #888; text-transform: uppercase; margin-top: 4px; }
 
-        /* List Styling */
-        .modern-list { display: flex; flex-direction: column; gap: 12px; }
+        /* ── SECTIONS ── */
+        .section-hdr {
+            padding: 0 20px; margin: 25px 0 12px;
+            display: flex; justify-content: space-between; align-items: baseline;
+        }
+        .section-hdr h2 { font-size: 1rem; color: var(--navy); font-weight: 800; }
+        
+        .card {
+            background: var(--white); border-radius: var(--radius); margin: 0 15px 12px;
+            padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* ── LIST ITEMS ── */
         .list-item {
-            display: flex; align-items: center; gap: 15px; padding: 15px; background: #fafafa; border-radius: 18px;
-            transition: var(--transition);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 0; border-bottom: 1px solid #f0f0f0;
         }
-        .list-item:active { transform: scale(0.98); background: #f0f0f0; }
-        .item-icon { width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; }
-        .item-info { flex: 1; }
-        .item-info h5 { font-size: 0.85rem; font-weight: 800; }
-        .item-info p { font-size: 0.7rem; color: #777; margin-top: 2px; }
-        .item-meta { font-weight: 900; color: var(--red); font-size: 0.9rem; }
+        .list-item:last-child { border-bottom: none; }
+        .item-info h4 { font-size: .85rem; font-weight: 700; color: var(--navy); }
+        .item-info p { font-size: .7rem; color: #777; margin-top: 2px; }
+        .item-val { font-weight: 800; color: var(--red); font-size: .9rem; }
 
-        /* Form Controls */
+        /* ── FORMS ── */
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 0.75rem; font-weight: 800; margin-bottom: 8px; color: #444; }
+        .form-group label { display: block; font-size: .75rem; font-weight: 700; margin-bottom: 6px; color: #555; }
         .form-group input, .form-group textarea, .form-group select {
-            width: 100%; padding: 14px 18px; border-radius: 16px; border: 2px solid #f0f0f0; font-family: inherit; font-size: 0.9rem; transition: var(--transition);
+            width: 100%; padding: 12px 16px; border-radius: 14px;
+            border: 1px solid #ddd; font-family: inherit; font-size: .9rem;
         }
-        .form-group input:focus { border-color: var(--red); outline: none; }
-
-        .btn {
-            width: 100%; padding: 16px; border-radius: 18px; font-weight: 800; font-size: 0.9rem;
-            cursor: pointer; border: none; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 10px;
+        .btn-full {
+            width: 100%; padding: 14px; border-radius: 14px; border: none;
+            background: var(--navy); color: #fff; font-weight: 700;
+            cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .btn-primary { background: var(--navy); color: #fff; }
-        .btn-red { background: var(--red); color: #fff; }
-        .btn-success { background: var(--success); color: #fff; }
-        .btn:active { transform: scale(0.97); }
+        .btn-full:active { transform: scale(0.98); }
+        .btn-red { background: var(--red); }
 
-        /* Heatmap Grid */
-        .heatmap-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
-        .zone-density { padding: 15px; border-radius: 15px; background: #f8fafc; text-align: center; }
-        .density-bar { height: 6px; background: #eee; border-radius: 3px; margin-top: 8px; overflow: hidden; }
-        .density-fill { height: 100%; transition: width 1s ease; }
+        /* ── SCANNER ── */
+        .scanner-preview {
+            background: #f8f8fb; height: 160px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 15px; border: 2px dashed #ddd;
+        }
 
-        /* Bottom Nav */
+        /* ── NAVIGATION ── */
         .bottom-nav {
-            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px;
-            background: rgba(255, 255, 255, 0.98); display: flex; justify-content: space-around; padding: 12px 10px 30px;
-            border-top: 1px solid #eee; z-index: 1000; backdrop-filter: blur(20px);
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--white); display: flex; justify-content: space-around;
+            padding: 12px 10px 25px; border-top: 1px solid #eee;
+            max-width: 480px; margin: 0 auto; z-index: 1000;
         }
-        .nav-item { text-align: center; color: #bbb; font-size: 0.65rem; cursor: pointer; transition: 0.3s; font-weight: 800; }
+        .nav-item { text-align: center; color: #aaa; font-size: .65rem; cursor: pointer; }
         .nav-item.active { color: var(--red); }
-        .nav-item i { font-size: 1.5rem; display: block; margin-bottom: 5px; }
+        .nav-item i { font-size: 1.3rem; display: block; margin-bottom: 4px; }
 
-        /* Toast Messages */
-        #toastContainer { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; z-index: 9999; }
-        .toast { 
-            background: var(--navy); color: #fff; padding: 16px 20px; border-radius: 16px; margin-bottom: 10px; font-size: 0.85rem; font-weight: 700;
-            display: flex; align-items: center; gap: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); animation: slideDown 0.4s ease-out;
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* ── TOAST ── */
+        #toastContainer {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 40px); max-width: 400px; z-index: 9999;
         }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        .toast {
+            background: var(--navy); color: #fff; padding: 14px 20px; border-radius: 12px;
+            margin-bottom: 10px; font-size: .85rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -129,116 +119,100 @@
 <div id="toastContainer"></div>
 
 <div class="app">
-    <!-- Staff Header -->
-    <header class="staff-header">
-        <div class="staff-identity">
-            <div>
-                <span class="staff-badge">VOLUNTEER FORCE</span>
-                <h1 id="staffName">Loading...</h1>
-                <p>Operations & Support Portal</p>
-            </div>
-            <button id="logoutBtn" style="background:rgba(255,255,255,0.1); border:none; padding:8px 15px; border-radius:12px; color:#fff; font-size:0.7rem; font-weight:800;">LOGOUT</button>
+    <!-- Header -->
+    <header class="header">
+        <div class="badge">VOLUNTEER FORCE</div>
+        <h1 id="userName">Loading...</h1>
+        <p>Operations & Support Portal</p>
+        <div style="position: absolute; top: 25px; right: 20px; display: flex; gap: 8px;">
+            <a href="index.html" style="color: #fff; background: rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 12px; text-decoration: none; font-size: .7rem; font-weight: 700;">Home</a>
+            <button id="logoutBtn" style="background: var(--red); color: #fff; border: none; padding: 8px 14px; border-radius: 12px; font-weight: 700; font-size: .7rem; cursor: pointer;">Exit</button>
         </div>
     </header>
 
-    <!-- Real-time Metrics -->
-    <div class="stats-strip">
-        <div class="stat-widget"><span class="val" id="tasksDone">0</span><span class="lbl">Tasks</span></div>
-        <div class="stat-widget"><span class="val" id="shiftsLogged">0</span><span class="lbl">Shifts</span></div>
-        <div class="stat-widget"><span class="val" id="coinsEarned">0</span><span class="lbl">My Points</span></div>
-    </div>
-
-    <!-- Navigation Pills -->
-    <div class="section-nav">
-        <button class="nav-pill active" onclick="showPage('home')">📋 Task Board</button>
-        <button class="nav-pill" onclick="showPage('scan')">📸 Verification</button>
-        <button class="nav-pill" onclick="showPage('schedule')">📅 Schedule</button>
-        <button class="nav-pill" onclick="showPage('support')">🆘 Escalation</button>
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-pill"><span class="val" id="tasksDone">0</span><span class="lbl">Tasks</span></div>
+        <div class="stat-pill"><span class="val" id="shiftsLogged">0</span><span class="lbl">Shifts</span></div>
+        <div class="stat-pill"><span class="val" id="coinsEarned">0</span><span class="lbl">Points</span></div>
     </div>
 
     <!-- ═══ TASKS PAGE ═══ -->
     <div id="pg-home" class="page active">
-        <div class="card">
-            <div class="card-title"><i class="fas fa-tasks" style="color:var(--navy)"></i> Assigned Missions</div>
-            <div id="tasksList" class="modern-list">
-                <p style="text-align: center; color: #999; font-size: .8rem; padding: 20px;">Fetching assigned tasks...</p>
-            </div>
+        <div class="section-hdr"><h2>📋 My Active Tasks</h2></div>
+        <div id="tasksList">
+            <p style="text-align: center; color: #999; font-size: .8rem; padding: 20px;">Fetching assigned tasks...</p>
         </div>
 
-        <div class="card">
-            <div class="card-title"><i class="fas fa-bullhorn" style="color:var(--red)"></i> Ops Briefing</div>
-            <div id="briefingList" class="modern-list">
-                <p style="text-align: center; color: #999; font-size: .8rem; padding: 20px;">Scanning for updates...</p>
-            </div>
+        <div class="section-hdr"><h2>🛡️ Operations Briefing</h2></div>
+        <div id="briefingList">
+            <!-- Announcements -->
         </div>
     </div>
 
     <!-- ═══ SCANNER PAGE ═══ -->
     <div id="pg-scan" class="page">
+        <div class="section-hdr"><h2>📸 Quick Scanner</h2></div>
         <div class="card">
-            <div class="card-title">Quick Verification</div>
-            <div class="scanner-viewport" id="reader">
-                <div class="scanner-laser"></div>
-                <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#555;">
-                    <i class="fas fa-camera fa-3x"></i>
-                </div>
+            <div class="scanner-preview" id="reader">
+                <i class="fas fa-qrcode" style="font-size: 3rem; color: #ccc;"></i>
             </div>
-            <button class="btn btn-primary" id="startScanBtn"><i class="fas fa-play"></i> START SCANNER</button>
+            <button class="btn-full" id="startScanBtn"><i class="fas fa-camera"></i> SCAN PARTICIPANT</button>
         </div>
 
+        <div class="section-hdr"><h2>✏️ Manual Check-in</h2></div>
         <div class="card">
-            <div class="card-title">Manual Entry</div>
             <div class="form-group">
-                <input type="text" id="manualId" placeholder="Participant Email or Freedom ID">
+                <input type="text" id="manualId" placeholder="Participant Email or ID">
             </div>
-            <button class="btn btn-success" id="manualVerifyBtn">VERIFY & LOG</button>
+            <button class="btn-full" id="manualVerifyBtn">Verify Participant</button>
+        </div>
+    </div>
+
+    <!-- ═══ SUPPORT PAGE ═══ -->
+    <div id="pg-support" class="page">
+        <div class="section-hdr"><h2>🆘 Ops Escalation</h2></div>
+        <div class="card">
+            <div class="form-group">
+                <label>Issue Type</label>
+                <select id="issueType">
+                    <option value="crowd">Crowd Control</option>
+                    <option value="technical">Technical Error</option>
+                    <option value="medical">Medical / First Aid</option>
+                    <option value="security">Security Incident</option>
+                    <option value="other">General Support</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Details</label>
+                <textarea id="issueDetails" rows="3" placeholder="Describe the situation..."></textarea>
+            </div>
+            <button class="btn-full btn-red" id="submitIssueBtn">Escalate to Organizer</button>
+        </div>
+
+        <div class="section-hdr"><h2>📍 Venue Heatmap</h2></div>
+        <div class="card" id="heatmapData">
+            <!-- Heatmap -->
         </div>
     </div>
 
     <!-- ═══ SCHEDULE PAGE ═══ -->
     <div id="pg-schedule" class="page">
+        <div class="section-hdr"><h2>📅 My Shift Schedule</h2></div>
         <div class="card">
-            <div class="card-title"><i class="fas fa-calendar-check"></i> Shift Rotation</div>
-            <div id="scheduleList" class="modern-list">
+            <div id="scheduleList">
                 <p style="text-align:center; color:#999; font-size:.8rem;">No upcoming shifts found.</p>
             </div>
         </div>
-        <button class="btn btn-red" style="margin-bottom: 20px;" id="markShiftBtn"><i class="fas fa-clock"></i> START ACTIVE SHIFT</button>
+        <button class="btn-full btn-red" style="margin: 0 15px 15px; width: calc(100% - 30px);" id="markShiftBtn">MARK SHIFT START</button>
     </div>
 
-    <!-- ═══ SUPPORT / OPS PAGE ═══ -->
-    <div id="pg-support" class="page">
-        <div class="card">
-            <div class="card-title">Emergency Escalation</div>
-            <div class="form-group">
-                <label>Incident Type</label>
-                <select id="issueType">
-                    <option value="crowd">Crowd Control Needed</option>
-                    <option value="technical">Technical System Error</option>
-                    <option value="medical">Medical / First Aid Request</option>
-                    <option value="security">Security / Policy Incident</option>
-                    <option value="other">General Operational Support</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Operational Details</label>
-                <textarea id="issueDetails" rows="3" placeholder="Describe the situation for HQ..."></textarea>
-            </div>
-            <button class="btn btn-red" id="submitIssueBtn"><i class="fas fa-exclamation-triangle"></i> ALERT ORGANIZERS</button>
-        </div>
-
-        <div class="card">
-            <div class="card-title">Venue Crowd Intelligence</div>
-            <div id="heatmapData" class="heatmap-grid"></div>
-        </div>
-    </div>
-
-    <!-- Bottom Nav -->
+    <!-- Navigation -->
     <nav class="bottom-nav">
-        <div class="nav-item active" onclick="showPage('home')"><i class="fas fa-clipboard-list"></i><span>Missions</span></div>
-        <div class="nav-item" onclick="showPage('scan')"><i class="fas fa-user-check"></i><span>Verify</span></div>
-        <div class="nav-item" onclick="showPage('schedule')"><i class="fas fa-history"></i><span>Hours</span></div>
-        <div class="nav-item" onclick="showPage('support')"><i class="fas fa-headset"></i><span>Support</span></div>
+        <div class="nav-item active" data-pg="home" onclick="showPage('home')"><i class="fas fa-tasks"></i>Tasks</div>
+        <div class="nav-item" data-pg="scan" onclick="showPage('scan')"><i class="fas fa-qrcode"></i>Verify</div>
+        <div class="nav-item" data-pg="schedule" onclick="showPage('schedule')"><i class="fas fa-calendar-alt"></i>Shift</div>
+        <div class="nav-item" data-pg="support" onclick="showPage('support')"><i class="fas fa-headset"></i>Support</div>
     </nav>
 </div>
 
@@ -247,152 +221,138 @@
     import { guardDashboard, signOutUser, onAuthStateChange } from './js/auth.js';
     import { db, doc, getDoc, updateDoc, setDoc, collection, query, where, orderBy, limit, onSnapshot, increment, serverTimestamp, addDoc } from './js/firebase-config.js';
 
+    await guardDashboard(['volunteer', 'admin']);
+
     let currentUser = null;
     let scanner = null;
 
-    async function init() {
-        const user = await guardDashboard(['volunteer', 'admin']);
+    onAuthStateChange((user) => {
         if (!user) return;
         currentUser = user;
+        document.getElementById('userName').textContent = `Hello, ${user.displayName || 'Staff'}`;
         
-        document.getElementById('staffName').textContent = `Hello, ${user.displayName || 'Staff'}`;
-        
-        setupRealTimeStats();
-        loadTasks();
-        loadBriefing();
-        loadHeatmap();
+        initVolunteerData();
+    });
+
+    function showToast(msg) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
     }
 
-    function setupRealTimeStats() {
+    function initVolunteerData() {
+        // Stats
         onSnapshot(doc(db, 'users', currentUser.uid), (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 document.getElementById('tasksDone').textContent = data.tasksCompleted || 0;
                 document.getElementById('shiftsLogged').textContent = data.shiftsCount || 0;
-                document.getElementById('coinsEarned').textContent = (data.points || 0).toLocaleString();
+                document.getElementById('coinsEarned').textContent = data.points || 0;
             }
         });
-    }
 
-    function loadTasks() {
-        onSnapshot(query(collection(db, 'tasks'), where('assignedTo', '==', currentUser.uid), where('status', '==', 'pending')), (snap) => {
+        // Tasks
+        onSnapshot(query(collection(db, 'tasks'), where('assignedTo', '==', currentUser.uid)), (snapshot) => {
             const list = document.getElementById('tasksList');
-            if (snap.empty) {
-                list.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">No pending tasks assigned.</p>';
+            if (snapshot.empty) {
+                list.innerHTML = '<p style="text-align:center;color:#999;font-size:.8rem;padding:20px;">No tasks assigned yet.</p>';
                 return;
             }
-            list.innerHTML = snap.docs.map(doc => {
+            list.innerHTML = snapshot.docs.map(doc => {
                 const t = doc.data();
-                return `<div class="list-item">
-                    <div class="item-icon" style="background:var(--navy)"><i class="fas fa-thumbtack"></i></div>
-                    <div class="item-info">
-                        <h5>${t.title}</h5>
-                        <p>${t.location} • Priority: ${t.priority || 'Normal'}</p>
+                return `
+                    <div class="card">
+                        <div class="list-item">
+                            <div class="item-info">
+                                <h4>${t.title}</h4>
+                                <p>${t.location} · ${t.priority || 'Normal'}</p>
+                            </div>
+                            <button onclick="completeTask('${doc.id}')" style="background:var(--navy);color:#fff;border:none;padding:6px 12px;border-radius:10px;font-size:.7rem;">DONE</button>
+                        </div>
                     </div>
-                    <button class="btn btn-primary btn-sm" style="width:auto;" onclick="window.completeTask('${doc.id}')">DONE</button>
-                </div>`;
+                `;
             }).join('');
         });
-    }
 
-    function loadBriefing() {
-        onSnapshot(query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(5)), (snap) => {
+        // Announcements
+        onSnapshot(query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(5)), (snapshot) => {
             const list = document.getElementById('briefingList');
-            if (snap.empty) return;
-            list.innerHTML = snap.docs.map(doc => {
+            list.innerHTML = snapshot.docs.map(doc => {
                 const n = doc.data();
-                return `<div class="list-item" style="flex-direction:column; align-items:flex-start; background:#fff; border:1px solid #f0f0f0;">
-                    <div style="display:flex; justify-content:space-between; width:100%; margin-bottom:5px;">
-                        <h5 style="color:var(--red)">${n.title}</h5>
-                        <span style="font-size:0.6rem; color:#aaa;">${n.createdAt?.toDate().toLocaleTimeString()}</span>
+                return `
+                    <div class="card">
+                        <h4 style="font-size:.85rem;margin-bottom:5px;">${n.title}</h4>
+                        <p style="font-size:.75rem;color:#555;line-height:1.4;">${n.body}</p>
+                        <p style="font-size:.6rem;color:#aaa;margin-top:8px;">${new Date(n.time).toLocaleTimeString()}</p>
                     </div>
-                    <p style="font-size:0.75rem; color:#444;">${n.message || n.body}</p>
-                </div>`;
+                `;
             }).join('');
         });
-    }
 
-    function loadHeatmap() {
-        onSnapshot(collection(db, 'booths'), (snap) => {
-            const container = document.getElementById('heatmapData');
-            container.innerHTML = snap.docs.map(doc => {
+        // Heatmap for crowd control
+        onSnapshot(collection(db, 'boothCounts'), (snapshot) => {
+            const heatmap = document.getElementById('heatmapData');
+            heatmap.innerHTML = snapshot.docs.map(doc => {
                 const data = doc.data();
-                const density = Math.min(100, ((data.scans || 0) / 200) * 100);
-                const color = density > 80 ? 'var(--red)' : (density > 40 ? 'var(--warning)' : 'var(--success)');
-                return `<div class="zone-density">
-                    <div style="font-size:0.7rem; font-weight:800; color:var(--navy);">${data.name}</div>
-                    <div class="density-bar"><div class="density-fill" style="width:${density}%; background:${color}"></div></div>
-                    <div style="font-size:0.6rem; color:#999; margin-top:5px;">${data.scans || 0} Explorers</div>
-                </div>`;
+                const density = Math.min(100, (data.scans / 500) * 100);
+                return `
+                    <div style="margin-bottom:8px">
+                        <div style="display:flex;justify-content:space-between;font-size:.7rem;margin-bottom:4px">
+                            <span>${data.name}</span><span>${Math.round(density)}%</span>
+                        </div>
+                        <div style="height:6px;background:#eee;border-radius:3px;overflow:hidden">
+                            <div style="height:100%;width:${density}%;background:${density > 80 ? 'var(--red)' : 'var(--navy)'}"></div>
+                        </div>
+                    </div>
+                `;
             }).join('');
         });
     }
 
-    async function handleVerification(id) {
-        showToast("Verifying participant...");
+    async function handleScanSuccess(text) {
+        if (scanner) { scanner.stop(); scanner = null; }
+        document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-camera"></i> SCAN PARTICIPANT';
+
+        let uid = text;
+        if (text.includes('FREEDOM250:')) uid = text.split(':')[2];
+
         try {
-            let targetUid = id;
-            let targetData = null;
-
-            if (id.includes('@')) {
-                const s = await getDocs(query(collection(db, 'users'), where('email', '==', id)));
-                if (!s.empty) { targetUid = s.docs[0].id; targetData = s.docs[0].data(); }
-            } else if (id.startsWith('F250-')) {
-                const s = await getDocs(query(collection(db, 'users'), where('freedomId', '==', id)));
-                if (!s.empty) { targetUid = s.docs[0].id; targetData = s.docs[0].data(); }
-            } else {
-                const s = await getDoc(doc(db, 'users', id));
-                if (s.exists()) targetData = s.data();
-            }
-
-            if (!targetData) throw new Error("User not found");
-
+            const userSnap = await getDoc(doc(db, 'users', uid));
+            if (!userSnap.exists()) throw new Error('Invalid User');
+            const data = userSnap.data();
+            
+            // Log verification
             await addDoc(collection(db, 'interactions'), {
-                volunteerId: currentUser.uid, volunteerName: currentUser.displayName,
-                participantId: targetUid, participantName: targetData.displayName || targetData.email,
-                type: 'verification', timestamp: serverTimestamp()
+                volunteerId: currentUser.uid,
+                participantId: uid,
+                participantName: data.displayName || 'Anonymous',
+                type: 'verification',
+                timestamp: serverTimestamp()
             });
 
-            await updateDoc(doc(db, 'users', targetUid), { points: increment(10), xp: increment(100) });
+            // Predefined reward for verification
+            await updateDoc(doc(db, 'users', uid), { points: increment(10) });
             await updateDoc(doc(db, 'users', currentUser.uid), { points: increment(5) });
 
-            showToast(`Verified: ${targetData.displayName || 'Participant'} (+10 Coins)`, 'success');
+            showToast(`Verified: ${data.displayName || uid}`);
         } catch (e) {
-            showToast(e.message, 'error');
+            alert('Error: ' + e.message);
         }
     }
-
-    // ── UI ACTIONS ──
-    window.showPage = (id) => {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-pill').forEach(n => n.classList.remove('active'));
-        document.getElementById(`pg-${id}`).classList.add('active');
-        // Find the pill that was clicked or matching id
-        const pills = document.querySelectorAll('.nav-pill');
-        pills.forEach(p => {
-            if (p.getAttribute('onclick').includes(id)) p.classList.add('active');
-        });
-        window.scrollTo(0, 0);
-    };
-
-    window.completeTask = async (taskId) => {
-        await updateDoc(doc(db, 'tasks', taskId), { status: 'completed', completedAt: serverTimestamp() });
-        await updateDoc(doc(db, 'users', currentUser.uid), { tasksCompleted: increment(1), points: increment(20) });
-        showToast('Mission Complete! +20 Coins', 'success');
-    };
 
     document.getElementById('startScanBtn').addEventListener('click', () => {
         if (scanner) { scanner.stop(); scanner = null; return; }
         scanner = new Html5Qrcode("reader");
-        scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
-            handleVerification(text);
-            scanner.stop(); scanner = null;
-        });
+        scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, handleScanSuccess);
+        document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-stop"></i> STOP SCANNER';
     });
 
     document.getElementById('manualVerifyBtn').addEventListener('click', () => {
         const id = document.getElementById('manualId').value.trim();
-        if (id) { handleVerification(id); document.getElementById('manualId').value = ''; }
+        if (id) handleScanSuccess(id);
     });
 
     document.getElementById('submitIssueBtn').addEventListener('click', async () => {
@@ -401,24 +361,37 @@
         if (!details) return;
 
         await addDoc(collection(db, 'support_tickets'), {
-            volunteerId: currentUser.uid, volunteerName: currentUser.displayName,
-            type, details, status: 'open', createdAt: serverTimestamp()
+            volunteerId: currentUser.uid,
+            volunteerName: currentUser.displayName,
+            type,
+            details,
+            status: 'open',
+            createdAt: serverTimestamp()
         });
-        showToast('Organizers notified!', 'success');
+        showToast('Escalated to Organizer!');
         document.getElementById('issueDetails').value = '';
     });
 
-    function showToast(msg, type = 'info') {
-        const t = document.createElement('div');
-        t.className = `toast ${type}`;
-        t.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i> ${msg}`;
-        document.getElementById('toastContainer').appendChild(t);
-        setTimeout(() => t.remove(), 4000);
-    }
+    window.completeTask = async (taskId) => {
+        await updateDoc(doc(db, 'tasks', taskId), { status: 'completed', completedAt: serverTimestamp() });
+        await updateDoc(doc(db, 'users', currentUser.uid), { tasksCompleted: increment(1), points: increment(20) });
+        showToast('Task marked complete! +20 pts');
+    };
 
-    document.getElementById('logoutBtn').addEventListener('click', async () => { if(confirm('Exit staff portal?')) { await signOutUser(); window.location.replace('login.html'); } });
+    window.showPage = (page) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(`pg-${page}`).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelector(`.nav-item[data-pg="${page}"]`).classList.add('active');
+        window.scrollTo(0,0);
+    };
 
-    init();
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        if (confirm('Logout?')) {
+            await signOutUser();
+            window.location.replace('login.html');
+        }
+    });
 </script>
 
 </body>

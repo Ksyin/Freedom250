@@ -34,39 +34,30 @@ class PageNavigator {
     if (this.redirectInProgress || !this.isInitialized) return;
     
     const currentPagePath = window.location.pathname;
-    const isAuthPage = currentPagePath.includes('login') || currentPagePath.includes('register');
     const isDashboardPage = currentPagePath.includes('dashboard');
 
-    if (isAuthenticated && user) {
-      if (isAuthPage) {
-        // Only redirect if NOT on a special staff registration flow (handled by URL params usually)
-        const urlParams = new URLSearchParams(window.location.search);
-        if (!urlParams.has('staffCode')) {
-          this.redirectToDashboard(user);
-        }
-      }
-    } else if (!isAuthenticated) {
-      if (isDashboardPage) {
-        this.redirectToLogin();
-      }
+    if (!isAuthenticated && isDashboardPage) {
+      this.redirectToLogin();
     }
+    
+    // Note: Automatic redirection from login/register to dashboard is REMOVED
+    // to prevent "auto-login" traps and allow users to switch accounts.
+    // Redirection after login should now be handled explicitly by the login page.
   }
 
   /**
    * Handle initial page load routing
    */
   handleInitialRoute(user, currentPagePath) {
-    const isAuthPage = currentPagePath.includes('login') || currentPagePath.includes('register');
     const isDashboardPage = currentPagePath.includes('dashboard');
-    const urlParams = new URLSearchParams(window.location.search);
 
-    if (user && isAuthPage) {
-      if (!urlParams.has('staffCode')) {
-        this.redirectToDashboard(user);
-      }
-    } else if (!user && isDashboardPage) {
+    if (!user && isDashboardPage) {
       this.redirectToLogin();
     }
+    
+    // Note: Removed automatic redirect from login page to dashboard on load.
+    // This allows users who are already logged in to see the login page if they choose,
+    // which is helpful for logging out or switching accounts.
   }
 
   async redirectToDashboard(user) {
