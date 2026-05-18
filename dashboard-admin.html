@@ -356,20 +356,29 @@
 
     let currentUser = null;
 
-    async function loadStats() {
-        const usersSnapshot = await getDocs(collection(db, 'users'));
-        let totalPoints = 0;
-        usersSnapshot.forEach(doc => {
-            totalPoints += doc.data().points || 0;
+    // ── STATS: real-time listeners so counts update automatically ──────────
+    function loadStats() {
+        // Users count + total points
+        onSnapshot(collection(db, 'users'), (snapshot) => {
+            let totalPoints = 0;
+            let participants = 0;
+            snapshot.forEach(d => {
+                totalPoints += d.data().points || 0;
+                if ((d.data().role || 'participant') === 'participant') participants++;
+            });
+            document.getElementById('totalUsers').textContent = snapshot.size;
+            document.getElementById('totalPoints').textContent = totalPoints.toLocaleString();
         });
 
-        const scansSnapshot = await getDocs(collection(db, 'scans'));
-        const pollsSnapshot = await getDocs(collection(db, 'polls'));
+        // Scans count
+        onSnapshot(collection(db, 'scans'), (snapshot) => {
+            document.getElementById('totalScans').textContent = snapshot.size;
+        });
 
-        document.getElementById('totalUsers').textContent = usersSnapshot.size;
-        document.getElementById('totalPoints').textContent = totalPoints.toLocaleString();
-        document.getElementById('totalScans').textContent = scansSnapshot.size;
-        document.getElementById('activePolls').textContent = pollsSnapshot.size;
+        // Active polls count
+        onSnapshot(query(collection(db, 'polls'), where('active', '==', true)), (snapshot) => {
+            document.getElementById('activePolls').textContent = snapshot.size;
+        });
     }
 
     function loadUsers() {
@@ -411,8 +420,19 @@
 
     window.awardPointsTo = async (userId, points) => {
         try {
-            await updateDoc(doc(db, 'users', userId), {
-                points: increment(points)
+            await updateDoc(doc(db, 'users', userId), { points: increment(points) });
+            await addDoc(collection(db, 'notifications'), {
+                userId,
+                title: `💰 +${points} Liberty Coins!`,
+                message: `An admin awarded you ${points} Liberty Coins.`,
+                type: 'success',
+                read: false,
+                createdAt: serverTimestamp()
+            });
+            await addDoc(collection(db, 'pointTransactions'), {
+                userId, points, reason: 'Admin award',
+                awardedBy: currentUser?.uid || 'admin',
+                awardedAt: serverTimestamp()
             });
             alert(`Awarded ${points} points to user`);
         } catch (error) {
@@ -751,7 +771,7 @@
         }
         currentUser = user;
 
-        await loadStats();
+        loadStats();
         loadUsers();
         loadAnnouncements();
         loadPolls();

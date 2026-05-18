@@ -1,46 +1,35 @@
-// js/qr-generator.js - Enhanced QR Code Generator
-export async function generateQRCode(text, options = {}) {
-    return new Promise((resolve, reject) => {
-        const canvas = document.createElement('canvas');
-        const size = options.width || 300;
-        canvas.width = size;
-        canvas.height = size;
+// js/qr-generator.js - QR Code Generator for Freedom 250
+// NOTE: generateQRCode is called from auth.js during signup to store a data URL
+// in Firestore. However, when called from auth context (no DOM), it may not have
+// the QRCode library available — in that case it returns null gracefully and the
+// dashboard re-renders the QR locally from the freedomId instead.
 
-        // Use QRCode library if available, otherwise fallback
-        if (typeof QRCode !== 'undefined') {
-            QRCode.toCanvas(canvas, text, {
-                width: size,
-                margin: 2,
-                color: {
-                    dark: options.colorDark || '#1a1a2e',
-                    light: options.colorLight || '#ffffff'
-                }
-            }, (error) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(canvas.toDataURL('image/png'));
-                }
-            });
-        } else {
-            // Fallback: load QRCode library dynamically
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js';
-            script.onload = () => {
-                QRCode.toCanvas(canvas, text, {
-                    width: size,
-                    margin: 2
-                }, (error) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(canvas.toDataURL('image/png'));
-                    }
-                });
-            };
-            script.onerror = () => reject(new Error('Failed to load QR library'));
-            document.head.appendChild(script);
-        }
+export async function generateQRCode(text, options = {}) {
+    // If QRCode library is not available (e.g. called during auth init before DOM),
+    // return null so the caller can skip storing and let the dashboard render it.
+    if (typeof QRCode === 'undefined') {
+        console.warn('[QR] QRCode library not available, skipping generation');
+        return null;
+    }
+
+    return new Promise((resolve, reject) => {
+        const size = options.width || 300;
+        const canvas = document.createElement('canvas');
+        QRCode.toCanvas(canvas, text, {
+            width: size,
+            margin: 2,
+            color: {
+                dark: options.colorDark || '#1a1a2e',
+                light: options.colorLight || '#ffffff'
+            },
+            errorCorrectionLevel: 'M'
+        }, (error) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(canvas.toDataURL('image/png'));
+            }
+        });
     });
 }
 

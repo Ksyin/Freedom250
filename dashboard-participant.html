@@ -782,7 +782,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 <script type="module">
-    import { guardDashboard, signOutUser, onAuthStateChange } from './js/auth.js';
+    import { signOutUser, onAuthStateChange } from './js/auth.js';
     import { db, doc, getDoc, updateDoc, onSnapshot, collection, query, where, orderBy, limit, increment, addDoc, serverTimestamp, arrayUnion, getDocs } from './js/firebase-config.js';
 
     let currentUser = null;
@@ -792,6 +792,7 @@
     let pollsUnsubscribe = null;
     let currentPollId = null;
     let selectedPollOption = null;
+    let qrRendered = false; // guard: render QR only once per session
 
     function showToast(message, type = 'info') {
         const container = document.getElementById('toastContainer');
@@ -802,77 +803,96 @@
         setTimeout(() => toast.remove(), 4000);
     }
 
-    // Generate QR Code locally using QRCode.js - encodes just the freedomId for clean scanning
-    let qrRendered = false;
-    function generateQRCodeForUser(user) {
+    // ── QR CODE ────────────────────────────────────────────────────────────
+    // Renders once per session. Encodes just the freedomId — short, scannable.
+    // Uses a module-level flag so Firestore snapshot updates never re-trigger it.
+    function renderQR(freedomId) {
         if (qrRendered) return;
-
-        // Wait for QRCode library to be ready (it's a regular script tag so should already be loaded)
+        if (!freedomId) return;
         if (typeof QRCode === 'undefined') {
-            console.error('QRCode library not loaded');
+            console.error('[QR] QRCode library not loaded');
             return;
         }
-
-        const freedomId = user.freedomId || `FREEDOM-${new Date().getFullYear()}-${user.uid.slice(-5)}`;
-        const qrContainer = document.getElementById('qrBox');
-
-        // Clear loading icon
-        qrContainer.innerHTML = '';
-
-        QRCode.toCanvas(document.createElement('canvas'), freedomId, {
-            width: 200,
+        const container = document.getElementById('qrBox');
+        container.innerHTML = ''; // clear loading icon
+        const canvas = document.createElement('canvas');
+        QRCode.toCanvas(canvas, freedomId, {
+            width: 180,
             margin: 2,
             color: { dark: '#1a1a2e', light: '#ffffff' },
             errorCorrectionLevel: 'M'
-        }, function(error, canvas) {
-            if (error) {
-                console.error('QR Error:', error);
-                qrContainer.innerHTML = '<p style="color:#aaa;font-size:0.7rem;padding:10px;">QR unavailable</p>';
+        }, (err) => {
+            if (err) {
+                console.error('[QR] generation failed:', err);
+                container.innerHTML = '<p style="color:#aaa;font-size:0.7rem;padding:20px;">QR unavailable</p>';
                 return;
             }
             canvas.style.width = '100%';
             canvas.style.height = '100%';
-            qrContainer.innerHTML = '';
-            qrContainer.appendChild(canvas);
+            container.innerHTML = '';
+            container.appendChild(canvas);
             qrRendered = true;
         });
     }
 
-    // Load user data with real-time updates
+    // ── USER DATA ──────────────────────────────────────────────────────────
+    // Real-time listener on the user doc.
+    // QR is rendered on the FIRST snapshot only (qrRendered flag prevents loops).
+    // No writes happen inside this listener — that's what was causing the infinite loop.
     function loadUserData() {
         if (!currentUser) return;
+        userUnsubscribe = onSnapshot(doc(db, 'users', currentUser.uid), (snap) => {
+            if (!snap.exists()) return;
+            const data = snap.data();
+            const points = data.points || 0;
+            const stamps = data.stamps || [];
+            const level = Math.floor(points / 500) + 1;
 
-        userUnsubscribe = onSnapshot(doc(db, 'users', currentUser.uid), async (snap) => {
-            if (snap.exists()) {
-                const data = snap.data();
-                const points = data.points || 0;
-                const stamps = data.stamps || [];
-                const level = Math.floor(points / 500) + 1;
+            document.getElementById('userPoints').textContent = points;
+            document.getElementById('userStamps').textContent = stamps.length;
+            document.getElementById('userLevel').textContent = level;
+            document.getElementById('profilePoints').textContent = points;
+            document.getElementById('profileStamps').textContent = stamps.length;
+            document.getElementById('profileScans').textContent = data.scansCount || 0;
+            document.getElementById('profileName').textContent = data.displayName || 'Explorer';
+            document.getElementById('profileEmail').textContent = data.email || currentUser.email;
 
-                document.getElementById('userPoints').textContent = points;
-                document.getElementById('userStamps').textContent = stamps.length;
-                document.getElementById('userLevel').textContent = level;
-                document.getElementById('profilePoints').textContent = points;
-                document.getElementById('profileStamps').textContent = stamps.length;
-                document.getElementById('profileScans').textContent = data.scansCount || 0;
-                document.getElementById('profileName').textContent = data.displayName || currentUser.displayName || 'Explorer';
-                document.getElementById('profileEmail').textContent = currentUser.email;
+            const freedomId = data.freedomId || `FREEDOM-${new Date().getFullYear()}-${currentUser.uid.slice(-5)}`;
+            document.getElementById('freedomId').textContent = freedomId;
+            document.getElementById('profileFreedomId').textContent = freedomId;
+            document.getElementById('userName').textContent = `Hello, ${data.displayName || 'Explorer'}`;
 
-                // Update freedom ID display
-                const freedomId = data.freedomId || `FREEDOM-${new Date().getFullYear()}-${currentUser.uid.slice(-5)}`;
-                document.getElementById('freedomId').textContent = freedomId;
-                document.getElementById('profileFreedomId').textContent = freedomId;
-                document.getElementById('userName').textContent = `Hello, ${data.displayName || 'Explorer'}`;
-
-                // Generate QR code once — qrRendered flag prevents re-renders on subsequent snapshots
-                generateQRCodeForUser({
-                    uid: currentUser.uid,
-                    email: currentUser.email,
-                    displayName: data.displayName || currentUser.displayName || 'Explorer',
-                    freedomId
-                });
-            }
+            // Render QR — flag ensures this only runs once
+            renderQR(freedomId);
         });
+    }
+
+    // ── SIGNUP / LOGIN BONUS ───────────────────────────────────────────────
+    // Points (50) are already set in auth.js at account creation.
+    // This function only sends the welcome notification once, using a separate
+    // `welcomeShown` flag so it never awards points twice.
+    async function handleWelcomeBonus() {
+        try {
+            const userRef = doc(db, 'users', currentUser.uid);
+            const snap = await getDoc(userRef);
+            if (!snap.exists()) return;
+            const data = snap.data();
+            if (data.welcomeShown) return; // already done
+
+            await updateDoc(userRef, { welcomeShown: true });
+
+            await addDoc(collection(db, 'notifications'), {
+                userId: currentUser.uid,
+                title: '🎉 Welcome to Freedom 250!',
+                message: `You start with ${data.points || 50} Liberty Coins. Scan booths to earn more!`,
+                type: 'success',
+                read: false,
+                createdAt: serverTimestamp()
+            });
+            showToast(`🎉 Welcome! You have ${data.points || 50} Liberty Coins to start!`, 'success');
+        } catch (err) {
+            console.error('[Welcome] bonus error:', err);
+        }
     }
 
     // Load notifications
@@ -1229,30 +1249,48 @@
         document.getElementById('overlay').classList.remove('active');
     };
 
-    // Show welcome toast for new users (points already awarded in auth.js at signup)
-    async function awardSignupBonus() {
+    // ── DAILY LOGIN BONUS ──────────────────────────────────────────────────
+    // Awards 5 pts for each day a user logs in (once per calendar day).
+    async function handleDailyLoginBonus() {
         try {
             const userRef = doc(db, 'users', currentUser.uid);
-            const userSnap = await getDoc(userRef);
-            const data = userSnap.data() || {};
+            const snap = await getDoc(userRef);
+            if (!snap.exists()) return;
+            const data = snap.data();
 
-            // Only show the welcome toast once — use a separate flag so it
-            // doesn't fire again after the user logs out and back in
-            if (!data.welcomeToastShown) {
-                await updateDoc(userRef, { welcomeToastShown: true });
-                showToast('🎉 Welcome! You start with 50 Liberty Coins!', 'success');
+            const lastBonus = data.lastDailyBonus ? new Date(data.lastDailyBonus).toDateString() : null;
+            const today = new Date().toDateString();
+            if (lastBonus === today) return; // already got today's bonus
 
-                await addDoc(collection(db, 'notifications'), {
-                    userId: currentUser.uid,
-                    title: '🎉 Welcome Bonus!',
-                    message: 'You received 50 Liberty Coins for joining Freedom 250!',
-                    type: 'success',
-                    read: false,
-                    createdAt: serverTimestamp()
-                });
-            }
-        } catch (error) {
-            console.error('Signup bonus error:', error);
+            const streak = (() => {
+                if (!data.lastDailyBonus) return 1;
+                const diff = Math.floor((new Date() - new Date(data.lastDailyBonus)) / 86400000);
+                return diff === 1 ? (data.loginStreak || 1) + 1 : 1;
+            })();
+            const pts = 5 + (streak > 1 ? Math.min(streak * 2, 20) : 0); // streak bonus, capped at +20
+
+            await updateDoc(userRef, {
+                points: increment(pts),
+                lastDailyBonus: new Date().toISOString(),
+                loginStreak: streak
+            });
+
+            await addDoc(collection(db, 'notifications'), {
+                userId: currentUser.uid,
+                title: `🌅 Daily Login Bonus!`,
+                message: streak > 1
+                    ? `🔥 ${streak}-day streak! +${pts} Liberty Coins`
+                    : `+${pts} Liberty Coins for logging in today!`,
+                type: 'success',
+                read: false,
+                createdAt: serverTimestamp()
+            });
+
+            showToast(streak > 1
+                ? `🔥 ${streak}-day streak! +${pts} Liberty Coins`
+                : `+${pts} Liberty Coins daily bonus!`, 'success');
+        } catch (err) {
+            console.error('[DailyBonus] error:', err);
         }
     }
 
@@ -1262,7 +1300,6 @@
             window.location.replace('login.html');
             return;
         }
-
         currentUser = user;
 
         loadUserData();
@@ -1272,7 +1309,12 @@
         loadChallenges();
         loadZones();
         loadRewards();
-        await awardSignupBonus();
+
+        // Run these after a tiny delay so the UI renders first
+        setTimeout(async () => {
+            await handleWelcomeBonus();
+            await handleDailyLoginBonus();
+        }, 500);
     });
 
     // Logout handler
