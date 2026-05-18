@@ -24,6 +24,8 @@ export const ROLES = {
 
 let currentUser = null;
 let authCallbacks = [];
+let authPromise = null;
+let isInitialized = false;
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  ROLE GUARD
@@ -39,7 +41,9 @@ export function validateRoleAccess(userRole, allowedRoles) {
 //  INIT AUTH
 // ─────────────────────────────────────────────────────────────────────────────
 export async function initAuth() {
-  return new Promise((resolve) => {
+  if (authPromise) return authPromise;
+
+  authPromise = new Promise((resolve) => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
@@ -75,6 +79,7 @@ export async function initAuth() {
             ...userData
           };
 
+          isInitialized = true;
           authCallbacks.forEach(cb => cb(currentUser, true));
           resolve(currentUser);
         } catch (err) {
@@ -85,16 +90,20 @@ export async function initAuth() {
             role: ROLES.PARTICIPANT, points: 0,
             freedomId: generateFreedomId(user.uid)
           };
+          isInitialized = true;
           authCallbacks.forEach(cb => cb(currentUser, true));
           resolve(currentUser);
         }
       } else {
         currentUser = null;
+        isInitialized = true;
         authCallbacks.forEach(cb => cb(null, false));
         resolve(null);
       }
     });
   });
+
+  return authPromise;
 }
 
 export function getCurrentUser() { return currentUser; }
@@ -191,7 +200,6 @@ export async function resetPassword(email) {
 export async function signInWithGoogle() {
   try {
     const provider = new GoogleAuthProvider();
-    // Prompting for account selection to ensure it feels responsive
     provider.setCustomParameters({ prompt: 'select_account' });
     
     const userCredential = await signInWithPopup(auth, provider);
@@ -239,9 +247,9 @@ export async function signInWithGoogle() {
   } catch (err) {
     console.error('[Auth] Google sign-in error:', err);
     let msg = 'Google sign in failed.';
-    if (err.code === 'auth/popup-blocked') msg = 'Popup blocked! Please allow popups for this site.';
+    if (err.code === 'auth/popup-blocked') msg = 'Popup blocked! Please allow popups.';
     if (err.code === 'auth/cancelled-popup-request') msg = 'Sign-in cancelled.';
-    if (err.code === 'auth/popup-closed-by-user') msg = 'Sign-in popup closed before completion.';
+    if (err.code === 'auth/popup-closed-by-user') msg = 'Sign-in closed.';
     return { success: false, error: msg };
   }
 }
@@ -262,7 +270,7 @@ export async function signOutUser() {
 
 export function onAuthStateChange(callback) {
   authCallbacks.push(callback);
-  if (currentUser !== null) callback(currentUser, true);
+  if (isInitialized) callback(currentUser, currentUser !== null);
 }
 
 export function getDashboardPath(user) {
@@ -277,14 +285,21 @@ export function getDashboardPath(user) {
 }
 
 export async function guardDashboard(requiredRoles) {
-  const user = currentUser;
+  // Wait for auth to initialize before making a decision
+  const user = await initAuth();
+  
   if (!user) {
+    console.warn('[Guard] No user found, redirecting to login');
     window.location.replace('login.html');
     return false;
   }
+  
   if (requiredRoles && !validateRoleAccess(user.role, requiredRoles)) {
-    window.location.replace(getDashboardPath(user));
+    const correctPath = getDashboardPath(user);
+    console.warn(`[Guard] Role ${user.role} not allowed for this page. Redirecting to ${correctPath}`);
+    window.location.replace(correctPath);
     return false;
   }
+  
   return true;
 }
