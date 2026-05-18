@@ -802,52 +802,40 @@
         setTimeout(() => toast.remove(), 4000);
     }
 
-    // Generate QR Code using QRCode.js library - called once per session
+    // Generate QR Code locally using QRCode.js - encodes just the freedomId for clean scanning
     let qrRendered = false;
-    async function generateQRCodeForUser(user) {
-        if (qrRendered) return true; // prevent re-rendering on every snapshot update
-        try {
-            const qrData = JSON.stringify({
-                uid: user.uid,
-                name: user.displayName,
-                email: user.email,
-                freedomId: user.freedomId,
-                timestamp: Date.now()
-            });
+    function generateQRCodeForUser(user) {
+        if (qrRendered) return;
 
-            const qrContainer = document.getElementById('qrBox');
-            qrContainer.innerHTML = '';
-
-            const canvas = document.createElement('canvas');
-            canvas.width = 200;
-            canvas.height = 200;
-            qrContainer.appendChild(canvas);
-
-            await new Promise((resolve, reject) => {
-                QRCode.toCanvas(canvas, qrData, {
-                    width: 200,
-                    margin: 2,
-                    color: {
-                        dark: '#1a1a2e',
-                        light: '#ffffff'
-                    }
-                }, function(error) {
-                    if (error) {
-                        console.error('QR Error:', error);
-                        qrContainer.innerHTML = '<i class="fas fa-qrcode" style="font-size: 2.5rem; color: #ccc;"></i>';
-                        reject(error);
-                    } else {
-                        qrRendered = true;
-                        resolve();
-                    }
-                });
-            });
-
-            return true;
-        } catch (error) {
-            console.error('QR Generation Error:', error);
-            return false;
+        // Wait for QRCode library to be ready (it's a regular script tag so should already be loaded)
+        if (typeof QRCode === 'undefined') {
+            console.error('QRCode library not loaded');
+            return;
         }
+
+        const freedomId = user.freedomId || `FREEDOM-${new Date().getFullYear()}-${user.uid.slice(-5)}`;
+        const qrContainer = document.getElementById('qrBox');
+
+        // Clear loading icon
+        qrContainer.innerHTML = '';
+
+        QRCode.toCanvas(document.createElement('canvas'), freedomId, {
+            width: 200,
+            margin: 2,
+            color: { dark: '#1a1a2e', light: '#ffffff' },
+            errorCorrectionLevel: 'M'
+        }, function(error, canvas) {
+            if (error) {
+                console.error('QR Error:', error);
+                qrContainer.innerHTML = '<p style="color:#aaa;font-size:0.7rem;padding:10px;">QR unavailable</p>';
+                return;
+            }
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            qrContainer.innerHTML = '';
+            qrContainer.appendChild(canvas);
+            qrRendered = true;
+        });
     }
 
     // Load user data with real-time updates
@@ -877,7 +865,7 @@
                 document.getElementById('userName').textContent = `Hello, ${data.displayName || 'Explorer'}`;
 
                 // Generate QR code once — qrRendered flag prevents re-renders on subsequent snapshots
-                await generateQRCodeForUser({
+                generateQRCodeForUser({
                     uid: currentUser.uid,
                     email: currentUser.email,
                     displayName: data.displayName || currentUser.displayName || 'Explorer',
