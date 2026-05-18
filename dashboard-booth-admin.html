@@ -8,110 +8,280 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --red: #B22234; --navy: #1a1a2e; --gold: #FFD700;
-            --bg: #f0f2f5; --white: #fff; --radius: 20px;
+            --red: #B22234;
+            --navy: #1a1a2e;
+            --gold: #FFD700;
+            --bg: #f0f2f5;
+            --white: #fff;
+            --radius: 20px;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Inter',sans-serif; background:var(--bg); color: #1a1a2e; }
-        .app { max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:100px; position: relative; }
+        .app { max-width: 480px; margin: 0 auto; min-height: 100vh; padding-bottom: 100px; position: relative; }
 
-        /* ── HEADER ── */
+        /* Header */
         .header {
             background: linear-gradient(135deg, var(--navy) 0%, #16213e 100%);
-            color: #fff; padding: 25px 20px; position: relative; overflow: hidden;
+            color: #fff;
+            padding: 25px 20px;
+            position: relative;
+            overflow: hidden;
         }
         .header::before {
-            content: "⛺"; position: absolute; right: -15px; top: -15px;
-            font-size: 100px; opacity: 0.1;
+            content: "⛺";
+            position: absolute;
+            right: -15px;
+            top: -15px;
+            font-size: 100px;
+            opacity: 0.1;
         }
         .badge {
-            display: inline-block; background: rgba(255, 215, 0, 0.15);
-            border: 1px solid var(--gold); padding: 4px 12px; border-radius: 20px;
-            font-size: .65rem; margin-bottom: 12px; font-weight: 700; letter-spacing: 0.5px;
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.15);
+            border: 1px solid var(--gold);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: .65rem;
+            margin-bottom: 12px;
+            font-weight: 700;
         }
         .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
         .header p { font-size: .75rem; opacity: .7; }
 
-        /* ── STATS ROW ── */
+        /* Stats */
         .stats-row {
-            display: flex; gap: 10px; padding: 0 15px; margin-top: -25px;
+            display: flex;
+            gap: 10px;
+            padding: 0 15px;
+            margin-top: -25px;
         }
         .stat-card {
-            background: var(--white); border-radius: 18px; padding: 15px 10px;
-            text-align: center; flex: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            background: var(--white);
+            border-radius: 18px;
+            padding: 15px 10px;
+            text-align: center;
+            flex: 1;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
         .stat-card .val { font-size: 1.3rem; font-weight: 800; color: var(--red); display: block; }
         .stat-card .lbl { font-size: .6rem; color: #888; text-transform: uppercase; margin-top: 4px; }
 
-        /* ── SECTIONS ── */
+        /* Sections */
         .section-hdr {
-            padding: 0 20px; margin: 25px 0 12px;
-            display: flex; justify-content: space-between; align-items: baseline;
+            padding: 0 20px;
+            margin: 25px 0 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
         }
         .section-hdr h2 { font-size: 1rem; color: var(--navy); font-weight: 800; }
-        
+        .section-link { font-size: 0.7rem; color: var(--red); cursor: pointer; }
+
         .card {
-            background: var(--white); border-radius: var(--radius); margin: 0 15px 12px;
-            padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: var(--white);
+            border-radius: var(--radius);
+            margin: 0 15px 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        /* ── LIST ITEMS ── */
+        /* List Items */
         .list-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 0; border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
         }
         .list-item:last-child { border-bottom: none; }
         .item-info h4 { font-size: .85rem; font-weight: 700; color: var(--navy); }
         .item-info p { font-size: .7rem; color: #777; margin-top: 2px; }
         .item-val { font-weight: 800; color: var(--red); font-size: .9rem; }
 
-        /* ── FORMS ── */
+        /* Forms */
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: .75rem; font-weight: 700; margin-bottom: 6px; color: #555; }
         .form-group input, .form-group textarea, .form-group select {
-            width: 100%; padding: 12px 16px; border-radius: 14px;
-            border: 1px solid #ddd; font-family: inherit; font-size: .9rem;
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1px solid #ddd;
+            font-family: inherit;
+            font-size: .9rem;
         }
         .btn-full {
-            width: 100%; padding: 14px; border-radius: 14px; border: none;
-            background: var(--navy); color: #fff; font-weight: 700;
-            cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            background: var(--navy);
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         .btn-full:active { transform: scale(0.98); }
         .btn-red { background: var(--red); }
+        .btn-success { background: var(--success); }
+        .btn-warning { background: var(--warning); }
 
-        /* ── SCANNER ── */
+        /* Scanner */
         .scanner-preview {
-            background: #f8f8fb; height: 160px; border-radius: 20px;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 15px; border: 2px dashed #ddd;
+            background: #f8f8fb;
+            height: 200px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            border: 2px dashed #ddd;
+            overflow: hidden;
+            position: relative;
         }
+        #reader video { width: 100% !important; height: 100% !important; object-fit: cover; }
 
-        /* ── NAVIGATION ── */
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: var(--white); display: flex; justify-content: space-around;
-            padding: 12px 10px 25px; border-top: 1px solid #eee;
-            max-width: 480px; margin: 0 auto; z-index: 1000;
+        /* Challenge Cards */
+        .challenge-card, .mission-card {
+            background: #f8f9fa;
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--red);
         }
-        .nav-item { text-align: center; color: #aaa; font-size: .65rem; cursor: pointer; }
+        .challenge-card h4, .mission-card h4 { font-size: 0.9rem; margin-bottom: 6px; }
+        .challenge-card p, .mission-card p { font-size: 0.75rem; color: #666; }
+        .challenge-actions { display: flex; gap: 8px; margin-top: 10px; }
+        .badge-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .badge-active { background: var(--success); color: #fff; }
+        .badge-pending { background: var(--warning); color: #fff; }
+        .badge-completed { background: #6c757d; color: #fff; }
+
+        /* Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 10px 25px;
+            border-top: 1px solid #eee;
+            max-width: 480px;
+            margin: 0 auto;
+            z-index: 1000;
+        }
+        .nav-item {
+            text-align: center;
+            color: #aaa;
+            font-size: .65rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
         .nav-item.active { color: var(--red); }
         .nav-item i { font-size: 1.3rem; display: block; margin-bottom: 4px; }
 
+        /* Pages */
         .page { display: none; }
         .page.active { display: block; }
 
-        /* ── TOAST ── */
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: var(--white);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 24px;
+        }
+        .modal-content h3 { margin-bottom: 16px; color: var(--navy); }
+        .modal-close {
+            float: right;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #999;
+        }
+
+        /* Toast */
         #toastContainer {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 40px); max-width: 400px; z-index: 9999;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 400px;
+            z-index: 9999;
         }
         .toast {
-            background: var(--navy); color: #fff; padding: 14px 20px; border-radius: 12px;
-            margin-bottom: 10px; font-size: .85rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease;
+            background: var(--navy);
+            color: #fff;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: .85rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
         }
-        @keyframes slideIn { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .toast.success { background: var(--success); }
+        .toast.error { background: #dc2626; }
+        @keyframes slideIn {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Tabs inside page */
+        .sub-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 0 15px 12px;
+            overflow-x: auto;
+        }
+        .sub-tab {
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: #e8e8e8;
+            color: #555;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .sub-tab.active {
+            background: var(--red);
+            color: #fff;
+        }
+        .sub-panel { display: none; }
+        .sub-panel.active { display: block; }
     </style>
 </head>
 <body>
@@ -123,23 +293,23 @@
     <header class="header">
         <div class="badge" id="assignedBooth">BOOTH OPERATOR</div>
         <h1 id="adminName">Loading...</h1>
-        <p>Booth Operations & Lead Capture</p>
+        <p>Booth Operations, Challenges & Engagement</p>
         <div style="position: absolute; top: 25px; right: 20px; display: flex; gap: 8px;">
             <a href="index.html" style="color: #fff; background: rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 12px; text-decoration: none; font-size: .7rem; font-weight: 700;">Home</a>
             <button id="logoutBtn" style="background: var(--red); color: #fff; border: none; padding: 8px 14px; border-radius: 12px; font-weight: 700; font-size: .7rem; cursor: pointer;">Exit</button>
         </div>
     </header>
 
-    <!-- Global Stats -->
+    <!-- Stats -->
     <div class="stats-row">
         <div class="stat-card"><span class="val" id="todayVisitors">0</span><span class="lbl">Visitors</span></div>
         <div class="stat-card"><span class="val" id="totalPointsAwarded">0</span><span class="lbl">Coins Issued</span></div>
-        <div class="stat-card"><span class="val" id="dwellTime">0m</span><span class="lbl">Avg Dwell</span></div>
+        <div class="stat-card"><span class="val" id="activeChallenges">0</span><span class="lbl">Active Challenges</span></div>
     </div>
 
     <!-- ═══ SCAN PAGE ═══ -->
-    <div id="pg-home" class="page active">
-        <div class="section-hdr"><h2>📸 Scan Participant</h2></div>
+    <div id="pg-scan" class="page active">
+        <div class="section-hdr"><h2>📸 Scan Participant QR</h2></div>
         <div class="card">
             <div class="scanner-preview" id="reader">
                 <i class="fas fa-qrcode" style="font-size: 3rem; color: #ccc;"></i>
@@ -150,19 +320,119 @@
         <div class="section-hdr"><h2>✏️ Manual Check-in</h2></div>
         <div class="card">
             <div class="form-group">
-                <label>Participant ID or Email</label>
-                <input type="text" id="manualId" placeholder="e.g. F250-XXXX">
+                <label>Participant ID, Email, or Freedom ID</label>
+                <input type="text" id="manualId" placeholder="e.g., FREEDOM-2026-12345 or email@example.com">
             </div>
-            <div style="display: flex; gap: 8px;">
-                <button class="btn-full" id="manualVerifyBtn" style="flex: 2;">Verify & Award</button>
-                <button class="btn-full btn-red" id="deductPointsBtn" style="flex: 1; font-size: .75rem;">Deduct</button>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn-full" id="manualVerifyBtn" style="flex: 2;"><i class="fas fa-check"></i> Award 50 pts</button>
+                <button class="btn-full btn-red" id="deductPointsBtn" style="flex: 1;"><i class="fas fa-minus"></i> Deduct</button>
+            </div>
+        </div>
+
+        <!-- Recent Scans -->
+        <div class="section-hdr"><h2>🕐 Recent Scans</h2></div>
+        <div class="card" id="recentScansList">
+            <p style="text-align: center; color: #999; font-size: .8rem;">No scans yet</p>
+        </div>
+    </div>
+
+    <!-- ═══ CHALLENGES & MISSIONS PAGE ═══ -->
+    <div id="pg-challenges" class="page">
+        <div class="section-hdr"><h2>🎯 Booth Challenges</h2></div>
+
+        <div class="sub-tabs">
+            <button class="sub-tab active" data-sub="active-challenges">Active</button>
+            <button class="sub-tab" data-sub="create-challenge">Create New</button>
+            <button class="sub-tab" data-sub="missions">Missions</button>
+        </div>
+
+        <!-- Active Challenges -->
+        <div id="sub-active-challenges" class="sub-panel active">
+            <div id="activeChallengesList" class="card">
+                <p style="text-align: center; color: #999; font-size: .8rem;">No active challenges</p>
+            </div>
+        </div>
+
+        <!-- Create Challenge -->
+        <div id="sub-create-challenge" class="sub-panel">
+            <div class="card">
+                <div class="form-group">
+                    <label>Challenge Title</label>
+                    <input type="text" id="newChallengeTitle" placeholder="e.g., Photo Contest">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="newChallengeDesc" rows="2" placeholder="Describe the challenge..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Points Reward</label>
+                    <input type="number" id="newChallengePoints" value="100">
+                </div>
+                <div class="form-group">
+                    <label>Duration (hours)</label>
+                    <input type="number" id="newChallengeDuration" value="24" placeholder="Leave empty for unlimited">
+                </div>
+                <button class="btn-full btn-success" id="createChallengeBtn"><i class="fas fa-plus"></i> Create Challenge</button>
+            </div>
+        </div>
+
+        <!-- Missions -->
+        <div id="sub-missions" class="sub-panel">
+            <div class="card">
+                <div class="form-group">
+                    <label>Mission Title</label>
+                    <input type="text" id="newMissionTitle" placeholder="e.g., Complete All Zones">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="newMissionDesc" rows="2" placeholder="Mission description..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Requirements (comma separated)</label>
+                    <input type="text" id="missionRequirements" placeholder="garage,launchpad,varsity">
+                </div>
+                <div class="form-group">
+                    <label>Reward Points</label>
+                    <input type="number" id="newMissionPoints" value="500">
+                </div>
+                <button class="btn-full btn-warning" id="createMissionBtn"><i class="fas fa-flag-checkered"></i> Create Mission</button>
+            </div>
+            <div id="missionsList" class="card">
+                <p style="text-align: center; color: #999; font-size: .8rem;">No missions created</p>
             </div>
         </div>
     </div>
 
-    <!-- ═══ LEADS PAGE ═══ -->
+    <!-- ═══ BROADCAST & NOTIFICATIONS PAGE ═══ -->
+    <div id="pg-broadcast" class="page">
+        <div class="section-hdr"><h2>📢 Booth Broadcast</h2></div>
+        <div class="card">
+            <div class="form-group">
+                <label>Message Title</label>
+                <input type="text" id="broadcastTitle" placeholder="e.g., Special Announcement">
+            </div>
+            <div class="form-group">
+                <label>Message Content</label>
+                <textarea id="broadcastMessage" rows="3" placeholder="Message to send to participants..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Send to</label>
+                <select id="broadcastAudience">
+                    <option value="all">All Participants</option>
+                    <option value="visited">Past Visitors of This Booth</option>
+                    <option value="active">Currently Active Users</option>
+                </select>
+            </div>
+            <button class="btn-full btn-red" id="sendBroadcastBtn"><i class="fas fa-bullhorn"></i> Send Broadcast</button>
+        </div>
+
+        <div class="section-hdr"><h2>📋 Announcement History</h2></div>
+        <div class="card" id="announcementsHistory"></div>
+    </div>
+
+    <!-- ═══ LEADS & ANALYTICS PAGE ═══ -->
     <div id="pg-leads" class="page">
-        <div class="section-hdr"><h2>👥 Captured Leads</h2></div>
+        <div class="section-hdr"><h2>👥 Visitor Leads</h2></div>
         <div class="card">
             <div class="form-group">
                 <input type="text" id="leadSearch" placeholder="Search visitors...">
@@ -173,187 +443,624 @@
             <button class="btn-full" style="margin-top: 15px;" id="exportLeadsBtn"><i class="fas fa-file-export"></i> Export Leads (CSV)</button>
         </div>
 
-        <div class="section-hdr"><h2>💬 Engagement</h2></div>
-        <div class="card">
-            <div class="form-group">
-                <label>Bulk Message to Visitors</label>
-                <textarea id="bulkMsg" placeholder="Thank them for visiting or share an offer..." rows="3"></textarea>
+        <div class="section-hdr"><h2>📊 Booth Performance</h2></div>
+        <div class="card" id="performanceStats">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <span>Peak Hour:</span><strong id="peakHour">--</strong>
             </div>
-            <button class="btn-full btn-red" id="sendBulkBtn">Send Template Email</button>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <span>Avg Points per Visitor:</span><strong id="avgPoints">--</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <span>Return Visitors:</span><strong id="returnVisitors">--</strong>
+            </div>
         </div>
     </div>
 
-    <!-- ═══ BOOTH PAGE (Challenges & Rewards) ═══ -->
-    <div id="pg-booth" class="page">
-        <div class="section-hdr"><h2>🔥 Booth Challenges</h2></div>
-        <div class="card">
-            <div class="form-group">
-                <label>Active Challenge</label>
-                <select id="activeChallengeSelect">
-                    <option value="">No Active Challenge</option>
-                    <option value="photo">Photo Contest (150 pts)</option>
-                    <option value="trivia">Booth Trivia (100 pts)</option>
-                </select>
-            </div>
-            <button class="btn-full" id="updateChallengeBtn">Update Live Challenge</button>
-        </div>
-
-        <div class="section-hdr"><h2>🎁 Booth Rewards</h2></div>
-        <div class="card" id="boothRewardsList">
-            <!-- Rewards with claim buttons -->
-        </div>
-
-        <div class="section-hdr"><h2>🏆 Booth Leaderboard</h2></div>
-        <div class="card" id="boothLeaderboard">
-            <!-- Top visitors to this booth -->
-        </div>
-    </div>
-
-    <!-- ── NAVIGATION ── -->
+    <!-- Navigation -->
     <nav class="bottom-nav">
-        <div class="nav-item active" data-pg="home" onclick="showPage('home')"><i class="fas fa-qrcode"></i>Scan</div>
+        <div class="nav-item active" data-pg="scan" onclick="showPage('scan')"><i class="fas fa-qrcode"></i>Scan</div>
+        <div class="nav-item" data-pg="challenges" onclick="showPage('challenges')"><i class="fas fa-trophy"></i>Challenges</div>
+        <div class="nav-item" data-pg="broadcast" onclick="showPage('broadcast')"><i class="fas fa-bullhorn"></i>Broadcast</div>
         <div class="nav-item" data-pg="leads" onclick="showPage('leads')"><i class="fas fa-users"></i>Leads</div>
-        <div class="nav-item" data-pg="booth" onclick="showPage('booth')"><i class="fas fa-store"></i>Booth</div>
     </nav>
+</div>
+
+<!-- Modal for Challenge Completion -->
+<div id="challengeModal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeChallengeModal()">&times;</span>
+        <h3 id="modalChallengeTitle">Challenge Complete!</h3>
+        <p id="modalChallengeDesc"></p>
+        <div id="modalParticipantsList"></div>
+        <button class="btn-full btn-success" onclick="completeChallenge()" style="margin-top: 16px;">Award Points</button>
+    </div>
 </div>
 
 <script src="https://unpkg.com/html5-qrcode@2.3.7/html5-qrcode.min.js"></script>
 <script type="module">
-    import { guardDashboard, signOutUser, onAuthStateChange } from './js/auth.js';
-    import { db, doc, getDoc, updateDoc, setDoc, collection, query, where, orderBy, limit, onSnapshot, increment, serverTimestamp, addDoc, getDocs } from './js/firebase-config.js';
+    import { guardDashboard, signOutUser, onAuthStateChange, getCurrentUser } from './js/auth.js';
+    import { db, doc, getDoc, updateDoc, setDoc, collection, query, where, orderBy, limit, onSnapshot, increment, serverTimestamp, addDoc, getDocs, arrayUnion, deleteDoc } from './js/firebase-config.js';
 
     await guardDashboard(['booth_admin', 'admin']);
 
     let currentUser = null;
     let scanner = null;
-    let assignedBoothId = null;
+    let boothId = null;
+    let boothName = null;
+    let activeChallengesUnsubscribe = null;
+    let missionsUnsubscribe = null;
 
-    onAuthStateChange((user) => {
-        if (!user) return;
-        currentUser = user;
-        document.getElementById('adminName').textContent = user.displayName || 'Booth Admin';
-        assignedBoothId = (user.assignedZone || 'main_tent').toLowerCase().replace(/\s+/g, '_');
-        document.getElementById('assignedBooth').textContent = `ZONE: ${user.assignedZone || 'GENERAL'}`;
-        
-        initBoothData();
-    });
-
-    function showToast(msg) {
+    function showToast(msg, type = 'success') {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${msg}`;
         container.appendChild(toast);
         setTimeout(() => toast.remove(), 4000);
     }
 
+    onAuthStateChange(async (user) => {
+        if (!user) return;
+        currentUser = user;
+
+        // Get booth assignment from user profile or create one
+        boothId = user.assignedBoothId || user.uid;
+        boothName = user.assignedBoothName || user.displayName?.split(' ')[0] + "'s Booth" || 'Booth';
+
+        document.getElementById('adminName').textContent = `${boothName} Operator`;
+        document.getElementById('assignedBooth').textContent = `BOOTH: ${boothName.toUpperCase()}`;
+
+        // Initialize booth in database if not exists
+        const boothRef = doc(db, 'booths', boothId);
+        const boothSnap = await getDoc(boothRef);
+        if (!boothSnap.exists()) {
+            await setDoc(boothRef, {
+                id: boothId,
+                name: boothName,
+                scans: 0,
+                totalPointsAwarded: 0,
+                createdAt: serverTimestamp(),
+                createdBy: currentUser.uid
+            });
+        }
+
+        initBoothData();
+        loadActiveChallenges();
+        loadMissions();
+        loadAnnouncements();
+        loadRecentScans();
+    });
+
     function initBoothData() {
-        // Stats
-        onSnapshot(doc(db, 'boothCounts', assignedBoothId), (snapshot) => {
+        // Booth stats
+        onSnapshot(doc(db, 'booths', boothId), (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.data();
                 document.getElementById('todayVisitors').textContent = data.scans || 0;
-                document.getElementById('totalPointsAwarded').textContent = (data.scans || 0) * 50;
+                document.getElementById('totalPointsAwarded').textContent = data.totalPointsAwarded || 0;
             }
         });
 
-        // Leads List
-        const q = query(collection(db, 'scans'), where('booth', '==', currentUser.assignedZone || 'GENERAL'), orderBy('timestamp', 'desc'), limit(50));
-        onSnapshot(q, (snapshot) => {
+        // Active challenges count
+        const challengesQuery = query(
+            collection(db, 'boothChallenges'),
+            where('boothId', '==', boothId),
+            where('status', '==', 'active')
+        );
+        onSnapshot(challengesQuery, (snapshot) => {
+            document.getElementById('activeChallenges').textContent = snapshot.size;
+        });
+
+        // Leads/Scans list
+        const scansQuery = query(
+            collection(db, 'scans'),
+            where('boothId', '==', boothId),
+            orderBy('scannedAt', 'desc'),
+            limit(50)
+        );
+        onSnapshot(scansQuery, (snapshot) => {
             const list = document.getElementById('leadsList');
-            if (snapshot.empty) return;
+            if (snapshot.empty) {
+                list.innerHTML = '<p style="text-align: center; color: #999; font-size: .8rem; padding: 10px;">No leads captured yet.</p>';
+                return;
+            }
             list.innerHTML = snapshot.docs.map(doc => {
                 const data = doc.data();
                 return `
                     <div class="list-item">
                         <div class="item-info">
                             <h4>${data.userName || 'Anonymous'}</h4>
-                            <p>${data.timestamp?.toDate().toLocaleTimeString()} · Visit #${data.visitCount || 1}</p>
+                            <p>${data.userEmail || 'No email'} · ${data.scannedAt?.toDate().toLocaleTimeString() || 'Just now'}</p>
                         </div>
-                        <button onclick="messageLead('${data.userId}')" style="background:none;border:none;color:var(--red)"><i class="fas fa-envelope"></i></button>
+                        <div class="item-val">+${data.pointsAwarded || 50} pts</div>
                     </div>
                 `;
             }).join('');
         });
 
-        // Booth Leaderboard
-        // This would require a more complex query or pre-aggregated data
-        // For now, we show recent high-scorers who visited this booth
-        document.getElementById('boothLeaderboard').innerHTML = '<p style="text-align:center;font-size:.8rem;color:#999;">Updating rankings...</p>';
+        // Performance stats
+        calculatePerformanceStats();
     }
 
-    async function processAward(uid, deduct = false) {
-        try {
-            const points = deduct ? -50 : 50;
-            const userRef = doc(db, 'users', uid);
-            const userSnap = await getDoc(userRef);
-            if (!userSnap.exists()) throw new Error('Participant not found');
+    async function calculatePerformanceStats() {
+        const scansSnapshot = await getDocs(query(collection(db, 'scans'), where('boothId', '==', boothId)));
+        const scans = [];
+        scansSnapshot.forEach(doc => scans.push(doc.data()));
 
-            const userData = userSnap.data();
+        // Peak hour
+        const hourCounts = {};
+        scans.forEach(s => {
+            if (s.scannedAt?.toDate) {
+                const hour = s.scannedAt.toDate().getHours();
+                hourCounts[hour] = (hourCounts[hour] || 0) + 1;
+            }
+        });
+        let peakHour = '--';
+        let maxCount = 0;
+        for (const [hour, count] of Object.entries(hourCounts)) {
+            if (count > maxCount) {
+                maxCount = count;
+                peakHour = `${hour}:00`;
+            }
+        }
+        document.getElementById('peakHour').textContent = peakHour;
+
+        // Avg points
+        const totalPoints = scans.reduce((sum, s) => sum + (s.pointsAwarded || 0), 0);
+        const avgPoints = scans.length > 0 ? Math.round(totalPoints / scans.length) : 0;
+        document.getElementById('avgPoints').textContent = avgPoints;
+
+        // Return visitors
+        const uniqueUsers = new Set(scans.map(s => s.userId));
+        const returnCount = scans.length - uniqueUsers.size;
+        document.getElementById('returnVisitors').textContent = returnCount;
+    }
+
+    function loadActiveChallenges() {
+        if (activeChallengesUnsubscribe) activeChallengesUnsubscribe();
+
+        const q = query(
+            collection(db, 'boothChallenges'),
+            where('boothId', '==', boothId),
+            where('status', '==', 'active'),
+            orderBy('createdAt', 'desc')
+        );
+
+        activeChallengesUnsubscribe = onSnapshot(q, (snapshot) => {
+            const container = document.getElementById('activeChallengesList');
+            if (snapshot.empty) {
+                container.innerHTML = '<p style="text-align: center; color: #999; font-size: .8rem; padding: 20px;">No active challenges. Create one!</p>';
+                return;
+            }
+
+            container.innerHTML = snapshot.docs.map(doc => {
+                const challenge = doc.data();
+                const expiresIn = challenge.expiresAt?.toDate ?
+                    Math.max(0, Math.ceil((challenge.expiresAt.toDate() - new Date()) / (1000 * 60 * 60))) + 'h' :
+                    'Unlimited';
+                return `
+                    <div class="challenge-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4>${challenge.title}</h4>
+                            <span class="badge-pill badge-active">Active · ${expiresIn}</span>
+                        </div>
+                        <p>${challenge.description || 'No description'}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                            <span class="item-val">🎁 ${challenge.points} pts</span>
+                            <div class="challenge-actions">
+                                <button class="btn-success" style="padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer;" onclick="completeChallengeForUser('${doc.id}', ${challenge.points}, '${challenge.title}')">
+                                    <i class="fas fa-trophy"></i> Award to User
+                                </button>
+                                <button class="btn-red" style="padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; background: #dc2626;" onclick="endChallenge('${doc.id}')">
+                                    <i class="fas fa-stop"></i> End
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        });
+    }
+
+    window.completeChallengeForUser = (challengeId, points, title) => {
+        const userId = prompt('Enter participant ID or email to award points for completing: ' + title);
+        if (userId) {
+            processAward(userId, points, `Completed challenge: ${title}`);
+        }
+    };
+
+    window.endChallenge = async (challengeId) => {
+        if (confirm('End this challenge?')) {
+            await updateDoc(doc(db, 'boothChallenges', challengeId), {
+                status: 'ended',
+                endedAt: serverTimestamp()
+            });
+            showToast('Challenge ended', 'success');
+        }
+    };
+
+    function loadMissions() {
+        if (missionsUnsubscribe) missionsUnsubscribe();
+
+        const q = query(
+            collection(db, 'missions'),
+            where('boothId', '==', boothId),
+            orderBy('createdAt', 'desc')
+        );
+
+        missionsUnsubscribe = onSnapshot(q, (snapshot) => {
+            const container = document.getElementById('missionsList');
+            if (snapshot.empty) {
+                container.innerHTML = '<p style="text-align: center; color: #999; font-size: .8rem; padding: 20px;">No missions created</p>';
+                return;
+            }
+
+            container.innerHTML = snapshot.docs.map(doc => {
+                const mission = doc.data();
+                return `
+                    <div class="challenge-card">
+                        <div style="display: flex; justify-content: space-between;">
+                            <h4>${mission.title}</h4>
+                            <span class="badge-pill ${mission.status === 'active' ? 'badge-active' : 'badge-completed'}">${mission.status || 'active'}</span>
+                        </div>
+                        <p>${mission.description}</p>
+                        <p style="font-size: 0.7rem; color: #666;">Requirements: ${mission.requirements?.join(', ') || 'None'}</p>
+                        <div class="item-val">🎁 ${mission.points} pts</div>
+                    </div>
+                `;
+            }).join('');
+        });
+    }
+
+    function loadAnnouncements() {
+        const q = query(
+            collection(db, 'announcements'),
+            where('boothId', '==', boothId),
+            orderBy('createdAt', 'desc'),
+            limit(20)
+        );
+
+        onSnapshot(q, (snapshot) => {
+            const container = document.getElementById('announcementsHistory');
+            if (snapshot.empty) {
+                container.innerHTML = '<p style="text-align: center; color: #999; font-size: .8rem; padding: 20px;">No announcements yet</p>';
+                return;
+            }
+
+            container.innerHTML = snapshot.docs.map(doc => {
+                const ann = doc.data();
+                return `
+                    <div class="list-item">
+                        <div class="item-info">
+                            <h4>${ann.title}</h4>
+                            <p>${ann.message}</p>
+                            <small>${ann.createdAt?.toDate().toLocaleString() || 'Just now'}</small>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        });
+    }
+
+    function loadRecentScans() {
+        const q = query(
+            collection(db, 'scans'),
+            where('boothId', '==', boothId),
+            orderBy('scannedAt', 'desc'),
+            limit(10)
+        );
+
+        onSnapshot(q, (snapshot) => {
+            const container = document.getElementById('recentScansList');
+            if (snapshot.empty) {
+                container.innerHTML = '<p style="text-align: center; color: #999; font-size: .8rem; padding: 10px;">No scans yet</p>';
+                return;
+            }
+
+            container.innerHTML = snapshot.docs.map(doc => {
+                const data = doc.data();
+                return `
+                    <div class="list-item">
+                        <div class="item-info">
+                            <h4>${data.userName || 'Anonymous'}</h4>
+                            <p>${data.userEmail || 'No email'} · ${data.scannedAt?.toDate().toLocaleTimeString() || 'Just now'}</p>
+                        </div>
+                        <div class="item-val">${data.pointsAwarded > 0 ? '+' : ''}${data.pointsAwarded || 0} pts</div>
+                    </div>
+                `;
+            }).join('');
+        });
+    }
+
+    async function processAward(identifier, customPoints = null, reason = null) {
+        try {
+            // Find user by email, freedomId, or uid
+            let userId = identifier;
+            let userData = null;
+
+            // Check if it's an email
+            if (identifier.includes('@')) {
+                const usersQuery = query(collection(db, 'users'), where('email', '==', identifier));
+                const usersSnap = await getDocs(usersQuery);
+                if (!usersSnap.empty) {
+                    userId = usersSnap.docs[0].id;
+                    userData = usersSnap.docs[0].data();
+                }
+            } else if (identifier.startsWith('FREEDOM-')) {
+                const usersQuery = query(collection(db, 'users'), where('freedomId', '==', identifier));
+                const usersSnap = await getDocs(usersQuery);
+                if (!usersSnap.empty) {
+                    userId = usersSnap.docs[0].id;
+                    userData = usersSnap.docs[0].data();
+                }
+            } else {
+                // Try as direct UID
+                const userSnap = await getDoc(doc(db, 'users', identifier));
+                if (userSnap.exists()) {
+                    userData = userSnap.data();
+                }
+            }
+
+            if (!userData) {
+                showToast('Participant not found', 'error');
+                return;
+            }
+
+            const points = customPoints !== null ? customPoints : 50;
+            const pointsToAward = points;
 
             // Update user
-            await updateDoc(userRef, {
-                points: increment(points),
-                stamps: Array.from(new Set([...(userData.stamps || []), currentUser.assignedZone || 'GENERAL']))
+            await updateDoc(doc(db, 'users', userId), {
+                points: increment(pointsToAward),
+                lastScanAt: serverTimestamp(),
+                scansCount: increment(1)
             });
 
-            // Log scan
+            // Add stamps for this booth
+            const currentStamps = userData.stamps || [];
+            if (!currentStamps.includes(boothId)) {
+                await updateDoc(doc(db, 'users', userId), {
+                    stamps: arrayUnion(boothId)
+                });
+            }
+
+            // Record scan
             await addDoc(collection(db, 'scans'), {
-                userId: uid,
+                userId: userId,
                 userName: userData.displayName || userData.email,
-                booth: currentUser.assignedZone || 'GENERAL',
-                points: points,
-                timestamp: serverTimestamp()
+                userEmail: userData.email,
+                boothId: boothId,
+                boothName: boothName,
+                scannedBy: currentUser.uid,
+                pointsAwarded: pointsToAward,
+                reason: reason || 'Booth visit',
+                scannedAt: serverTimestamp()
             });
 
             // Update booth stats
-            const boothRef = doc(db, 'boothCounts', assignedBoothId);
-            await setDoc(boothRef, {
-                name: currentUser.assignedZone || 'GENERAL',
-                scans: increment(deduct ? 0 : 1),
-                lastScan: serverTimestamp()
-            }, { merge: true });
+            await updateDoc(doc(db, 'booths', boothId), {
+                scans: increment(1),
+                totalPointsAwarded: increment(pointsToAward),
+                lastScanAt: serverTimestamp()
+            });
 
-            showToast(`${deduct ? 'Deducted' : 'Awarded'} coins to ${userData.displayName || 'Participant'}`);
+            // Send notification to participant
+            await addDoc(collection(db, 'notifications'), {
+                userId: userId,
+                title: `🎉 ${boothName} Visit!`,
+                message: reason || `You earned ${pointsToAward} Liberty Coins at ${boothName}`,
+                type: 'success',
+                read: false,
+                createdAt: serverTimestamp()
+            });
+
+            showToast(`${pointsToAward > 0 ? 'Awarded' : 'Deducted'} ${Math.abs(pointsToAward)} points to ${userData.displayName || 'Participant'}`, 'success');
+
         } catch (e) {
-            alert('Error: ' + e.message);
+            showToast('Error: ' + e.message, 'error');
         }
     }
 
-    document.getElementById('startScanBtn').addEventListener('click', () => {
-        if (scanner) { scanner.stop(); scanner = null; document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-camera"></i> Start Scanner'; return; }
-        
-        scanner = new Html5Qrcode("reader");
-        scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, async (text) => {
-            let uid = text;
-            if (text.includes('FREEDOM250:')) uid = text.split(':')[2];
-            await processAward(uid);
-            scanner.stop(); scanner = null;
+    // Challenge creation
+    document.getElementById('createChallengeBtn')?.addEventListener('click', async () => {
+        const title = document.getElementById('newChallengeTitle').value;
+        const description = document.getElementById('newChallengeDesc').value;
+        const points = parseInt(document.getElementById('newChallengePoints').value);
+        const duration = parseInt(document.getElementById('newChallengeDuration').value);
+
+        if (!title) {
+            showToast('Please enter a challenge title', 'error');
+            return;
+        }
+
+        const expiresAt = duration ? new Date(Date.now() + duration * 60 * 60 * 1000) : null;
+
+        await addDoc(collection(db, 'boothChallenges'), {
+            boothId: boothId,
+            boothName: boothName,
+            title: title,
+            description: description,
+            points: points || 100,
+            status: 'active',
+            createdAt: serverTimestamp(),
+            expiresAt: expiresAt ? Timestamp.fromDate(expiresAt) : null,
+            createdBy: currentUser.uid
+        });
+
+        showToast('Challenge created successfully!', 'success');
+        document.getElementById('newChallengeTitle').value = '';
+        document.getElementById('newChallengeDesc').value = '';
+        document.getElementById('newChallengePoints').value = '100';
+        document.getElementById('newChallengeDuration').value = '24';
+
+        // Switch to active challenges view
+        document.querySelector('.sub-tab[data-sub="active-challenges"]').click();
+    });
+
+    // Mission creation
+    document.getElementById('createMissionBtn')?.addEventListener('click', async () => {
+        const title = document.getElementById('newMissionTitle').value;
+        const description = document.getElementById('newMissionDesc').value;
+        const requirements = document.getElementById('missionRequirements').value.split(',').map(r => r.trim());
+        const points = parseInt(document.getElementById('newMissionPoints').value);
+
+        if (!title) {
+            showToast('Please enter a mission title', 'error');
+            return;
+        }
+
+        await addDoc(collection(db, 'missions'), {
+            boothId: boothId,
+            boothName: boothName,
+            title: title,
+            description: description,
+            requirements: requirements,
+            points: points || 500,
+            status: 'active',
+            createdAt: serverTimestamp(),
+            createdBy: currentUser.uid
+        });
+
+        showToast('Mission created successfully!', 'success');
+        document.getElementById('newMissionTitle').value = '';
+        document.getElementById('newMissionDesc').value = '';
+        document.getElementById('missionRequirements').value = '';
+        document.getElementById('newMissionPoints').value = '500';
+    });
+
+    // Broadcast
+    document.getElementById('sendBroadcastBtn')?.addEventListener('click', async () => {
+        const title = document.getElementById('broadcastTitle').value;
+        const message = document.getElementById('broadcastMessage').value;
+        const audience = document.getElementById('broadcastAudience').value;
+
+        if (!title || !message) {
+            showToast('Please enter both title and message', 'error');
+            return;
+        }
+
+        // Store announcement
+        await addDoc(collection(db, 'announcements'), {
+            boothId: boothId,
+            boothName: boothName,
+            title: title,
+            message: message,
+            audience: audience,
+            createdAt: serverTimestamp(),
+            createdBy: currentUser.uid
+        });
+
+        // Get target users based on audience
+        let targetUsers = [];
+        if (audience === 'all') {
+            const usersSnap = await getDocs(query(collection(db, 'users'), where('role', '==', 'participant')));
+            targetUsers = usersSnap.docs.map(doc => doc.id);
+        } else if (audience === 'visited') {
+            const scansSnap = await getDocs(query(collection(db, 'scans'), where('boothId', '==', boothId)));
+            const uniqueUserIds = new Set();
+            scansSnap.forEach(doc => uniqueUserIds.add(doc.data().userId));
+            targetUsers = Array.from(uniqueUserIds);
+        }
+
+        // Send notifications
+        for (const userId of targetUsers.slice(0, 100)) { // Limit to 100 for performance
+            await addDoc(collection(db, 'notifications'), {
+                userId: userId,
+                title: `📢 ${title}`,
+                message: message,
+                type: 'announcement',
+                read: false,
+                createdAt: serverTimestamp(),
+                fromBooth: boothName
+            });
+        }
+
+        showToast(`Broadcast sent to ${targetUsers.length} participants!`, 'success');
+        document.getElementById('broadcastTitle').value = '';
+        document.getElementById('broadcastMessage').value = '';
+    });
+
+    // QR Scanner
+    document.getElementById('startScanBtn')?.addEventListener('click', () => {
+        if (scanner) {
+            scanner.stop();
+            scanner = null;
             document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-camera"></i> Start Scanner';
-        }).then(() => {
+            return;
+        }
+
+        const readerElement = document.getElementById('reader');
+        readerElement.innerHTML = '';
+
+        scanner = new Html5Qrcode("reader");
+        scanner.start(
+            { facingMode: "environment" },
+            { fps: 10, qrbox: 250 },
+            async (decodedText) => {
+                try {
+                    // Parse QR data - supports both simple ID and JSON encoded
+                    let userId = decodedText;
+                    if (decodedText.startsWith('{') || decodedText.includes(':')) {
+                        try {
+                            const qrData = JSON.parse(atob(decodedText));
+                            userId = qrData.uid || qrData.email || qrData.freedomId;
+                        } catch(e) {
+                            // If parsing fails, try splitting
+                            const parts = decodedText.split(':');
+                            userId = parts[parts.length - 1];
+                        }
+                    }
+                    await processAward(userId);
+                    scanner.stop();
+                    scanner = null;
+                    document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-camera"></i> Start Scanner';
+                } catch (err) {
+                    showToast('Error processing QR code', 'error');
+                }
+            }
+        ).then(() => {
             document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-stop"></i> Stop Scanner';
+        }).catch(err => {
+            showToast('Camera access denied', 'error');
         });
     });
 
-    document.getElementById('manualVerifyBtn').addEventListener('click', () => {
+    document.getElementById('manualVerifyBtn')?.addEventListener('click', () => {
         const id = document.getElementById('manualId').value.trim();
-        if (id) processAward(id);
+        if (id) processAward(id, 50, 'Manual check-in');
     });
 
-    document.getElementById('deductPointsBtn').addEventListener('click', () => {
+    document.getElementById('deductPointsBtn')?.addEventListener('click', () => {
         const id = document.getElementById('manualId').value.trim();
-        if (id) processAward(id, true);
+        if (id) processAward(id, -50, 'Point deduction');
     });
 
-    window.messageLead = (uid) => {
-        const msg = prompt('Enter message to send to participant:');
-        if (msg) alert('Message queued for delivery!');
-    };
+    document.getElementById('exportLeadsBtn')?.addEventListener('click', async () => {
+        const scansSnap = await getDocs(query(collection(db, 'scans'), where('boothId', '==', boothId)));
+        let csv = 'Name,Email,Points Awarded,Timestamp\n';
+        scansSnap.forEach(doc => {
+            const s = doc.data();
+            csv += `"${s.userName || ''}","${s.userEmail || ''}",${s.pointsAwarded || 0},"${s.scannedAt?.toDate() || ''}"\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${boothName}_leads.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Export complete!', 'success');
+    });
 
-    window.exportLeadsBtn?.addEventListener('click', () => {
-        alert('Exporting booth leads... (Check console)');
-        getDocs(query(collection(db, 'scans'), where('booth', '==', currentUser.assignedZone || 'GENERAL'))).then(s => {
-            console.log('LEADS EXPORT:', s.docs.map(d => d.data()));
+    // Sub-tab switching
+    document.querySelectorAll('.sub-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const subId = tab.dataset.sub;
+            document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById(`sub-${subId}`).classList.add('active');
         });
     });
 
@@ -362,16 +1069,22 @@
         document.getElementById(`pg-${page}`).classList.add('active');
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.querySelector(`.nav-item[data-pg="${page}"]`).classList.add('active');
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
     };
 
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
+    window.closeChallengeModal = () => {
+        document.getElementById('challengeModal').classList.remove('active');
+    };
+
+    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
         if (confirm('Logout from booth portal?')) {
+            if (scanner) {
+                await scanner.stop();
+            }
             await signOutUser();
             window.location.replace('login.html');
         }
     });
 </script>
-
 </body>
 </html>

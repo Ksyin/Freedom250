@@ -285,6 +285,37 @@ export function getDashboardPath(user) {
   return 'dashboard-participant.html';
 }
 
+
+// Add to js/auth.js - Add this function for booth admin role management
+
+export async function assignBoothToAdmin(userId, boothId, boothName) {
+  try {
+    const userRef = doc(db, 'users', userId);
+    await updateDoc(userRef, {
+      role: 'booth_admin',
+      assignedBoothId: boothId,
+      assignedBoothName: boothName,
+      updatedAt: serverTimestamp()
+    });
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function getAllBoothAdmins() {
+  try {
+    const q = query(collection(db, 'users'), where('role', '==', 'booth_admin'));
+    const snapshot = await getDocs(q);
+    const admins = [];
+    snapshot.forEach(doc => {
+      admins.push({ id: doc.id, ...doc.data() });
+    });
+    return admins;
+  } catch (error) {
+    return [];
+  }
+}
 export async function guardDashboard(requiredRoles) {
   const user = await initAuth();
   

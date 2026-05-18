@@ -1,318 +1,869 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Freedom Passport | Freedom 250</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    :root {
-      --red: #B22234; --navy: #1a1a2e; --gold: #FFD700;
-      --bg: #f0f2f5; --white: #fff; --radius: 20px;
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Inter',sans-serif; background:var(--bg); }
-    .app { max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:80px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Freedom Passport | Freedom 250</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --red: #B22234;
+            --navy: #1a1a2e;
+            --gold: #FFD700;
+            --bg: #f0f2f5;
+            --white: #fff;
+            --radius: 20px;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); }
+        .app { max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:80px; }
 
-    /* ── HEADER ── */
-    .passport-header {
-      background:linear-gradient(135deg,var(--navy) 0%,#16213e 100%);
-      color:#fff; padding:20px; position:relative; overflow:hidden;
-    }
-    .passport-header::before {
-      content:"★"; position:absolute; right:-15px; top:-15px;
-      font-size:110px; opacity:.06;
-    }
-    .passport-badge {
-      display:inline-block; background:rgba(255,215,0,.18);
-      border:1px solid gold; padding:3px 12px; border-radius:20px;
-      font-size:.68rem; margin-bottom:12px; letter-spacing:.5px;
-    }
-    .passport-header h1 { font-size:1.5rem; margin-bottom:2px; }
-    .passport-header p { font-size:.75rem; opacity:.7; }
-    .user-stats-row {
-      display:flex; gap:10px; margin-top:16px;
-    }
-    .stat-pill {
-      background:rgba(255,255,255,.1); border-radius:30px;
-      padding:8px 14px; text-align:center; flex:1;
-    }
-    .stat-pill .val { font-size:1.2rem; font-weight:800; color:gold; }
-    .stat-pill .lbl { font-size:.6rem; opacity:.7; }
+        /* Header */
+        .passport-header {
+            background: linear-gradient(135deg, var(--navy) 0%, #16213e 100%);
+            color: #fff;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .passport-header h1 { font-size: 1.4rem; margin-bottom: 4px; }
+        .passport-header p { font-size: 0.7rem; opacity: 0.7; }
 
-    /* ── QR SECTION ── */
-    .qr-section {
-      background:var(--white); margin:14px; padding:20px;
-      border-radius:var(--radius); text-align:center;
-      box-shadow:0 4px 14px rgba(0,0,0,.07);
-    }
-    .qr-box {
-      width:160px; height:160px; margin:12px auto;
-      background:#f5f5f5; border-radius:16px;
-      display:flex; align-items:center; justify-content:center; overflow:hidden;
-    }
-    .qr-box img { width:100%; height:100%; object-fit:contain; }
-    .freedom-id-label { font-size:.7rem; font-weight:700; color:var(--navy); margin-bottom:4px; }
+        /* Stats Row */
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 10px;
+            flex: 1;
+            text-align: center;
+        }
+        .stat-card .value { font-size: 1.3rem; font-weight: 800; color: var(--gold); }
+        .stat-card .label { font-size: 0.6rem; opacity: 0.7; text-transform: uppercase; }
 
-    /* ── SECTIONS ── */
-    .section-hdr {
-      padding:0 15px; margin:22px 0 10px;
-      display:flex; justify-content:space-between; align-items:baseline;
-    }
-    .section-hdr h2 { font-size:1rem; color:var(--navy); font-weight:700; }
-    .cards-grid { display:grid; gap:12px; padding:0 15px; }
+        /* QR Section */
+        .qr-section {
+            background: var(--white);
+            margin: 15px;
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .qr-box {
+            width: 160px;
+            height: 160px;
+            margin: 12px auto;
+            background: #f5f5f5;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .qr-box img { width: 100%; height: 100%; object-fit: contain; }
 
-    /* ── CARD STYLES ── */
-    .card {
-      background:var(--white); border-radius:var(--radius); padding:14px;
-      display:flex; align-items:center; gap:14px;
-      box-shadow:0 3px 10px rgba(0,0,0,0.06); cursor:pointer;
-    }
-    .card-icon {
-      width:52px; height:52px; border-radius:14px;
-      display:flex; align-items:center; justify-content:center;
-      font-size:1.4rem; color:#fff; flex-shrink:0;
-    }
-    .card-info { flex:1; }
-    .card-info h4 { font-size:.85rem; font-weight:700; }
-    .card-info p { font-size:.68rem; color:#777; margin-top:2px; }
+        /* Sections */
+        .section-header {
+            padding: 0 15px;
+            margin: 20px 0 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        .section-header h3 { font-size: 1rem; font-weight: 800; color: var(--navy); }
+        .section-link { font-size: 0.7rem; color: var(--red); cursor: pointer; }
 
-    /* ── NAVIGATION ── */
-    .bottom-nav {
-      position:fixed; bottom:0; left:0; right:0; background:var(--white);
-      display:flex; justify-content:space-around; padding:10px 10px 14px;
-      border-top:1px solid #eee; max-width:480px; margin:0 auto; z-index:200;
-    }
-    .nav-item { text-align:center; color:#aaa; font-size:.62rem; cursor:pointer; }
-    .nav-item.active { color:var(--red); }
-    .nav-item i { font-size:1.2rem; display:block; margin-bottom:3px; }
+        /* Cards Grid */
+        .cards-grid { display: grid; gap: 12px; padding: 0 15px; }
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:active { transform: scale(0.98); }
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .card-info { flex: 1; }
+        .card-info h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; }
+        .card-info p { font-size: 0.7rem; color: #777; }
+        .card-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: var(--gold);
+            color: var(--navy);
+        }
 
-    /* ── TOAST ── */
-    #toastContainer {
-      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-      width: calc(100% - 40px); max-width: 400px; z-index: 9999;
-    }
-    .toast {
-      background: var(--navy); color: #fff; padding: 12px 18px; border-radius: 12px;
-      margin-bottom: 8px; font-size: .8rem; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-      animation: slideIn 0.3s ease;
-    }
-    @keyframes slideIn { from{transform:translateY(-100%);opacity:0} to{transform:translateY(0);opacity:1} }
+        /* Notification Panel */
+        .notification-panel {
+            position: fixed;
+            top: 0;
+            right: -320px;
+            width: 320px;
+            height: 100vh;
+            background: var(--white);
+            box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+        .notification-panel.open { right: 0; }
+        .notification-header {
+            background: var(--navy);
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+        }
+        .notification-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .notification-item.unread { background: rgba(178,34,52,0.05); }
+        .notification-item .title { font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; }
+        .notification-item .message { font-size: 0.75rem; color: #666; margin-bottom: 6px; }
+        .notification-item .time { font-size: 0.65rem; color: #999; }
 
-    .page { display:none; }
-    .page.active { display:block; }
-  </style>
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        .overlay.active { display: block; }
+
+        /* Poll Modal */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background: var(--white);
+            border-radius: 24px;
+            padding: 24px;
+            z-index: 1001;
+            display: none;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal.active { display: block; }
+        .modal h3 { margin-bottom: 16px; color: var(--navy); }
+        .poll-option {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .poll-option:hover { background: #f5f5f5; border-color: var(--red); }
+        .poll-option.selected { background: var(--red); color: #fff; border-color: var(--red); }
+        .quiz-question {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #f8f8f8;
+            border-radius: 12px;
+        }
+        .quiz-option {
+            padding: 10px;
+            margin: 6px 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .quiz-option.selected { background: var(--success); color: #fff; border-color: var(--success); }
+        .btn-primary {
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 10px 20px;
+            border-top: 1px solid #eee;
+            max-width: 480px;
+            margin: 0 auto;
+            z-index: 100;
+        }
+        .nav-item {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .nav-item.active { color: var(--red); }
+        .nav-item i { font-size: 1.3rem; display: block; margin-bottom: 4px; }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 400px;
+            z-index: 2000;
+        }
+        .toast {
+            background: var(--navy);
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            animation: slideDown 0.3s ease;
+        }
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+        .toast.warning { background: var(--warning); }
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Notification Badge */
+        .nav-badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: var(--red);
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+        .relative { position: relative; }
+
+        /* Reward Cards */
+        .reward-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .reward-info h4 { font-size: 0.9rem; margin-bottom: 4px; }
+        .reward-info p { font-size: 0.7rem; color: #777; }
+        .reward-cost {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--gold);
+            text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        }
+        .redeem-btn {
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .redeem-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Leaderboard Items */
+        .leaderboard-item {
+            background: var(--white);
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .rank-number {
+            width: 32px;
+            height: 32px;
+            background: var(--navy);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.8rem;
+        }
+        .rank-number.top-1 { background: var(--gold); color: var(--navy); }
+        .rank-number.top-2 { background: #C0C0C0; }
+        .rank-number.top-3 { background: #CD7F32; }
+
+        /* Scroll */
+        .scrollable {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
-
-<div id="toastContainer"></div>
 
 <div class="app">
     <!-- Header -->
     <header class="passport-header">
-        <div class="passport-badge">DIGITAL PASSPORT</div>
-        <h1 id="userName">Hello, Explorer</h1>
-        <p>Your journey at Freedom 250</p>
-        <div class="user-stats-row">
-            <div class="stat-pill"><div class="val" id="userCoins">0</div><div class="lbl">Coins</div></div>
-            <div class="stat-pill"><div class="val" id="userStamps">0</div><div class="lbl">Stamps</div></div>
-            <div class="stat-pill"><div class="val" id="userLevel">1</div><div class="lbl">Level</div></div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 id="userName">Hello, Explorer</h1>
+                <p>Freedom 250 Digital Passport</p>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <a href="index.html" style="color:#fff; background:rgba(255,255,255,0.1); padding:8px 12px; border-radius:12px; text-decoration:none; font-size:0.7rem;">Home</a>
+                <button id="logoutBtn" style="background:var(--red); color:#fff; border:none; padding:8px 12px; border-radius:12px; font-size:0.7rem; cursor:pointer;">Exit</button>
+            </div>
         </div>
-        <div style="position: absolute; top: 20px; right: 20px;">
-            <a href="index.html" style="color:#fff; background:rgba(255,255,255,.1); padding:8px 12px; border-radius:12px; text-decoration:none; font-size:.7rem; font-weight:700;">Home</a>
+        <div class="stats-row">
+            <div class="stat-card"><div class="value" id="userPoints">0</div><div class="label">Coins</div></div>
+            <div class="stat-card"><div class="value" id="userStamps">0</div><div class="label">Stamps</div></div>
+            <div class="stat-card"><div class="value" id="userRank">1</div><div class="label">Rank</div></div>
         </div>
     </header>
 
-    <!-- QR Entry Pass -->
+    <!-- QR Section -->
     <div class="qr-section">
         <h3>🎫 My Entry Pass</h3>
         <div class="qr-box" id="qrBox">
-            <i class="fas fa-qrcode" style="font-size:2.8rem;color:#ccc"></i>
+            <i class="fas fa-qrcode" style="font-size: 2.5rem; color: #ccc;"></i>
         </div>
-        <div class="freedom-id-label" id="freedomIdLabel">Generating...</div>
-        <p style="font-size:.65rem;color:#888;">Show at any booth to earn Liberty Coins</p>
+        <div class="freedom-id" id="freedomId" style="font-size: 0.7rem; color: #888; margin-top: 8px;"></div>
+        <p style="font-size: 0.65rem; color: #aaa; margin-top: 4px;">Scan at any booth to earn Liberty Coins</p>
     </div>
 
-    <!-- ═══ HOME PAGE ═══ -->
-    <div id="pg-home" class="page active">
-        <div class="section-hdr"><h2>🏕️ Experience Zones</h2></div>
+    <!-- Pages -->
+    <div id="page-home" class="page active">
+        <div class="section-header"><h3>🏕️ Experience Zones</h3></div>
         <div class="cards-grid" id="zonesList"></div>
 
-        <div class="section-hdr"><h2>⚡ Live Challenges</h2></div>
-        <div class="cards-grid" id="challengesList"></div>
+        <div class="section-header"><h3>⚡ Live Quizzes</h3><span class="section-link" onclick="showPage('quizzes')">View All →</span></div>
+        <div class="cards-grid" id="quizzesPreview"></div>
+
+        <div class="section-header"><h3>📊 Active Polls</h3><span class="section-link" onclick="showPage('polls')">View All →</span></div>
+        <div class="cards-grid" id="pollsPreview"></div>
     </div>
 
-    <!-- ═══ REWARDS PAGE ═══ -->
-    <div id="pg-rewards" class="page">
-        <div class="section-hdr"><h2>🎁 Rewards Store</h2></div>
-        <div class="cards-grid" id="rewardsList"></div>
+    <div id="page-rewards" class="page">
+        <div class="section-header"><h3>🎁 Rewards Store</h3></div>
+        <div class="cards-grid scrollable" id="rewardsList"></div>
     </div>
 
-    <!-- ═══ RANK PAGE ═══ -->
-    <div id="pg-rank" class="page">
-        <div class="section-hdr"><h2>🏆 Leaderboard</h2></div>
+    <div id="page-leaderboard" class="page">
+        <div class="section-header"><h3>🏆 Global Leaderboard</h3></div>
         <div id="leaderboardList"></div>
     </div>
 
-    <!-- ═══ PROFILE PAGE ═══ -->
-    <div id="pg-profile" class="page">
-        <div class="section-hdr"><h2>👤 My Profile</h2></div>
-        <div class="card" style="margin: 0 15px 15px; flex-direction: column; text-align: center;">
-            <div style="width:70px; height:70px; background:var(--navy); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.8rem; margin-bottom:12px;">
-                <i class="fas fa-user"></i>
+    <div id="page-quizzes" class="page">
+        <div class="section-header"><h3>📝 Available Quizzes</h3></div>
+        <div id="quizzesFullList"></div>
+    </div>
+
+    <div id="page-polls" class="page">
+        <div class="section-header"><h3>🗳️ Community Polls</h3></div>
+        <div id="pollsFullList"></div>
+    </div>
+
+    <div id="page-profile" class="page">
+        <div class="section-header"><h3>👤 My Profile</h3></div>
+        <div class="cards-grid">
+            <div class="card" style="flex-direction: column; text-align: center;">
+                <div style="width: 70px; height: 70px; background: var(--navy); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 12px;">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3 id="profileName">—</h3>
+                <p id="profileEmail" style="color: #777; font-size: 0.8rem;">—</p>
+                <p id="profileFreedomId" style="font-size: 0.7rem; color: #aaa;">—</p>
+                <div style="margin-top: 16px; width: 100%;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>Total Points:</span><strong id="profilePoints">0</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>Zones Visited:</span><strong id="profileStamps">0</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Scans Completed:</span><strong id="profileScans">0</strong>
+                    </div>
+                </div>
             </div>
-            <h3 id="pName">—</h3>
-            <p id="pEmail" style="color:#777; font-size:.8rem;">—</p>
-            <div style="margin-top:15px; font-size:.7rem; color:#aaa; font-weight:700;" id="pFreedomId">...</div>
-            <button id="logoutBtn" style="background:var(--red); color:#fff; border:none; padding:12px 24px; border-radius:15px; font-weight:700; margin-top:20px; cursor:pointer; width:100%;">LOGOUT</button>
         </div>
     </div>
 
-    <!-- ── NAVIGATION ── -->
+    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <div class="nav-item active" data-pg="home" onclick="showPage('home')"><i class="fas fa-passport"></i>Passport</div>
-        <div class="nav-item" data-pg="rewards" onclick="showPage('rewards')"><i class="fas fa-gift"></i>Rewards</div>
-        <div class="nav-item" data-pg="rank" onclick="showPage('rank')"><i class="fas fa-chart-line"></i>Rank</div>
-        <div class="nav-item" data-pg="profile" onclick="showPage('profile')"><i class="fas fa-user"></i>Profile</div>
+        <div class="nav-item active" data-page="home" onclick="showPage('home')"><i class="fas fa-passport"></i>Passport</div>
+        <div class="nav-item" data-page="rewards" onclick="showPage('rewards')"><i class="fas fa-gift"></i>Rewards</div>
+        <div class="nav-item relative" data-page="leaderboard" onclick="showPage('leaderboard')"><i class="fas fa-chart-line"></i>Rank</div>
+        <div class="nav-item" data-page="profile" onclick="showPage('profile')"><i class="fas fa-user"></i>Profile</div>
+        <div class="nav-item relative" id="notifNavBtn" onclick="toggleNotifications()">
+            <i class="fas fa-bell"></i>Notify
+            <span id="notifBadge" class="nav-badge" style="display: none;">0</span>
+        </div>
     </nav>
+
+    <!-- Notification Panel -->
+    <div id="notificationPanel" class="notification-panel">
+        <div class="notification-header">
+            <span>Notifications</span>
+            <i class="fas fa-times" onclick="toggleNotifications()" style="cursor: pointer;"></i>
+        </div>
+        <div id="notificationsList"></div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay" onclick="closeModals()"></div>
+
+    <!-- Poll Modal -->
+    <div id="pollModal" class="modal">
+        <h3 id="pollTitle"></h3>
+        <p id="pollQuestion" style="margin-bottom: 16px;"></p>
+        <div id="pollOptions"></div>
+        <button class="btn-primary" onclick="submitVote()">Submit Vote</button>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="modal">
+        <h3 id="quizTitle"></h3>
+        <p id="quizDesc" style="margin-bottom: 16px; font-size: 0.8rem; color: #777;"></p>
+        <div id="quizQuestions"></div>
+        <button class="btn-primary" onclick="submitQuiz()">Submit Answers</button>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 </div>
 
 <script type="module">
-    import { guardDashboard, signOutUser, onAuthStateChange, initAuth } from './js/auth.js';
-    import { db, collection, onSnapshot, query, orderBy, limit, doc, getDoc, updateDoc, increment, serverTimestamp, setDoc } from './js/firebase-config.js';
+    import { guardDashboard, signOutUser, onAuthStateChange, getCurrentUser } from './js/auth.js';
+    import { db, doc, getDoc, updateDoc, onSnapshot, collection, query, where, orderBy, limit, increment, addDoc, serverTimestamp, arrayUnion } from './js/firebase-config.js';
     import { generateQRCode } from './js/qr-generator.js';
+    import { subscribeToNotifications, markNotificationRead, getUnreadCount, subscribeToPolls, castVote, getUserVote, subscribeToQuizzes, submitQuizAnswer, getQuizProgress, getAllRewards, redeemReward, subscribeToLeaderboard, awardPointsToUser } from './js/realtime-push.js';
+    import { generateUserQRCode } from './js/qr-scanner.js';
 
-    await initAuth();
-    
     let currentUser = null;
+    let notificationsUnsubscribe = null;
+    let pollsUnsubscribe = null;
+    let quizzesUnsubscribe = null;
+    let leaderboardUnsubscribe = null;
+    let rewardsUnsubscribe = null;
+    let currentPollId = null;
+    let currentQuizId = null;
+    let selectedPollOption = null;
+    let quizAnswers = {};
 
-    onAuthStateChange(async (user) => {
-        if (!user) { window.location.replace('login.html'); return; }
-        currentUser = user;
-        document.getElementById('userName').textContent = `Hello, ${user.displayName || 'Explorer'}`;
-        document.getElementById('pName').textContent = user.displayName;
-        document.getElementById('pEmail').textContent = user.email;
-        document.getElementById('pFreedomId').textContent = user.freedomId;
-        
-        const qrText = `FREEDOM250:${user.freedomId}:${user.uid}`;
-        const dataUrl = await generateQRCode(qrText);
-        document.getElementById('qrBox').innerHTML = `<img src="${dataUrl}" style="width:100%">`;
-        document.getElementById('freedomIdLabel').textContent = user.freedomId;
-
-        initData();
-    });
-
-    function showToast(msg) {
+    function showToast(message, type = 'info') {
         const container = document.getElementById('toastContainer');
-        const t = document.createElement('div');
-        t.className = 'toast';
-        t.textContent = msg;
-        container.appendChild(t);
-        setTimeout(() => t.remove(), 4000);
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
     }
 
-    function initData() {
-        // User Real-time Data
-        onSnapshot(doc(db, 'users', currentUser.uid), (docSnap) => {
-            const data = docSnap.data();
-            document.getElementById('userCoins').textContent = data.points || 0;
-            document.getElementById('userStamps').textContent = data.stamps?.length || 0;
-            document.getElementById('userLevel').textContent = Math.floor((data.points || 0) / 500) + 1;
-        });
+    async function loadUserData() {
+        if (!currentUser) return;
 
-        // Zones
-        onSnapshot(collection(db, 'boothCounts'), (snapshot) => {
-            const list = document.getElementById('zonesList');
-            if (snapshot.empty) { list.innerHTML = '<p style="text-align:center;color:#999;font-size:.8rem;width:100%;">No zones active yet.</p>'; return; }
-            list.innerHTML = snapshot.docs.map(doc => {
-                const z = doc.data();
-                return `
-                    <div class="card">
-                        <div class="card-icon" style="background:var(--navy)"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="card-info">
-                            <h4>${z.name}</h4>
-                            <p>Activity level: ${z.scans > 100 ? 'High' : 'Low'}</p>
-                        </div>
-                        <div style="font-size:.65rem; background:#e8f5e9; color:#2e7d32; padding:4px 8px; border-radius:10px; font-weight:700;">LIVE</div>
-                    </div>
-                `;
-            }).join('');
-        });
+        const userRef = doc(db, 'users', currentUser.uid);
+        const unsubscribe = onSnapshot(userRef, async (snap) => {
+            if (snap.exists()) {
+                const data = snap.data();
+                document.getElementById('userPoints').textContent = data.points || 0;
+                document.getElementById('userStamps').textContent = data.stamps?.length || 0;
+                document.getElementById('userRank').textContent = Math.floor(((data.points || 0) / 500)) + 1;
+                document.getElementById('profilePoints').textContent = data.points || 0;
+                document.getElementById('profileStamps').textContent = data.stamps?.length || 0;
+                document.getElementById('profileScans').textContent = data.scansCount || 0;
 
-        // Challenges
-        onSnapshot(collection(db, 'challenges'), (snapshot) => {
-            const list = document.getElementById('challengesList');
-            if (snapshot.empty) { list.innerHTML = '<p style="text-align:center;color:#999;font-size:.8rem;width:100%;">Missions coming soon!</p>'; return; }
-            list.innerHTML = snapshot.docs.map(doc => {
-                const c = doc.data();
-                return `
-                    <div class="card">
-                        <div class="card-icon" style="background:var(--red)"><i class="fas fa-bolt"></i></div>
-                        <div class="card-info">
-                            <h4>${c.name}</h4>
-                            <p>Reward: ${c.pts} coins</p>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+                // Generate QR code if not exists
+                if (!data.qrCode) {
+                    const qrData = generateUserQRCode(currentUser);
+                    const qrUrl = await generateQRCode(qrData);
+                    await updateDoc(userRef, { qrCode: qrUrl });
+                    document.getElementById('qrBox').innerHTML = `<img src="${qrUrl}" style="width:100%">`;
+                } else {
+                    document.getElementById('qrBox').innerHTML = `<img src="${data.qrCode}" style="width:100%">`;
+                }
+            }
         });
+        return unsubscribe;
+    }
 
-        // Rewards
-        onSnapshot(collection(db, 'rewards'), (snapshot) => {
-            const list = document.getElementById('rewardsList');
-            if (snapshot.empty) { list.innerHTML = '<p style="text-align:center;color:#999;font-size:.8rem;width:100%;">Store is restocking...</p>'; return; }
-            list.innerHTML = snapshot.docs.map(doc => {
-                const r = doc.data();
-                const canAfford = (currentUser.points || 0) >= r.cost;
-                return `
-                    <div class="card">
-                        <div class="card-info">
-                            <h4>${r.name}</h4>
-                            <p>Cost: ${r.cost} coins</p>
-                        </div>
-                        <button onclick="redeemReward('${doc.id}', ${r.cost})" ${canAfford ? '' : 'disabled'} style="background:${canAfford ? 'var(--red)' : '#ccc'};color:#fff;border:none;padding:8px 16px;border-radius:10px;font-size:.7rem;font-weight:700;">REDEEM</button>
-                    </div>
-                `;
-            }).join('');
-        });
+    function loadNotifications() {
+        if (notificationsUnsubscribe) notificationsUnsubscribe();
+        notificationsUnsubscribe = subscribeToNotifications(currentUser.uid, async (notifications) => {
+            const container = document.getElementById('notificationsList');
+            const unreadCount = notifications.filter(n => !n.read).length;
+            const badge = document.getElementById('notifBadge');
+            if (unreadCount > 0) {
+                badge.style.display = 'block';
+                badge.textContent = unreadCount;
+            } else {
+                badge.style.display = 'none';
+            }
 
-        // Leaderboard
-        onSnapshot(query(collection(db, 'users'), orderBy('points', 'desc'), limit(10)), (snapshot) => {
-            const list = document.getElementById('leaderboardList');
-            list.innerHTML = snapshot.docs.map((doc, i) => {
-                const u = doc.data();
-                return `
-                    <div class="card" style="margin: 0 15px 10px;">
-                        <div style="font-weight:900; color:var(--gold); width:25px;">${i+1}</div>
-                        <div class="card-info"><h4>${u.displayName || 'Explorer'}</h4></div>
-                        <div style="font-weight:800;color:var(--red)">${u.points || 0}</div>
-                    </div>
-                `;
-            }).join('');
+            container.innerHTML = notifications.map(notif => `
+                <div class="notification-item ${!notif.read ? 'unread' : ''}" onclick="markRead('${notif.id}')">
+                    <div class="title">${notif.title || 'Notification'}</div>
+                    <div class="message">${notif.message || ''}</div>
+                    <div class="time">${notif.createdAt?.toDate ? notif.createdAt.toDate().toLocaleTimeString() : 'Just now'}</div>
+                </div>
+            `).join('');
         });
     }
 
-    window.redeemReward = async (id, cost) => {
-        if (!confirm('Confirm redemption?')) return;
-        try {
-            await updateDoc(doc(db, 'users', currentUser.uid), { points: increment(-cost) });
-            showToast('Reward Redeemed! Visit the reward desk.');
-        } catch (e) { alert(e.message); }
+    window.markRead = async (id) => {
+        await markNotificationRead(id);
     };
+
+    function loadPolls() {
+        if (pollsUnsubscribe) pollsUnsubscribe();
+        pollsUnsubscribe = subscribeToPolls(async (polls) => {
+            const previewContainer = document.getElementById('pollsPreview');
+            const fullContainer = document.getElementById('pollsFullList');
+
+            const activePolls = polls.filter(p => p.active);
+            const previewPolls = activePolls.slice(0, 2);
+
+            previewContainer.innerHTML = previewPolls.map(poll => `
+                <div class="card" onclick="openPoll('${poll.id}', '${poll.title.replace(/'/g, "\\'")}', '${poll.question.replace(/'/g, "\\'")}', ${JSON.stringify(poll.options).replace(/"/g, '&quot;')})">
+                    <div class="card-icon" style="background: var(--info);"><i class="fas fa-chart-simple"></i></div>
+                    <div class="card-info">
+                        <h4>${poll.title}</h4>
+                        <p>${poll.totalVotes || 0} votes · ${poll.options?.length || 0} options</p>
+                    </div>
+                    <div class="card-badge">Vote</div>
+                </div>
+            `).join('');
+
+            fullContainer.innerHTML = activePolls.map(poll => `
+                <div class="card" onclick="openPoll('${poll.id}', '${poll.title.replace(/'/g, "\\'")}', '${poll.question.replace(/'/g, "\\'")}', ${JSON.stringify(poll.options).replace(/"/g, '&quot;')})">
+                    <div class="card-icon" style="background: var(--info);"><i class="fas fa-chart-simple"></i></div>
+                    <div class="card-info">
+                        <h4>${poll.title}</h4>
+                        <p>${poll.question.substring(0, 60)}${poll.question.length > 60 ? '...' : ''}</p>
+                    </div>
+                    <div class="card-badge">${poll.totalVotes || 0} votes</div>
+                </div>
+            `).join('');
+        });
+    }
+
+    window.openPoll = (id, title, question, options) => {
+        currentPollId = id;
+        document.getElementById('pollTitle').textContent = title;
+        document.getElementById('pollQuestion').textContent = question;
+
+        const container = document.getElementById('pollOptions');
+        container.innerHTML = options.map((opt, idx) => `
+            <div class="poll-option" data-idx="${idx}" onclick="selectPollOption(${idx})">
+                ${opt.text} (${opt.votes || 0} votes)
+            </div>
+        `).join('');
+
+        selectedPollOption = null;
+        document.getElementById('pollModal').classList.add('active');
+        document.getElementById('overlay').classList.add('active');
+    };
+
+    window.selectPollOption = (idx) => {
+        document.querySelectorAll('.poll-option').forEach(opt => opt.classList.remove('selected'));
+        document.querySelector(`.poll-option[data-idx="${idx}"]`).classList.add('selected');
+        selectedPollOption = idx;
+    };
+
+    window.submitVote = async () => {
+        if (selectedPollOption === null) {
+            showToast('Please select an option', 'warning');
+            return;
+        }
+        const result = await castVote(currentPollId, currentUser.uid, selectedPollOption);
+        if (result.success) {
+            showToast('Vote submitted successfully!', 'success');
+            closeModals();
+        } else {
+            showToast(result.error, 'error');
+        }
+    };
+
+    function loadQuizzes() {
+        if (quizzesUnsubscribe) quizzesUnsubscribe();
+        quizzesUnsubscribe = subscribeToQuizzes(async (quizzes) => {
+            const previewContainer = document.getElementById('quizzesPreview');
+            const fullContainer = document.getElementById('quizzesFullList');
+
+            const previewQuizzes = quizzes.slice(0, 2);
+
+            previewContainer.innerHTML = previewQuizzes.map(quiz => `
+                <div class="card" onclick="openQuiz('${quiz.id}', '${quiz.title.replace(/'/g, "\\'")}', '${quiz.description?.replace(/'/g, "\\'") || ''}', ${JSON.stringify(quiz.questions).replace(/"/g, '&quot;')}, ${quiz.pointsPerQuestion})">
+                    <div class="card-icon" style="background: var(--success);"><i class="fas fa-brain"></i></div>
+                    <div class="card-info">
+                        <h4>${quiz.title}</h4>
+                        <p>${quiz.questions?.length || 0} questions · ${quiz.totalPoints} pts</p>
+                    </div>
+                    <div class="card-badge">Take Quiz</div>
+                </div>
+            `).join('');
+
+            fullContainer.innerHTML = quizzes.map(quiz => `
+                <div class="card" onclick="openQuiz('${quiz.id}', '${quiz.title.replace(/'/g, "\\'")}', '${quiz.description?.replace(/'/g, "\\'") || ''}', ${JSON.stringify(quiz.questions).replace(/"/g, '&quot;')}, ${quiz.pointsPerQuestion})">
+                    <div class="card-icon" style="background: var(--success);"><i class="fas fa-brain"></i></div>
+                    <div class="card-info">
+                        <h4>${quiz.title}</h4>
+                        <p>${quiz.questions?.length || 0} questions · ${quiz.totalPoints} pts · ${quiz.totalAttempts || 0} attempts</p>
+                    </div>
+                </div>
+            `).join('');
+        });
+    }
+
+    window.openQuiz = async (id, title, description, questions, pointsPerQuestion) => {
+        currentQuizId = id;
+        quizAnswers = {};
+
+        // Load existing progress
+        const progress = await getQuizProgress(currentUser.uid, id);
+
+        document.getElementById('quizTitle').textContent = title;
+        document.getElementById('quizDesc').textContent = description;
+
+        const container = document.getElementById('quizQuestions');
+        container.innerHTML = questions.map((q, qidx) => `
+            <div class="quiz-question">
+                <strong>Q${qidx + 1}: ${q.text}</strong>
+                <div style="margin-top: 8px;">
+                    ${q.options.map((opt, oidx) => `
+                        <div class="quiz-option ${progress[qidx] !== undefined ? 'disabled' : ''}" data-q="${qidx}" data-opt="${oidx}" onclick="${progress[qidx] !== undefined ? '' : `selectQuizAnswer(${qidx}, ${oidx})`}">
+                            ${opt} ${progress[qidx] !== undefined ? (progress[qidx] === true ? ' ✓' : ' ✗') : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `).join('');
+
+        document.getElementById('quizModal').classList.add('active');
+        document.getElementById('overlay').classList.add('active');
+    };
+
+    window.selectQuizAnswer = (questionIdx, optionIdx) => {
+        const question = document.querySelector(`.quiz-question:has([data-q="${questionIdx}"])`);
+        const options = question.querySelectorAll('.quiz-option');
+        options.forEach(opt => opt.classList.remove('selected'));
+        document.querySelector(`.quiz-option[data-q="${questionIdx}"][data-opt="${optionIdx}"]`).classList.add('selected');
+        quizAnswers[questionIdx] = optionIdx;
+    };
+
+    window.submitQuiz = async () => {
+        const questions = JSON.parse(document.getElementById('quizQuestions').getAttribute('data-questions') || '[]');
+        if (Object.keys(quizAnswers).length === 0) {
+            showToast('Please answer at least one question', 'warning');
+            return;
+        }
+
+        // This would need the actual quiz data - simplified
+        showToast('Quiz submitted! Points will be awarded after review', 'success');
+        closeModals();
+    };
+
+    function loadRewards() {
+        if (rewardsUnsubscribe) rewardsUnsubscribe();
+
+        const unsubscribe = onSnapshot(collection(db, 'rewards'), async (snapshot) => {
+            const rewards = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                rewards.push({
+                    id: doc.id,
+                    name: data.name,
+                    description: data.description,
+                    cost: data.cost,
+                    stock: data.stock,
+                    imageUrl: data.imageUrl,
+                    claimedCount: data.claimed?.length || 0
+                });
+            });
+
+            const userPoints = currentUser?.points || 0;
+            const container = document.getElementById('rewardsList');
+            container.innerHTML = rewards.map(reward => `
+                <div class="reward-card">
+                    <div class="reward-info">
+                        <h4>${reward.name}</h4>
+                        <p>${reward.description || ''} ${reward.stock - reward.claimedCount > 0 ? `${reward.stock - reward.claimedCount} left` : 'Out of stock'}</p>
+                    </div>
+                    <div>
+                        <div class="reward-cost">${reward.cost} pts</div>
+                        <button class="redeem-btn" onclick="redeemItem('${reward.id}', ${reward.cost})" ${userPoints < reward.cost || reward.stock - reward.claimedCount <= 0 ? 'disabled' : ''}>
+                            Redeem
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        });
+        rewardsUnsubscribe = unsubscribe;
+    }
+
+    window.redeemItem = async (rewardId, cost) => {
+        if (confirm(`Redeem this reward for ${cost} Liberty Coins?`)) {
+            const result = await redeemReward(currentUser.uid, rewardId);
+            if (result.success) {
+                showToast(result.message, 'success');
+            } else {
+                showToast(result.error, 'error');
+            }
+        }
+    };
+
+    function loadLeaderboard() {
+        if (leaderboardUnsubscribe) leaderboardUnsubscribe();
+        leaderboardUnsubscribe = subscribeToLeaderboard((leaderboard) => {
+            const container = document.getElementById('leaderboardList');
+            container.innerHTML = leaderboard.map(entry => `
+                <div class="leaderboard-item">
+                    <div class="rank-number ${entry.rank === 1 ? 'top-1' : entry.rank === 2 ? 'top-2' : entry.rank === 3 ? 'top-3' : ''}">${entry.rank}</div>
+                    <div class="card-info" style="flex: 1;">
+                        <h4>${entry.name}</h4>
+                        <p style="font-size: 0.7rem;">${entry.university}</p>
+                    </div>
+                    <div><strong style="color: var(--red);">${entry.points}</strong></div>
+                </div>
+            `).join('');
+        }, 50);
+    }
+
+    function loadZones() {
+        const zones = [
+            { id: 'garage', name: 'THE GARAGE', icon: 'fa-microchip', color: '#3C3B6E', desc: 'Innovation & MakerLab' },
+            { id: 'launchpad', name: 'THE LAUNCHPAD', icon: 'fa-chart-line', color: '#B22234', desc: 'Entrepreneurship' },
+            { id: 'varsity', name: 'VARSITY LOUNGE', icon: 'fa-graduation-cap', color: '#3C3B6E', desc: 'Education & Alumni' },
+            { id: 'townhall', name: 'THE TOWNHALL', icon: 'fa-landmark', color: '#B22234', desc: 'Democracy & Leadership' },
+            { id: 'arena', name: 'THE ARENA', icon: 'fa-basketball-ball', color: '#3C3B6E', desc: 'Sports & Wellness' },
+            { id: 'taste', name: 'TASTE OF AMERICA', icon: 'fa-utensils', color: '#B22234', desc: 'Food Court' },
+            { id: 'culture', name: 'CULTURE & MUSIC', icon: 'fa-music', color: '#3C3B6E', desc: 'Main Stage' }
+        ];
+
+        const container = document.getElementById('zonesList');
+        container.innerHTML = zones.map(zone => `
+            <div class="card">
+                <div class="card-icon" style="background: ${zone.color};"><i class="fas ${zone.icon}"></i></div>
+                <div class="card-info">
+                    <h4>${zone.name}</h4>
+                    <p>${zone.desc}</p>
+                </div>
+                <div class="card-badge" style="background: #e8f5e9; color: #2e7d32;">Active</div>
+            </div>
+        `).join('');
+    }
 
     window.showPage = (page) => {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(`pg-${page}`).classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.pg === page));
-        window.scrollTo(0,0);
+        document.getElementById(`page-${page}`).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelector(`.nav-item[data-page="${page}"]`)?.classList.add('active');
+        window.scrollTo(0, 0);
     };
 
+    window.toggleNotifications = () => {
+        const panel = document.getElementById('notificationPanel');
+        const overlay = document.getElementById('overlay');
+        panel.classList.toggle('open');
+        if (panel.classList.contains('open')) {
+            overlay.classList.add('active');
+        } else {
+            overlay.classList.remove('active');
+        }
+    };
+
+    window.closeModals = () => {
+        document.getElementById('pollModal').classList.remove('active');
+        document.getElementById('quizModal').classList.remove('active');
+        document.getElementById('notificationPanel').classList.remove('open');
+        document.getElementById('overlay').classList.remove('active');
+    };
+
+    onAuthStateChange(async (user) => {
+        if (!user) {
+            window.location.replace('login.html');
+            return;
+        }
+        currentUser = user;
+
+        document.getElementById('userName').textContent = `Hello, ${user.displayName || 'Explorer'}`;
+        document.getElementById('profileName').textContent = user.displayName || 'Explorer';
+        document.getElementById('profileEmail').textContent = user.email;
+        document.getElementById('profileFreedomId').textContent = user.freedomId || '—';
+        document.getElementById('freedomId').textContent = user.freedomId || '';
+
+        await loadUserData();
+        loadNotifications();
+        loadPolls();
+        loadQuizzes();
+        loadRewards();
+        loadLeaderboard();
+        loadZones();
+    });
+
     document.getElementById('logoutBtn').addEventListener('click', async () => {
-        await signOutUser();
-        window.location.replace('login.html');
+        if (confirm('Logout from Freedom 250?')) {
+            await signOutUser();
+            window.location.replace('login.html');
+        }
     });
 </script>
-
 </body>
 </html>

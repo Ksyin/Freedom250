@@ -1,10 +1,11 @@
-// Firebase Configuration
+// js/firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { 
-  getAuth, 
-  initializeAuth, 
+import {
+  getAuth,
+  initializeAuth,
   browserLocalPersistence,
-  connectAuthEmulator
+  indexedDBLocalPersistence,
+  browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import {
   getFirestore,
@@ -22,17 +23,16 @@ import {
   orderBy,
   limit,
   startAfter,
-  endBefore,
   onSnapshot,
   arrayUnion,
   arrayRemove,
   increment,
   serverTimestamp,
-  writeBatch
+  writeBatch,
+  Timestamp
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-// YOUR ACTUAL FIREBASE CONFIGURATION
 const firebaseConfig = {
   apiKey: "AIzaSyBvuocYvCgMRliZoTbMGS6jz0CloMrRT1M",
   authDomain: "americam-spaces.firebaseapp.com",
@@ -43,23 +43,19 @@ const firebaseConfig = {
   measurementId: "G-L1VZQR8XQ1"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Auth with persistence
 let auth;
 try {
   auth = initializeAuth(app, {
-    persistence: browserLocalPersistence
+    persistence: [indexedDBLocalPersistence, browserLocalPersistence, browserSessionPersistence]
   });
 } catch (e) {
   auth = getAuth(app);
 }
 
-// Initialize Firestore
 const db = getFirestore(app);
 
-// Enable offline persistence (optional - helps with performance)
 try {
   enableIndexedDbPersistence(db);
 } catch (err) {
@@ -70,16 +66,16 @@ try {
   }
 }
 
-// Initialize Storage
 const storage = getStorage(app);
 
-// Re-export Firestore functions
 export {
   app,
   auth,
   db,
   storage,
-  getAuth,
+  ref,
+  uploadBytes,
+  getDownloadURL,
   collection,
   doc,
   getDoc,
@@ -93,11 +89,11 @@ export {
   orderBy,
   limit,
   startAfter,
-  endBefore,
   onSnapshot,
   arrayUnion,
   arrayRemove,
   increment,
   serverTimestamp,
-  writeBatch
+  writeBatch,
+  Timestamp
 };
