@@ -228,9 +228,19 @@
     </style>
 </head>
 <body>
+<script type="module">
+    import { guardDashboard } from './js/auth.js';
+    (async () => {
+        // Require booth admin (or higher) for this dashboard
+        await guardDashboard(['booth_admin','admin','organizer']);
+    })();
+</script>
 <div class="dash-mobile">
     <div class="booth-header">
-        <h1><i class="fas fa-store"></i> Booth Admin</h1>
+        <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:12px;">
+          <h1><i class="fas fa-store"></i> Booth Admin</h1>
+          <a href="index.html" style="color:#fff; background:rgba(255,255,255,.14); padding:10px 16px; border-radius:18px; text-decoration:none; font-weight:700;">Home</a>
+        </div>
         <div><i class="fas fa-qrcode"></i> <span id="zoneName">THE GARAGE</span></div>
     </div>
 

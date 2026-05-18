@@ -148,6 +148,13 @@
     </style>
 </head>
 <body>
+<script type="module">
+    import { guardDashboard } from './js/auth.js';
+    (async () => {
+        // Require volunteer (or higher) for this dashboard
+        await guardDashboard(['volunteer','admin','organizer']);
+    })();
+</script>
 <div class="dash-mobile">
     <div class="volunteer-header">
         <div>
@@ -155,7 +162,10 @@
             <p style="opacity: 0.7; margin-top: 5px;">Freedom 250 Festival · JKUAT</p>
             <p id="volunteerRoleBadge" style="opacity:0.85; font-size:0.9rem; margin-top:4px;">Role: Volunteer</p>
         </div>
-        <button id="signOutBtn" style="background:#fff; color:#1a1a2e; border:none; border-radius:18px; padding:10px 16px; font-weight:700; cursor:pointer;">Sign out</button>
+        <div style="display:flex; gap:10px; align-items:center;">
+            <a href="index.html" style="color:#fff; background:rgba(255,255,255,.12); padding:10px 16px; border-radius:18px; text-decoration:none; font-weight:700;">Home</a>
+            <button id="signOutBtn" style="background:#fff; color:#1a1a2e; border:none; border-radius:18px; padding:10px 16px; font-weight:700; cursor:pointer;">Sign out</button>
+        </div>
     </div>
     <div style="margin: 0 15px 10px; padding:14px 16px; border-radius:20px; background:#fff; box-shadow:0 10px 30px rgba(0,0,0,0.05); font-size:0.92rem; color:#333;">
         Use this volunteer dashboard at <strong>dashboard-volunteer.html</strong>. Participants sign in to <strong>dashboard-participant.html</strong>, booth staff use <strong>dashboard-booth-admin.html</strong>, and admins use <strong>dashboard-admin.html</strong>.

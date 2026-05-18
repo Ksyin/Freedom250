@@ -346,6 +346,13 @@
     </style>
 </head>
 <body>
+<script type="module">
+    import { guardDashboard } from './js/auth.js';
+    (async () => {
+        // Require admin or organizer roles for this dashboard
+        await guardDashboard(['admin','organizer']);
+    })();
+</script>
 <div class="admin-wrapper">
     <!-- Sidebar -->
     <aside class="admin-sidebar" id="sidebar">
@@ -380,13 +387,14 @@
     <main class="admin-main">
         <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
 
-        <div class="admin-header">
+        <div class="admin-header" style="align-items:center;gap:12px;">
             <div class="header-title">
                 <h1>Super Admin Dashboard</h1>
                 <p>Freedom 250 Festival · JKUAT Main Campus · Live Data</p>
             </div>
-            <div class="admin-avatar" id="adminAvatar">
-                <i class="fas fa-user-cog"></i>
+            <div style="display:flex;gap:10px;align-items:center;">
+                <a href="index.html" style="padding:10px 16px;background:#B22234;color:#fff;border-radius:18px;text-decoration:none;font-weight:700;">Home</a>
+                <div class="admin-avatar" id="adminAvatar"><i class="fas fa-user-cog"></i></div>
             </div>
         </div>
 
