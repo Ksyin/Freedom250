@@ -7,6 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
             --red: #B22234;
             --navy: #1a1a2e;
@@ -19,9 +25,20 @@
             --danger: #ef4444;
             --info: #3b82f6;
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Inter',sans-serif; background:var(--bg); }
-        .app { max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:80px; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            padding-bottom: 80px;
+        }
+
+        /* App Container */
+        .app {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+        }
 
         /* Header */
         .passport-header {
@@ -31,8 +48,25 @@
             position: relative;
             overflow: hidden;
         }
-        .passport-header h1 { font-size: 1.4rem; margin-bottom: 4px; }
-        .passport-header p { font-size: 0.7rem; opacity: 0.7; }
+
+        .passport-header::before {
+            content: "★";
+            position: absolute;
+            right: -15px;
+            top: -15px;
+            font-size: 100px;
+            opacity: 0.08;
+        }
+
+        .passport-header h1 {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+
+        .passport-header p {
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
 
         /* Stats Row */
         .stats-row {
@@ -40,15 +74,27 @@
             gap: 12px;
             margin-top: 16px;
         }
+
         .stat-card {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 10px;
             flex: 1;
             text-align: center;
+            backdrop-filter: blur(4px);
         }
-        .stat-card .value { font-size: 1.3rem; font-weight: 800; color: var(--gold); }
-        .stat-card .label { font-size: 0.6rem; opacity: 0.7; text-transform: uppercase; }
+
+        .stat-card .value {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .stat-card .label {
+            font-size: 0.6rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+        }
 
         /* QR Section */
         .qr-section {
@@ -57,22 +103,48 @@
             padding: 20px;
             border-radius: var(--radius);
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
+
+        .qr-section h3 {
+            font-size: 1rem;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
         .qr-box {
             width: 160px;
             height: 160px;
             margin: 12px auto;
-            background: #f5f5f5;
+            background: #fff;
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .qr-box img { width: 100%; height: 100%; object-fit: contain; }
 
-        /* Sections */
+        .qr-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .qr-box canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .freedom-id {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 8px;
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+
+        /* Section Headers */
         .section-header {
             padding: 0 15px;
             margin: 20px 0 12px;
@@ -80,11 +152,26 @@
             justify-content: space-between;
             align-items: baseline;
         }
-        .section-header h3 { font-size: 1rem; font-weight: 800; color: var(--navy); }
-        .section-link { font-size: 0.7rem; color: var(--red); cursor: pointer; }
+
+        .section-header h3 {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .section-link {
+            font-size: 0.7rem;
+            color: var(--red);
+            cursor: pointer;
+        }
 
         /* Cards Grid */
-        .cards-grid { display: grid; gap: 12px; padding: 0 15px; }
+        .cards-grid {
+            display: grid;
+            gap: 12px;
+            padding: 0 15px;
+        }
+
         .card {
             background: var(--white);
             border-radius: 16px;
@@ -92,11 +179,15 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s ease;
         }
-        .card:active { transform: scale(0.98); }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
         .card-icon {
             width: 48px;
             height: 48px;
@@ -108,9 +199,22 @@
             color: #fff;
             flex-shrink: 0;
         }
-        .card-info { flex: 1; }
-        .card-info h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; }
-        .card-info p { font-size: 0.7rem; color: #777; }
+
+        .card-info {
+            flex: 1;
+        }
+
+        .card-info h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .card-info p {
+            font-size: 0.7rem;
+            color: #777;
+        }
+
         .card-badge {
             font-size: 0.7rem;
             font-weight: 700;
@@ -124,16 +228,20 @@
         .notification-panel {
             position: fixed;
             top: 0;
-            right: -320px;
+            right: -100%;
             width: 320px;
             height: 100vh;
             background: var(--white);
-            box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+            box-shadow: -4px 0 30px rgba(0, 0, 0, 0.15);
             z-index: 1000;
             transition: right 0.3s ease;
             overflow-y: auto;
         }
-        .notification-panel.open { right: 0; }
+
+        .notification-panel.open {
+            right: 0;
+        }
+
         .notification-header {
             background: var(--navy);
             color: #fff;
@@ -144,14 +252,39 @@
             position: sticky;
             top: 0;
         }
+
         .notification-item {
             padding: 15px;
             border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
         }
-        .notification-item.unread { background: rgba(178,34,52,0.05); }
-        .notification-item .title { font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; }
-        .notification-item .message { font-size: 0.75rem; color: #666; margin-bottom: 6px; }
-        .notification-item .time { font-size: 0.65rem; color: #999; }
+
+        .notification-item:hover {
+            background: #f8f9fa;
+        }
+
+        .notification-item.unread {
+            background: rgba(178, 34, 52, 0.05);
+            border-left: 3px solid var(--red);
+        }
+
+        .notification-item .title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+
+        .notification-item .message {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .notification-item .time {
+            font-size: 0.65rem;
+            color: #999;
+        }
 
         /* Overlay */
         .overlay {
@@ -160,13 +293,16 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 999;
             display: none;
         }
-        .overlay.active { display: block; }
 
-        /* Poll Modal */
+        .overlay.active {
+            display: block;
+        }
+
+        /* Modal */
         .modal {
             position: fixed;
             top: 50%;
@@ -182,8 +318,28 @@
             max-height: 80vh;
             overflow-y: auto;
         }
-        .modal.active { display: block; }
-        .modal h3 { margin-bottom: 16px; color: var(--navy); }
+
+        .modal.active {
+            display: block;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .modal h3 {
+            margin-bottom: 16px;
+            color: var(--navy);
+        }
+
         .poll-option {
             padding: 12px;
             border: 1px solid #ddd;
@@ -192,22 +348,18 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .poll-option:hover { background: #f5f5f5; border-color: var(--red); }
-        .poll-option.selected { background: var(--red); color: #fff; border-color: var(--red); }
-        .quiz-question {
-            margin-bottom: 20px;
-            padding: 16px;
-            background: #f8f8f8;
-            border-radius: 12px;
+
+        .poll-option:hover {
+            background: #f5f5f5;
+            border-color: var(--red);
         }
-        .quiz-option {
-            padding: 10px;
-            margin: 6px 0;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            cursor: pointer;
+
+        .poll-option.selected {
+            background: var(--red);
+            color: #fff;
+            border-color: var(--red);
         }
-        .quiz-option.selected { background: var(--success); color: #fff; border-color: var(--success); }
+
         .btn-primary {
             background: var(--red);
             color: #fff;
@@ -217,35 +369,52 @@
             font-weight: 700;
             width: 100%;
             cursor: pointer;
+            margin-top: 12px;
         }
 
-        /* Bottom Nav */
+        /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
             bottom: 0;
-            left: 0;
-            right: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
             background: var(--white);
             display: flex;
             justify-content: space-around;
             padding: 10px 10px 20px;
             border-top: 1px solid #eee;
-            max-width: 480px;
-            margin: 0 auto;
             z-index: 100;
         }
+
         .nav-item {
             text-align: center;
             color: #aaa;
             font-size: 0.65rem;
             cursor: pointer;
             transition: color 0.2s;
+            position: relative;
         }
-        .nav-item.active { color: var(--red); }
-        .nav-item i { font-size: 1.3rem; display: block; margin-bottom: 4px; }
 
-        .page { display: none; }
-        .page.active { display: block; }
+        .nav-item.active {
+            color: var(--red);
+        }
+
+        .nav-item i {
+            font-size: 1.3rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
 
         /* Toast */
         .toast-container {
@@ -257,6 +426,7 @@
             max-width: 400px;
             z-index: 2000;
         }
+
         .toast {
             background: var(--navy);
             color: #fff;
@@ -265,20 +435,39 @@
             margin-bottom: 8px;
             font-size: 0.8rem;
             animation: slideDown 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .toast.success { background: var(--success); }
-        .toast.error { background: var(--danger); }
-        .toast.warning { background: var(--warning); }
+
+        .toast.success {
+            background: var(--success);
+        }
+
+        .toast.error {
+            background: var(--danger);
+        }
+
+        .toast.warning {
+            background: var(--warning);
+        }
+
         @keyframes slideDown {
-            from { transform: translateY(-100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         /* Notification Badge */
         .nav-badge {
             position: absolute;
-            top: -5px;
-            right: -8px;
+            top: -8px;
+            right: -12px;
             background: var(--red);
             color: #fff;
             font-size: 0.6rem;
@@ -287,40 +476,9 @@
             min-width: 18px;
             text-align: center;
         }
-        .relative { position: relative; }
 
-        /* Reward Cards */
-        .reward-card {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-        .reward-info h4 { font-size: 0.9rem; margin-bottom: 4px; }
-        .reward-info p { font-size: 0.7rem; color: #777; }
-        .reward-cost {
-            font-weight: 800;
-            font-size: 1rem;
-            color: var(--gold);
-            text-shadow: 0 1px 1px rgba(0,0,0,0.1);
-        }
-        .redeem-btn {
-            background: var(--navy);
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        .redeem-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
+        .relative {
+            position: relative;
         }
 
         /* Leaderboard Items */
@@ -328,11 +486,13 @@
             background: var(--white);
             border-radius: 14px;
             padding: 12px 16px;
-            margin-bottom: 8px;
+            margin: 0 15px 8px;
             display: flex;
             align-items: center;
             gap: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
+
         .rank-number {
             width: 32px;
             height: 32px;
@@ -345,14 +505,106 @@
             font-weight: 800;
             font-size: 0.8rem;
         }
-        .rank-number.top-1 { background: var(--gold); color: var(--navy); }
-        .rank-number.top-2 { background: #C0C0C0; }
-        .rank-number.top-3 { background: #CD7F32; }
 
-        /* Scroll */
+        .rank-number.top-1 {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .rank-number.top-2 {
+            background: #C0C0C0;
+            color: #333;
+        }
+
+        .rank-number.top-3 {
+            background: #CD7F32;
+            color: #fff;
+        }
+
+        /* Scrollable */
         .scrollable {
             max-height: 400px;
             overflow-y: auto;
+        }
+
+        /* Reward Cards */
+        .reward-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 16px;
+            margin: 0 15px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .reward-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .reward-info p {
+            font-size: 0.7rem;
+            color: #777;
+        }
+
+        .reward-cost {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--gold);
+        }
+
+        .redeem-btn {
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .redeem-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: var(--white);
+            border-radius: 24px;
+            margin: 0 15px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--navy), var(--red));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .logout-btn {
+            background: var(--danger);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -372,9 +624,18 @@
             </div>
         </div>
         <div class="stats-row">
-            <div class="stat-card"><div class="value" id="userPoints">0</div><div class="label">Coins</div></div>
-            <div class="stat-card"><div class="value" id="userStamps">0</div><div class="label">Stamps</div></div>
-            <div class="stat-card"><div class="value" id="userRank">1</div><div class="label">Rank</div></div>
+            <div class="stat-card">
+                <div class="value" id="userPoints">0</div>
+                <div class="label">Liberty Coins</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="userStamps">0</div>
+                <div class="label">Stamps</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="userLevel">1</div>
+                <div class="label">Level</div>
+            </div>
         </div>
     </header>
 
@@ -384,75 +645,113 @@
         <div class="qr-box" id="qrBox">
             <i class="fas fa-qrcode" style="font-size: 2.5rem; color: #ccc;"></i>
         </div>
-        <div class="freedom-id" id="freedomId" style="font-size: 0.7rem; color: #888; margin-top: 8px;"></div>
-        <p style="font-size: 0.65rem; color: #aaa; margin-top: 4px;">Scan at any booth to earn Liberty Coins</p>
+        <div class="freedom-id" id="freedomId">Loading...</div>
+        <p style="font-size: 0.65rem; color: #aaa; margin-top: 8px;">Scan at any booth to earn Liberty Coins</p>
     </div>
 
-    <!-- Pages -->
+    <!-- Home Page -->
     <div id="page-home" class="page active">
-        <div class="section-header"><h3>🏕️ Experience Zones</h3></div>
+        <div class="section-header">
+            <h3>🏕️ Experience Zones</h3>
+        </div>
         <div class="cards-grid" id="zonesList"></div>
 
-        <div class="section-header"><h3>⚡ Live Quizzes</h3><span class="section-link" onclick="showPage('quizzes')">View All →</span></div>
-        <div class="cards-grid" id="quizzesPreview"></div>
+        <div class="section-header">
+            <h3>⚡ Active Challenges</h3>
+            <span class="section-link" onclick="showPage('challenges')">View All →</span>
+        </div>
+        <div class="cards-grid" id="challengesPreview"></div>
 
-        <div class="section-header"><h3>📊 Active Polls</h3><span class="section-link" onclick="showPage('polls')">View All →</span></div>
+        <div class="section-header">
+            <h3>📊 Live Polls</h3>
+            <span class="section-link" onclick="showPage('polls')">View All →</span>
+        </div>
         <div class="cards-grid" id="pollsPreview"></div>
     </div>
 
+    <!-- Rewards Page -->
     <div id="page-rewards" class="page">
-        <div class="section-header"><h3>🎁 Rewards Store</h3></div>
-        <div class="cards-grid scrollable" id="rewardsList"></div>
+        <div class="section-header">
+            <h3>🎁 Rewards Store</h3>
+        </div>
+        <div id="rewardsList"></div>
     </div>
 
+    <!-- Leaderboard Page -->
     <div id="page-leaderboard" class="page">
-        <div class="section-header"><h3>🏆 Global Leaderboard</h3></div>
+        <div class="section-header">
+            <h3>🏆 Top Explorers</h3>
+        </div>
         <div id="leaderboardList"></div>
     </div>
 
-    <div id="page-quizzes" class="page">
-        <div class="section-header"><h3>📝 Available Quizzes</h3></div>
-        <div id="quizzesFullList"></div>
+    <!-- Challenges Page -->
+    <div id="page-challenges" class="page">
+        <div class="section-header">
+            <h3>🏅 All Challenges</h3>
+        </div>
+        <div id="challengesFullList"></div>
     </div>
 
+    <!-- Polls Page -->
     <div id="page-polls" class="page">
-        <div class="section-header"><h3>🗳️ Community Polls</h3></div>
+        <div class="section-header">
+            <h3>🗳️ Community Polls</h3>
+        </div>
         <div id="pollsFullList"></div>
     </div>
 
+    <!-- Profile Page -->
     <div id="page-profile" class="page">
-        <div class="section-header"><h3>👤 My Profile</h3></div>
-        <div class="cards-grid">
-            <div class="card" style="flex-direction: column; text-align: center;">
-                <div style="width: 70px; height: 70px; background: var(--navy); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 12px;">
-                    <i class="fas fa-user"></i>
+        <div class="section-header">
+            <h3>👤 My Profile</h3>
+        </div>
+        <div class="profile-card">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h3 id="profileName">—</h3>
+            <p id="profileEmail" style="color: #777; font-size: 0.8rem; margin-top: 4px;">—</p>
+            <p id="profileFreedomId" style="font-size: 0.7rem; color: #aaa; margin-top: 8px;">—</p>
+            <div style="margin-top: 20px; text-align: left;">
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                    <span>Total Points:</span>
+                    <strong id="profilePoints">0</strong>
                 </div>
-                <h3 id="profileName">—</h3>
-                <p id="profileEmail" style="color: #777; font-size: 0.8rem;">—</p>
-                <p id="profileFreedomId" style="font-size: 0.7rem; color: #aaa;">—</p>
-                <div style="margin-top: 16px; width: 100%;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span>Total Points:</span><strong id="profilePoints">0</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span>Zones Visited:</span><strong id="profileStamps">0</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>Scans Completed:</span><strong id="profileScans">0</strong>
-                    </div>
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                    <span>Zones Visited:</span>
+                    <strong id="profileStamps">0</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                    <span>Total Scans:</span>
+                    <strong id="profileScans">0</strong>
                 </div>
             </div>
+            <button class="logout-btn" id="profileLogoutBtn">Logout</button>
         </div>
     </div>
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <div class="nav-item active" data-page="home" onclick="showPage('home')"><i class="fas fa-passport"></i>Passport</div>
-        <div class="nav-item" data-page="rewards" onclick="showPage('rewards')"><i class="fas fa-gift"></i>Rewards</div>
-        <div class="nav-item relative" data-page="leaderboard" onclick="showPage('leaderboard')"><i class="fas fa-chart-line"></i>Rank</div>
-        <div class="nav-item" data-page="profile" onclick="showPage('profile')"><i class="fas fa-user"></i>Profile</div>
+        <div class="nav-item active" data-page="home" onclick="showPage('home')">
+            <i class="fas fa-passport"></i>
+            <span>Passport</span>
+        </div>
+        <div class="nav-item" data-page="rewards" onclick="showPage('rewards')">
+            <i class="fas fa-gift"></i>
+            <span>Rewards</span>
+        </div>
+        <div class="nav-item" data-page="leaderboard" onclick="showPage('leaderboard')">
+            <i class="fas fa-chart-line"></i>
+            <span>Rank</span>
+        </div>
+        <div class="nav-item" data-page="profile" onclick="showPage('profile')">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </div>
         <div class="nav-item relative" id="notifNavBtn" onclick="toggleNotifications()">
-            <i class="fas fa-bell"></i>Notify
+            <i class="fas fa-bell"></i>
+            <span>Alerts</span>
             <span id="notifBadge" class="nav-badge" style="display: none;">0</span>
         </div>
     </nav>
@@ -460,10 +759,10 @@
     <!-- Notification Panel -->
     <div id="notificationPanel" class="notification-panel">
         <div class="notification-header">
-            <span>Notifications</span>
+            <span><i class="fas fa-bell"></i> Notifications</span>
             <i class="fas fa-times" onclick="toggleNotifications()" style="cursor: pointer;"></i>
         </div>
-        <div id="notificationsList"></div>
+        <div id="notificationsList" style="padding: 0 15px;"></div>
     </div>
 
     <!-- Overlay -->
@@ -472,40 +771,27 @@
     <!-- Poll Modal -->
     <div id="pollModal" class="modal">
         <h3 id="pollTitle"></h3>
-        <p id="pollQuestion" style="margin-bottom: 16px;"></p>
+        <p id="pollQuestion" style="margin-bottom: 16px; color: #666;"></p>
         <div id="pollOptions"></div>
         <button class="btn-primary" onclick="submitVote()">Submit Vote</button>
-    </div>
-
-    <!-- Quiz Modal -->
-    <div id="quizModal" class="modal">
-        <h3 id="quizTitle"></h3>
-        <p id="quizDesc" style="margin-bottom: 16px; font-size: 0.8rem; color: #777;"></p>
-        <div id="quizQuestions"></div>
-        <button class="btn-primary" onclick="submitQuiz()">Submit Answers</button>
     </div>
 
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 <script type="module">
-    import { guardDashboard, signOutUser, onAuthStateChange, getCurrentUser } from './js/auth.js';
-    import { db, doc, getDoc, updateDoc, onSnapshot, collection, query, where, orderBy, limit, increment, addDoc, serverTimestamp, arrayUnion } from './js/firebase-config.js';
-    import { generateQRCode } from './js/qr-generator.js';
-    import { subscribeToNotifications, markNotificationRead, getUnreadCount, subscribeToPolls, castVote, getUserVote, subscribeToQuizzes, submitQuizAnswer, getQuizProgress, getAllRewards, redeemReward, subscribeToLeaderboard, awardPointsToUser } from './js/realtime-push.js';
-    import { generateUserQRCode } from './js/qr-scanner.js';
+    import { guardDashboard, signOutUser, onAuthStateChange } from './js/auth.js';
+    import { db, doc, getDoc, updateDoc, onSnapshot, collection, query, where, orderBy, limit, increment, addDoc, serverTimestamp, arrayUnion, getDocs } from './js/firebase-config.js';
 
     let currentUser = null;
+    let userUnsubscribe = null;
     let notificationsUnsubscribe = null;
-    let pollsUnsubscribe = null;
-    let quizzesUnsubscribe = null;
     let leaderboardUnsubscribe = null;
-    let rewardsUnsubscribe = null;
+    let pollsUnsubscribe = null;
     let currentPollId = null;
-    let currentQuizId = null;
     let selectedPollOption = null;
-    let quizAnswers = {};
 
     function showToast(message, type = 'info') {
         const container = document.getElementById('toastContainer');
@@ -516,92 +802,202 @@
         setTimeout(() => toast.remove(), 4000);
     }
 
-    async function loadUserData() {
+    // Generate QR Code using QRCode.js library
+    async function generateQRCodeForUser(user) {
+        try {
+            const qrData = JSON.stringify({
+                uid: user.uid,
+                name: user.displayName,
+                email: user.email,
+                freedomId: user.freedomId,
+                timestamp: Date.now()
+            });
+
+            const qrContainer = document.getElementById('qrBox');
+            qrContainer.innerHTML = '';
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 200;
+            canvas.height = 200;
+            qrContainer.appendChild(canvas);
+
+            QRCode.toCanvas(canvas, qrData, {
+                width: 200,
+                margin: 2,
+                color: {
+                    dark: '#1a1a2e',
+                    light: '#ffffff'
+                }
+            }, function(error) {
+                if (error) {
+                    console.error('QR Error:', error);
+                    qrContainer.innerHTML = '<i class="fas fa-qrcode" style="font-size: 2.5rem; color: #ccc;"></i>';
+                }
+            });
+
+            return true;
+        } catch (error) {
+            console.error('QR Generation Error:', error);
+            return false;
+        }
+    }
+
+    // Load user data with real-time updates
+    function loadUserData() {
         if (!currentUser) return;
 
-        const userRef = doc(db, 'users', currentUser.uid);
-        const unsubscribe = onSnapshot(userRef, async (snap) => {
+        userUnsubscribe = onSnapshot(doc(db, 'users', currentUser.uid), async (snap) => {
             if (snap.exists()) {
                 const data = snap.data();
-                document.getElementById('userPoints').textContent = data.points || 0;
-                document.getElementById('userStamps').textContent = data.stamps?.length || 0;
-                document.getElementById('userRank').textContent = Math.floor(((data.points || 0) / 500)) + 1;
-                document.getElementById('profilePoints').textContent = data.points || 0;
-                document.getElementById('profileStamps').textContent = data.stamps?.length || 0;
-                document.getElementById('profileScans').textContent = data.scansCount || 0;
+                const points = data.points || 0;
+                const stamps = data.stamps || [];
+                const level = Math.floor(points / 500) + 1;
 
-                // Generate QR code if not exists
-                if (!data.qrCode) {
-                    const qrData = generateUserQRCode(currentUser);
-                    const qrUrl = await generateQRCode(qrData);
-                    await updateDoc(userRef, { qrCode: qrUrl });
-                    document.getElementById('qrBox').innerHTML = `<img src="${qrUrl}" style="width:100%">`;
+                document.getElementById('userPoints').textContent = points;
+                document.getElementById('userStamps').textContent = stamps.length;
+                document.getElementById('userLevel').textContent = level;
+                document.getElementById('profilePoints').textContent = points;
+                document.getElementById('profileStamps').textContent = stamps.length;
+                document.getElementById('profileScans').textContent = data.scansCount || 0;
+                document.getElementById('profileName').textContent = data.displayName || currentUser.displayName || 'Explorer';
+                document.getElementById('profileEmail').textContent = currentUser.email;
+
+                // Update freedom ID display
+                const freedomId = data.freedomId || `FREEDOM-${new Date().getFullYear()}-${currentUser.uid.slice(-5)}`;
+                document.getElementById('freedomId').textContent = freedomId;
+                document.getElementById('profileFreedomId').textContent = freedomId;
+                document.getElementById('userName').textContent = `Hello, ${data.displayName || 'Explorer'}`;
+
+                // Generate QR code if needed
+                if (!data.qrGenerated) {
+                    await generateQRCodeForUser({ ...currentUser, freedomId, displayName: data.displayName });
+                    await updateDoc(doc(db, 'users', currentUser.uid), { qrGenerated: true });
                 } else {
-                    document.getElementById('qrBox').innerHTML = `<img src="${data.qrCode}" style="width:100%">`;
+                    await generateQRCodeForUser({ ...currentUser, freedomId, displayName: data.displayName });
                 }
             }
         });
-        return unsubscribe;
     }
 
+    // Load notifications
     function loadNotifications() {
         if (notificationsUnsubscribe) notificationsUnsubscribe();
-        notificationsUnsubscribe = subscribeToNotifications(currentUser.uid, async (notifications) => {
-            const container = document.getElementById('notificationsList');
-            const unreadCount = notifications.filter(n => !n.read).length;
-            const badge = document.getElementById('notifBadge');
-            if (unreadCount > 0) {
-                badge.style.display = 'block';
-                badge.textContent = unreadCount;
-            } else {
-                badge.style.display = 'none';
-            }
 
-            container.innerHTML = notifications.map(notif => `
-                <div class="notification-item ${!notif.read ? 'unread' : ''}" onclick="markRead('${notif.id}')">
-                    <div class="title">${notif.title || 'Notification'}</div>
-                    <div class="message">${notif.message || ''}</div>
-                    <div class="time">${notif.createdAt?.toDate ? notif.createdAt.toDate().toLocaleTimeString() : 'Just now'}</div>
-                </div>
-            `).join('');
-        });
+        notificationsUnsubscribe = onSnapshot(
+            query(collection(db, 'notifications'), where('userId', '==', currentUser.uid), orderBy('createdAt', 'desc'), limit(50)),
+            (snapshot) => {
+                const container = document.getElementById('notificationsList');
+                const unreadCount = snapshot.docs.filter(d => !d.data().read).length;
+                const badge = document.getElementById('notifBadge');
+
+                if (unreadCount > 0) {
+                    badge.style.display = 'block';
+                    badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                } else {
+                    badge.style.display = 'none';
+                }
+
+                if (snapshot.empty) {
+                    container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">No notifications yet</p>';
+                    return;
+                }
+
+                container.innerHTML = snapshot.docs.map(doc => {
+                    const notif = doc.data();
+                    const isUnread = !notif.read;
+                    return `
+                        <div class="notification-item ${isUnread ? 'unread' : ''}" onclick="markNotificationRead('${doc.id}')">
+                            <div class="title">${notif.title || 'Notification'}</div>
+                            <div class="message">${notif.message || ''}</div>
+                            <div class="time">${notif.createdAt?.toDate ? notif.createdAt.toDate().toLocaleString() : 'Just now'}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        );
     }
 
-    window.markRead = async (id) => {
-        await markNotificationRead(id);
+    window.markNotificationRead = async (notifId) => {
+        try {
+            await updateDoc(doc(db, 'notifications', notifId), { read: true });
+        } catch (error) {
+            console.error('Mark read error:', error);
+        }
     };
 
+    // Load leaderboard
+    function loadLeaderboard() {
+        if (leaderboardUnsubscribe) leaderboardUnsubscribe();
+
+        leaderboardUnsubscribe = onSnapshot(
+            query(collection(db, 'users'), where('role', '==', 'participant'), orderBy('points', 'desc'), limit(50)),
+            (snapshot) => {
+                const container = document.getElementById('leaderboardList');
+                let rank = 1;
+
+                if (snapshot.empty) {
+                    container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">No participants yet</p>';
+                    return;
+                }
+
+                container.innerHTML = snapshot.docs.map(doc => {
+                    const user = doc.data();
+                    const rankClass = rank === 1 ? 'top-1' : rank === 2 ? 'top-2' : rank === 3 ? 'top-3' : '';
+                    const displayName = user.displayName || user.email?.split('@')[0] || 'Explorer';
+                    // Mask name for privacy on leaderboard
+                    const maskedName = displayName.length > 8 ? displayName.substring(0, 6) + '...' : displayName;
+                    const currentRank = rank++;
+                    return `
+                        <div class="leaderboard-item">
+                            <div class="rank-number ${rankClass}">${currentRank}</div>
+                            <div class="card-info" style="flex: 1;">
+                                <h4>${maskedName}</h4>
+                                <p style="font-size: 0.7rem;">Level ${Math.floor((user.points || 0) / 500) + 1}</p>
+                            </div>
+                            <div><strong style="color: var(--red);">${user.points || 0}</strong></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        );
+    }
+
+    // Load polls
     function loadPolls() {
         if (pollsUnsubscribe) pollsUnsubscribe();
-        pollsUnsubscribe = subscribeToPolls(async (polls) => {
-            const previewContainer = document.getElementById('pollsPreview');
-            const fullContainer = document.getElementById('pollsFullList');
 
-            const activePolls = polls.filter(p => p.active);
-            const previewPolls = activePolls.slice(0, 2);
+        pollsUnsubscribe = onSnapshot(
+            query(collection(db, 'polls'), where('active', '==', true), orderBy('createdAt', 'desc')),
+            (snapshot) => {
+                const previewContainer = document.getElementById('pollsPreview');
+                const fullContainer = document.getElementById('pollsFullList');
+                const polls = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-            previewContainer.innerHTML = previewPolls.map(poll => `
-                <div class="card" onclick="openPoll('${poll.id}', '${poll.title.replace(/'/g, "\\'")}', '${poll.question.replace(/'/g, "\\'")}', ${JSON.stringify(poll.options).replace(/"/g, '&quot;')})">
-                    <div class="card-icon" style="background: var(--info);"><i class="fas fa-chart-simple"></i></div>
-                    <div class="card-info">
-                        <h4>${poll.title}</h4>
-                        <p>${poll.totalVotes || 0} votes · ${poll.options?.length || 0} options</p>
+                const previewPolls = polls.slice(0, 2);
+
+                previewContainer.innerHTML = previewPolls.map(poll => `
+                    <div class="card" onclick="openPoll('${poll.id}', '${poll.title.replace(/'/g, "\\'")}', '${poll.question.replace(/'/g, "\\'")}', ${JSON.stringify(poll.options).replace(/"/g, '&quot;')})">
+                        <div class="card-icon" style="background: var(--info);"><i class="fas fa-chart-simple"></i></div>
+                        <div class="card-info">
+                            <h4>${poll.title}</h4>
+                            <p>${poll.totalVotes || 0} votes</p>
+                        </div>
+                        <div class="card-badge">Vote</div>
                     </div>
-                    <div class="card-badge">Vote</div>
-                </div>
-            `).join('');
+                `).join('');
 
-            fullContainer.innerHTML = activePolls.map(poll => `
-                <div class="card" onclick="openPoll('${poll.id}', '${poll.title.replace(/'/g, "\\'")}', '${poll.question.replace(/'/g, "\\'")}', ${JSON.stringify(poll.options).replace(/"/g, '&quot;')})">
-                    <div class="card-icon" style="background: var(--info);"><i class="fas fa-chart-simple"></i></div>
-                    <div class="card-info">
-                        <h4>${poll.title}</h4>
-                        <p>${poll.question.substring(0, 60)}${poll.question.length > 60 ? '...' : ''}</p>
+                fullContainer.innerHTML = polls.map(poll => `
+                    <div class="card" onclick="openPoll('${poll.id}', '${poll.title.replace(/'/g, "\\'")}', '${poll.question.replace(/'/g, "\\'")}', ${JSON.stringify(poll.options).replace(/"/g, '&quot;')})">
+                        <div class="card-icon" style="background: var(--info);"><i class="fas fa-chart-simple"></i></div>
+                        <div class="card-info">
+                            <h4>${poll.title}</h4>
+                            <p>${poll.question.substring(0, 50)}${poll.question.length > 50 ? '...' : ''}</p>
+                        </div>
+                        <div class="card-badge">${poll.totalVotes || 0} votes</div>
                     </div>
-                    <div class="card-badge">${poll.totalVotes || 0} votes</div>
-                </div>
-            `).join('');
-        });
+                `).join('');
+            }
+        );
     }
 
     window.openPoll = (id, title, question, options) => {
@@ -632,160 +1028,90 @@
             showToast('Please select an option', 'warning');
             return;
         }
-        const result = await castVote(currentPollId, currentUser.uid, selectedPollOption);
-        if (result.success) {
-            showToast('Vote submitted successfully!', 'success');
-            closeModals();
-        } else {
-            showToast(result.error, 'error');
-        }
-    };
 
-    function loadQuizzes() {
-        if (quizzesUnsubscribe) quizzesUnsubscribe();
-        quizzesUnsubscribe = subscribeToQuizzes(async (quizzes) => {
-            const previewContainer = document.getElementById('quizzesPreview');
-            const fullContainer = document.getElementById('quizzesFullList');
+        try {
+            const pollRef = doc(db, 'polls', currentPollId);
+            const poll = await getDoc(pollRef);
 
-            const previewQuizzes = quizzes.slice(0, 2);
+            if (!poll.exists()) {
+                showToast('Poll not found', 'error');
+                closeModals();
+                return;
+            }
 
-            previewContainer.innerHTML = previewQuizzes.map(quiz => `
-                <div class="card" onclick="openQuiz('${quiz.id}', '${quiz.title.replace(/'/g, "\\'")}', '${quiz.description?.replace(/'/g, "\\'") || ''}', ${JSON.stringify(quiz.questions).replace(/"/g, '&quot;')}, ${quiz.pointsPerQuestion})">
-                    <div class="card-icon" style="background: var(--success);"><i class="fas fa-brain"></i></div>
-                    <div class="card-info">
-                        <h4>${quiz.title}</h4>
-                        <p>${quiz.questions?.length || 0} questions · ${quiz.totalPoints} pts</p>
-                    </div>
-                    <div class="card-badge">Take Quiz</div>
-                </div>
-            `).join('');
+            const pollData = poll.data();
+            const existingVoteQuery = query(
+                collection(db, 'pollVotes'),
+                where('pollId', '==', currentPollId),
+                where('userId', '==', currentUser.uid)
+            );
+            const existingVote = await getDocs(existingVoteQuery);
 
-            fullContainer.innerHTML = quizzes.map(quiz => `
-                <div class="card" onclick="openQuiz('${quiz.id}', '${quiz.title.replace(/'/g, "\\'")}', '${quiz.description?.replace(/'/g, "\\'") || ''}', ${JSON.stringify(quiz.questions).replace(/"/g, '&quot;')}, ${quiz.pointsPerQuestion})">
-                    <div class="card-icon" style="background: var(--success);"><i class="fas fa-brain"></i></div>
-                    <div class="card-info">
-                        <h4>${quiz.title}</h4>
-                        <p>${quiz.questions?.length || 0} questions · ${quiz.totalPoints} pts · ${quiz.totalAttempts || 0} attempts</p>
-                    </div>
-                </div>
-            `).join('');
-        });
-    }
+            if (!existingVote.empty) {
+                showToast('You have already voted in this poll', 'warning');
+                closeModals();
+                return;
+            }
 
-    window.openQuiz = async (id, title, description, questions, pointsPerQuestion) => {
-        currentQuizId = id;
-        quizAnswers = {};
-
-        // Load existing progress
-        const progress = await getQuizProgress(currentUser.uid, id);
-
-        document.getElementById('quizTitle').textContent = title;
-        document.getElementById('quizDesc').textContent = description;
-
-        const container = document.getElementById('quizQuestions');
-        container.innerHTML = questions.map((q, qidx) => `
-            <div class="quiz-question">
-                <strong>Q${qidx + 1}: ${q.text}</strong>
-                <div style="margin-top: 8px;">
-                    ${q.options.map((opt, oidx) => `
-                        <div class="quiz-option ${progress[qidx] !== undefined ? 'disabled' : ''}" data-q="${qidx}" data-opt="${oidx}" onclick="${progress[qidx] !== undefined ? '' : `selectQuizAnswer(${qidx}, ${oidx})`}">
-                            ${opt} ${progress[qidx] !== undefined ? (progress[qidx] === true ? ' ✓' : ' ✗') : ''}
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `).join('');
-
-        document.getElementById('quizModal').classList.add('active');
-        document.getElementById('overlay').classList.add('active');
-    };
-
-    window.selectQuizAnswer = (questionIdx, optionIdx) => {
-        const question = document.querySelector(`.quiz-question:has([data-q="${questionIdx}"])`);
-        const options = question.querySelectorAll('.quiz-option');
-        options.forEach(opt => opt.classList.remove('selected'));
-        document.querySelector(`.quiz-option[data-q="${questionIdx}"][data-opt="${optionIdx}"]`).classList.add('selected');
-        quizAnswers[questionIdx] = optionIdx;
-    };
-
-    window.submitQuiz = async () => {
-        const questions = JSON.parse(document.getElementById('quizQuestions').getAttribute('data-questions') || '[]');
-        if (Object.keys(quizAnswers).length === 0) {
-            showToast('Please answer at least one question', 'warning');
-            return;
-        }
-
-        // This would need the actual quiz data - simplified
-        showToast('Quiz submitted! Points will be awarded after review', 'success');
-        closeModals();
-    };
-
-    function loadRewards() {
-        if (rewardsUnsubscribe) rewardsUnsubscribe();
-
-        const unsubscribe = onSnapshot(collection(db, 'rewards'), async (snapshot) => {
-            const rewards = [];
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                rewards.push({
-                    id: doc.id,
-                    name: data.name,
-                    description: data.description,
-                    cost: data.cost,
-                    stock: data.stock,
-                    imageUrl: data.imageUrl,
-                    claimedCount: data.claimed?.length || 0
-                });
+            await addDoc(collection(db, 'pollVotes'), {
+                pollId: currentPollId,
+                userId: currentUser.uid,
+                optionIndex: selectedPollOption,
+                votedAt: serverTimestamp()
             });
 
-            const userPoints = currentUser?.points || 0;
-            const container = document.getElementById('rewardsList');
-            container.innerHTML = rewards.map(reward => `
-                <div class="reward-card">
-                    <div class="reward-info">
-                        <h4>${reward.name}</h4>
-                        <p>${reward.description || ''} ${reward.stock - reward.claimedCount > 0 ? `${reward.stock - reward.claimedCount} left` : 'Out of stock'}</p>
-                    </div>
-                    <div>
-                        <div class="reward-cost">${reward.cost} pts</div>
-                        <button class="redeem-btn" onclick="redeemItem('${reward.id}', ${reward.cost})" ${userPoints < reward.cost || reward.stock - reward.claimedCount <= 0 ? 'disabled' : ''}>
-                            Redeem
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        });
-        rewardsUnsubscribe = unsubscribe;
-    }
+            const newOptions = [...pollData.options];
+            newOptions[selectedPollOption].votes += 1;
 
-    window.redeemItem = async (rewardId, cost) => {
-        if (confirm(`Redeem this reward for ${cost} Liberty Coins?`)) {
-            const result = await redeemReward(currentUser.uid, rewardId);
-            if (result.success) {
-                showToast(result.message, 'success');
-            } else {
-                showToast(result.error, 'error');
-            }
+            await updateDoc(pollRef, {
+                options: newOptions,
+                totalVotes: increment(1)
+            });
+
+            showToast('Vote submitted successfully!', 'success');
+            closeModals();
+        } catch (error) {
+            showToast('Error submitting vote', 'error');
         }
     };
 
-    function loadLeaderboard() {
-        if (leaderboardUnsubscribe) leaderboardUnsubscribe();
-        leaderboardUnsubscribe = subscribeToLeaderboard((leaderboard) => {
-            const container = document.getElementById('leaderboardList');
-            container.innerHTML = leaderboard.map(entry => `
-                <div class="leaderboard-item">
-                    <div class="rank-number ${entry.rank === 1 ? 'top-1' : entry.rank === 2 ? 'top-2' : entry.rank === 3 ? 'top-3' : ''}">${entry.rank}</div>
-                    <div class="card-info" style="flex: 1;">
-                        <h4>${entry.name}</h4>
-                        <p style="font-size: 0.7rem;">${entry.university}</p>
+    // Load challenges
+    function loadChallenges() {
+        const challengesQuery = query(collection(db, 'boothChallenges'), where('status', '==', 'active'), orderBy('createdAt', 'desc'));
+
+        onSnapshot(challengesQuery, (snapshot) => {
+            const previewContainer = document.getElementById('challengesPreview');
+            const fullContainer = document.getElementById('challengesFullList');
+            const challenges = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            const previewChallenges = challenges.slice(0, 2);
+
+            previewContainer.innerHTML = previewChallenges.map(challenge => `
+                <div class="card">
+                    <div class="card-icon" style="background: var(--success);"><i class="fas fa-trophy"></i></div>
+                    <div class="card-info">
+                        <h4>${challenge.title}</h4>
+                        <p>${challenge.description?.substring(0, 50) || 'Complete this challenge'}</p>
                     </div>
-                    <div><strong style="color: var(--red);">${entry.points}</strong></div>
+                    <div class="card-badge">${challenge.points} pts</div>
                 </div>
             `).join('');
-        }, 50);
+
+            fullContainer.innerHTML = challenges.map(challenge => `
+                <div class="card">
+                    <div class="card-icon" style="background: var(--success);"><i class="fas fa-trophy"></i></div>
+                    <div class="card-info">
+                        <h4>${challenge.title}</h4>
+                        <p>${challenge.description || 'No description'}</p>
+                        <p style="font-size: 0.7rem; color: var(--red); margin-top: 4px;">📍 ${challenge.boothName || 'Any booth'}</p>
+                    </div>
+                    <div class="card-badge">${challenge.points} pts</div>
+                </div>
+            `).join('');
+        });
     }
 
+    // Load zones
     function loadZones() {
         const zones = [
             { id: 'garage', name: 'THE GARAGE', icon: 'fa-microchip', color: '#3C3B6E', desc: 'Innovation & MakerLab' },
@@ -810,11 +1136,87 @@
         `).join('');
     }
 
+    // Load rewards
+    function loadRewards() {
+        onSnapshot(collection(db, 'rewards'), (snapshot) => {
+            const container = document.getElementById('rewardsList');
+            const rewards = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            if (rewards.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">No rewards available</p>';
+                return;
+            }
+
+            container.innerHTML = rewards.map(reward => `
+                <div class="reward-card">
+                    <div class="reward-info">
+                        <h4>${reward.name}</h4>
+                        <p>${reward.description || ''}</p>
+                    </div>
+                    <div>
+                        <div class="reward-cost">${reward.cost} pts</div>
+                        <button class="redeem-btn" onclick="redeemReward('${reward.id}', ${reward.cost})">Redeem</button>
+                    </div>
+                </div>
+            `).join('');
+        });
+    }
+
+    window.redeemReward = async (rewardId, cost) => {
+        if (confirm(`Redeem this reward for ${cost} Liberty Coins?`)) {
+            try {
+                const userRef = doc(db, 'users', currentUser.uid);
+                const user = await getDoc(userRef);
+                const userPoints = user.data()?.points || 0;
+
+                if (userPoints < cost) {
+                    showToast(`Insufficient points! Need ${cost} coins`, 'error');
+                    return;
+                }
+
+                const rewardRef = doc(db, 'rewards', rewardId);
+                const reward = await getDoc(rewardRef);
+                const rewardData = reward.data();
+                const claimedCount = rewardData.claimed?.length || 0;
+
+                if (claimedCount >= rewardData.stock) {
+                    showToast('Reward out of stock!', 'error');
+                    return;
+                }
+
+                await updateDoc(userRef, { points: increment(-cost) });
+                await updateDoc(rewardRef, {
+                    claimed: arrayUnion({
+                        userId: currentUser.uid,
+                        userName: currentUser.displayName,
+                        claimedAt: new Date().toISOString(),
+                        status: 'pending'
+                    })
+                });
+
+                await addDoc(collection(db, 'notifications'), {
+                    userId: currentUser.uid,
+                    title: '🎁 Reward Redeemed!',
+                    message: `You redeemed ${rewardData.name} for ${cost} coins`,
+                    type: 'success',
+                    read: false,
+                    createdAt: serverTimestamp()
+                });
+
+                showToast(`Redeemed ${rewardData.name}!`, 'success');
+            } catch (error) {
+                showToast('Error redeeming reward', 'error');
+            }
+        }
+    };
+
+    // Page navigation
     window.showPage = (page) => {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(`page-${page}`).classList.add('active');
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.querySelector(`.nav-item[data-page="${page}"]`)?.classList.add('active');
+        const activeNav = document.querySelector(`.nav-item[data-page="${page}"]`);
+        if (activeNav) activeNav.classList.add('active');
         window.scrollTo(0, 0);
     };
 
@@ -822,48 +1224,80 @@
         const panel = document.getElementById('notificationPanel');
         const overlay = document.getElementById('overlay');
         panel.classList.toggle('open');
-        if (panel.classList.contains('open')) {
-            overlay.classList.add('active');
-        } else {
-            overlay.classList.remove('active');
-        }
+        overlay.classList.toggle('active');
     };
 
     window.closeModals = () => {
         document.getElementById('pollModal').classList.remove('active');
-        document.getElementById('quizModal').classList.remove('active');
         document.getElementById('notificationPanel').classList.remove('open');
         document.getElementById('overlay').classList.remove('active');
     };
 
+    // Award points for signup
+    async function awardSignupBonus() {
+        try {
+            const userRef = doc(db, 'users', currentUser.uid);
+            const user = await getDoc(userRef);
+            const hasReceivedBonus = user.data()?.signupBonusReceived;
+
+            if (!hasReceivedBonus) {
+                await updateDoc(userRef, {
+                    points: increment(50),
+                    signupBonusReceived: true
+                });
+
+                await addDoc(collection(db, 'notifications'), {
+                    userId: currentUser.uid,
+                    title: '🎉 Welcome Bonus!',
+                    message: 'You received 50 Liberty Coins for joining Freedom 250!',
+                    type: 'success',
+                    read: false,
+                    createdAt: serverTimestamp()
+                });
+
+                showToast('Welcome! +50 Liberty Coins', 'success');
+            }
+        } catch (error) {
+            console.error('Signup bonus error:', error);
+        }
+    }
+
+    // Initialize everything
     onAuthStateChange(async (user) => {
         if (!user) {
             window.location.replace('login.html');
             return;
         }
+
         currentUser = user;
 
-        document.getElementById('userName').textContent = `Hello, ${user.displayName || 'Explorer'}`;
-        document.getElementById('profileName').textContent = user.displayName || 'Explorer';
-        document.getElementById('profileEmail').textContent = user.email;
-        document.getElementById('profileFreedomId').textContent = user.freedomId || '—';
-        document.getElementById('freedomId').textContent = user.freedomId || '';
-
-        await loadUserData();
+        loadUserData();
         loadNotifications();
-        loadPolls();
-        loadQuizzes();
-        loadRewards();
         loadLeaderboard();
+        loadPolls();
+        loadChallenges();
         loadZones();
+        loadRewards();
+        await awardSignupBonus();
     });
 
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
+    // Logout handler
+    const logoutBtn = document.getElementById('logoutBtn');
+    const profileLogoutBtn = document.getElementById('profileLogoutBtn');
+
+    const handleLogout = async () => {
         if (confirm('Logout from Freedom 250?')) {
+            if (userUnsubscribe) userUnsubscribe();
+            if (notificationsUnsubscribe) notificationsUnsubscribe();
+            if (leaderboardUnsubscribe) leaderboardUnsubscribe();
+            if (pollsUnsubscribe) pollsUnsubscribe();
             await signOutUser();
             window.location.replace('login.html');
         }
-    });
+    };
+
+    if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
+    if (profileLogoutBtn) profileLogoutBtn.addEventListener('click', handleLogout);
 </script>
 </body>
 </html>
