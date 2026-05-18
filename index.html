@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Freedom 250 | Innovation & Freedom Festival</title>
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/djqqcepe8/image/upload/v1776661823/submissions/EfGKZb5hZAWx6DFDlGecY5HXefv2/Nq3eWwOZlj1b1Zyi6HpE/Freedom_250_Icon_-_RGB_-_White_-_Red_y2npdk.png">
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -85,7 +86,8 @@
         .navbar.scrolled { box-shadow: 0 4px 24px rgba(10,49,97,0.08); }
         .nav-container { display: flex; align-items: center; max-width: var(--container); margin: 0 auto; padding: 0 28px; height: 68px; gap: 32px; }
         .nav-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-        .brand-flag { width: 32px; height: 20px; object-fit: cover; border-radius: 3px; box-shadow: var(--shadow-sm); }
+        .brand-logo-wrap { width: 38px; height: 38px; background: var(--blue); border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 4px; flex-shrink: 0; box-shadow: var(--shadow-sm); }
+        .brand-logo-img { width: 100%; height: 100%; object-fit: contain; display: block; }
         .brand-text { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 900; color: var(--blue); letter-spacing: -0.02em; }
         .brand-text .accent { color: var(--red); }
         .nav-links { display: flex; align-items: center; gap: 4px; flex: 1; }
@@ -662,6 +664,7 @@
 <!-- Loading -->
 <div id="loadingOverlay" class="loading-overlay">
     <div style="text-align:center">
+        <img src="https://res.cloudinary.com/djqqcepe8/image/upload/v1776661823/submissions/EfGKZb5hZAWx6DFDlGecY5HXefv2/Nq3eWwOZlj1b1Zyi6HpE/Freedom_250_Icon_-_RGB_-_White_-_Red_y2npdk.png" alt="Freedom 250" style="width:64px;height:64px;object-fit:contain;margin:0 auto 16px;display:block;">
         <div class="loader-ring"></div>
         <div class="loader-label">Loading Freedom 250…</div>
     </div>
@@ -671,7 +674,9 @@
 <nav class="navbar" id="mainNavbar" role="navigation" aria-label="Main navigation">
     <div class="nav-container">
         <a href="/" class="nav-brand" id="homeLink">
-            <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USA Flag" class="brand-flag">
+            <div class="brand-logo-wrap">
+                <img src="https://res.cloudinary.com/djqqcepe8/image/upload/v1776661823/submissions/EfGKZb5hZAWx6DFDlGecY5HXefv2/Nq3eWwOZlj1b1Zyi6HpE/Freedom_250_Icon_-_RGB_-_White_-_Red_y2npdk.png" alt="Freedom 250 Logo" class="brand-logo-img">
+            </div>
             <span class="brand-text">FREEDOM<span class="accent">250</span></span>
         </a>
         <div class="nav-links">
@@ -1191,7 +1196,10 @@
     <div class="container">
         <div class="footer-grid">
             <div>
-                <div class="footer-logo">FREEDOM<span>250</span></div>
+                <div class="footer-logo" style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+                    <img src="https://res.cloudinary.com/djqqcepe8/image/upload/v1776661823/submissions/EfGKZb5hZAWx6DFDlGecY5HXefv2/Nq3eWwOZlj1b1Zyi6HpE/Freedom_250_Icon_-_RGB_-_White_-_Red_y2npdk.png" alt="Freedom 250 Logo" style="width:48px;height:48px;object-fit:contain;flex-shrink:0;">
+                    <span>FREEDOM<span>250</span></span>
+                </div>
                 <p>A U.S. Embassy Nairobi initiative celebrating innovation, democracy, and the enduring partnership between Kenya and the United States.</p>
                 <div class="social-icons" style="margin-top:20px;">
                     <a class="social-icon" href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
@@ -1222,7 +1230,10 @@
         </div>
         <div class="footer-bottom">
             <span>© 2026 Freedom 250 — U.S. Embassy Nairobi Initiative</span>
-            <span>Made with 🇺🇸 🇰🇪</span>
+            <span style="display:flex;align-items:center;gap:8px;">
+                <img src="https://res.cloudinary.com/djqqcepe8/image/upload/v1776661823/submissions/EfGKZb5hZAWx6DFDlGecY5HXefv2/Nq3eWwOZlj1b1Zyi6HpE/Freedom_250_Icon_-_RGB_-_White_-_Red_y2npdk.png" alt="Freedom 250" style="width:20px;height:20px;object-fit:contain;opacity:0.7;">
+                🇰🇪
+            </span>
         </div>
     </div>
 </footer>
@@ -1253,261 +1264,261 @@
 <script type="module" src="js/main.js"></script>
 
 <script>
-/* ========================================
-   SELF-CONTAINED MOBILE & INTERACTIVE JS
-   (works even if main.js module fails)
-   ======================================== */
-(function() {
+    /* ========================================
+       SELF-CONTAINED MOBILE & INTERACTIVE JS
+       (works even if main.js module fails)
+       ======================================== */
+    (function() {
 
-/* ── 1. MOBILE MENU ── */
-function initMobileMenu() {
-  var btn   = document.getElementById('mobileMenuBtn');
-  var panel = document.getElementById('mobileMenuPanel');
-  var navbar = document.getElementById('mainNavbar');
-  if (!btn || !panel) return;
+    /* ── 1. MOBILE MENU ── */
+    function initMobileMenu() {
+      var btn   = document.getElementById('mobileMenuBtn');
+      var panel = document.getElementById('mobileMenuPanel');
+      var navbar = document.getElementById('mainNavbar');
+      if (!btn || !panel) return;
 
-  function setMenuState(open) {
-    panel.classList.toggle('open', open);
-    panel.style.maxHeight = open ? 'calc(100vh - 60px)' : '0';
-    panel.style.opacity = open ? '1' : '0';
-    panel.style.pointerEvents = open ? 'all' : 'none';
-    btn.innerHTML = open ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
+      function setMenuState(open) {
+        panel.classList.toggle('open', open);
+        panel.style.maxHeight = open ? 'calc(100vh - 60px)' : '0';
+        panel.style.opacity = open ? '1' : '0';
+        panel.style.pointerEvents = open ? 'all' : 'none';
+        btn.innerHTML = open ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
 
-  btn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    setMenuState(!panel.classList.contains('open'));
-  });
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        setMenuState(!panel.classList.contains('open'));
+      });
 
-  panel.querySelectorAll('.mobile-link').forEach(function(link) {
-    link.addEventListener('click', function() {
-      setMenuState(false);
-    });
-  });
+      panel.querySelectorAll('.mobile-link').forEach(function(link) {
+        link.addEventListener('click', function() {
+          setMenuState(false);
+        });
+      });
 
-  document.addEventListener('click', function(e) {
-    if (!panel.contains(e.target) && !btn.contains(e.target)) {
-      panel.classList.remove('open');
-      btn.innerHTML = '<i class="fas fa-bars"></i>';
+      document.addEventListener('click', function(e) {
+        if (!panel.contains(e.target) && !btn.contains(e.target)) {
+          panel.classList.remove('open');
+          btn.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+      });
+
+      if (navbar) {
+        window.addEventListener('scroll', function() {
+          navbar.classList.toggle('scrolled', window.scrollY > 10);
+        }, { passive: true });
+      }
     }
-  });
 
-  if (navbar) {
-    window.addEventListener('scroll', function() {
-      navbar.classList.toggle('scrolled', window.scrollY > 10);
-    }, { passive: true });
-  }
-}
+    /* ── 2. HERO SLIDESHOW ── */
+    function initHeroSlideshow() {
+      var slideshow = document.getElementById('heroSlideshow');
+      if (!slideshow) return;
+      var slides = slideshow.querySelectorAll('.hero-slide');
+      var dotsEl = document.getElementById('heroSlideDots');
+      var current = 0;
+      var timer;
 
-/* ── 2. HERO SLIDESHOW ── */
-function initHeroSlideshow() {
-  var slideshow = document.getElementById('heroSlideshow');
-  if (!slideshow) return;
-  var slides = slideshow.querySelectorAll('.hero-slide');
-  var dotsEl = document.getElementById('heroSlideDots');
-  var current = 0;
-  var timer;
+      // Build dots
+      slides.forEach(function(_, i) {
+        var d = document.createElement('button');
+        d.className = 'hero-slide-dot' + (i === 0 ? ' active' : '');
+        d.addEventListener('click', function() { goTo(i); });
+        dotsEl.appendChild(d);
+      });
 
-  // Build dots
-  slides.forEach(function(_, i) {
-    var d = document.createElement('button');
-    d.className = 'hero-slide-dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', function() { goTo(i); });
-    dotsEl.appendChild(d);
-  });
+      function goTo(n) {
+        slides[current].classList.remove('active');
+        dotsEl.children[current].classList.remove('active');
+        current = (n + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dotsEl.children[current].classList.add('active');
+        resetTimer();
+      }
 
-  function goTo(n) {
-    slides[current].classList.remove('active');
-    dotsEl.children[current].classList.remove('active');
-    current = (n + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dotsEl.children[current].classList.add('active');
-    resetTimer();
-  }
+      function resetTimer() {
+        clearInterval(timer);
+        timer = setInterval(function() { goTo(current + 1); }, 4500);
+      }
 
-  function resetTimer() {
-    clearInterval(timer);
-    timer = setInterval(function() { goTo(current + 1); }, 4500);
-  }
-
-  resetTimer();
-}
-
-/* ── 3. VIBE DECK SLIDESHOW ── */
-function initVibeSlideshow() {
-  var slides  = document.querySelectorAll('.vibe-slide');
-  var thumbs  = document.querySelectorAll('.vibe-thumb');
-  var dotsEl  = document.getElementById('vibeDots');
-  var prevBtn = document.getElementById('vibePrev');
-  var nextBtn = document.getElementById('vibeNext');
-  if (!slides.length) return;
-  var current = 0;
-  var timer;
-
-  // Build sidebar dots
-  slides.forEach(function(_, i) {
-    var d = document.createElement('button');
-    d.className = 'vibe-dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', function() { goTo(i); });
-    dotsEl.appendChild(d);
-  });
-
-  function goTo(n) {
-    slides[current].classList.remove('active');
-    dotsEl.children[current].classList.remove('active');
-    if (thumbs[current]) thumbs[current].classList.remove('active');
-    current = (n + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dotsEl.children[current].classList.add('active');
-    if (thumbs[current]) thumbs[current].classList.add('active');
-    resetTimer();
-  }
-
-  thumbs.forEach(function(t) {
-    t.addEventListener('click', function() {
-      goTo(parseInt(t.dataset.slide));
-    });
-  });
-
-  if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); });
-  if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); });
-
-  function resetTimer() {
-    clearInterval(timer);
-    timer = setInterval(function() { goTo(current + 1); }, 5000);
-  }
-  resetTimer();
-}
-
-/* ── 4. LOADING OVERLAY DISMISS ── */
-function dismissLoader() {
-  var overlay = document.getElementById('loadingOverlay');
-  if (!overlay) return;
-  setTimeout(function() {
-    overlay.style.opacity = '0';
-    setTimeout(function() { overlay.style.display = 'none'; }, 500);
-  }, 1200);
-}
-
-/* ── 5. COUNTDOWN TIMER ── */
-function initCountdown() {
-  var target = new Date('2026-06-11T09:00:00+03:00');
-  function tick() {
-    var now  = new Date();
-    var diff = target - now;
-    if (diff <= 0) { diff = 0; }
-    var d = Math.floor(diff / 86400000);
-    var h = Math.floor((diff % 86400000) / 3600000);
-    var m = Math.floor((diff % 3600000) / 60000);
-    var pad = function(v) { return String(v).padStart(2, '0'); };
-    var dEl = document.getElementById('days');
-    var hEl = document.getElementById('hours');
-    var mEl = document.getElementById('minutes');
-    if (dEl) dEl.textContent = pad(d);
-    if (hEl) hEl.textContent = pad(h);
-    if (mEl) mEl.textContent = pad(m);
-  }
-  tick();
-  setInterval(tick, 30000);
-}
-
-/* ── 6. LIVE NOTIFICATION POPUPS ── */
-function initLivePopups() {
-  var popup = document.getElementById('livePopup');
-  if (!popup) return;
-
-  var notifications = [
-    { init: 'JN', name: 'Jane N. just registered!',      sub: 'University of Nairobi',   pts: '+50 pts' },
-    { init: 'KO', name: 'Kevin O. earned Liberty Coins', sub: 'JKUAT · The Garage',      pts: '+120 pts' },
-    { init: 'AM', name: 'Amina M. joined The Launchpad', sub: 'Strathmore University',   pts: '+80 pts' },
-    { init: 'TK', name: 'Team Kenya scanned in!',        sub: 'Main Stage booth',        pts: '+200 pts' },
-    { init: 'BW', name: 'Brian W. pitched his startup',  sub: 'DeKUT · Launchpad',       pts: '+150 pts' },
-    { init: 'FN', name: 'Fatuma N. checked in',          sub: 'Taste of America tent',   pts: '+60 pts' },
-    { init: 'DO', name: 'David O. won a challenge!',     sub: 'The Arena · Sports',      pts: '+300 pts' },
-  ];
-  var colors = ['#0A3161','#B22234','#10b981','#7c3aed','#f59e0b','#0891b2'];
-  var idx = 0;
-
-  function showNext() {
-    var n   = notifications[idx % notifications.length];
-    var col = colors[idx % colors.length];
-    idx++;
-
-    var av = document.getElementById('popupAvatar');
-    var ti = document.getElementById('popupTitle');
-    var su = document.getElementById('popupSub');
-
-    av.textContent = n.init;
-    av.style.background = col;
-    ti.textContent = n.name;
-    su.innerHTML  = n.sub + ' &nbsp;·&nbsp; <span class="live-popup-green">' + n.pts + '</span>';
-
-    popup.classList.add('show');
-    setTimeout(function() { popup.classList.remove('show'); }, 4000);
-  }
-
-  setTimeout(function() {
-    showNext();
-    setInterval(showNext, 9000);
-  }, 3500);
-}
-
-/* ── 7. ANIMATED STAT COUNTERS ── */
-function animateCounters() {
-  var targets = [
-    { el: document.querySelector('.hero-stat:nth-child(1) .val'), end: 12,    suffix: '+',  dec: 0 },
-    { el: document.querySelector('.hero-stat:nth-child(2) .val'), end: 15,    suffix: 'K+', dec: 0 },
-    { el: document.querySelector('.hero-stat:nth-child(3) .val'), end: 7,     suffix: '',   dec: 0 },
-  ];
-  targets.forEach(function(t) {
-    if (!t.el) return;
-    var start = 0;
-    var duration = 1800;
-    var step = 16;
-    var steps = duration / step;
-    var inc = t.end / steps;
-    var current = start;
-    var timer = setInterval(function() {
-      current = Math.min(current + inc, t.end);
-      t.el.textContent = (t.dec ? current.toFixed(t.dec) : Math.floor(current)) + t.suffix;
-      if (current >= t.end) clearInterval(timer);
-    }, step);
-  });
-}
-
-/* ── 8. LIVE COUNT TICKER ── */
-function initLiveCount() {
-  var el = document.getElementById('liveCount');
-  if (!el) return;
-  var count = 2847;
-  setInterval(function() {
-    if (Math.random() > 0.5) {
-      count += Math.floor(Math.random() * 3) + 1;
-      el.textContent = count.toLocaleString();
+      resetTimer();
     }
-  }, 8000);
-}
 
-/* ── BOOT ── */
-function boot() {
-  initMobileMenu();
-  initHeroSlideshow();
-  initVibeSlideshow();
-  dismissLoader();
-  initCountdown();
-  // initLivePopups();   // disabled because mobile popups are intrusive
-  animateCounters();
-  initLiveCount();
-}
+    /* ── 3. VIBE DECK SLIDESHOW ── */
+    function initVibeSlideshow() {
+      var slides  = document.querySelectorAll('.vibe-slide');
+      var thumbs  = document.querySelectorAll('.vibe-thumb');
+      var dotsEl  = document.getElementById('vibeDots');
+      var prevBtn = document.getElementById('vibePrev');
+      var nextBtn = document.getElementById('vibeNext');
+      if (!slides.length) return;
+      var current = 0;
+      var timer;
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', boot);
-} else {
-  boot();
-}
+      // Build sidebar dots
+      slides.forEach(function(_, i) {
+        var d = document.createElement('button');
+        d.className = 'vibe-dot' + (i === 0 ? ' active' : '');
+        d.addEventListener('click', function() { goTo(i); });
+        dotsEl.appendChild(d);
+      });
 
-})();
+      function goTo(n) {
+        slides[current].classList.remove('active');
+        dotsEl.children[current].classList.remove('active');
+        if (thumbs[current]) thumbs[current].classList.remove('active');
+        current = (n + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dotsEl.children[current].classList.add('active');
+        if (thumbs[current]) thumbs[current].classList.add('active');
+        resetTimer();
+      }
+
+      thumbs.forEach(function(t) {
+        t.addEventListener('click', function() {
+          goTo(parseInt(t.dataset.slide));
+        });
+      });
+
+      if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); });
+      if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); });
+
+      function resetTimer() {
+        clearInterval(timer);
+        timer = setInterval(function() { goTo(current + 1); }, 5000);
+      }
+      resetTimer();
+    }
+
+    /* ── 4. LOADING OVERLAY DISMISS ── */
+    function dismissLoader() {
+      var overlay = document.getElementById('loadingOverlay');
+      if (!overlay) return;
+      setTimeout(function() {
+        overlay.style.opacity = '0';
+        setTimeout(function() { overlay.style.display = 'none'; }, 500);
+      }, 1200);
+    }
+
+    /* ── 5. COUNTDOWN TIMER ── */
+    function initCountdown() {
+      var target = new Date('2026-06-11T09:00:00+03:00');
+      function tick() {
+        var now  = new Date();
+        var diff = target - now;
+        if (diff <= 0) { diff = 0; }
+        var d = Math.floor(diff / 86400000);
+        var h = Math.floor((diff % 86400000) / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        var pad = function(v) { return String(v).padStart(2, '0'); };
+        var dEl = document.getElementById('days');
+        var hEl = document.getElementById('hours');
+        var mEl = document.getElementById('minutes');
+        if (dEl) dEl.textContent = pad(d);
+        if (hEl) hEl.textContent = pad(h);
+        if (mEl) mEl.textContent = pad(m);
+      }
+      tick();
+      setInterval(tick, 30000);
+    }
+
+    /* ── 6. LIVE NOTIFICATION POPUPS ── */
+    function initLivePopups() {
+      var popup = document.getElementById('livePopup');
+      if (!popup) return;
+
+      var notifications = [
+        { init: 'JN', name: 'Jane N. just registered!',      sub: 'University of Nairobi',   pts: '+50 pts' },
+        { init: 'KO', name: 'Kevin O. earned Liberty Coins', sub: 'JKUAT · The Garage',      pts: '+120 pts' },
+        { init: 'AM', name: 'Amina M. joined The Launchpad', sub: 'Strathmore University',   pts: '+80 pts' },
+        { init: 'TK', name: 'Team Kenya scanned in!',        sub: 'Main Stage booth',        pts: '+200 pts' },
+        { init: 'BW', name: 'Brian W. pitched his startup',  sub: 'DeKUT · Launchpad',       pts: '+150 pts' },
+        { init: 'FN', name: 'Fatuma N. checked in',          sub: 'Taste of America tent',   pts: '+60 pts' },
+        { init: 'DO', name: 'David O. won a challenge!',     sub: 'The Arena · Sports',      pts: '+300 pts' },
+      ];
+      var colors = ['#0A3161','#B22234','#10b981','#7c3aed','#f59e0b','#0891b2'];
+      var idx = 0;
+
+      function showNext() {
+        var n   = notifications[idx % notifications.length];
+        var col = colors[idx % colors.length];
+        idx++;
+
+        var av = document.getElementById('popupAvatar');
+        var ti = document.getElementById('popupTitle');
+        var su = document.getElementById('popupSub');
+
+        av.textContent = n.init;
+        av.style.background = col;
+        ti.textContent = n.name;
+        su.innerHTML  = n.sub + ' &nbsp;·&nbsp; <span class="live-popup-green">' + n.pts + '</span>';
+
+        popup.classList.add('show');
+        setTimeout(function() { popup.classList.remove('show'); }, 4000);
+      }
+
+      setTimeout(function() {
+        showNext();
+        setInterval(showNext, 9000);
+      }, 3500);
+    }
+
+    /* ── 7. ANIMATED STAT COUNTERS ── */
+    function animateCounters() {
+      var targets = [
+        { el: document.querySelector('.hero-stat:nth-child(1) .val'), end: 12,    suffix: '+',  dec: 0 },
+        { el: document.querySelector('.hero-stat:nth-child(2) .val'), end: 15,    suffix: 'K+', dec: 0 },
+        { el: document.querySelector('.hero-stat:nth-child(3) .val'), end: 7,     suffix: '',   dec: 0 },
+      ];
+      targets.forEach(function(t) {
+        if (!t.el) return;
+        var start = 0;
+        var duration = 1800;
+        var step = 16;
+        var steps = duration / step;
+        var inc = t.end / steps;
+        var current = start;
+        var timer = setInterval(function() {
+          current = Math.min(current + inc, t.end);
+          t.el.textContent = (t.dec ? current.toFixed(t.dec) : Math.floor(current)) + t.suffix;
+          if (current >= t.end) clearInterval(timer);
+        }, step);
+      });
+    }
+
+    /* ── 8. LIVE COUNT TICKER ── */
+    function initLiveCount() {
+      var el = document.getElementById('liveCount');
+      if (!el) return;
+      var count = 2847;
+      setInterval(function() {
+        if (Math.random() > 0.5) {
+          count += Math.floor(Math.random() * 3) + 1;
+          el.textContent = count.toLocaleString();
+        }
+      }, 8000);
+    }
+
+    /* ── BOOT ── */
+    function boot() {
+      initMobileMenu();
+      initHeroSlideshow();
+      initVibeSlideshow();
+      dismissLoader();
+      initCountdown();
+      // initLivePopups();   // disabled because mobile popups are intrusive
+      animateCounters();
+      initLiveCount();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+
+    })();
 </script>
 </body>
 </html>
