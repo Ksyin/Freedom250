@@ -142,7 +142,7 @@
         <div class="mobile-logo">🇺🇸 <span>Freedom<em>250</em></span></div>
         <div class="flag-bar">
             <span class="fb-red"></span><span class="fb-red"></span>
-            <span class="fb-blue"></span><span class="fb-blue)</span>
+            <span class="fb-blue"></span><span class="fb-blue"></span>
             <span class="fb-w"></span><span class="fb-w"></span>
             <span class="fb-red"></span><span class="fb-blue"></span>
         </div>
@@ -249,12 +249,12 @@
     const staffCodeInp = document.getElementById('staffCode');
     const verifyBtn = document.getElementById('verifyCodeBtn');
 
-    // Valid Staff Codes Mapping
+    // Consolidated Staff Codes
     const STAFF_CODES = {
-        'F250ADMIN': 'admin',
-        'F250VOLUNTEER': 'volunteer',
-        'F250BOOTH': 'booth_admin',
-        'F250STAFF': 'staff'
+        'F250ADMIN':     'admin',      // Admin/Organizer
+        'F250ORG':       'admin',      // Organizer (same as admin)
+        'F250BOOTH':     'booth_admin',// Booth Admin
+        'F250VOL':       'volunteer'   // Volunteer
     };
 
     function showError(msg) { 
@@ -294,14 +294,11 @@
         if (!code) { showError('Please enter an access code.'); return; }
         
         setLoading(verifyBtn, true);
-        
-        // Professional delay for security impression
         await new Promise(r => setTimeout(r, 800));
         
         if (STAFF_CODES[code]) {
             showSuccess('Code Verified. Redirecting to staff registration...');
             setTimeout(() => {
-                // Redirect to register.html with the code as a query param
                 window.location.href = `register.html?staffCode=${code}`;
             }, 1000);
         } else {
@@ -330,36 +327,37 @@
             const result = await signIn(email, password);
             if (result.success) {
                 showSuccess('Welcome back! Redirecting...');
-                // pageNavigator will handle the actual redirect automatically via onAuthStateChange
+                // pageNavigator will handle the redirect
             } else {
-                showError(result.error || 'Login failed. Please check your credentials.');
+                showError(result.error || 'Login failed.');
                 setLoading(submitBtn, false);
             }
         } catch (err) {
-            showError('An unexpected error occurred. Please try again.');
+            showError('An unexpected error occurred.');
             setLoading(submitBtn, false);
         }
     });
 
-    // Google Sign In
-    googleBtn.addEventListener('click', async () => {
+    // Google Sign In - Fixed to be more robust
+    googleBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
         errorBox.classList.remove('show');
-        googleBtn.disabled = true;
+        setLoading(googleBtn, true);
         const originalContent = googleBtn.innerHTML;
-        googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting to Google...';
+        googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
         
         try {
             const result = await signInWithGoogle();
             if (result.success) {
                 showSuccess('Signed in with Google! Redirecting...');
             } else {
-                showError(result.error || 'Google sign-in was unsuccessful.');
-                googleBtn.disabled = false;
+                showError(result.error || 'Google sign-in failed.');
+                setLoading(googleBtn, false);
                 googleBtn.innerHTML = originalContent;
             }
         } catch (err) {
-            showError('Google sign-in failed.');
-            googleBtn.disabled = false;
+            showError('Google sign-in error.');
+            setLoading(googleBtn, false);
             googleBtn.innerHTML = originalContent;
         }
     });

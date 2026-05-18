@@ -19,7 +19,7 @@ export const ROLES = {
   VOLUNTEER:   'volunteer',
   BOOTH_ADMIN: 'booth_admin',
   ADMIN:       'admin',
-  ORGANIZER:   'organizer'
+  ORGANIZER:   'admin' // Consolidating Organizer into Admin
 };
 
 let currentUser = null;
@@ -152,7 +152,7 @@ export async function signIn(email, password) {
 
     const userDocRef = doc(db, 'users', user.uid);
     const userDoc    = await getDoc(userDocRef);
-    const storedRole = userDoc.exists() ? (userDoc.data().role || 'participant') : 'participant';
+    const storedRole = userDoc.exists() ? (userDoc.data().role || ROLES.PARTICIPANT) : ROLES.PARTICIPANT;
 
     currentUser = {
       uid:         user.uid,
@@ -191,7 +191,9 @@ export async function resetPassword(email) {
 export async function signInWithGoogle() {
   try {
     const provider = new GoogleAuthProvider();
-    // Ensure this is triggered directly by a user gesture
+    // Prompting for account selection to ensure it feels responsive
+    provider.setCustomParameters({ prompt: 'select_account' });
+    
     const userCredential = await signInWithPopup(auth, provider);
     const user = userCredential.user;
 
@@ -209,7 +211,7 @@ export async function signInWithGoogle() {
       userData = {
         uid: user.uid, email: user.email,
         displayName: user.displayName || user.email.split('@')[0],
-        role: ROLES.PARTICIPANT, // Default to participant
+        role: ROLES.PARTICIPANT,
         createdAt: new Date().toISOString(),
         points: 0, freedomId, qrCode,
         badges: [{ name: 'Freedom Starter', icon: 'fa-flag', unlockedAt: new Date().toISOString() }],
@@ -237,8 +239,9 @@ export async function signInWithGoogle() {
   } catch (err) {
     console.error('[Auth] Google sign-in error:', err);
     let msg = 'Google sign in failed.';
-    if (err.code === 'auth/popup-blocked') msg = 'Sign-in popup was blocked by your browser. Please allow popups for this site.';
-    if (err.code === 'auth/cancelled-popup-request') msg = 'Sign-in was cancelled.';
+    if (err.code === 'auth/popup-blocked') msg = 'Popup blocked! Please allow popups for this site.';
+    if (err.code === 'auth/cancelled-popup-request') msg = 'Sign-in cancelled.';
+    if (err.code === 'auth/popup-closed-by-user') msg = 'Sign-in popup closed before completion.';
     return { success: false, error: msg };
   }
 }
@@ -264,13 +267,13 @@ export function onAuthStateChange(callback) {
 
 export function getDashboardPath(user) {
   if (!user) return 'login.html';
-  switch (user.role) {
-    case ROLES.ADMIN:      return 'dashboard-admin.html';
-    case ROLES.ORGANIZER:  return 'dashboard-admin.html';
-    case ROLES.BOOTH_ADMIN:return 'dashboard-booth-admin.html';
-    case ROLES.VOLUNTEER:  return 'dashboard-volunteer.html';
-    default:               return 'dashboard-participant.html';
-  }
+  const role = (user.role || ROLES.PARTICIPANT).toLowerCase();
+  
+  if (role === 'admin' || role === 'organizer') return 'dashboard-admin.html';
+  if (role === 'booth_admin') return 'dashboard-booth-admin.html';
+  if (role === 'volunteer')   return 'dashboard-volunteer.html';
+  
+  return 'dashboard-participant.html';
 }
 
 export async function guardDashboard(requiredRoles) {
