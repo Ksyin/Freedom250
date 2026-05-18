@@ -334,13 +334,13 @@ export async function guardDashboard(requiredRoles) {
 
   if (!user) {
     window.location.replace('login.html');
-    return false;
+    return null;
   }
 
   if (requiredRoles && !validateRoleAccess(user.role, requiredRoles)) {
     window.location.replace(getDashboardPath(user));
-    return false;
+    return null;
   }
 
-  return true;
+  return user;
 }

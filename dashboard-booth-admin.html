@@ -3,285 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Booth Operation | Freedom 250</title>
+    <title>Booth Operations | Freedom 250</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --red: #B22234;
-            --navy: #1a1a2e;
-            --gold: #FFD700;
-            --bg: #f0f2f5;
-            --white: #fff;
-            --radius: 20px;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --info: #3b82f6;
+            --red: #B22234; --navy: #1a1a2e; --gold: #FFD700;
+            --bg: #f0f2f5; --white: #fff; --radius: 24px;
+            --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --info: #3b82f6;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Inter',sans-serif; background:var(--bg); color: #1a1a2e; }
-        .app { max-width: 480px; margin: 0 auto; min-height: 100vh; padding-bottom: 100px; position: relative; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color: var(--navy); padding-bottom: 90px; overflow-x: hidden; }
+        .app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
 
-        /* Header */
-        .header {
+        /* Modern Booth Header */
+        .booth-header {
             background: linear-gradient(135deg, var(--navy) 0%, #16213e 100%);
-            color: #fff;
-            padding: 25px 20px;
-            position: relative;
-            overflow: hidden;
+            color: #fff; padding: 30px 20px 45px; position: relative; overflow: hidden;
+            border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
         }
-        .header::before {
-            content: "⛺";
-            position: absolute;
-            right: -15px;
-            top: -15px;
-            font-size: 100px;
-            opacity: 0.1;
+        .booth-header::after {
+            content: "⛺"; position: absolute; right: -10px; bottom: -10px; font-size: 80px; opacity: 0.1; transform: rotate(-10deg);
         }
-        .badge {
-            display: inline-block;
-            background: rgba(255, 215, 0, 0.15);
-            border: 1px solid var(--gold);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: .65rem;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-        .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
-        .header p { font-size: .75rem; opacity: .7; }
+        .booth-identity { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; position: relative; z-index: 1; }
+        .booth-badge { background: rgba(255, 215, 0, 0.2); color: var(--gold); padding: 5px 12px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(255, 215, 0, 0.3); }
+        .booth-header h1 { font-size: 1.4rem; font-weight: 900; margin-top: 10px; }
+        .booth-header p { font-size: 0.75rem; opacity: 0.7; }
 
-        /* Stats */
-        .stats-row {
-            display: flex;
-            gap: 10px;
-            padding: 0 15px;
-            margin-top: -25px;
+        /* Stats Dashboard Widget */
+        .stats-strip { display: flex; gap: 12px; margin-top: -25px; padding: 0 20px; position: relative; z-index: 10; }
+        .stat-widget {
+            background: var(--white); border-radius: 20px; padding: 18px 10px; flex: 1; text-align: center;
+            box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.02); transition: var(--transition);
         }
-        .stat-card {
-            background: var(--white);
-            border-radius: 18px;
-            padding: 15px 10px;
-            text-align: center;
-            flex: 1;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-        }
-        .stat-card .val { font-size: 1.3rem; font-weight: 800; color: var(--red); display: block; }
-        .stat-card .lbl { font-size: .6rem; color: #888; text-transform: uppercase; margin-top: 4px; }
+        .stat-widget .val { font-size: 1.4rem; font-weight: 900; color: var(--red); display: block; }
+        .stat-widget .lbl { font-size: 0.6rem; color: #888; text-transform: uppercase; font-weight: 800; margin-top: 4px; }
 
-        /* Sections */
-        .section-hdr {
-            padding: 0 20px;
-            margin: 25px 0 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
+        /* Tab Navigation */
+        .section-nav { display: flex; gap: 10px; padding: 25px 20px 10px; overflow-x: auto; scrollbar-width: none; }
+        .section-nav::-webkit-scrollbar { display: none; }
+        .nav-pill { 
+            padding: 10px 20px; border-radius: 15px; background: #e5e7eb; color: #666; font-size: 0.75rem; 
+            font-weight: 800; white-space: nowrap; cursor: pointer; border: none; transition: var(--transition);
         }
-        .section-hdr h2 { font-size: 1rem; color: var(--navy); font-weight: 800; }
-        .section-link { font-size: 0.7rem; color: var(--red); cursor: pointer; }
+        .nav-pill.active { background: var(--red); color: #fff; box-shadow: 0 5px 15px rgba(178, 34, 52, 0.2); }
 
-        .card {
-            background: var(--white);
-            border-radius: var(--radius);
-            margin: 0 15px 12px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        /* List Items */
-        .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .list-item:last-child { border-bottom: none; }
-        .item-info h4 { font-size: .85rem; font-weight: 700; color: var(--navy); }
-        .item-info p { font-size: .7rem; color: #777; margin-top: 2px; }
-        .item-val { font-weight: 800; color: var(--red); font-size: .9rem; }
-
-        /* Forms */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: .75rem; font-weight: 700; margin-bottom: 6px; color: #555; }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 14px;
-            border: 1px solid #ddd;
-            font-family: inherit;
-            font-size: .9rem;
-        }
-        .btn-full {
-            width: 100%;
-            padding: 14px;
-            border-radius: 14px;
-            border: none;
-            background: var(--navy);
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .btn-full:active { transform: scale(0.98); }
-        .btn-red { background: var(--red); }
-        .btn-success { background: var(--success); }
-        .btn-warning { background: var(--warning); }
-
-        /* Scanner */
-        .scanner-preview {
-            background: #f8f8fb;
-            height: 200px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-            border: 2px dashed #ddd;
-            overflow: hidden;
-            position: relative;
-        }
-        #reader video { width: 100% !important; height: 100% !important; object-fit: cover; }
-
-        /* Challenge Cards */
-        .challenge-card, .mission-card {
-            background: #f8f9fa;
-            border-radius: 14px;
-            padding: 15px;
-            margin-bottom: 12px;
-            border-left: 4px solid var(--red);
-        }
-        .challenge-card h4, .mission-card h4 { font-size: 0.9rem; margin-bottom: 6px; }
-        .challenge-card p, .mission-card p { font-size: 0.75rem; color: #666; }
-        .challenge-actions { display: flex; gap: 8px; margin-top: 10px; }
-        .badge-pill {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-        .badge-active { background: var(--success); color: #fff; }
-        .badge-pending { background: var(--warning); color: #fff; }
-        .badge-completed { background: #6c757d; color: #fff; }
-
-        /* Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--white);
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 10px 25px;
-            border-top: 1px solid #eee;
-            max-width: 480px;
-            margin: 0 auto;
-            z-index: 1000;
-        }
-        .nav-item {
-            text-align: center;
-            color: #aaa;
-            font-size: .65rem;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .nav-item.active { color: var(--red); }
-        .nav-item i { font-size: 1.3rem; display: block; margin-bottom: 4px; }
-
-        /* Pages */
-        .page { display: none; }
+        /* Interactive Sections */
+        .page { display: none; padding: 0 20px; animation: slideIn 0.4s ease-out; }
         .page.active { display: block; }
+        @keyframes slideIn { from { opacity:0; transform: translateY(15px); } to { opacity:1; transform: translateY(0); } }
 
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal-content {
-            background: var(--white);
-            border-radius: 24px;
-            width: 90%;
-            max-width: 400px;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 24px;
-        }
-        .modal-content h3 { margin-bottom: 16px; color: var(--navy); }
-        .modal-close {
-            float: right;
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: #999;
-        }
+        .card { background: var(--white); border-radius: 24px; padding: 25px; margin-bottom: 20px; box-shadow: var(--card-shadow); }
+        .card-title { font-size: 1rem; font-weight: 900; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
 
-        /* Toast */
-        #toastContainer {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 40px);
-            max-width: 400px;
-            z-index: 9999;
+        /* Scanner Experience */
+        .scanner-viewport {
+            width: 100%; aspect-ratio: 1; background: #000; border-radius: 20px; overflow: hidden;
+            position: relative; border: 4px solid #f0f0f0; margin-bottom: 20px;
         }
-        .toast {
-            background: var(--navy);
-            color: #fff;
-            padding: 14px 20px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            font-size: .85rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: slideIn 0.3s ease;
+        .scanner-laser {
+            position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--red);
+            box-shadow: 0 0 15px var(--red); animation: scanLine 2s infinite linear; z-index: 5;
         }
-        .toast.success { background: var(--success); }
-        .toast.error { background: #dc2626; }
-        @keyframes slideIn {
-            from { transform: translateY(-100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        @keyframes scanLine { 0% { top: 0%; } 100% { top: 100%; } }
 
-        /* Tabs inside page */
-        .sub-tabs {
-            display: flex;
-            gap: 8px;
-            padding: 0 15px 12px;
-            overflow-x: auto;
+        /* List Styling */
+        .modern-list { display: flex; flex-direction: column; gap: 12px; }
+        .list-item {
+            display: flex; align-items: center; gap: 15px; padding: 15px; background: #fafafa; border-radius: 18px;
+            transition: var(--transition);
         }
-        .sub-tab {
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            background: #e8e8e8;
-            color: #555;
-            cursor: pointer;
-            white-space: nowrap;
+        .list-item:active { transform: scale(0.98); background: #f0f0f0; }
+        .item-icon { width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; }
+        .item-info { flex: 1; }
+        .item-info h5 { font-size: 0.85rem; font-weight: 800; }
+        .item-info p { font-size: 0.7rem; color: #777; margin-top: 2px; }
+        .item-meta { font-weight: 900; color: var(--red); font-size: 0.9rem; }
+
+        /* Form Controls */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 800; margin-bottom: 8px; color: #444; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 14px 18px; border-radius: 16px; border: 2px solid #f0f0f0; font-family: inherit; font-size: 0.9rem; transition: var(--transition);
         }
-        .sub-tab.active {
-            background: var(--red);
-            color: #fff;
+        .form-group input:focus { border-color: var(--red); outline: none; }
+
+        .btn {
+            width: 100%; padding: 16px; border-radius: 18px; font-weight: 800; font-size: 0.9rem;
+            cursor: pointer; border: none; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        .sub-panel { display: none; }
-        .sub-panel.active { display: block; }
+        .btn-primary { background: var(--navy); color: #fff; }
+        .btn-red { background: var(--red); color: #fff; }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn:active { transform: scale(0.97); }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px;
+            background: rgba(255, 255, 255, 0.98); display: flex; justify-content: space-around; padding: 12px 10px 30px;
+            border-top: 1px solid #eee; z-index: 1000; backdrop-filter: blur(20px);
+        }
+        .nav-item { text-align: center; color: #bbb; font-size: 0.65rem; cursor: pointer; transition: 0.3s; font-weight: 800; }
+        .nav-item.active { color: var(--red); }
+        .nav-item i { font-size: 1.5rem; display: block; margin-bottom: 5px; }
+
+        /* Toast Messages */
+        #toastContainer { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; z-index: 9999; }
+        .toast { 
+            background: var(--navy); color: #fff; padding: 16px 20px; border-radius: 16px; margin-bottom: 10px; font-size: 0.85rem; font-weight: 700;
+            display: flex; align-items: center; gap: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); animation: slideDown 0.4s ease-out;
+        }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -289,802 +123,384 @@
 <div id="toastContainer"></div>
 
 <div class="app">
-    <!-- Header -->
-    <header class="header">
-        <div class="badge" id="assignedBooth">BOOTH OPERATOR</div>
-        <h1 id="adminName">Loading...</h1>
-        <p>Booth Operations, Challenges & Engagement</p>
-        <div style="position: absolute; top: 25px; right: 20px; display: flex; gap: 8px;">
-            <a href="index.html" style="color: #fff; background: rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 12px; text-decoration: none; font-size: .7rem; font-weight: 700;">Home</a>
-            <button id="logoutBtn" style="background: var(--red); color: #fff; border: none; padding: 8px 14px; border-radius: 12px; font-weight: 700; font-size: .7rem; cursor: pointer;">Exit</button>
+    <!-- Booth Header -->
+    <header class="booth-header">
+        <div class="booth-identity">
+            <div>
+                <span class="booth-badge" id="assignedBooth">OPERATIONAL</span>
+                <h1 id="adminName">Booth Operator</h1>
+                <p>Welcome to the Engagement Console</p>
+            </div>
+            <button id="logoutBtn" style="background:rgba(255,255,255,0.1); border:none; padding:8px 15px; border-radius:12px; color:#fff; font-size:0.7rem; font-weight:800;">LOGOUT</button>
         </div>
     </header>
 
-    <!-- Stats -->
-    <div class="stats-row">
-        <div class="stat-card"><span class="val" id="todayVisitors">0</span><span class="lbl">Visitors</span></div>
-        <div class="stat-card"><span class="val" id="totalPointsAwarded">0</span><span class="lbl">Coins Issued</span></div>
-        <div class="stat-card"><span class="val" id="activeChallenges">0</span><span class="lbl">Active Challenges</span></div>
+    <!-- Real-time Metrics -->
+    <div class="stats-strip">
+        <div class="stat-widget"><span class="val" id="todayVisitors">0</span><span class="lbl">Visitors</span></div>
+        <div class="stat-widget"><span class="val" id="totalPointsAwarded">0</span><span class="lbl">Coins Issued</span></div>
+        <div class="stat-widget"><span class="val" id="activeChallenges">0</span><span class="lbl">Live Goals</span></div>
     </div>
 
-    <!-- ═══ SCAN PAGE ═══ -->
+    <!-- Navigation Pills -->
+    <div class="section-nav">
+        <button class="nav-pill active" onclick="showPage('scan')">📸 Check-in</button>
+        <button class="nav-pill" onclick="showPage('challenges')">🎯 Challenges</button>
+        <button class="nav-pill" onclick="showPage('broadcast')">📢 Broadcast</button>
+        <button class="nav-pill" onclick="showPage('leads')">📊 Analytics</button>
+    </div>
+
+    <!-- ═══ SCAN / CHECK-IN PAGE ═══ -->
     <div id="pg-scan" class="page active">
-        <div class="section-hdr"><h2>📸 Scan Participant QR</h2></div>
         <div class="card">
-            <div class="scanner-preview" id="reader">
-                <i class="fas fa-qrcode" style="font-size: 3rem; color: #ccc;"></i>
+            <div class="card-title"><i class="fas fa-qrcode" style="color:var(--red)"></i> Interactive Scanner</div>
+            <div class="scanner-viewport" id="reader">
+                <div class="scanner-laser"></div>
+                <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#555;">
+                    <i class="fas fa-camera fa-3x"></i>
+                </div>
             </div>
-            <button class="btn-full" id="startScanBtn"><i class="fas fa-camera"></i> Start Scanner</button>
+            <button class="btn btn-primary" id="startScanBtn"><i class="fas fa-play"></i> ACTIVATE CAMERA</button>
         </div>
 
-        <div class="section-hdr"><h2>✏️ Manual Check-in</h2></div>
         <div class="card">
+            <div class="card-title">Manual Verification</div>
             <div class="form-group">
-                <label>Participant ID, Email, or Freedom ID</label>
-                <input type="text" id="manualId" placeholder="e.g., FREEDOM-2026-12345 or email@example.com">
+                <label>Participant ID or Email</label>
+                <input type="text" id="manualId" placeholder="e.g. FREEDOM-12345">
             </div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <button class="btn-full" id="manualVerifyBtn" style="flex: 2;"><i class="fas fa-check"></i> Award 50 pts</button>
-                <button class="btn-full btn-red" id="deductPointsBtn" style="flex: 1;"><i class="fas fa-minus"></i> Deduct</button>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-success" id="manualVerifyBtn" style="flex:2;"><i class="fas fa-check"></i> AWARD 50</button>
+                <button class="btn btn-red" id="deductPointsBtn" style="flex:1;"><i class="fas fa-minus"></i></button>
             </div>
         </div>
 
-        <!-- Recent Scans -->
-        <div class="section-hdr"><h2>🕐 Recent Scans</h2></div>
-        <div class="card" id="recentScansList">
-            <p style="text-align: center; color: #999; font-size: .8rem;">No scans yet</p>
+        <div class="card">
+            <div class="card-title">Recent Interactions</div>
+            <div class="modern-list" id="recentScansList">
+                <p style="text-align:center; padding:20px; color:#999; font-size:0.8rem;">No activity logged yet</p>
+            </div>
         </div>
     </div>
 
-    <!-- ═══ CHALLENGES & MISSIONS PAGE ═══ -->
+    <!-- ═══ CHALLENGES PAGE ═══ -->
     <div id="pg-challenges" class="page">
-        <div class="section-hdr"><h2>🎯 Booth Challenges</h2></div>
-
-        <div class="sub-tabs">
-            <button class="sub-tab active" data-sub="active-challenges">Active</button>
-            <button class="sub-tab" data-sub="create-challenge">Create New</button>
-            <button class="sub-tab" data-sub="missions">Missions</button>
+        <div class="card">
+            <div class="card-title">Launch Challenge</div>
+            <div class="form-group"><label>Challenge Title</label><input type="text" id="newChallengeTitle" placeholder="e.g. Drone Pilot Pro"></div>
+            <div class="form-group"><label>Description</label><textarea id="newChallengeDesc" rows="2" placeholder="Complete the drone course in under 60 seconds..."></textarea></div>
+            <div class="form-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div class="form-group"><label>Reward Coins</label><input type="number" id="newChallengePoints" value="100"></div>
+                <div class="form-group"><label>Duration (hrs)</label><input type="number" id="newChallengeDuration" value="4"></div>
+            </div>
+            <button class="btn btn-success" id="createChallengeBtn"><i class="fas fa-plus-circle"></i> DEPLOY CHALLENGE</button>
         </div>
 
-        <!-- Active Challenges -->
-        <div id="sub-active-challenges" class="sub-panel active">
-            <div id="activeChallengesList" class="card">
-                <p style="text-align: center; color: #999; font-size: .8rem;">No active challenges</p>
-            </div>
-        </div>
-
-        <!-- Create Challenge -->
-        <div id="sub-create-challenge" class="sub-panel">
-            <div class="card">
-                <div class="form-group">
-                    <label>Challenge Title</label>
-                    <input type="text" id="newChallengeTitle" placeholder="e.g., Photo Contest">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="newChallengeDesc" rows="2" placeholder="Describe the challenge..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Points Reward</label>
-                    <input type="number" id="newChallengePoints" value="100">
-                </div>
-                <div class="form-group">
-                    <label>Duration (hours)</label>
-                    <input type="number" id="newChallengeDuration" value="24" placeholder="Leave empty for unlimited">
-                </div>
-                <button class="btn-full btn-success" id="createChallengeBtn"><i class="fas fa-plus"></i> Create Challenge</button>
-            </div>
-        </div>
-
-        <!-- Missions -->
-        <div id="sub-missions" class="sub-panel">
-            <div class="card">
-                <div class="form-group">
-                    <label>Mission Title</label>
-                    <input type="text" id="newMissionTitle" placeholder="e.g., Complete All Zones">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="newMissionDesc" rows="2" placeholder="Mission description..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Requirements (comma separated)</label>
-                    <input type="text" id="missionRequirements" placeholder="garage,launchpad,varsity">
-                </div>
-                <div class="form-group">
-                    <label>Reward Points</label>
-                    <input type="number" id="newMissionPoints" value="500">
-                </div>
-                <button class="btn-full btn-warning" id="createMissionBtn"><i class="fas fa-flag-checkered"></i> Create Mission</button>
-            </div>
-            <div id="missionsList" class="card">
-                <p style="text-align: center; color: #999; font-size: .8rem;">No missions created</p>
-            </div>
+        <div class="card">
+            <div class="card-title">Active Booth Missions</div>
+            <div class="modern-list" id="activeChallengesList"></div>
         </div>
     </div>
 
-    <!-- ═══ BROADCAST & NOTIFICATIONS PAGE ═══ -->
+    <!-- ═══ BROADCAST PAGE ═══ -->
     <div id="pg-broadcast" class="page">
-        <div class="section-hdr"><h2>📢 Booth Broadcast</h2></div>
         <div class="card">
+            <div class="card-title">Push Announcement</div>
+            <div class="form-group"><label>Heading</label><input type="text" id="broadcastTitle" placeholder="Special Flash Mission!"></div>
+            <div class="form-group"><label>Message</label><textarea id="broadcastMessage" rows="3" placeholder="Come to the booth right now for double points!"></textarea></div>
             <div class="form-group">
-                <label>Message Title</label>
-                <input type="text" id="broadcastTitle" placeholder="e.g., Special Announcement">
-            </div>
-            <div class="form-group">
-                <label>Message Content</label>
-                <textarea id="broadcastMessage" rows="3" placeholder="Message to send to participants..."></textarea>
-            </div>
-            <div class="form-group">
-                <label>Send to</label>
+                <label>Target Audience</label>
                 <select id="broadcastAudience">
-                    <option value="all">All Participants</option>
-                    <option value="visited">Past Visitors of This Booth</option>
-                    <option value="active">Currently Active Users</option>
+                    <option value="all">Everyone in Event</option>
+                    <option value="visited">Only Previous Visitors</option>
                 </select>
             </div>
-            <button class="btn-full btn-red" id="sendBroadcastBtn"><i class="fas fa-bullhorn"></i> Send Broadcast</button>
+            <button class="btn btn-red" id="sendBroadcastBtn"><i class="fas fa-paper-plane"></i> BLAST NOTIFICATION</button>
         </div>
-
-        <div class="section-hdr"><h2>📋 Announcement History</h2></div>
-        <div class="card" id="announcementsHistory"></div>
-    </div>
-
-    <!-- ═══ LEADS & ANALYTICS PAGE ═══ -->
-    <div id="pg-leads" class="page">
-        <div class="section-hdr"><h2>👥 Visitor Leads</h2></div>
+        
         <div class="card">
-            <div class="form-group">
-                <input type="text" id="leadSearch" placeholder="Search visitors...">
-            </div>
-            <div id="leadsList" style="max-height: 400px; overflow-y: auto;">
-                <p style="text-align: center; color: #999; font-size: .8rem; padding: 10px;">No leads captured yet.</p>
-            </div>
-            <button class="btn-full" style="margin-top: 15px;" id="exportLeadsBtn"><i class="fas fa-file-export"></i> Export Leads (CSV)</button>
-        </div>
-
-        <div class="section-hdr"><h2>📊 Booth Performance</h2></div>
-        <div class="card" id="performanceStats">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                <span>Peak Hour:</span><strong id="peakHour">--</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                <span>Avg Points per Visitor:</span><strong id="avgPoints">--</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-                <span>Return Visitors:</span><strong id="returnVisitors">--</strong>
-            </div>
+            <div class="card-title">Announcement History</div>
+            <div class="modern-list" id="announcementsHistory"></div>
         </div>
     </div>
 
-    <!-- Navigation -->
+    <!-- ═══ ANALYTICS PAGE ═══ -->
+    <div id="pg-leads" class="page">
+        <div class="card">
+            <div class="card-title">Engagement Funnel</div>
+            <div style="margin-bottom:20px;">
+                <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:5px;"><span>Peak Activity</span><strong id="peakHour">--</strong></div>
+                <div style="height:6px; background:#f0f0f0; border-radius:3px;"><div style="width:75%; height:100%; background:var(--red); border-radius:3px;"></div></div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                <div style="background:#f8fafc; padding:15px; border-radius:15px; text-align:center;">
+                    <div style="font-size:0.65rem; color:#666; text-transform:uppercase;">Avg / Visitor</div>
+                    <div style="font-size:1.2rem; font-weight:900;" id="avgPoints">0</div>
+                </div>
+                <div style="background:#f8fafc; padding:15px; border-radius:15px; text-align:center;">
+                    <div style="font-size:0.65rem; color:#666; text-transform:uppercase;">Return Rate</div>
+                    <div style="font-size:1.2rem; font-weight:900;" id="returnVisitors">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" style="border:none; margin-bottom:10px;">
+                <h3>Captured Leads</h3>
+                <button class="btn btn-outline btn-sm" id="exportLeadsBtn" style="width:auto;"><i class="fas fa-file-export"></i> CSV</button>
+            </div>
+            <div class="modern-list" id="leadsList" style="max-height:400px; overflow-y:auto;"></div>
+        </div>
+    </div>
+
     <nav class="bottom-nav">
-        <div class="nav-item active" data-pg="scan" onclick="showPage('scan')"><i class="fas fa-qrcode"></i>Scan</div>
-        <div class="nav-item" data-pg="challenges" onclick="showPage('challenges')"><i class="fas fa-trophy"></i>Challenges</div>
-        <div class="nav-item" data-pg="broadcast" onclick="showPage('broadcast')"><i class="fas fa-bullhorn"></i>Broadcast</div>
-        <div class="nav-item" data-pg="leads" onclick="showPage('leads')"><i class="fas fa-users"></i>Leads</div>
+        <div class="nav-item active" onclick="showPage('scan')"><i class="fas fa-camera"></i><span>Capture</span></div>
+        <div class="nav-item" onclick="showPage('challenges')"><i class="fas fa-trophy"></i><span>Goals</span></div>
+        <div class="nav-item" onclick="showPage('broadcast')"><i class="fas fa-bullhorn"></i><span>Push</span></div>
+        <div class="nav-item" onclick="showPage('leads')"><i class="fas fa-chart-pie"></i><span>Insights</span></div>
     </nav>
-</div>
-
-<!-- Modal for Challenge Completion -->
-<div id="challengeModal" class="modal-overlay">
-    <div class="modal-content">
-        <span class="modal-close" onclick="closeChallengeModal()">&times;</span>
-        <h3 id="modalChallengeTitle">Challenge Complete!</h3>
-        <p id="modalChallengeDesc"></p>
-        <div id="modalParticipantsList"></div>
-        <button class="btn-full btn-success" onclick="completeChallenge()" style="margin-top: 16px;">Award Points</button>
-    </div>
 </div>
 
 <script src="https://unpkg.com/html5-qrcode@2.3.7/html5-qrcode.min.js"></script>
 <script type="module">
-    import { guardDashboard, signOutUser, onAuthStateChange, getCurrentUser } from './js/auth.js';
-    import { db, doc, getDoc, updateDoc, setDoc, collection, query, where, orderBy, limit, onSnapshot, increment, serverTimestamp, addDoc, getDocs, arrayUnion, deleteDoc } from './js/firebase-config.js';
-
-    await guardDashboard(['booth_admin', 'admin']);
+    import { guardDashboard, signOutUser, onAuthStateChange } from './js/auth.js';
+    import { db, doc, getDoc, updateDoc, setDoc, collection, query, where, orderBy, limit, onSnapshot, increment, serverTimestamp, addDoc, getDocs, arrayUnion, deleteDoc, Timestamp } from './js/firebase-config.js';
 
     let currentUser = null;
     let scanner = null;
     let boothId = null;
     let boothName = null;
-    let activeChallengesUnsubscribe = null;
-    let missionsUnsubscribe = null;
 
-    function showToast(msg, type = 'success') {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${msg}`;
-        container.appendChild(toast);
-        setTimeout(() => toast.remove(), 4000);
-    }
-
-    onAuthStateChange(async (user) => {
+    async function init() {
+        const user = await guardDashboard(['booth_admin', 'admin']);
         if (!user) return;
         currentUser = user;
 
-        // Get booth assignment from user profile or create one
         boothId = user.assignedBoothId || user.uid;
-        boothName = user.assignedBoothName || user.displayName?.split(' ')[0] + "'s Booth" || 'Booth';
+        boothName = user.assignedBoothName || "Booth " + user.uid.slice(-4);
 
-        document.getElementById('adminName').textContent = `${boothName} Operator`;
-        document.getElementById('assignedBooth').textContent = `BOOTH: ${boothName.toUpperCase()}`;
+        document.getElementById('adminName').textContent = boothName;
+        document.getElementById('assignedBooth').textContent = `ID: ${boothId.slice(-6).toUpperCase()}`;
 
-        // Initialize booth in database if not exists
-        const boothRef = doc(db, 'booths', boothId);
-        const boothSnap = await getDoc(boothRef);
-        if (!boothSnap.exists()) {
-            await setDoc(boothRef, {
-                id: boothId,
-                name: boothName,
-                scans: 0,
-                totalPointsAwarded: 0,
-                createdAt: serverTimestamp(),
-                createdBy: currentUser.uid
-            });
-        }
-
-        initBoothData();
-        loadActiveChallenges();
-        loadMissions();
-        loadAnnouncements();
-        loadRecentScans();
-    });
-
-    function initBoothData() {
-        // Booth stats
-        onSnapshot(doc(db, 'booths', boothId), (snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.data();
-                document.getElementById('todayVisitors').textContent = data.scans || 0;
-                document.getElementById('totalPointsAwarded').textContent = data.totalPointsAwarded || 0;
-            }
-        });
-
-        // Active challenges count
-        const challengesQuery = query(
-            collection(db, 'boothChallenges'),
-            where('boothId', '==', boothId),
-            where('status', '==', 'active')
-        );
-        onSnapshot(challengesQuery, (snapshot) => {
-            document.getElementById('activeChallenges').textContent = snapshot.size;
-        });
-
-        // Leads/Scans list
-        const scansQuery = query(
-            collection(db, 'scans'),
-            where('boothId', '==', boothId),
-            orderBy('scannedAt', 'desc'),
-            limit(50)
-        );
-        onSnapshot(scansQuery, (snapshot) => {
-            const list = document.getElementById('leadsList');
-            if (snapshot.empty) {
-                list.innerHTML = '<p style="text-align: center; color: #999; font-size: .8rem; padding: 10px;">No leads captured yet.</p>';
-                return;
-            }
-            list.innerHTML = snapshot.docs.map(doc => {
-                const data = doc.data();
-                return `
-                    <div class="list-item">
-                        <div class="item-info">
-                            <h4>${data.userName || 'Anonymous'}</h4>
-                            <p>${data.userEmail || 'No email'} · ${data.scannedAt?.toDate().toLocaleTimeString() || 'Just now'}</p>
-                        </div>
-                        <div class="item-val">+${data.pointsAwarded || 50} pts</div>
-                    </div>
-                `;
-            }).join('');
-        });
-
-        // Performance stats
-        calculatePerformanceStats();
+        // Setup real-time listeners
+        setupBoothSync();
+        loadChallenges();
+        loadScans();
+        loadAnalytics();
+        loadBroadcasts();
     }
 
-    async function calculatePerformanceStats() {
-        const scansSnapshot = await getDocs(query(collection(db, 'scans'), where('boothId', '==', boothId)));
-        const scans = [];
-        scansSnapshot.forEach(doc => scans.push(doc.data()));
-
-        // Peak hour
-        const hourCounts = {};
-        scans.forEach(s => {
-            if (s.scannedAt?.toDate) {
-                const hour = s.scannedAt.toDate().getHours();
-                hourCounts[hour] = (hourCounts[hour] || 0) + 1;
+    function setupBoothSync() {
+        onSnapshot(doc(db, 'booths', boothId), snap => {
+            if (snap.exists()) {
+                const data = snap.data();
+                document.getElementById('todayVisitors').textContent = (data.scans || 0).toLocaleString();
+                document.getElementById('totalPointsAwarded').textContent = (data.totalPointsAwarded || 0).toLocaleString();
             }
         });
-        let peakHour = '--';
-        let maxCount = 0;
-        for (const [hour, count] of Object.entries(hourCounts)) {
-            if (count > maxCount) {
-                maxCount = count;
-                peakHour = `${hour}:00`;
-            }
-        }
-        document.getElementById('peakHour').textContent = peakHour;
-
-        // Avg points
-        const totalPoints = scans.reduce((sum, s) => sum + (s.pointsAwarded || 0), 0);
-        const avgPoints = scans.length > 0 ? Math.round(totalPoints / scans.length) : 0;
-        document.getElementById('avgPoints').textContent = avgPoints;
-
-        // Return visitors
-        const uniqueUsers = new Set(scans.map(s => s.userId));
-        const returnCount = scans.length - uniqueUsers.size;
-        document.getElementById('returnVisitors').textContent = returnCount;
+        
+        onSnapshot(query(collection(db, 'boothChallenges'), where('boothId', '==', boothId), where('status', '==', 'active')), snap => {
+            document.getElementById('activeChallenges').textContent = snap.size;
+        });
     }
 
-    function loadActiveChallenges() {
-        if (activeChallengesUnsubscribe) activeChallengesUnsubscribe();
-
-        const q = query(
-            collection(db, 'boothChallenges'),
-            where('boothId', '==', boothId),
-            where('status', '==', 'active'),
-            orderBy('createdAt', 'desc')
-        );
-
-        activeChallengesUnsubscribe = onSnapshot(q, (snapshot) => {
-            const container = document.getElementById('activeChallengesList');
-            if (snapshot.empty) {
-                container.innerHTML = '<p style="text-align: center; color: #999; font-size: .8rem; padding: 20px;">No active challenges. Create one!</p>';
-                return;
-            }
-
-            container.innerHTML = snapshot.docs.map(doc => {
-                const challenge = doc.data();
-                const expiresIn = challenge.expiresAt?.toDate ?
-                    Math.max(0, Math.ceil((challenge.expiresAt.toDate() - new Date()) / (1000 * 60 * 60))) + 'h' :
-                    'Unlimited';
-                return `
-                    <div class="challenge-card">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h4>${challenge.title}</h4>
-                            <span class="badge-pill badge-active">Active · ${expiresIn}</span>
-                        </div>
-                        <p>${challenge.description || 'No description'}</p>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                            <span class="item-val">🎁 ${challenge.points} pts</span>
-                            <div class="challenge-actions">
-                                <button class="btn-success" style="padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer;" onclick="completeChallengeForUser('${doc.id}', ${challenge.points}, '${challenge.title}')">
-                                    <i class="fas fa-trophy"></i> Award to User
-                                </button>
-                                <button class="btn-red" style="padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; background: #dc2626;" onclick="endChallenge('${doc.id}')">
-                                    <i class="fas fa-stop"></i> End
-                                </button>
-                            </div>
-                        </div>
+    function loadScans() {
+        onSnapshot(query(collection(db, 'scans'), where('boothId', '==', boothId), orderBy('scannedAt', 'desc'), limit(15)), snap => {
+            const list = document.getElementById('recentScansList');
+            if (snap.empty) return;
+            list.innerHTML = snap.docs.map(doc => {
+                const s = doc.data();
+                return `<div class="list-item">
+                    <div class="item-icon" style="background:var(--success)"><i class="fas fa-user-check"></i></div>
+                    <div class="item-info">
+                        <h5>${s.userName || 'Participant'}</h5>
+                        <p>${s.scannedAt?.toDate().toLocaleTimeString()}</p>
                     </div>
-                `;
+                    <div class="item-meta">+${s.pointsAwarded}</div>
+                </div>`;
             }).join('');
         });
     }
 
-    window.completeChallengeForUser = (challengeId, points, title) => {
-        const userId = prompt('Enter participant ID or email to award points for completing: ' + title);
-        if (userId) {
-            processAward(userId, points, `Completed challenge: ${title}`);
-        }
-    };
-
-    window.endChallenge = async (challengeId) => {
-        if (confirm('End this challenge?')) {
-            await updateDoc(doc(db, 'boothChallenges', challengeId), {
-                status: 'ended',
-                endedAt: serverTimestamp()
-            });
-            showToast('Challenge ended', 'success');
-        }
-    };
-
-    function loadMissions() {
-        if (missionsUnsubscribe) missionsUnsubscribe();
-
-        const q = query(
-            collection(db, 'missions'),
-            where('boothId', '==', boothId),
-            orderBy('createdAt', 'desc')
-        );
-
-        missionsUnsubscribe = onSnapshot(q, (snapshot) => {
-            const container = document.getElementById('missionsList');
-            if (snapshot.empty) {
-                container.innerHTML = '<p style="text-align: center; color: #999; font-size: .8rem; padding: 20px;">No missions created</p>';
-                return;
-            }
-
-            container.innerHTML = snapshot.docs.map(doc => {
-                const mission = doc.data();
-                return `
-                    <div class="challenge-card">
-                        <div style="display: flex; justify-content: space-between;">
-                            <h4>${mission.title}</h4>
-                            <span class="badge-pill ${mission.status === 'active' ? 'badge-active' : 'badge-completed'}">${mission.status || 'active'}</span>
-                        </div>
-                        <p>${mission.description}</p>
-                        <p style="font-size: 0.7rem; color: #666;">Requirements: ${mission.requirements?.join(', ') || 'None'}</p>
-                        <div class="item-val">🎁 ${mission.points} pts</div>
+    function loadChallenges() {
+        onSnapshot(query(collection(db, 'boothChallenges'), where('boothId', '==', boothId), where('status', '==', 'active')), snap => {
+            const list = document.getElementById('activeChallengesList');
+            if (snap.empty) { list.innerHTML = '<p style="text-align:center; padding:20px; color:#999;">No active challenges.</p>'; return; }
+            list.innerHTML = snap.docs.map(doc => {
+                const c = doc.data();
+                return `<div class="list-item" style="border-left:4px solid var(--success); flex-direction:column; align-items:flex-start;">
+                    <div style="display:flex; justify-content:space-between; width:100%;">
+                        <h5>${c.title}</h5>
+                        <strong style="color:var(--red)">${c.points} XP</strong>
                     </div>
-                `;
+                    <p style="font-size:0.7rem; margin-top:5px;">${c.description}</p>
+                    <button class="btn btn-red btn-sm" style="width:auto; margin-top:10px; padding:5px 10px;" onclick="window.endChallenge('${doc.id}')">END SESSION</button>
+                </div>`;
             }).join('');
         });
     }
 
-    function loadAnnouncements() {
-        const q = query(
-            collection(db, 'announcements'),
-            where('boothId', '==', boothId),
-            orderBy('createdAt', 'desc'),
-            limit(20)
-        );
-
-        onSnapshot(q, (snapshot) => {
-            const container = document.getElementById('announcementsHistory');
-            if (snapshot.empty) {
-                container.innerHTML = '<p style="text-align: center; color: #999; font-size: .8rem; padding: 20px;">No announcements yet</p>';
-                return;
-            }
-
-            container.innerHTML = snapshot.docs.map(doc => {
-                const ann = doc.data();
-                return `
-                    <div class="list-item">
-                        <div class="item-info">
-                            <h4>${ann.title}</h4>
-                            <p>${ann.message}</p>
-                            <small>${ann.createdAt?.toDate().toLocaleString() || 'Just now'}</small>
-                        </div>
-                    </div>
-                `;
+    function loadBroadcasts() {
+        onSnapshot(query(collection(db, 'announcements'), where('boothId', '==', boothId), orderBy('createdAt', 'desc'), limit(10)), snap => {
+            const list = document.getElementById('announcementsHistory');
+            list.innerHTML = snap.docs.map(doc => {
+                const a = doc.data();
+                return `<div class="list-item">
+                    <div class="item-icon" style="background:var(--navy)"><i class="fas fa-bullhorn"></i></div>
+                    <div class="item-info"><h5>${a.title}</h5><p>${a.message}</p></div>
+                </div>`;
             }).join('');
         });
     }
 
-    function loadRecentScans() {
-        const q = query(
-            collection(db, 'scans'),
-            where('boothId', '==', boothId),
-            orderBy('scannedAt', 'desc'),
-            limit(10)
-        );
-
-        onSnapshot(q, (snapshot) => {
-            const container = document.getElementById('recentScansList');
-            if (snapshot.empty) {
-                container.innerHTML = '<p style="text-align: center; color: #999; font-size: .8rem; padding: 10px;">No scans yet</p>';
-                return;
-            }
-
-            container.innerHTML = snapshot.docs.map(doc => {
-                const data = doc.data();
-                return `
-                    <div class="list-item">
-                        <div class="item-info">
-                            <h4>${data.userName || 'Anonymous'}</h4>
-                            <p>${data.userEmail || 'No email'} · ${data.scannedAt?.toDate().toLocaleTimeString() || 'Just now'}</p>
-                        </div>
-                        <div class="item-val">${data.pointsAwarded > 0 ? '+' : ''}${data.pointsAwarded || 0} pts</div>
-                    </div>
-                `;
-            }).join('');
-        });
-    }
-
-    async function processAward(identifier, customPoints = null, reason = null) {
+    async function processVerification(identifier, customPoints = 50, reason = "Booth Visit") {
+        showToast("Verifying participant...");
         try {
-            // Find user by email, freedomId, or uid
-            let userId = identifier;
-            let userData = null;
+            let targetUser = null;
+            let targetUid = identifier;
 
-            // Check if it's an email
+            // Search by email, freedomId or direct UID
             if (identifier.includes('@')) {
-                const usersQuery = query(collection(db, 'users'), where('email', '==', identifier));
-                const usersSnap = await getDocs(usersQuery);
-                if (!usersSnap.empty) {
-                    userId = usersSnap.docs[0].id;
-                    userData = usersSnap.docs[0].data();
-                }
-            } else if (identifier.startsWith('FREEDOM-')) {
-                const usersQuery = query(collection(db, 'users'), where('freedomId', '==', identifier));
-                const usersSnap = await getDocs(usersQuery);
-                if (!usersSnap.empty) {
-                    userId = usersSnap.docs[0].id;
-                    userData = usersSnap.docs[0].data();
-                }
+                const s = await getDocs(query(collection(db, 'users'), where('email', '==', identifier)));
+                if (!s.empty) { targetUid = s.docs[0].id; targetUser = s.docs[0].data(); }
+            } else if (identifier.startsWith('F250-')) {
+                const s = await getDocs(query(collection(db, 'users'), where('freedomId', '==', identifier)));
+                if (!s.empty) { targetUid = s.docs[0].id; targetUser = s.docs[0].data(); }
             } else {
-                // Try as direct UID
-                const userSnap = await getDoc(doc(db, 'users', identifier));
-                if (userSnap.exists()) {
-                    userData = userSnap.data();
-                }
+                const s = await getDoc(doc(db, 'users', identifier));
+                if (s.exists()) targetUser = s.data();
             }
 
-            if (!userData) {
-                showToast('Participant not found', 'error');
-                return;
-            }
+            if (!targetUser) throw new Error("Participant not found");
 
-            const points = customPoints !== null ? customPoints : 50;
-            const pointsToAward = points;
-
-            // Update user
-            await updateDoc(doc(db, 'users', userId), {
-                points: increment(pointsToAward),
-                lastScanAt: serverTimestamp(),
-                scansCount: increment(1)
-            });
-
-            // Add stamps for this booth
-            const currentStamps = userData.stamps || [];
-            if (!currentStamps.includes(boothId)) {
-                await updateDoc(doc(db, 'users', userId), {
-                    stamps: arrayUnion(boothId)
-                });
-            }
-
-            // Record scan
-            await addDoc(collection(db, 'scans'), {
-                userId: userId,
-                userName: userData.displayName || userData.email,
-                userEmail: userData.email,
-                boothId: boothId,
-                boothName: boothName,
-                scannedBy: currentUser.uid,
-                pointsAwarded: pointsToAward,
-                reason: reason || 'Booth visit',
-                scannedAt: serverTimestamp()
-            });
-
-            // Update booth stats
-            await updateDoc(doc(db, 'booths', boothId), {
-                scans: increment(1),
-                totalPointsAwarded: increment(pointsToAward),
+            // Award logic
+            await updateDoc(doc(db, 'users', targetUid), {
+                points: increment(customPoints),
+                xp: increment(customPoints * 10),
+                stamps: arrayUnion(boothId),
                 lastScanAt: serverTimestamp()
             });
 
-            // Send notification to participant
-            await addDoc(collection(db, 'notifications'), {
-                userId: userId,
-                title: `🎉 ${boothName} Visit!`,
-                message: reason || `You earned ${pointsToAward} Liberty Coins at ${boothName}`,
-                type: 'success',
-                read: false,
-                createdAt: serverTimestamp()
+            await addDoc(collection(db, 'scans'), {
+                userId: targetUid, userName: targetUser.displayName || targetUser.email, userEmail: targetUser.email,
+                boothId, boothName, pointsAwarded: customPoints, reason, scannedAt: serverTimestamp()
             });
 
-            showToast(`${pointsToAward > 0 ? 'Awarded' : 'Deducted'} ${Math.abs(pointsToAward)} points to ${userData.displayName || 'Participant'}`, 'success');
+            await updateDoc(doc(db, 'booths', boothId), {
+                scans: increment(1),
+                totalPointsAwarded: increment(customPoints)
+            });
 
+            await addDoc(collection(db, 'notifications'), {
+                userId: targetUid, title: `🎉 ${boothName} Stamp!`, message: `You earned ${customPoints} Coins and a new stamp!`,
+                type: 'success', createdAt: serverTimestamp(), read: false
+            });
+
+            showToast(`Success! ${customPoints} Coins awarded to ${targetUser.displayName || 'Explorer'}`, 'success');
         } catch (e) {
-            showToast('Error: ' + e.message, 'error');
+            showToast(e.message, 'error');
         }
     }
 
-    // Challenge creation
-    document.getElementById('createChallengeBtn')?.addEventListener('click', async () => {
+    // ── UI ACTIONS ──
+    window.showPage = (id) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-pill').forEach(n => n.classList.remove('active'));
+        document.getElementById(`pg-${id}`).classList.add('active');
+        event.target.classList.add('active');
+        window.scrollTo(0, 0);
+    };
+
+    document.getElementById('startScanBtn').addEventListener('click', () => {
+        if (scanner) { scanner.stop(); scanner = null; return; }
+        scanner = new Html5Qrcode("reader");
+        scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (text) => {
+            processVerification(text);
+            scanner.stop(); scanner = null;
+        });
+    });
+
+    document.getElementById('manualVerifyBtn').addEventListener('click', () => {
+        const id = document.getElementById('manualId').value.trim();
+        if (id) processVerification(id);
+    });
+
+    document.getElementById('createChallengeBtn').addEventListener('click', async () => {
         const title = document.getElementById('newChallengeTitle').value;
-        const description = document.getElementById('newChallengeDesc').value;
-        const points = parseInt(document.getElementById('newChallengePoints').value);
-        const duration = parseInt(document.getElementById('newChallengeDuration').value);
-
-        if (!title) {
-            showToast('Please enter a challenge title', 'error');
-            return;
-        }
-
-        const expiresAt = duration ? new Date(Date.now() + duration * 60 * 60 * 1000) : null;
+        const desc = document.getElementById('newChallengeDesc').value;
+        const pts = parseInt(document.getElementById('newChallengePoints').value);
+        if (!title) return showToast("Title required", "error");
 
         await addDoc(collection(db, 'boothChallenges'), {
-            boothId: boothId,
-            boothName: boothName,
-            title: title,
-            description: description,
-            points: points || 100,
-            status: 'active',
-            createdAt: serverTimestamp(),
-            expiresAt: expiresAt ? Timestamp.fromDate(expiresAt) : null,
-            createdBy: currentUser.uid
+            boothId, boothName, title, description: desc, points: pts, status: 'active', createdAt: serverTimestamp()
         });
-
-        showToast('Challenge created successfully!', 'success');
+        showToast("Challenge live!");
         document.getElementById('newChallengeTitle').value = '';
-        document.getElementById('newChallengeDesc').value = '';
-        document.getElementById('newChallengePoints').value = '100';
-        document.getElementById('newChallengeDuration').value = '24';
-
-        // Switch to active challenges view
-        document.querySelector('.sub-tab[data-sub="active-challenges"]').click();
     });
 
-    // Mission creation
-    document.getElementById('createMissionBtn')?.addEventListener('click', async () => {
-        const title = document.getElementById('newMissionTitle').value;
-        const description = document.getElementById('newMissionDesc').value;
-        const requirements = document.getElementById('missionRequirements').value.split(',').map(r => r.trim());
-        const points = parseInt(document.getElementById('newMissionPoints').value);
+    window.endChallenge = async (id) => {
+        if (confirm("End this challenge?")) await updateDoc(doc(db, 'boothChallenges', id), { status: 'ended' });
+    };
 
-        if (!title) {
-            showToast('Please enter a mission title', 'error');
-            return;
-        }
-
-        await addDoc(collection(db, 'missions'), {
-            boothId: boothId,
-            boothName: boothName,
-            title: title,
-            description: description,
-            requirements: requirements,
-            points: points || 500,
-            status: 'active',
-            createdAt: serverTimestamp(),
-            createdBy: currentUser.uid
-        });
-
-        showToast('Mission created successfully!', 'success');
-        document.getElementById('newMissionTitle').value = '';
-        document.getElementById('newMissionDesc').value = '';
-        document.getElementById('missionRequirements').value = '';
-        document.getElementById('newMissionPoints').value = '500';
-    });
-
-    // Broadcast
-    document.getElementById('sendBroadcastBtn')?.addEventListener('click', async () => {
+    document.getElementById('sendBroadcastBtn').addEventListener('click', async () => {
         const title = document.getElementById('broadcastTitle').value;
-        const message = document.getElementById('broadcastMessage').value;
+        const msg = document.getElementById('broadcastMessage').value;
         const audience = document.getElementById('broadcastAudience').value;
+        if (!title || !msg) return showToast("Fill all fields", "error");
 
-        if (!title || !message) {
-            showToast('Please enter both title and message', 'error');
-            return;
-        }
-
-        // Store announcement
         await addDoc(collection(db, 'announcements'), {
-            boothId: boothId,
-            boothName: boothName,
-            title: title,
-            message: message,
-            audience: audience,
-            createdAt: serverTimestamp(),
-            createdBy: currentUser.uid
+            boothId, boothName, title, message: msg, audience, createdAt: serverTimestamp()
         });
 
-        // Get target users based on audience
-        let targetUsers = [];
-        if (audience === 'all') {
-            const usersSnap = await getDocs(query(collection(db, 'users'), where('role', '==', 'participant')));
-            targetUsers = usersSnap.docs.map(doc => doc.id);
-        } else if (audience === 'visited') {
-            const scansSnap = await getDocs(query(collection(db, 'scans'), where('boothId', '==', boothId)));
-            const uniqueUserIds = new Set();
-            scansSnap.forEach(doc => uniqueUserIds.add(doc.data().userId));
-            targetUsers = Array.from(uniqueUserIds);
-        }
-
-        // Send notifications
-        for (const userId of targetUsers.slice(0, 100)) { // Limit to 100 for performance
+        // Simplified broadcast: find users to notify
+        const usersSnap = await getDocs(query(collection(db, 'users'), where('role', '==', 'participant')));
+        usersSnap.forEach(async (u) => {
             await addDoc(collection(db, 'notifications'), {
-                userId: userId,
-                title: `📢 ${title}`,
-                message: message,
-                type: 'announcement',
-                read: false,
-                createdAt: serverTimestamp(),
-                fromBooth: boothName
+                userId: u.id, title: `📢 ${boothName}: ${title}`, message: msg, type: 'alert', createdAt: serverTimestamp(), read: false
             });
-        }
+        });
 
-        showToast(`Broadcast sent to ${targetUsers.length} participants!`, 'success');
+        showToast("Broadcast deployed!");
         document.getElementById('broadcastTitle').value = '';
         document.getElementById('broadcastMessage').value = '';
     });
 
-    // QR Scanner
-    document.getElementById('startScanBtn')?.addEventListener('click', () => {
-        if (scanner) {
-            scanner.stop();
-            scanner = null;
-            document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-camera"></i> Start Scanner';
-            return;
-        }
+    function showToast(msg, type = 'info') {
+        const t = document.createElement('div');
+        t.className = `toast ${type}`;
+        t.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i> ${msg}`;
+        document.getElementById('toastContainer').appendChild(t);
+        setTimeout(() => t.remove(), 4000);
+    }
 
-        const readerElement = document.getElementById('reader');
-        readerElement.innerHTML = '';
-
-        scanner = new Html5Qrcode("reader");
-        scanner.start(
-            { facingMode: "environment" },
-            { fps: 10, qrbox: 250 },
-            async (decodedText) => {
-                try {
-                    // Parse QR data - supports both simple ID and JSON encoded
-                    let userId = decodedText;
-                    if (decodedText.startsWith('{') || decodedText.includes(':')) {
-                        try {
-                            const qrData = JSON.parse(atob(decodedText));
-                            userId = qrData.uid || qrData.email || qrData.freedomId;
-                        } catch(e) {
-                            // If parsing fails, try splitting
-                            const parts = decodedText.split(':');
-                            userId = parts[parts.length - 1];
-                        }
-                    }
-                    await processAward(userId);
-                    scanner.stop();
-                    scanner = null;
-                    document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-camera"></i> Start Scanner';
-                } catch (err) {
-                    showToast('Error processing QR code', 'error');
-                }
-            }
-        ).then(() => {
-            document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-stop"></i> Stop Scanner';
-        }).catch(err => {
-            showToast('Camera access denied', 'error');
-        });
-    });
-
-    document.getElementById('manualVerifyBtn')?.addEventListener('click', () => {
-        const id = document.getElementById('manualId').value.trim();
-        if (id) processAward(id, 50, 'Manual check-in');
-    });
-
-    document.getElementById('deductPointsBtn')?.addEventListener('click', () => {
-        const id = document.getElementById('manualId').value.trim();
-        if (id) processAward(id, -50, 'Point deduction');
-    });
-
-    document.getElementById('exportLeadsBtn')?.addEventListener('click', async () => {
+    async function loadAnalytics() {
         const scansSnap = await getDocs(query(collection(db, 'scans'), where('boothId', '==', boothId)));
-        let csv = 'Name,Email,Points Awarded,Timestamp\n';
-        scansSnap.forEach(doc => {
+        const list = document.getElementById('leadsList');
+        if (scansSnap.empty) return;
+
+        let totalPoints = 0;
+        const users = new Set();
+        scansSnap.forEach(d => {
+            const s = d.data();
+            totalPoints += (s.pointsAwarded || 0);
+            users.add(s.userId);
+        });
+
+        document.getElementById('avgPoints').textContent = Math.round(totalPoints / scansSnap.size);
+        document.getElementById('returnVisitors').textContent = Math.round(((scansSnap.size - users.size) / scansSnap.size) * 100) + "%";
+
+        list.innerHTML = scansSnap.docs.map(doc => {
             const s = doc.data();
-            csv += `"${s.userName || ''}","${s.userEmail || ''}",${s.pointsAwarded || 0},"${s.scannedAt?.toDate() || ''}"\n`;
-        });
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${boothName}_leads.csv`;
-        a.click();
-        URL.revokeObjectURL(url);
-        showToast('Export complete!', 'success');
-    });
+            return `<div class="list-item">
+                <div class="item-info"><h5>${s.userName}</h5><p>${s.userEmail}</p></div>
+                <div class="item-meta">${s.pointsAwarded}</div>
+            </div>`;
+        }).join('');
+    }
 
-    // Sub-tab switching
-    document.querySelectorAll('.sub-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            const subId = tab.dataset.sub;
-            document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
-            tab.classList.add('active');
-            document.getElementById(`sub-${subId}`).classList.add('active');
-        });
-    });
+    document.getElementById('logoutBtn').addEventListener('click', async () => { if(confirm('Exit console?')) { await signOutUser(); window.location.replace('login.html'); } });
 
-    window.showPage = (page) => {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(`pg-${page}`).classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.querySelector(`.nav-item[data-pg="${page}"]`).classList.add('active');
-        window.scrollTo(0, 0);
-    };
-
-    window.closeChallengeModal = () => {
-        document.getElementById('challengeModal').classList.remove('active');
-    };
-
-    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
-        if (confirm('Logout from booth portal?')) {
-            if (scanner) {
-                await scanner.stop();
-            }
-            await signOutUser();
-            window.location.replace('login.html');
-        }
-    });
+    init();
 </script>
 </body>
 </html>

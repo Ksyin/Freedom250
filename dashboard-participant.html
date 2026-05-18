@@ -7,1333 +7,522 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --red: #B22234;
-            --navy: #1a1a2e;
-            --gold: #FFD700;
-            --bg: #f0f2f5;
-            --white: #fff;
-            --radius: 20px;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #3b82f6;
+            --red: #B22234; --navy: #1a1a2e; --gold: #FFD700;
+            --bg: #f0f2f5; --white: #fff; --radius: 28px;
+            --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --info: #3b82f6;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); padding-bottom: 90px; color: var(--navy); overflow-x: hidden; }
+        .app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            padding-bottom: 80px;
-        }
-
-        /* App Container */
-        .app {
-            max-width: 480px;
-            margin: 0 auto;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* Header */
+        /* Passport Evolution Header */
         .passport-header {
             background: linear-gradient(135deg, var(--navy) 0%, #16213e 100%);
-            color: #fff;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
+            color: #fff; padding: 35px 20px 50px; position: relative; overflow: hidden;
+            border-bottom-left-radius: 35px; border-bottom-right-radius: 35px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
-
         .passport-header::before {
-            content: "★";
-            position: absolute;
-            right: -15px;
-            top: -15px;
-            font-size: 100px;
-            opacity: 0.08;
+            content: "★"; position: absolute; right: -20px; top: -20px; font-size: 160px; opacity: 0.06; transform: rotate(15deg);
+        }
+        .user-profile-summary { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; position: relative; z-index: 2; }
+        .avatar-ring { 
+            width: 70px; height: 70px; border-radius: 50%; padding: 4px; 
+            background: linear-gradient(45deg, var(--gold), var(--red), var(--info));
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            animation: ringGlow 3s infinite alternate;
+        }
+        @keyframes ringGlow { from { box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); } to { box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); } }
+        
+        .avatar-ring .placeholder-avatar { 
+            width: 100%; height: 100%; border-radius: 50%; 
+            background: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 900;
+            color: #fff;
+        }
+        .user-meta h1 { font-size: 1.3rem; font-weight: 900; letter-spacing: -0.5px; }
+        .user-meta .rank-badge { 
+            display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 215, 0, 0.2); 
+            color: var(--gold); padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; margin-top: 5px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
 
-        .passport-header h1 {
-            font-size: 1.3rem;
-            margin-bottom: 4px;
+        /* Level Progression */
+        .progression-card {
+            background: rgba(255, 255, 255, 0.08); border-radius: 22px; padding: 22px;
+            backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1);
+            position: relative; z-index: 2;
         }
+        .level-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+        .level-title { font-size: 0.75rem; font-weight: 800; opacity: 0.9; letter-spacing: 1px; }
+        .level-number { font-size: 1.8rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+        .xp-bar-container { height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        .xp-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #ffb703, var(--red)); width: 0%; transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .xp-text { font-size: 0.7rem; opacity: 0.8; font-weight: 700; text-align: right; letter-spacing: 0.5px; }
 
-        .passport-header p {
-            font-size: 0.7rem;
-            opacity: 0.7;
-        }
-
-        /* Stats Row */
-        .stats-row {
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-        }
-
+        /* Floating Stats Row */
+        .stats-row { display: flex; gap: 15px; margin-top: -30px; padding: 0 20px; position: relative; z-index: 10; }
         .stat-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 10px;
-            flex: 1;
-            text-align: center;
-            backdrop-filter: blur(4px);
+            background: var(--white); border-radius: 20px; padding: 18px 10px;
+            flex: 1; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.01);
+            transition: var(--transition);
         }
+        .stat-card:active { transform: scale(0.92); }
+        .stat-card .value { font-size: 1.5rem; font-weight: 900; color: var(--red); display: block; }
+        .stat-card .label { font-size: 0.65rem; color: #888; text-transform: uppercase; font-weight: 800; margin-top: 5px; }
 
-        .stat-card .value {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: var(--gold);
+        /* Section Headings */
+        .section-header { padding: 0 20px; margin: 35px 0 18px; display: flex; justify-content: space-between; align-items: center; }
+        .section-header h3 { font-size: 1.15rem; font-weight: 900; letter-spacing: -0.4px; }
+        .section-link { font-size: 0.8rem; color: var(--red); font-weight: 800; text-decoration: none; }
+
+        /* Interactive QR Card */
+        .qr-card {
+            background: var(--white); margin: 0 20px; padding: 35px; border-radius: 32px;
+            text-align: center; box-shadow: var(--card-shadow); position: relative;
+            border: 1px solid rgba(0,0,0,0.02);
         }
-
-        .stat-card .label {
-            font-size: 0.6rem;
-            opacity: 0.7;
-            text-transform: uppercase;
+        .qr-card::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: #f0f0f0; z-index: 0; border-style: dashed; }
+        .qr-wrapper { 
+            width: 200px; height: 200px; margin: 0 auto 25px; background: #fff; padding: 12px; border-radius: 24px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08); position: relative; z-index: 1; border: 1px solid #f5f5f5;
         }
+        .qr-wrapper canvas { width: 100% !important; height: 100% !important; border-radius: 15px; }
+        .id-badge { display: inline-block; background: #f1f5f9; padding: 10px 20px; border-radius: 15px; font-family: 'JetBrains Mono', monospace; font-weight: 800; color: var(--navy); font-size: 1rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
 
-        /* QR Section */
-        .qr-section {
-            background: var(--white);
-            margin: 15px;
-            padding: 20px;
-            border-radius: var(--radius);
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        /* Card Designs */
+        .cards-grid { display: grid; gap: 15px; padding: 0 20px; }
+        .action-card {
+            background: var(--white); border-radius: 22px; padding: 20px; display: flex;
+            align-items: center; gap: 18px; box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.01); transition: var(--transition);
         }
-
-        .qr-section h3 {
-            font-size: 1rem;
-            color: var(--navy);
-            margin-bottom: 12px;
+        .action-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,0.08); }
+        .icon-box { 
+            width: 55px; height: 55px; border-radius: 18px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; color: #fff; flex-shrink: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
+        .card-body { flex: 1; }
+        .card-body h4 { font-size: 1rem; font-weight: 800; color: var(--navy); }
+        .card-body p { font-size: 0.78rem; color: #777; margin-top: 4px; line-height: 1.3; }
 
-        .qr-box {
-            width: 160px;
-            height: 160px;
-            margin: 12px auto;
-            background: #fff;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        /* Badge Collection */
+        .badges-container { display: flex; gap: 15px; overflow-x: auto; padding: 5px 20px 25px; scrollbar-width: none; }
+        .badges-container::-webkit-scrollbar { display: none; }
+        .badge-slot { flex-shrink: 0; width: 75px; text-align: center; opacity: 0.35; filter: grayscale(1); transition: var(--transition); }
+        .badge-slot.unlocked { opacity: 1; filter: grayscale(0); transform: scale(1.1); }
+        .badge-visual { 
+            width: 65px; height: 65px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; margin: 0 auto 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); border: 2px solid #f8f8f8;
+            position: relative;
         }
+        .badge-slot.unlocked .badge-visual { border-color: var(--gold); background: linear-gradient(135deg, #fff 0%, #fff9e6 100%); }
+        .badge-slot span { font-size: 0.65rem; font-weight: 800; color: var(--navy); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        .qr-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        /* Event Map Mini */
+        .map-preview {
+            background: #e2e8f0; height: 200px; border-radius: 28px; margin: 0 20px 20px;
+            position: relative; overflow: hidden; border: 4px solid #fff; box-shadow: var(--card-shadow);
         }
+        .map-point { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--red); border: 2px solid #fff; box-shadow: 0 0 10px var(--red); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
 
-        .qr-box canvas {
-            width: 100%;
-            height: 100%;
-        }
-
-        .freedom-id {
-            font-size: 0.7rem;
-            color: #888;
-            margin-top: 8px;
-            font-family: monospace;
-            letter-spacing: 1px;
-        }
-
-        /* Section Headers */
-        .section-header {
-            padding: 0 15px;
-            margin: 20px 0 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-        }
-
-        .section-header h3 {
-            font-size: 1rem;
-            font-weight: 800;
-            color: var(--navy);
-        }
-
-        .section-link {
-            font-size: 0.7rem;
-            color: var(--red);
-            cursor: pointer;
-        }
-
-        /* Cards Grid */
-        .cards-grid {
-            display: grid;
-            gap: 12px;
-            padding: 0 15px;
-        }
-
-        .card {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 14px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .card:active {
-            transform: scale(0.98);
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: #fff;
-            flex-shrink: 0;
-        }
-
-        .card-info {
-            flex: 1;
-        }
-
-        .card-info h4 {
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .card-info p {
-            font-size: 0.7rem;
-            color: #777;
-        }
-
-        .card-badge {
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: var(--gold);
-            color: var(--navy);
-        }
-
-        /* Notification Panel */
-        .notification-panel {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 320px;
-            height: 100vh;
-            background: var(--white);
-            box-shadow: -4px 0 30px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-            transition: right 0.3s ease;
-            overflow-y: auto;
-        }
-
-        .notification-panel.open {
-            right: 0;
-        }
-
-        .notification-header {
-            background: var(--navy);
-            color: #fff;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-        }
-
-        .notification-item {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .notification-item:hover {
-            background: #f8f9fa;
-        }
-
-        .notification-item.unread {
-            background: rgba(178, 34, 52, 0.05);
-            border-left: 3px solid var(--red);
-        }
-
-        .notification-item .title {
-            font-weight: 700;
-            font-size: 0.85rem;
-            margin-bottom: 4px;
-        }
-
-        .notification-item .message {
-            font-size: 0.75rem;
-            color: #666;
-            margin-bottom: 6px;
-        }
-
-        .notification-item .time {
-            font-size: 0.65rem;
-            color: #999;
-        }
-
-        /* Overlay */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            background: var(--white);
-            border-radius: 24px;
-            padding: 24px;
-            z-index: 1001;
-            display: none;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal.active {
-            display: block;
-            animation: modalSlideIn 0.3s ease;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -60%);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
-        }
-
-        .modal h3 {
-            margin-bottom: 16px;
-            color: var(--navy);
-        }
-
-        .poll-option {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .poll-option:hover {
-            background: #f5f5f5;
-            border-color: var(--red);
-        }
-
-        .poll-option.selected {
-            background: var(--red);
-            color: #fff;
-            border-color: var(--red);
-        }
-
-        .btn-primary {
-            background: var(--red);
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 12px;
-            font-weight: 700;
-            width: 100%;
-            cursor: pointer;
-            margin-top: 12px;
-        }
-
-        /* Bottom Navigation */
+        /* Bottom Navigation Bar */
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 480px;
-            background: var(--white);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 10px 20px;
-            border-top: 1px solid #eee;
-            z-index: 100;
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px;
+            background: rgba(255, 255, 255, 0.96); display: flex; justify-content: space-around; padding: 12px 10px 32px;
+            border-top: 1px solid #f1f1f1; z-index: 1000; backdrop-filter: blur(20px); box-shadow: 0 -8px 30px rgba(0,0,0,0.04);
         }
+        .nav-item { text-align: center; color: #cbd5e1; font-size: 0.7rem; cursor: pointer; transition: var(--transition); font-weight: 800; position: relative; flex: 1; }
+        .nav-item.active { color: var(--red); }
+        .nav-item.active::after { content: ""; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 20px; height: 4px; background: var(--red); border-radius: 0 0 4px 4px; }
+        .nav-item i { font-size: 1.5rem; display: block; margin-bottom: 6px; }
 
-        .nav-item {
-            text-align: center;
-            color: #aaa;
-            font-size: 0.65rem;
-            cursor: pointer;
-            transition: color 0.2s;
-            position: relative;
+        /* Page Tab Visibility */
+        .tab-content { display: none; animation: pageFade 0.5s ease; }
+        .tab-content.active { display: block; }
+        @keyframes pageFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Sidebar Panels */
+        .slide-panel {
+            position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100vh;
+            background: #fff; z-index: 2100; transition: var(--transition);
+            box-shadow: -15px 0 50px rgba(0,0,0,0.15);
         }
+        .slide-panel.open { right: 0; }
+        .panel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; display: none; backdrop-filter: blur(5px); }
+        .panel-overlay.active { display: block; }
 
-        .nav-item.active {
-            color: var(--red);
-        }
-
-        .nav-item i {
-            font-size: 1.3rem;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        /* Pages */
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        /* Toast */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 40px);
-            max-width: 400px;
-            z-index: 2000;
-        }
-
-        .toast {
-            background: var(--navy);
-            color: #fff;
-            padding: 12px 16px;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            font-size: 0.8rem;
-            animation: slideDown 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .toast.success {
-            background: var(--success);
-        }
-
-        .toast.error {
-            background: var(--danger);
-        }
-
-        .toast.warning {
-            background: var(--warning);
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* Notification Badge */
-        .nav-badge {
-            position: absolute;
-            top: -8px;
-            right: -12px;
-            background: var(--red);
-            color: #fff;
-            font-size: 0.6rem;
-            padding: 2px 6px;
-            border-radius: 10px;
-            min-width: 18px;
-            text-align: center;
-        }
-
-        .relative {
-            position: relative;
-        }
-
-        /* Leaderboard Items */
+        /* Leaderboard Styling */
         .leaderboard-item {
-            background: var(--white);
-            border-radius: 14px;
-            padding: 12px 16px;
-            margin: 0 15px 8px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            display: flex; align-items: center; gap: 15px; padding: 18px; background: #fff; border-radius: 20px;
+            margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #f8f8f8;
         }
+        .rank-number { width: 35px; height: 35px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.1rem; }
+        .rank-1 { background: #fff9e6; color: var(--gold); border: 1px solid var(--gold); }
+        .rank-2 { background: #f8f8f8; color: #94a3b8; }
+        .rank-3 { background: #fff5f2; color: #d97706; }
 
-        .rank-number {
-            width: 32px;
-            height: 32px;
-            background: var(--navy);
-            color: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 0.8rem;
-        }
+        /* Notifications */
+        .notif-item { padding: 18px; border-radius: 18px; margin-bottom: 12px; background: #f8fafc; border-left: 5px solid var(--info); }
+        .notif-item.success { border-left-color: var(--success); }
+        .notif-item.alert { border-left-color: var(--red); }
+        .notif-title { font-weight: 800; font-size: 0.9rem; margin-bottom: 5px; color: var(--navy); }
+        .notif-msg { font-size: 0.75rem; color: #64748b; line-height: 1.4; }
 
-        .rank-number.top-1 {
-            background: var(--gold);
-            color: var(--navy);
-        }
-
-        .rank-number.top-2 {
-            background: #C0C0C0;
-            color: #333;
-        }
-
-        .rank-number.top-3 {
-            background: #CD7F32;
-            color: #fff;
-        }
-
-        /* Scrollable */
-        .scrollable {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        /* Reward Cards */
-        .reward-card {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 16px;
-            margin: 0 15px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-
-        .reward-info h4 {
-            font-size: 0.9rem;
-            margin-bottom: 4px;
-        }
-
-        .reward-info p {
-            font-size: 0.7rem;
-            color: #777;
-        }
-
-        .reward-cost {
-            font-weight: 800;
-            font-size: 1rem;
-            color: var(--gold);
-        }
-
-        .redeem-btn {
-            background: var(--navy);
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 8px;
-        }
-
-        .redeem-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        /* Profile Card */
-        .profile-card {
-            background: var(--white);
-            border-radius: 24px;
-            margin: 0 15px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--navy), var(--red));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 2rem;
-            color: #fff;
-        }
-
-        .logout-btn {
-            background: var(--danger);
-            color: #fff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 700;
-            width: 100%;
-            cursor: pointer;
-            margin-top: 20px;
-        }
+        /* Utility */
+        .btn-action { background: var(--navy); color: #fff; border: none; padding: 12px 20px; border-radius: 15px; font-weight: 800; font-size: 0.85rem; width: 100%; margin-top: 15px; cursor: pointer; transition: var(--transition); }
+        .btn-action:hover { background: var(--red); transform: translateY(-2px); }
+        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        @keyframes shimmer { 100% { background-position: -200% 0; } }
     </style>
 </head>
 <body>
 
 <div class="app">
-    <!-- Header -->
+    <!-- Immersive Digital Passport Header -->
     <header class="passport-header">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <h1 id="userName">Hello, Explorer</h1>
-                <p>Freedom 250 Digital Passport</p>
+        <div class="user-profile-summary">
+            <div class="avatar-ring">
+                <div class="placeholder-avatar" id="avatarInitial">U</div>
             </div>
-            <div style="display: flex; gap: 12px;">
-                <a href="index.html" style="color:#fff; background:rgba(255,255,255,0.1); padding:8px 12px; border-radius:12px; text-decoration:none; font-size:0.7rem;">Home</a>
-                <button id="logoutBtn" style="background:var(--red); color:#fff; border:none; padding:8px 12px; border-radius:12px; font-size:0.7rem; cursor:pointer;">Exit</button>
+            <div class="user-meta">
+                <h1 id="userName">Explorer</h1>
+                <div class="rank-badge" id="userRank"><i class="fas fa-medal"></i> Freedom Pioneer</div>
             </div>
         </div>
-        <div class="stats-row">
-            <div class="stat-card">
-                <div class="value" id="userPoints">0</div>
-                <div class="label">Liberty Coins</div>
+
+        <div class="progression-card">
+            <div class="level-header">
+                <span class="level-title">FREEDOM PROGRESSION</span>
+                <span class="level-number">LEVEL <span id="userLevel">1</span></span>
             </div>
-            <div class="stat-card">
-                <div class="value" id="userStamps">0</div>
-                <div class="label">Stamps</div>
+            <div class="xp-bar-container">
+                <div class="xp-bar-fill" id="xpFill"></div>
             </div>
-            <div class="stat-card">
-                <div class="value" id="userLevel">1</div>
-                <div class="label">Level</div>
-            </div>
+            <div class="xp-text" id="xpStatus">350 / 500 XP to Level Up</div>
         </div>
     </header>
 
-    <!-- QR Section -->
-    <div class="qr-section">
-        <h3>🎫 My Entry Pass</h3>
-        <div class="qr-box" id="qrBox">
-            <i class="fas fa-qrcode" style="font-size: 2.5rem; color: #ccc;"></i>
+    <!-- Essential Stats Widget -->
+    <div class="stats-row">
+        <div class="stat-card" onclick="showPage('profile')">
+            <span class="value" id="userPoints">0</span>
+            <span class="label">Coins</span>
         </div>
-        <div class="freedom-id" id="freedomId">Loading...</div>
-        <p style="font-size: 0.65rem; color: #aaa; margin-top: 8px;">Scan at any booth to earn Liberty Coins</p>
+        <div class="stat-card" onclick="showPage('home')">
+            <span class="value" id="userStamps">0</span>
+            <span class="label">Stamps</span>
+        </div>
+        <div class="stat-card" onclick="showPage('leaderboard')">
+            <span class="value" id="userRankPos">--</span>
+            <span class="label">Rank</span>
+        </div>
     </div>
 
-    <!-- Home Page -->
-    <div id="page-home" class="page active">
-        <div class="section-header">
-            <h3>🏕️ Experience Zones</h3>
-        </div>
-        <div class="cards-grid" id="zonesList"></div>
-
-        <div class="section-header">
-            <h3>⚡ Active Challenges</h3>
-            <span class="section-link" onclick="showPage('challenges')">View All →</span>
-        </div>
-        <div class="cards-grid" id="challengesPreview"></div>
-
-        <div class="section-header">
-            <h3>📊 Live Polls</h3>
-            <span class="section-link" onclick="showPage('polls')">View All →</span>
-        </div>
-        <div class="cards-grid" id="pollsPreview"></div>
-    </div>
-
-    <!-- Rewards Page -->
-    <div id="page-rewards" class="page">
-        <div class="section-header">
-            <h3>🎁 Rewards Store</h3>
-        </div>
-        <div id="rewardsList"></div>
-    </div>
-
-    <!-- Leaderboard Page -->
-    <div id="page-leaderboard" class="page">
-        <div class="section-header">
-            <h3>🏆 Top Explorers</h3>
-        </div>
-        <div id="leaderboardList"></div>
-    </div>
-
-    <!-- Challenges Page -->
-    <div id="page-challenges" class="page">
-        <div class="section-header">
-            <h3>🏅 All Challenges</h3>
-        </div>
-        <div id="challengesFullList"></div>
-    </div>
-
-    <!-- Polls Page -->
-    <div id="page-polls" class="page">
-        <div class="section-header">
-            <h3>🗳️ Community Polls</h3>
-        </div>
-        <div id="pollsFullList"></div>
-    </div>
-
-    <!-- Profile Page -->
-    <div id="page-profile" class="page">
-        <div class="section-header">
-            <h3>👤 My Profile</h3>
-        </div>
-        <div class="profile-card">
-            <div class="profile-avatar">
-                <i class="fas fa-user"></i>
+    <!-- ═══ TAB: PASSPORT (HOME) ═══ -->
+    <div id="tab-home" class="tab-content active">
+        <div class="section-header"><h3>🎫 Digital Entry Pass</h3></div>
+        <div class="qr-card">
+            <div class="qr-wrapper" id="qrContainer">
+                <i class="fas fa-qrcode" style="font-size: 3rem; color: #f0f0f0; margin-top: 75px;"></i>
             </div>
-            <h3 id="profileName">—</h3>
-            <p id="profileEmail" style="color: #777; font-size: 0.8rem; margin-top: 4px;">—</p>
-            <p id="profileFreedomId" style="font-size: 0.7rem; color: #aaa; margin-top: 8px;">—</p>
-            <div style="margin-top: 20px; text-align: left;">
-                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
-                    <span>Total Points:</span>
-                    <strong id="profilePoints">0</strong>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
-                    <span>Zones Visited:</span>
-                    <strong id="profileStamps">0</strong>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 8px 0;">
-                    <span>Total Scans:</span>
-                    <strong id="profileScans">0</strong>
-                </div>
+            <div class="id-badge" id="freedomId">F250-XXXXXX</div>
+            <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 15px; font-weight: 700;">Show this QR at booths to collect coins</p>
+        </div>
+
+        <div class="section-header"><h3>🏅 Achievement Gallery</h3><a href="#" class="section-link" onclick="showPage('profile')">View All</a></div>
+        <div class="badges-container" id="badgesDisplay">
+            <!-- Badges loaded dynamically -->
+            <div class="badge-slot unlocked"><div class="badge-visual" style="color:#3b82f6"><i class="fas fa-flag-usa"></i></div><span>Starter</span></div>
+            <div class="badge-slot"><div class="badge-visual"><i class="fas fa-camera"></i></div><span>Explorer</span></div>
+            <div class="badge-slot"><div class="badge-visual"><i class="fas fa-handshake"></i></div><span>Social</span></div>
+            <div class="badge-slot"><div class="badge-visual"><i class="fas fa-rocket"></i></div><span>Innovator</span></div>
+            <div class="badge-slot"><div class="badge-visual"><i class="fas fa-brain"></i></div><span>Genius</span></div>
+        </div>
+
+        <div class="section-header"><h3>📍 Event Map & Hotspots</h3></div>
+        <div class="map-preview" id="miniMap">
+            <img src="https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?auto=format&fit=crop&q=80&w=800" style="width:100%; height:100%; object-fit:cover; opacity:0.4; filter:grayscale(0.5);" />
+            <div class="map-point" style="top:30%; left:25%;" title="The Garage"></div>
+            <div class="map-point" style="top:60%; left:70%;" title="The Arena"></div>
+            <div class="map-point" style="top:45%; left:50%;" title="Main Stage"></div>
+        </div>
+
+        <div class="section-header"><h3>⚡ Active Missions</h3></div>
+        <div class="cards-grid" id="missionsPreview">
+            <div class="action-card">
+                <div class="icon-box" style="background:var(--red)"><i class="fas fa-map-marked-alt"></i></div>
+                <div class="card-body"><h4>Zone Explorer</h4><p>Visit 3 different experience zones</p></div>
+                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
             </div>
-            <button class="logout-btn" id="profileLogoutBtn">Logout</button>
+            <div class="action-card">
+                <div class="icon-box" style="background:var(--navy)"><i class="fas fa-users"></i></div>
+                <div class="card-body"><h4>Connect & Link</h4><p>Scan 5 other participants' QR codes</p></div>
+                <i class="fas fa-chevron-right" style="color:#cbd5e1"></i>
+            </div>
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- ═══ TAB: MARKET (REWARDS) ═══ -->
+    <div id="tab-rewards" class="tab-content">
+        <div class="section-header"><h3>🎁 Freedom Rewards Market</h3><div class="id-badge" style="font-size:0.75rem; background:var(--navy); color:#fff;">Coins: <span id="marketBalance">0</span></div></div>
+        <div class="cards-grid" id="rewardsCatalog">
+            <!-- Rewards loaded via JS -->
+        </div>
+    </div>
+
+    <!-- ═══ TAB: RANKINGS (LEADERBOARD) ═══ -->
+    <div id="tab-leaderboard" class="tab-content">
+        <div class="section-header"><h3>🏆 Global Rankings</h3></div>
+        <div style="padding: 0 20px;" id="leaderboardList">
+            <!-- Leaderboard items -->
+        </div>
+    </div>
+
+    <!-- ═══ TAB: IDENTITY (PROFILE) ═══ -->
+    <div id="tab-profile" class="tab-content">
+        <div class="section-header"><h3>👤 Participant Identity</h3></div>
+        <div class="card" style="text-align:center; padding:40px 25px;">
+            <div class="avatar-ring" style="width:110px; height:110px; margin:0 auto 20px;">
+                <div class="placeholder-avatar" style="font-size:2.5rem;" id="profileInitial">U</div>
+            </div>
+            <h2 id="pName" style="font-size:1.5rem; font-weight:900;">Explorer Name</h2>
+            <p id="pEmail" style="color:#94a3b8; font-size:0.9rem; margin-top:5px;">explorer@freedom250.com</p>
+            
+            <div style="margin:30px 0; text-align:left; background:#f8fafc; padding:25px; border-radius:24px; border:1px solid #f1f5f9;">
+                <div style="display:flex; justify-content:space-between; padding-bottom:15px; border-bottom:1px solid #f1f5f9;">
+                    <span style="font-size:0.85rem; color:#64748b; font-weight:700;">Account Tier</span>
+                    <strong style="color:var(--success); font-size:0.85rem;">PREMIUM</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid #f1f5f9;">
+                    <span style="font-size:0.85rem; color:#64748b; font-weight:700;">Total Earned</span>
+                    <strong id="pTotalPoints" style="font-size:0.85rem;">0 Coins</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid #f1f5f9;">
+                    <span style="font-size:0.85rem; color:#64748b; font-weight:700;">Experience</span>
+                    <strong id="pTotalXP" style="font-size:0.85rem;">0 XP</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding-top:15px;">
+                    <span style="font-size:0.85rem; color:#64748b; font-weight:700;">Passport ID</span>
+                    <strong id="pFreedomId" style="font-family:monospace; font-size:0.85rem;">---</strong>
+                </div>
+            </div>
+
+            <button class="btn-action" id="pLogoutBtn" style="background:var(--danger);"><i class="fas fa-sign-out-alt"></i> SIGN OUT</button>
+        </div>
+
+        <div class="section-header"><h3>📜 Activity Timeline</h3></div>
+        <div style="padding: 0 20px;" id="activityTimeline">
+            <p style="text-align:center; padding:20px; color:#94a3b8; font-size:0.8rem;">Scanning history...</p>
+        </div>
+    </div>
+
+    <!-- Persistent Interactions -->
     <nav class="bottom-nav">
-        <div class="nav-item active" data-page="home" onclick="showPage('home')">
-            <i class="fas fa-passport"></i>
-            <span>Passport</span>
-        </div>
-        <div class="nav-item" data-page="rewards" onclick="showPage('rewards')">
-            <i class="fas fa-gift"></i>
-            <span>Rewards</span>
-        </div>
-        <div class="nav-item" data-page="leaderboard" onclick="showPage('leaderboard')">
-            <i class="fas fa-chart-line"></i>
-            <span>Rank</span>
-        </div>
-        <div class="nav-item" data-page="profile" onclick="showPage('profile')">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
-        </div>
-        <div class="nav-item relative" id="notifNavBtn" onclick="toggleNotifications()">
-            <i class="fas fa-bell"></i>
-            <span>Alerts</span>
-            <span id="notifBadge" class="nav-badge" style="display: none;">0</span>
-        </div>
+        <div class="nav-item active" onclick="showPage('home')"><i class="fas fa-passport"></i><span>Passport</span></div>
+        <div class="nav-item" onclick="showPage('rewards')"><i class="fas fa-gift"></i><span>Rewards</span></div>
+        <div class="nav-item" onclick="showPage('leaderboard')"><i class="fas fa-chart-bar"></i><span>Rank</span></div>
+        <div class="nav-item" onclick="showPage('profile')"><i class="fas fa-fingerprint"></i><span>Identity</span></div>
+        <div class="nav-item" onclick="toggleNotifications()"><i class="fas fa-bell"></i><span>Alerts</span><span id="notifBadge" style="position:absolute; top:-5px; right:12px; background:var(--red); color:#fff; font-size:0.6rem; padding:2px 6px; border-radius:10px; display:none;">0</span></div>
     </nav>
 
-    <!-- Notification Panel -->
-    <div id="notificationPanel" class="notification-panel">
-        <div class="notification-header">
-            <span><i class="fas fa-bell"></i> Notifications</span>
-            <i class="fas fa-times" onclick="toggleNotifications()" style="cursor: pointer;"></i>
+    <div id="overlay" class="panel-overlay" onclick="toggleNotifications()"></div>
+    <div id="notifPanel" class="slide-panel">
+        <div style="background:var(--navy); color:#fff; padding:30px 20px; display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-weight:900; font-size:1.1rem;"><i class="fas fa-bolt" style="color:var(--gold)"></i> Live Feed</span>
+            <i class="fas fa-times" onclick="toggleNotifications()" style="cursor:pointer; opacity:0.7;"></i>
         </div>
-        <div id="notificationsList" style="padding: 0 15px;"></div>
+        <div id="notifsList" style="padding:20px;">
+            <!-- Notifications dynamic -->
+        </div>
     </div>
-
-    <!-- Overlay -->
-    <div id="overlay" class="overlay" onclick="closeModals()"></div>
-
-    <!-- Poll Modal -->
-    <div id="pollModal" class="modal">
-        <h3 id="pollTitle"></h3>
-        <p id="pollQuestion" style="margin-bottom: 16px; color: #666;"></p>
-        <div id="pollOptions"></div>
-        <button class="btn-primary" onclick="submitVote()">Submit Vote</button>
-    </div>
-
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 <script type="module">
-    import { signOutUser, onAuthStateChange } from './js/auth.js';
-    import { db, doc, getDoc, updateDoc, onSnapshot, collection, query, where, orderBy, limit, increment, addDoc, serverTimestamp, arrayUnion, getDocs } from './js/firebase-config.js';
+    import { guardDashboard, signOutUser, onAuthStateChange } from './js/auth.js';
+    import { db, doc, onSnapshot, collection, query, where, orderBy, limit, getDocs } from './js/firebase-config.js';
+    import { calculateLevel, getXpToNextLevel, getFreedomRank } from './js/points-system.js';
 
     let currentUser = null;
-    let userUnsubscribe = null;
-    let notificationsUnsubscribe = null;
-    let leaderboardUnsubscribe = null;
-    let pollsUnsubscribe = null;
-    let currentPollId = null;
-    let selectedPollOption = null;
-    let qrRendered = false; // guard: render QR only once per session
+    let qrActive = false;
 
-    function showToast(message, type = 'info') {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
-        container.appendChild(toast);
-        setTimeout(() => toast.remove(), 4000);
-    }
+    async function init() {
+        const user = await guardDashboard(['participant', 'volunteer', 'booth_admin', 'admin']);
+        if (!user) return;
+        currentUser = user;
 
-    // ── QR CODE ────────────────────────────────────────────────────────────
-    // Renders once per session. Encodes just the freedomId — short, scannable.
-    // Uses a module-level flag so Firestore snapshot updates never re-trigger it.
-    function renderQR(freedomId) {
-        if (qrRendered) return;
-        if (!freedomId) return;
-        if (typeof QRCode === 'undefined') {
-            console.error('[QR] QRCode library not loaded');
-            return;
-        }
-        const container = document.getElementById('qrBox');
-        container.innerHTML = ''; // clear loading icon
-        const canvas = document.createElement('canvas');
-        QRCode.toCanvas(canvas, freedomId, {
-            width: 180,
-            margin: 2,
-            color: { dark: '#1a1a2e', light: '#ffffff' },
-            errorCorrectionLevel: 'M'
-        }, (err) => {
-            if (err) {
-                console.error('[QR] generation failed:', err);
-                container.innerHTML = '<p style="color:#aaa;font-size:0.7rem;padding:20px;">QR unavailable</p>';
-                return;
-            }
-            canvas.style.width = '100%';
-            canvas.style.height = '100%';
-            container.innerHTML = '';
-            container.appendChild(canvas);
-            qrRendered = true;
+        updatePassportUI(user);
+
+        // Real-time synchronization
+        onSnapshot(doc(db, 'users', user.uid), (snap) => {
+            if (snap.exists()) updatePassportUI(snap.data());
         });
+
+        loadLeaderboard();
+        loadRewards();
+        loadNotifications();
+        loadTimeline();
     }
 
-    // ── USER DATA ──────────────────────────────────────────────────────────
-    // Real-time listener on the user doc.
-    // QR is rendered on the FIRST snapshot only (qrRendered flag prevents loops).
-    // No writes happen inside this listener — that's what was causing the infinite loop.
-    function loadUserData() {
-        if (!currentUser) return;
-        userUnsubscribe = onSnapshot(doc(db, 'users', currentUser.uid), (snap) => {
-            if (!snap.exists()) return;
-            const data = snap.data();
-            const points = data.points || 0;
-            const stamps = data.stamps || [];
-            const level = Math.floor(points / 500) + 1;
+    function updatePassportUI(data) {
+        const points = data.points || 0;
+        const xp = data.xp || (points * 10);
+        const level = calculateLevel(xp);
+        const nextXp = (level * 500); // 500 XP per level
+        const currentLevelXp = xp % 500;
+        const progress = (currentLevelXp / 500) * 100;
+        const rank = getFreedomRank(level);
+        const stamps = data.stamps || [];
+        const freedomId = data.freedomId || `F250-${currentUser.uid.slice(-6).toUpperCase()}`;
 
-            document.getElementById('userPoints').textContent = points;
-            document.getElementById('userStamps').textContent = stamps.length;
-            document.getElementById('userLevel').textContent = level;
-            document.getElementById('profilePoints').textContent = points;
-            document.getElementById('profileStamps').textContent = stamps.length;
-            document.getElementById('profileScans').textContent = data.scansCount || 0;
-            document.getElementById('profileName').textContent = data.displayName || 'Explorer';
-            document.getElementById('profileEmail').textContent = data.email || currentUser.email;
+        // Header Updates
+        document.getElementById('userName').textContent = `Hello, ${data.displayName?.split(' ')[0] || 'Explorer'}`;
+        document.getElementById('userLevel').textContent = level;
+        document.getElementById('userRank').innerHTML = `<i class="fas fa-shield-alt"></i> ${rank}`;
+        document.getElementById('xpFill').style.width = `${progress}%`;
+        document.getElementById('xpStatus').textContent = `${currentLevelXp} / 500 XP to Level ${level + 1}`;
+        document.getElementById('avatarInitial').textContent = (data.displayName || 'E').charAt(0).toUpperCase();
 
-            const freedomId = data.freedomId || `FREEDOM-${new Date().getFullYear()}-${currentUser.uid.slice(-5)}`;
-            document.getElementById('freedomId').textContent = freedomId;
-            document.getElementById('profileFreedomId').textContent = freedomId;
-            document.getElementById('userName').textContent = `Hello, ${data.displayName || 'Explorer'}`;
+        // Stats
+        document.getElementById('userPoints').textContent = points.toLocaleString();
+        document.getElementById('userStamps').textContent = stamps.length;
+        document.getElementById('marketBalance').textContent = points.toLocaleString();
 
-            // Render QR — flag ensures this only runs once
-            renderQR(freedomId);
-        });
-    }
+        // Profile Tab
+        document.getElementById('pName').textContent = data.displayName || 'Explorer';
+        document.getElementById('pEmail').textContent = data.email;
+        document.getElementById('pTotalPoints').textContent = `${points.toLocaleString()} Coins`;
+        document.getElementById('pTotalXP').textContent = `${xp.toLocaleString()} XP`;
+        document.getElementById('pFreedomId').textContent = freedomId;
+        document.getElementById('freedomId').textContent = freedomId;
+        document.getElementById('profileInitial').textContent = (data.displayName || 'E').charAt(0).toUpperCase();
 
-    // ── SIGNUP / LOGIN BONUS ───────────────────────────────────────────────
-    // Points (50) are already set in auth.js at account creation.
-    // This function only sends the welcome notification once, using a separate
-    // `welcomeShown` flag so it never awards points twice.
-    async function handleWelcomeBonus() {
-        try {
-            const userRef = doc(db, 'users', currentUser.uid);
-            const snap = await getDoc(userRef);
-            if (!snap.exists()) return;
-            const data = snap.data();
-            if (data.welcomeShown) return; // already done
-
-            await updateDoc(userRef, { welcomeShown: true });
-
-            await addDoc(collection(db, 'notifications'), {
-                userId: currentUser.uid,
-                title: '🎉 Welcome to Freedom 250!',
-                message: `You start with ${data.points || 50} Liberty Coins. Scan booths to earn more!`,
-                type: 'success',
-                read: false,
-                createdAt: serverTimestamp()
+        // QR Code Generation (once)
+        if (!qrActive) {
+            QRCode.toCanvas(freedomId, { 
+                width: 200, margin: 1, 
+                color: { dark: '#1a1a2e', light: '#ffffff' } 
+            }, (err, canvas) => {
+                if (!err) {
+                    const container = document.getElementById('qrContainer');
+                    container.innerHTML = '';
+                    container.appendChild(canvas);
+                    qrActive = true;
+                }
             });
-            showToast(`🎉 Welcome! You have ${data.points || 50} Liberty Coins to start!`, 'success');
-        } catch (err) {
-            console.error('[Welcome] bonus error:', err);
         }
+        
+        // Update rank position (requires finding index in list - simple estimate for now)
+        document.getElementById('userRankPos').textContent = points > 0 ? "TOP 10" : "--";
     }
 
-    // Load notifications
-    function loadNotifications() {
-        if (notificationsUnsubscribe) notificationsUnsubscribe();
-
-        notificationsUnsubscribe = onSnapshot(
-            query(collection(db, 'notifications'), where('userId', '==', currentUser.uid), orderBy('createdAt', 'desc'), limit(50)),
-            (snapshot) => {
-                const container = document.getElementById('notificationsList');
-                const unreadCount = snapshot.docs.filter(d => !d.data().read).length;
-                const badge = document.getElementById('notifBadge');
-
-                if (unreadCount > 0) {
-                    badge.style.display = 'block';
-                    badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-                } else {
-                    badge.style.display = 'none';
-                }
-
-                if (snapshot.empty) {
-                    container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">No notifications yet</p>';
-                    return;
-                }
-
-                container.innerHTML = snapshot.docs.map(doc => {
-                    const notif = doc.data();
-                    const isUnread = !notif.read;
-                    return `
-                        <div class="notification-item ${isUnread ? 'unread' : ''}" onclick="markNotificationRead('${doc.id}')">
-                            <div class="title">${notif.title || 'Notification'}</div>
-                            <div class="message">${notif.message || ''}</div>
-                            <div class="time">${notif.createdAt?.toDate ? notif.createdAt.toDate().toLocaleString() : 'Just now'}</div>
-                        </div>
-                    `;
-                }).join('');
-            }
-        );
-    }
-
-    window.markNotificationRead = async (notifId) => {
-        try {
-            await updateDoc(doc(db, 'notifications', notifId), { read: true });
-        } catch (error) {
-            console.error('Mark read error:', error);
-        }
-    };
-
-    // Load leaderboard
     function loadLeaderboard() {
-        if (leaderboardUnsubscribe) leaderboardUnsubscribe();
-
-        leaderboardUnsubscribe = onSnapshot(
-            query(collection(db, 'users'), where('role', '==', 'participant'), orderBy('points', 'desc'), limit(50)),
-            (snapshot) => {
-                const container = document.getElementById('leaderboardList');
-                let rank = 1;
-
-                if (snapshot.empty) {
-                    container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">No participants yet</p>';
-                    return;
-                }
-
-                container.innerHTML = snapshot.docs.map(doc => {
-                    const user = doc.data();
-                    const rankClass = rank === 1 ? 'top-1' : rank === 2 ? 'top-2' : rank === 3 ? 'top-3' : '';
-                    const displayName = user.displayName || user.email?.split('@')[0] || 'Explorer';
-                    // Mask name for privacy on leaderboard
-                    const maskedName = displayName.length > 8 ? displayName.substring(0, 6) + '...' : displayName;
-                    const currentRank = rank++;
-                    return `
-                        <div class="leaderboard-item">
-                            <div class="rank-number ${rankClass}">${currentRank}</div>
-                            <div class="card-info" style="flex: 1;">
-                                <h4>${maskedName}</h4>
-                                <p style="font-size: 0.7rem;">Level ${Math.floor((user.points || 0) / 500) + 1}</p>
-                            </div>
-                            <div><strong style="color: var(--red);">${user.points || 0}</strong></div>
-                        </div>
-                    `;
-                }).join('');
-            }
-        );
-    }
-
-    // Load polls
-    function loadPolls() {
-        if (pollsUnsubscribe) pollsUnsubscribe();
-
-        pollsUnsubscribe = onSnapshot(
-            query(collection(db, 'polls'), where('active', '==', true), orderBy('createdAt', 'desc')),
-            (snapshot) => {
-                const previewContainer = document.getElementById('pollsPreview');
-                const fullContainer = document.getElementById('pollsFullList');
-                const polls = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-                const previewPolls = polls.slice(0, 2);
-
-                previewContainer.innerHTML = previewPolls.map(poll => `
-                    <div class="card" onclick="openPoll('${poll.id}', '${poll.title.replace(/'/g, "\\'")}', '${poll.question.replace(/'/g, "\\'")}', ${JSON.stringify(poll.options).replace(/"/g, '&quot;')})">
-                        <div class="card-icon" style="background: var(--info);"><i class="fas fa-chart-simple"></i></div>
-                        <div class="card-info">
-                            <h4>${poll.title}</h4>
-                            <p>${poll.totalVotes || 0} votes</p>
-                        </div>
-                        <div class="card-badge">Vote</div>
+        onSnapshot(query(collection(db, 'users'), where('role', '==', 'participant'), orderBy('points', 'desc'), limit(15)), snap => {
+            const list = document.getElementById('leaderboardList');
+            let rank = 1;
+            list.innerHTML = snap.docs.map(doc => {
+                const u = doc.data();
+                const isMe = doc.id === currentUser.uid;
+                const rClass = rank <= 3 ? `rank-${rank}` : '';
+                return `<div class="leaderboard-item" ${isMe ? 'style="border:1px solid var(--red); background:#fff5f5;"' : ''}>
+                    <div class="rank-number ${rClass}">${rank++}</div>
+                    <div class="card-body">
+                        <h4>${u.displayName || 'Explorer'}</h4>
+                        <p>LVL ${calculateLevel(u.xp || 0)} · ${getFreedomRank(calculateLevel(u.xp || 0))}</p>
                     </div>
-                `).join('');
-
-                fullContainer.innerHTML = polls.map(poll => `
-                    <div class="card" onclick="openPoll('${poll.id}', '${poll.title.replace(/'/g, "\\'")}', '${poll.question.replace(/'/g, "\\'")}', ${JSON.stringify(poll.options).replace(/"/g, '&quot;')})">
-                        <div class="card-icon" style="background: var(--info);"><i class="fas fa-chart-simple"></i></div>
-                        <div class="card-info">
-                            <h4>${poll.title}</h4>
-                            <p>${poll.question.substring(0, 50)}${poll.question.length > 50 ? '...' : ''}</p>
-                        </div>
-                        <div class="card-badge">${poll.totalVotes || 0} votes</div>
-                    </div>
-                `).join('');
-            }
-        );
-    }
-
-    window.openPoll = (id, title, question, options) => {
-        currentPollId = id;
-        document.getElementById('pollTitle').textContent = title;
-        document.getElementById('pollQuestion').textContent = question;
-
-        const container = document.getElementById('pollOptions');
-        container.innerHTML = options.map((opt, idx) => `
-            <div class="poll-option" data-idx="${idx}" onclick="selectPollOption(${idx})">
-                ${opt.text} (${opt.votes || 0} votes)
-            </div>
-        `).join('');
-
-        selectedPollOption = null;
-        document.getElementById('pollModal').classList.add('active');
-        document.getElementById('overlay').classList.add('active');
-    };
-
-    window.selectPollOption = (idx) => {
-        document.querySelectorAll('.poll-option').forEach(opt => opt.classList.remove('selected'));
-        document.querySelector(`.poll-option[data-idx="${idx}"]`).classList.add('selected');
-        selectedPollOption = idx;
-    };
-
-    window.submitVote = async () => {
-        if (selectedPollOption === null) {
-            showToast('Please select an option', 'warning');
-            return;
-        }
-
-        try {
-            const pollRef = doc(db, 'polls', currentPollId);
-            const poll = await getDoc(pollRef);
-
-            if (!poll.exists()) {
-                showToast('Poll not found', 'error');
-                closeModals();
-                return;
-            }
-
-            const pollData = poll.data();
-            const existingVoteQuery = query(
-                collection(db, 'pollVotes'),
-                where('pollId', '==', currentPollId),
-                where('userId', '==', currentUser.uid)
-            );
-            const existingVote = await getDocs(existingVoteQuery);
-
-            if (!existingVote.empty) {
-                showToast('You have already voted in this poll', 'warning');
-                closeModals();
-                return;
-            }
-
-            await addDoc(collection(db, 'pollVotes'), {
-                pollId: currentPollId,
-                userId: currentUser.uid,
-                optionIndex: selectedPollOption,
-                votedAt: serverTimestamp()
-            });
-
-            const newOptions = [...pollData.options];
-            newOptions[selectedPollOption].votes += 1;
-
-            await updateDoc(pollRef, {
-                options: newOptions,
-                totalVotes: increment(1)
-            });
-
-            showToast('Vote submitted successfully!', 'success');
-            closeModals();
-        } catch (error) {
-            showToast('Error submitting vote', 'error');
-        }
-    };
-
-    // Load challenges
-    function loadChallenges() {
-        const challengesQuery = query(collection(db, 'boothChallenges'), where('status', '==', 'active'), orderBy('createdAt', 'desc'));
-
-        onSnapshot(challengesQuery, (snapshot) => {
-            const previewContainer = document.getElementById('challengesPreview');
-            const fullContainer = document.getElementById('challengesFullList');
-            const challenges = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-            const previewChallenges = challenges.slice(0, 2);
-
-            previewContainer.innerHTML = previewChallenges.map(challenge => `
-                <div class="card">
-                    <div class="card-icon" style="background: var(--success);"><i class="fas fa-trophy"></i></div>
-                    <div class="card-info">
-                        <h4>${challenge.title}</h4>
-                        <p>${challenge.description?.substring(0, 50) || 'Complete this challenge'}</p>
-                    </div>
-                    <div class="card-badge">${challenge.points} pts</div>
-                </div>
-            `).join('');
-
-            fullContainer.innerHTML = challenges.map(challenge => `
-                <div class="card">
-                    <div class="card-icon" style="background: var(--success);"><i class="fas fa-trophy"></i></div>
-                    <div class="card-info">
-                        <h4>${challenge.title}</h4>
-                        <p>${challenge.description || 'No description'}</p>
-                        <p style="font-size: 0.7rem; color: var(--red); margin-top: 4px;">📍 ${challenge.boothName || 'Any booth'}</p>
-                    </div>
-                    <div class="card-badge">${challenge.points} pts</div>
-                </div>
-            `).join('');
+                    <div style="font-weight:900; color:var(--red);">${(u.points || 0).toLocaleString()}</div>
+                </div>`;
+            }).join('') || '<p style="text-align:center; padding:40px; color:#94a3b8;">Preparing the podium...</p>';
         });
     }
 
-    // Load zones
-    function loadZones() {
-        const zones = [
-            { id: 'garage', name: 'THE GARAGE', icon: 'fa-microchip', color: '#3C3B6E', desc: 'Innovation & MakerLab' },
-            { id: 'launchpad', name: 'THE LAUNCHPAD', icon: 'fa-chart-line', color: '#B22234', desc: 'Entrepreneurship' },
-            { id: 'varsity', name: 'VARSITY LOUNGE', icon: 'fa-graduation-cap', color: '#3C3B6E', desc: 'Education & Alumni' },
-            { id: 'townhall', name: 'THE TOWNHALL', icon: 'fa-landmark', color: '#B22234', desc: 'Democracy & Leadership' },
-            { id: 'arena', name: 'THE ARENA', icon: 'fa-basketball-ball', color: '#3C3B6E', desc: 'Sports & Wellness' },
-            { id: 'taste', name: 'TASTE OF AMERICA', icon: 'fa-utensils', color: '#B22234', desc: 'Food Court' },
-            { id: 'culture', name: 'CULTURE & MUSIC', icon: 'fa-music', color: '#3C3B6E', desc: 'Main Stage' }
-        ];
-
-        const container = document.getElementById('zonesList');
-        container.innerHTML = zones.map(zone => `
-            <div class="card">
-                <div class="card-icon" style="background: ${zone.color};"><i class="fas ${zone.icon}"></i></div>
-                <div class="card-info">
-                    <h4>${zone.name}</h4>
-                    <p>${zone.desc}</p>
-                </div>
-                <div class="card-badge" style="background: #e8f5e9; color: #2e7d32;">Active</div>
-            </div>
-        `).join('');
-    }
-
-    // Load rewards
     function loadRewards() {
-        onSnapshot(collection(db, 'rewards'), (snapshot) => {
-            const container = document.getElementById('rewardsList');
-            const rewards = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-            if (rewards.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">No rewards available</p>';
-                return;
-            }
-
-            container.innerHTML = rewards.map(reward => `
-                <div class="reward-card">
-                    <div class="reward-info">
-                        <h4>${reward.name}</h4>
-                        <p>${reward.description || ''}</p>
+        onSnapshot(collection(db, 'rewards'), snap => {
+            const catalog = document.getElementById('rewardsCatalog');
+            catalog.innerHTML = snap.docs.map(doc => {
+                const r = doc.data();
+                return `<div class="action-card" style="flex-direction:column; align-items:stretch;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <h4>${r.name}</h4>
+                        <strong style="color:var(--gold);"><i class="fas fa-coins"></i> ${r.cost}</strong>
                     </div>
-                    <div>
-                        <div class="reward-cost">${reward.cost} pts</div>
-                        <button class="redeem-btn" onclick="redeemReward('${reward.id}', ${reward.cost})">Redeem</button>
-                    </div>
-                </div>
-            `).join('');
+                    <p style="margin:10px 0 15px;">${r.description || 'Exclusive event souvenir'}</p>
+                    <button class="btn-action" onclick="alert('Visit the Rewards Hub to claim this!')">REDEEM ITEM</button>
+                </div>`;
+            }).join('') || '<p style="text-align:center; padding:40px; color:#94a3b8;">Stocking the market...</p>';
         });
     }
 
-    window.redeemReward = async (rewardId, cost) => {
-        if (confirm(`Redeem this reward for ${cost} Liberty Coins?`)) {
-            try {
-                const userRef = doc(db, 'users', currentUser.uid);
-                const user = await getDoc(userRef);
-                const userPoints = user.data()?.points || 0;
+    function loadNotifications() {
+        onSnapshot(query(collection(db, 'notifications'), where('userId', '==', currentUser.uid), orderBy('createdAt', 'desc'), limit(10)), snap => {
+            const badge = document.getElementById('notifBadge');
+            const unread = snap.docs.filter(d => !d.data().read).length;
+            badge.textContent = unread;
+            badge.style.display = unread > 0 ? 'block' : 'none';
 
-                if (userPoints < cost) {
-                    showToast(`Insufficient points! Need ${cost} coins`, 'error');
-                    return;
-                }
-
-                const rewardRef = doc(db, 'rewards', rewardId);
-                const reward = await getDoc(rewardRef);
-                const rewardData = reward.data();
-                const claimedCount = rewardData.claimed?.length || 0;
-
-                if (claimedCount >= rewardData.stock) {
-                    showToast('Reward out of stock!', 'error');
-                    return;
-                }
-
-                await updateDoc(userRef, { points: increment(-cost) });
-                await updateDoc(rewardRef, {
-                    claimed: arrayUnion({
-                        userId: currentUser.uid,
-                        userName: currentUser.displayName,
-                        claimedAt: new Date().toISOString(),
-                        status: 'pending'
-                    })
-                });
-
-                await addDoc(collection(db, 'notifications'), {
-                    userId: currentUser.uid,
-                    title: '🎁 Reward Redeemed!',
-                    message: `You redeemed ${rewardData.name} for ${cost} coins`,
-                    type: 'success',
-                    read: false,
-                    createdAt: serverTimestamp()
-                });
-
-                showToast(`Redeemed ${rewardData.name}!`, 'success');
-            } catch (error) {
-                showToast('Error redeeming reward', 'error');
+            const list = document.getElementById('notifsList');
+            if (snap.empty) {
+                list.innerHTML = '<p style="text-align:center; color:#94a3b8; margin-top:50px;">No new alerts</p>';
+                return;
             }
-        }
-    };
+            list.innerHTML = snap.docs.map(doc => {
+                const n = doc.data();
+                const nClass = n.type === 'alert' ? 'alert' : (n.type === 'success' ? 'success' : '');
+                return `<div class="notif-item ${nClass}">
+                    <div class="notif-title">${n.title}</div>
+                    <div class="notif-msg">${n.message}</div>
+                    <div style="font-size:0.6rem; color:#cbd5e1; margin-top:8px; font-weight:700;">${n.createdAt?.toDate().toLocaleTimeString()}</div>
+                </div>`;
+            }).join('');
+        });
+    }
 
-    // Page navigation
-    window.showPage = (page) => {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(`page-${page}`).classList.add('active');
+    function loadTimeline() {
+        onSnapshot(query(collection(db, 'scans'), where('userId', '==', currentUser.uid), orderBy('scannedAt', 'desc'), limit(10)), snap => {
+            const container = document.getElementById('activityTimeline');
+            if (snap.empty) return;
+            container.innerHTML = snap.docs.map(doc => {
+                const s = doc.data();
+                return `<div style="padding:15px 0; border-bottom:1px solid #f8fafc; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-size:0.85rem; font-weight:800; color:var(--navy);">${s.boothName || 'Verification'}</div>
+                        <div style="font-size:0.65rem; color:#94a3b8;">${s.scannedAt?.toDate().toLocaleString()}</div>
+                    </div>
+                    <div style="color:var(--success); font-weight:900; font-size:0.85rem;">+${s.pointsAwarded} Coins</div>
+                </div>`;
+            }).join('');
+        });
+    }
+
+    window.showPage = (id) => {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        const activeNav = document.querySelector(`.nav-item[data-page="${page}"]`);
-        if (activeNav) activeNav.classList.add('active');
-        window.scrollTo(0, 0);
+        document.getElementById(`tab-${id}`).classList.add('active');
+        
+        const navs = document.querySelectorAll('.nav-item');
+        navs.forEach(nav => {
+            if (nav.getAttribute('onclick').includes(id)) nav.classList.add('active');
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     window.toggleNotifications = () => {
-        const panel = document.getElementById('notificationPanel');
-        const overlay = document.getElementById('overlay');
-        panel.classList.toggle('open');
-        overlay.classList.toggle('active');
+        document.getElementById('notifPanel').classList.toggle('open');
+        document.getElementById('overlay').classList.toggle('active');
     };
 
-    window.closeModals = () => {
-        document.getElementById('pollModal').classList.remove('active');
-        document.getElementById('notificationPanel').classList.remove('open');
-        document.getElementById('overlay').classList.remove('active');
-    };
-
-    // ── DAILY LOGIN BONUS ──────────────────────────────────────────────────
-    // Awards 5 pts for each day a user logs in (once per calendar day).
-    async function handleDailyLoginBonus() {
-        try {
-            const userRef = doc(db, 'users', currentUser.uid);
-            const snap = await getDoc(userRef);
-            if (!snap.exists()) return;
-            const data = snap.data();
-
-            const lastBonus = data.lastDailyBonus ? new Date(data.lastDailyBonus).toDateString() : null;
-            const today = new Date().toDateString();
-            if (lastBonus === today) return; // already got today's bonus
-
-            const streak = (() => {
-                if (!data.lastDailyBonus) return 1;
-                const diff = Math.floor((new Date() - new Date(data.lastDailyBonus)) / 86400000);
-                return diff === 1 ? (data.loginStreak || 1) + 1 : 1;
-            })();
-            const pts = 5 + (streak > 1 ? Math.min(streak * 2, 20) : 0); // streak bonus, capped at +20
-
-            await updateDoc(userRef, {
-                points: increment(pts),
-                lastDailyBonus: new Date().toISOString(),
-                loginStreak: streak
-            });
-
-            await addDoc(collection(db, 'notifications'), {
-                userId: currentUser.uid,
-                title: `🌅 Daily Login Bonus!`,
-                message: streak > 1
-                    ? `🔥 ${streak}-day streak! +${pts} Liberty Coins`
-                    : `+${pts} Liberty Coins for logging in today!`,
-                type: 'success',
-                read: false,
-                createdAt: serverTimestamp()
-            });
-
-            showToast(streak > 1
-                ? `🔥 ${streak}-day streak! +${pts} Liberty Coins`
-                : `+${pts} Liberty Coins daily bonus!`, 'success');
-        } catch (err) {
-            console.error('[DailyBonus] error:', err);
-        }
-    }
-
-    // Initialize everything
-    onAuthStateChange(async (user) => {
-        if (!user) {
-            window.location.replace('login.html');
-            return;
-        }
-        currentUser = user;
-
-        loadUserData();
-        loadNotifications();
-        loadLeaderboard();
-        loadPolls();
-        loadChallenges();
-        loadZones();
-        loadRewards();
-
-        // Run these after a tiny delay so the UI renders first
-        setTimeout(async () => {
-            await handleWelcomeBonus();
-            await handleDailyLoginBonus();
-        }, 500);
-    });
-
-    // Logout handler
-    const logoutBtn = document.getElementById('logoutBtn');
-    const profileLogoutBtn = document.getElementById('profileLogoutBtn');
-
-    const handleLogout = async () => {
-        if (confirm('Logout from Freedom 250?')) {
-            if (userUnsubscribe) userUnsubscribe();
-            if (notificationsUnsubscribe) notificationsUnsubscribe();
-            if (leaderboardUnsubscribe) leaderboardUnsubscribe();
-            if (pollsUnsubscribe) pollsUnsubscribe();
+    document.getElementById('pLogoutBtn').addEventListener('click', async () => {
+        if (confirm('Logout of your Passport?')) {
             await signOutUser();
             window.location.replace('login.html');
         }
-    };
+    });
 
-    if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
-    if (profileLogoutBtn) profileLogoutBtn.addEventListener('click', handleLogout);
+    init();
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Freedom 250 Admin Portal.</title>
+    <title>Freedom 250 Admin Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -13,778 +13,718 @@
             --gold: #FFD700;
             --bg: #f0f2f5;
             --white: #fff;
-            --radius: 16px;
+            --radius: 20px;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --info: #3b82f6;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); }
-        .app { max-width: 1200px; margin: 0 auto; min-height: 100vh; padding: 20px; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--navy); overflow-x: hidden; }
+        
+        .app { max-width: 1400px; margin: 0 auto; min-height: 100vh; padding: 20px; }
 
-        /* Header */
+        /* Animated Header */
         .admin-header {
             background: linear-gradient(135deg, var(--navy) 0%, #16213e 100%);
             color: #fff;
-            padding: 25px 30px;
+            padding: 30px 40px;
             border-radius: var(--radius);
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(26, 26, 46, 0.2);
         }
-        .admin-header h1 { font-size: 1.5rem; }
-        .admin-header p { font-size: 0.8rem; opacity: 0.7; margin-top: 4px; }
+        .admin-header::after {
+            content: "🇺🇸"; position: absolute; right: -20px; bottom: -20px; font-size: 120px; opacity: 0.1; transform: rotate(-15deg);
+        }
+        .admin-header h1 { font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; }
+        .admin-header p { font-size: 0.9rem; opacity: 0.8; margin-top: 5px; }
 
-        /* Stats Grid */
+        /* Real-Time Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         .stat-card {
             background: var(--white);
             border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.02);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-        .stat-card .value { font-size: 2rem; font-weight: 800; color: var(--red); }
-        .stat-card .label { font-size: 0.75rem; color: #666; text-transform: uppercase; margin-top: 4px; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .stat-card .icon-box {
+            width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 5px;
+        }
+        .stat-card .value { font-size: 2.2rem; font-weight: 900; color: var(--navy); }
+        .stat-card .label { font-size: 0.75rem; color: #666; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+        .stat-card .trend { font-size: 0.7rem; display: flex; align-items: center; gap: 4px; font-weight: 600; }
+        .trend.up { color: var(--success); }
 
-        /* Tabs */
+        /* Modern Tabs Navigation */
+        .admin-tabs-container {
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            scrollbar-width: none;
+        }
+        .admin-tabs-container::-webkit-scrollbar { display: none; }
+        
         .admin-tabs {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 12px;
+            gap: 10px;
+            background: #e5e7eb;
+            padding: 6px;
+            border-radius: 15px;
+            width: fit-content;
         }
         .admin-tab {
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: var(--transition);
             background: transparent;
             border: none;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .admin-tab:hover { background: #e5e7eb; }
+        .admin-tab:hover { color: var(--navy); }
         .admin-tab.active {
-            background: var(--red);
-            color: #fff;
+            background: var(--white);
+            color: var(--red);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        /* Panels */
-        .tab-panel { display: none; }
+        /* Panels with Smooth Transitions */
+        .tab-panel { display: none; animation: fadeIn 0.4s ease-out; }
         .tab-panel.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Cards */
+        /* Dashboard Cards */
         .card {
             background: var(--white);
             border-radius: var(--radius);
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.02);
         }
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
         }
-        .card-header h3 { font-size: 1rem; font-weight: 700; }
+        .card-header h3 { font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
 
-        /* Forms */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; color: #555; }
+        /* Tables & Lists */
+        .table-container { overflow-x: auto; border-radius: 12px; background: #fff; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f8f9fa; color: #666; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 15px; font-weight: 700; text-align: left; }
+        td { padding: 15px; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; color: #444; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #fafafa; }
+
+        /* Forms & Inputs */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 8px; color: #444; }
         .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 0.85rem;
+            width: 100%; padding: 12px 16px; border: 2px solid #f0f0f0; border-radius: 12px; font-family: inherit; font-size: 0.9rem; transition: var(--transition);
         }
+        .form-group input:focus { border-color: var(--red); outline: none; }
+
         .btn {
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
+            padding: 12px 25px; border-radius: 12px; font-weight: 700; cursor: pointer; border: none; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem;
         }
         .btn-primary { background: var(--red); color: #fff; }
+        .btn-primary:hover { background: #8f1b2a; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(178, 34, 52, 0.3); }
         .btn-secondary { background: var(--navy); color: #fff; }
         .btn-success { background: var(--success); color: #fff; }
-        .btn-sm { padding: 6px 12px; font-size: 0.75rem; }
+        .btn-warning { background: var(--warning); color: #fff; }
+        .btn-outline { background: transparent; border: 2px solid #f0f0f0; color: #666; }
+        .btn-sm { padding: 8px 15px; font-size: 0.8rem; }
 
-        /* Tables */
-        .table-container {
-            overflow-x: auto;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        th {
-            background: #f8f9fa;
-            font-weight: 600;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            position: sticky;
-            top: 0;
-        }
-        td { font-size: 0.85rem; }
+        /* Role Badges */
+        .badge { padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+        .badge-admin { background: #ffebee; color: var(--red); }
+        .badge-booth { background: #e3f2fd; color: var(--info); }
+        .badge-volunteer { background: #e8f5e9; color: var(--success); }
+        .badge-participant { background: #f5f5f5; color: #666; }
 
-        /* User Row */
-        .user-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .user-info h4 { font-size: 0.9rem; margin-bottom: 2px; }
-        .user-info p { font-size: 0.7rem; color: #777; }
-        .user-actions { display: flex; gap: 8px; }
+        /* Analytics Widgets */
+        .analytics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        .progress-bar { height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; margin: 10px 0; }
+        .progress-fill { height: 100%; background: var(--red); border-radius: 4px; transition: width 1s ease; }
+        
+        .activity-feed { max-height: 400px; overflow-y: auto; padding-right: 10px; }
+        .activity-item { display: flex; gap: 15px; padding: 15px 0; border-bottom: 1px solid #f0f0f0; }
+        .activity-icon { width: 35px; height: 35px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
 
-        /* Grids */
-        .rewards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        .reward-item {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 16px;
-        }
-
-        /* Utility */
-        .flex-between { display: flex; justify-content: space-between; align-items: center; }
-        .mt-4 { margin-top: 16px; }
-        .mb-2 { margin-bottom: 8px; }
-        .text-red { color: var(--red); }
-        .text-success { color: var(--success); }
-        .cursor-pointer { cursor: pointer; }
-
+        /* Responsive Improvements */
+        @media (max-width: 992px) { .analytics-row { grid-template-columns: 1fr; } }
         @media (max-width: 768px) {
-            .app { padding: 12px; }
+            .app { padding: 10px; }
+            .admin-header { padding: 25px; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .admin-tabs { gap: 6px; }
-            .admin-tab { padding: 6px 14px; font-size: 0.75rem; }
+            .admin-tab { padding: 10px 15px; font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
 <div class="app">
+    <!-- Header -->
     <div class="admin-header">
         <div>
-            <h1>🛡️ Freedom 250 Command Center</h1>
-            <p>Manage participants, booths, rewards, polls, quizzes, and announcements</p>
+            <h1>🛡️ Freedom Command</h1>
+            <p>Real-time event operations and engagement oversight</p>
         </div>
         <div style="display: flex; gap: 10px;">
-            <a href="index.html" class="btn btn-secondary btn-sm" style="background: rgba(255,255,255,0.2);">Home</a>
-            <button id="logoutBtn" class="btn btn-primary btn-sm">Logout</button>
+            <a href="index.html" class="btn btn-outline btn-sm" style="color: #fff; border-color: rgba(255,255,255,0.2);"><i class="fas fa-external-link-alt"></i> Site</a>
+            <button id="logoutBtn" class="btn btn-primary btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
     </div>
 
-    <!-- Stats -->
-    <div class="stats-grid" id="statsGrid">
-        <div class="stat-card"><div class="value" id="totalUsers">0</div><div class="label">Total Users</div></div>
-        <div class="stat-card"><div class="value" id="totalPoints">0</div><div class="label">Total Points</div></div>
-        <div class="stat-card"><div class="value" id="totalScans">0</div><div class="label">Total Scans</div></div>
-        <div class="stat-card"><div class="value" id="activePolls">0</div><div class="label">Active Polls</div></div>
+    <!-- Live Performance Widgets -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="icon-box" style="background: #e3f2fd; color: #1e88e5;"><i class="fas fa-users"></i></div>
+            <div class="label">Total Participants</div>
+            <div class="value" id="totalUsers">0</div>
+            <div class="trend up"><i class="fas fa-caret-up"></i> Live now</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon-box" style="background: #fff8e1; color: #fbc02d;"><i class="fas fa-coins"></i></div>
+            <div class="label">Liberty Coins Circulated</div>
+            <div class="value" id="totalPoints">0</div>
+            <div class="trend up"><i class="fas fa-caret-up"></i> +1.2k today</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon-box" style="background: #e8f5e9; color: #43a047;"><i class="fas fa-qrcode"></i></div>
+            <div class="label">Booth Scans</div>
+            <div class="value" id="totalScans">0</div>
+            <div class="trend up"><i class="fas fa-caret-up"></i> 85% capacity</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon-box" style="background: #f3e5f5; color: #8e24aa;"><i class="fas fa-trophy"></i></div>
+            <div class="label">Active Challenges</div>
+            <div class="value" id="activePolls">0</div>
+            <div class="trend">Running smoothly</div>
+        </div>
     </div>
 
-    <!-- Tabs -->
-    <div class="admin-tabs">
-        <button class="admin-tab active" data-tab="users">👥 Users & Roles</button>
-        <button class="admin-tab" data-tab="notifications">📢 Broadcast & Notifications</button>
-        <button class="admin-tab" data-tab="polls">🗳️ Polls</button>
-        <button class="admin-tab" data-tab="quizzes">📝 Quizzes</button>
-        <button class="admin-tab" data-tab="rewards">🎁 Rewards Store</button>
-        <button class="admin-tab" data-tab="booths">🏪 Booths</button>
-        <button class="admin-tab" data-tab="leaderboard">🏆 Leaderboard</button>
+    <!-- Navigation -->
+    <div class="admin-tabs-container">
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="overview"><i class="fas fa-chart-line"></i> Analytics</button>
+            <button class="admin-tab" data-tab="users"><i class="fas fa-user-shield"></i> Users & Roles</button>
+            <button class="admin-tab" data-tab="booths"><i class="fas fa-store"></i> Booths & Map</button>
+            <button class="admin-tab" data-tab="missions"><i class="fas fa-bullseye"></i> Missions & Challenges</button>
+            <button class="admin-tab" data-tab="engagement"><i class="fas fa-comments"></i> Broadcast & Polls</button>
+            <button class="admin-tab" data-tab="rewards"><i class="fas fa-gift"></i> Rewards Store</button>
+            <button class="admin-tab" data-tab="security"><i class="fas fa-shield-alt"></i> System Logs</button>
+        </div>
     </div>
 
-    <!-- Users Panel -->
-    <div id="tab-users" class="tab-panel active">
+    <!-- ═══ OVERVIEW / ANALYTICS PANEL ═══ -->
+    <div id="tab-overview" class="tab-panel active">
+        <div class="analytics-row">
+            <div class="card">
+                <div class="card-header"><h3><i class="fas fa-map-marker-alt" style="color:var(--red)"></i> Zone Popularity</h3></div>
+                <div id="zoneTrafficList">
+                    <div class="form-group">
+                        <label>The Garage (Tech)</label>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 85%"></div></div>
+                    </div>
+                    <div class="form-group">
+                        <label>The Launchpad (Business)</label>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 62%; background: var(--info)"></div></div>
+                    </div>
+                    <div class="form-group">
+                        <label>The Townhall (Leadership)</label>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 45%; background: var(--warning)"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3><i class="fas fa-bolt" style="color:var(--gold)"></i> Live Activity Feed</h3></div>
+                <div class="activity-feed" id="liveActivityFeed">
+                    <p style="text-align: center; color: #999; padding: 20px;">Watching for event activity...</p>
+                </div>
+            </div>
+        </div>
         <div class="card">
-            <div class="card-header"><h3>👥 All Registered Users</h3></div>
+            <div class="card-header"><h3><i class="fas fa-crown"></i> Global Leaderboard (Top 10)</h3></div>
             <div class="table-container">
-                <div id="usersList"></div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header"><h3>➕ Award Points to User</h3></div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <input type="text" id="awardUserId" placeholder="User ID or Email" style="flex: 2; padding: 10px; border-radius: 10px; border: 1px solid #ddd;">
-                <input type="number" id="awardPoints" placeholder="Points" style="flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #ddd;">
-                <input type="text" id="awardReason" placeholder="Reason" style="flex: 2; padding: 10px; border-radius: 10px; border: 1px solid #ddd;">
-                <button id="awardPointsBtn" class="btn btn-primary">Award Points</button>
+                <table id="topTenTable">
+                    <thead><tr><th>Rank</th><th>Explorer</th><th>Level</th><th>Coins</th><th>Stamps</th></tr></thead>
+                    <tbody id="leaderboardBody"></tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <!-- Notifications Panel -->
-    <div id="tab-notifications" class="tab-panel">
+    <!-- ═══ USERS PANEL ═══ -->
+    <div id="tab-users" class="tab-panel">
         <div class="card">
-            <div class="card-header"><h3>📢 Broadcast Announcement</h3></div>
-            <div class="form-group">
-                <label>Title</label>
-                <input type="text" id="broadcastTitle" placeholder="e.g., Important Update">
+            <div class="card-header">
+                <h3>👥 Participant Directory</h3>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="userSearch" placeholder="Search by name or email..." class="btn-outline btn-sm" style="width: 250px; text-align: left;">
+                    <button class="btn btn-secondary btn-sm" id="exportUsersBtn"><i class="fas fa-download"></i> CSV</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Message</label>
-                <textarea id="broadcastMessage" rows="3" placeholder="Enter announcement message..."></textarea>
+            <div class="table-container" style="max-height: 600px;">
+                <table id="usersTable">
+                    <thead><tr><th>User</th><th>Email</th><th>Role</th><th>Points</th><th>Actions</th></tr></thead>
+                    <tbody id="usersList"></tbody>
+                </table>
             </div>
-            <div class="form-group">
-                <label>Type</label>
-                <select id="broadcastType">
-                    <option value="announcement">Announcement</option>
-                    <option value="alert">Alert</option>
-                    <option value="info">Information</option>
-                </select>
-            </div>
-            <button id="sendBroadcastBtn" class="btn btn-primary">Send to All Users</button>
         </div>
-
+        
         <div class="card">
-            <div class="card-header"><h3>📋 Announcement History</h3></div>
-            <div id="announcementsList"></div>
+            <div class="card-header"><h3>⚡ Manual Point Adjustment</h3></div>
+            <div class="form-grid">
+                <div class="form-group"><label>User ID or Email</label><input type="text" id="awardUserId" placeholder="e.g. user@example.com"></div>
+                <div class="form-group"><label>Coins (+/-)</label><input type="number" id="awardPoints" value="50"></div>
+                <div class="form-group"><label>Reason</label><input type="text" id="awardReason" placeholder="e.g. Volunteer Service"></div>
+                <div class="form-group" style="display:flex; align-items:flex-end;"><button id="awardPointsBtn" class="btn btn-primary" style="width:100%"><i class="fas fa-check-circle"></i> Award Coins</button></div>
+            </div>
         </div>
     </div>
 
-    <!-- Polls Panel -->
-    <div id="tab-polls" class="tab-panel">
-        <div class="card">
-            <div class="card-header"><h3>➕ Create New Poll</h3></div>
-            <div class="form-group"><label>Poll Title</label><input type="text" id="pollTitle" placeholder="e.g., Best Booth Experience"></div>
-            <div class="form-group"><label>Question</label><input type="text" id="pollQuestion" placeholder="What was your favorite experience?"></div>
-            <div class="form-group"><label>Options (comma separated)</label><input type="text" id="pollOptions" placeholder="The Garage, The Launchpad, The Arena, Main Stage"></div>
-            <button id="createPollBtn" class="btn btn-primary">Create Poll</button>
-        </div>
-        <div class="card">
-            <div class="card-header"><h3>📊 Active Polls</h3></div>
-            <div id="activePollsList"></div>
-        </div>
-    </div>
-
-    <!-- Quizzes Panel -->
-    <div id="tab-quizzes" class="tab-panel">
-        <div class="card">
-            <div class="card-header"><h3>➕ Create Quiz</h3></div>
-            <div class="form-group"><label>Quiz Title</label><input type="text" id="quizTitle" placeholder="e.g., Freedom 250 Trivia"></div>
-            <div class="form-group"><label>Description</label><textarea id="quizDesc" rows="2"></textarea></div>
-            <div class="form-group"><label>Questions (JSON format)</label>
-                <textarea id="quizQuestions" rows="6" placeholder='[{"text": "What year was Freedom 250 founded?", "options": ["2024", "2025", "2026", "2027"], "correct": 2}]'></textarea>
-            </div>
-            <div class="form-group"><label>Points per Question</label><input type="number" id="quizPoints" value="10"></div>
-            <button id="createQuizBtn" class="btn btn-primary">Create Quiz</button>
-        </div>
-        <div class="card">
-            <div class="card-header"><h3>📋 Existing Quizzes</h3></div>
-            <div id="quizzesList"></div>
-        </div>
-    </div>
-
-    <!-- Rewards Panel -->
-    <div id="tab-rewards" class="tab-panel">
-        <div class="card">
-            <div class="card-header"><h3>➕ Add Reward Item</h3></div>
-            <div class="form-group"><label>Reward Name</label><input type="text" id="rewardName" placeholder="e.g., Freedom 250 T-Shirt"></div>
-            <div class="form-group"><label>Description</label><textarea id="rewardDesc" rows="2"></textarea></div>
-            <div class="form-group"><label>Point Cost</label><input type="number" id="rewardCost" value="100"></div>
-            <div class="form-group"><label>Stock Quantity</label><input type="number" id="rewardStock" value="50"></div>
-            <div class="form-group"><label>Image URL (optional)</label><input type="text" id="rewardImage" placeholder="https://..."></div>
-            <button id="createRewardBtn" class="btn btn-primary">Add Reward</button>
-        </div>
-        <div class="card">
-            <div class="card-header"><h3>🎁 Current Rewards</h3></div>
-            <div id="rewardsList" class="rewards-grid"></div>
-        </div>
-    </div>
-
-    <!-- Booths Panel -->
+    <!-- ═══ BOOTHS & MAP PANEL ═══ -->
     <div id="tab-booths" class="tab-panel">
         <div class="card">
-            <div class="card-header"><h3>➕ Add Booth</h3></div>
-            <div class="form-group"><label>Booth Name</label><input type="text" id="boothName" placeholder="e.g., The Garage"></div>
-            <div class="form-group"><label>Zone</label><input type="text" id="boothZone" placeholder="Zone Name"></div>
-            <div class="form-group"><label>Points per Scan</label><input type="number" id="boothPoints" value="50"></div>
-            <button id="createBoothBtn" class="btn btn-primary">Add Booth</button>
+            <div class="card-header"><h3>🏪 Venue Configuration</h3></div>
+            <div class="form-grid">
+                <div class="form-group"><label>Booth Name</label><input type="text" id="newBoothName" placeholder="e.g. Robotics Lab"></div>
+                <div class="form-group"><label>Zone</label>
+                    <select id="newBoothZone">
+                        <option value="garage">The Garage</option>
+                        <option value="launchpad">The Launchpad</option>
+                        <option value="varsity">Varsity Lounge</option>
+                        <option value="townhall">The Townhall</option>
+                        <option value="arena">The Arena</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Check-in Reward</label><input type="number" id="newBoothPoints" value="50"></div>
+                <div class="form-group" style="display:flex; align-items:flex-end;"><button id="createBoothBtn" class="btn btn-primary" style="width:100%"><i class="fas fa-plus"></i> Add Booth</button></div>
+            </div>
         </div>
         <div class="card">
-            <div class="card-header"><h3>🏪 All Booths</h3></div>
-            <div id="boothsList"></div>
+            <div class="card-header"><h3>📍 Active Booths</h3></div>
+            <div class="table-container" id="boothsListContainer">
+                <table>
+                    <thead><tr><th>Booth</th><th>Zone</th><th>Points</th><th>Visitors</th><th>Operator</th><th>Actions</th></tr></thead>
+                    <tbody id="boothsList"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- Leaderboard Panel -->
-    <div id="tab-leaderboard" class="tab-panel">
+    <!-- ═══ MISSIONS & CHALLENGES PANEL ═══ -->
+    <div id="tab-missions" class="tab-panel">
+        <div class="analytics-row">
+            <div class="card">
+                <div class="card-header"><h3>🎯 New Mission</h3></div>
+                <div class="form-group"><label>Mission Title</label><input type="text" id="missionTitle" placeholder="e.g. Scavenger Hunt: Tech"></div>
+                <div class="form-group"><label>Description</label><textarea id="missionDesc" rows="2" placeholder="Visit all 3 booths in the Garage zone..."></textarea></div>
+                <div class="form-grid">
+                    <div class="form-group"><label>Reward Coins</label><input type="number" id="missionPoints" value="200"></div>
+                    <div class="form-group"><label>Difficulty</label>
+                        <select id="missionDiff">
+                            <option value="easy">Beginner</option>
+                            <option value="medium">Intermediate</option>
+                            <option value="hard">Expert</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="createMissionBtn" class="btn btn-primary" style="width:100%"><i class="fas fa-flag"></i> Deploy Mission</button>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3>🎯 Active Missions</h3></div>
+                <div id="activeMissionsList">
+                    <p style="text-align: center; color: #999; padding: 20px;">No missions active.</p>
+                </div>
+            </div>
+        </div>
+        
         <div class="card">
-            <div class="card-header"><h3>🏆 Top Participants</h3></div>
-            <div id="leaderboardTable"></div>
+            <div class="card-header"><h3>📝 Trivia & Quizzes</h3></div>
+            <div class="form-grid">
+                <div class="form-group" style="flex:2;"><label>Quiz Title</label><input type="text" id="quizTitle" placeholder="e.g. American History 101"></div>
+                <div class="form-group" style="flex:1;"><label>Coins / Q</label><input type="number" id="quizPoints" value="10"></div>
+            </div>
+            <div class="form-group">
+                <label>Questions (JSON format)</label>
+                <textarea id="quizQuestions" rows="4" placeholder='[{"text": "Question?", "options": ["A", "B", "C"], "correct": 0}]'></textarea>
+            </div>
+            <button id="createQuizBtn" class="btn btn-secondary" style="width:100%"><i class="fas fa-plus-square"></i> Create Quiz</button>
+        </div>
+    </div>
+
+    <!-- ═══ ENGAGEMENT PANEL ═══ -->
+    <div id="tab-engagement" class="tab-panel">
+        <div class="card">
+            <div class="card-header"><h3>📢 Global Broadcast</h3></div>
+            <div class="form-group"><label>Heading</label><input type="text" id="broadcastTitle" placeholder="Attention Explorers!"></div>
+            <div class="form-group"><label>Message Content</label><textarea id="broadcastMessage" rows="3" placeholder="The main stage session is starting in 5 minutes..."></textarea></div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Urgency</label>
+                    <select id="broadcastType">
+                        <option value="announcement">Normal Announcement</option>
+                        <option value="alert">High Priority Alert</option>
+                        <option value="info">General Info</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display:flex; align-items:flex-end;"><button id="sendBroadcastBtn" class="btn btn-primary" style="width:100%"><i class="fas fa-paper-plane"></i> Send Push Notification</button></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h3>🗳️ Live Audience Polls</h3></div>
+            <div class="form-grid">
+                <div class="form-group" style="flex:2;"><label>Poll Question</label><input type="text" id="pollQuestion" placeholder="Who won the pitch battle?"></div>
+                <div class="form-group" style="flex:2;"><label>Options (comma separated)</label><input type="text" id="pollOptions" placeholder="Option A, Option B, Option C"></div>
+                <div class="form-group" style="display:flex; align-items:flex-end;"><button id="createPollBtn" class="btn btn-secondary" style="width:100%"><i class="fas fa-vote-yea"></i> Open Poll</button></div>
+            </div>
+            <div id="activePollsList" style="margin-top:20px;"></div>
+        </div>
+    </div>
+
+    <!-- ═══ REWARDS PANEL ═══ -->
+    <div id="tab-rewards" class="tab-panel">
+        <div class="card">
+            <div class="card-header"><h3>🎁 Catalog Management</h3></div>
+            <div class="form-grid">
+                <div class="form-group"><label>Item Name</label><input type="text" id="rewardName" placeholder="e.g. Freedom 250 Hoodie"></div>
+                <div class="form-group"><label>Coin Cost</label><input type="number" id="rewardCost" value="500"></div>
+                <div class="form-group"><label>Initial Stock</label><input type="number" id="rewardStock" value="25"></div>
+                <div class="form-group" style="display:flex; align-items:flex-end;"><button id="createRewardBtn" class="btn btn-primary" style="width:100%"><i class="fas fa-plus"></i> Add Item</button></div>
+            </div>
         </div>
         <div class="card">
-            <div class="card-header"><h3>📊 Export Data</h3></div>
-            <button id="exportUsersBtn" class="btn btn-secondary">Export Users CSV</button>
-            <button id="exportScansBtn" class="btn btn-secondary" style="margin-left: 10px;">Export Scans CSV</button>
+            <div class="card-header"><h3>Inventory Tracking</h3></div>
+            <div id="rewardsList" class="stats-grid"></div>
+        </div>
+    </div>
+
+    <!-- ═══ SECURITY / LOGS PANEL ═══ -->
+    <div id="tab-security" class="tab-panel">
+        <div class="card">
+            <div class="card-header"><h3>🛡️ Security & Audit Logs</h3></div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Timestamp</th><th>Admin/User</th><th>Action</th><th>Target</th><th>Details</th></tr></thead>
+                    <tbody id="auditLogsBody">
+                        <tr><td colspan="5" style="text-align:center; padding:40px; color:#999;">Audit logs loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 
 <script type="module">
     import { guardDashboard, signOutUser, onAuthStateChange } from './js/auth.js';
-    import { db, collection, getDocs, doc, updateDoc, onSnapshot, query, where, orderBy, limit, addDoc, serverTimestamp, increment, deleteDoc } from './js/firebase-config.js';
-    import { broadcastNotification, sendPushNotification, createPoll, createQuiz, createReward, getAllUsers, updateUserRole, awardPointsToUser, getAllRewards, subscribeToLeaderboard } from './js/realtime-push.js';
+    import { db, collection, getDocs, doc, updateDoc, onSnapshot, query, where, orderBy, limit, addDoc, serverTimestamp, increment, deleteDoc, Timestamp } from './js/firebase-config.js';
+    import { broadcastNotification, createPoll, createQuiz, createReward, awardPointsToUser } from './js/realtime-push.js';
 
     let currentUser = null;
 
-    // ── STATS: real-time listeners so counts update automatically ──────────
+    // Initialize UI
+    async function init() {
+        const user = await guardDashboard(['admin', 'organizer']);
+        if (!user) return;
+        currentUser = user;
+
+        loadStats();
+        loadUsers();
+        loadBooths();
+        loadMissions();
+        loadLeaderboard();
+        loadActivityFeed();
+        loadRewards();
+        loadPolls();
+        loadAuditLogs();
+    }
+
+    // ── DATA LOADERS ──
     function loadStats() {
-        // Users count + total points
-        onSnapshot(collection(db, 'users'), (snapshot) => {
-            let totalPoints = 0;
-            let participants = 0;
-            snapshot.forEach(d => {
-                totalPoints += d.data().points || 0;
-                if ((d.data().role || 'participant') === 'participant') participants++;
-            });
-            document.getElementById('totalUsers').textContent = snapshot.size;
-            document.getElementById('totalPoints').textContent = totalPoints.toLocaleString();
+        onSnapshot(collection(db, 'users'), snap => {
+            let pts = 0;
+            snap.forEach(d => pts += (d.data().points || 0));
+            document.getElementById('totalUsers').textContent = snap.size.toLocaleString();
+            document.getElementById('totalPoints').textContent = pts.toLocaleString();
         });
-
-        // Scans count
-        onSnapshot(collection(db, 'scans'), (snapshot) => {
-            document.getElementById('totalScans').textContent = snapshot.size;
-        });
-
-        // Active polls count
-        onSnapshot(query(collection(db, 'polls'), where('active', '==', true)), (snapshot) => {
-            document.getElementById('activePolls').textContent = snapshot.size;
-        });
+        onSnapshot(collection(db, 'scans'), snap => document.getElementById('totalScans').textContent = snap.size.toLocaleString());
+        onSnapshot(query(collection(db, 'polls'), where('active', '==', true)), snap => document.getElementById('activePolls').textContent = snap.size);
     }
 
     function loadUsers() {
-        onSnapshot(collection(db, 'users'), (snapshot) => {
-            const container = document.getElementById('usersList');
-            const users = [];
-            snapshot.forEach(doc => {
-                users.push({ id: doc.id, ...doc.data() });
-            });
-
-            container.innerHTML = users.map(user => `
-                <div class="user-row">
-                    <div class="user-info">
-                        <h4>${user.displayName || user.email?.split('@')[0] || 'User'}</h4>
-                        <p>${user.email} • ${user.role || 'participant'} • ${user.points || 0} pts</p>
-                    </div>
-                    <div class="user-actions">
-                        <select onchange="updateUserRole('${user.id}', this.value)" style="padding: 4px 8px; border-radius: 6px;">
-                            <option value="participant" ${user.role === 'participant' ? 'selected' : ''}>Participant</option>
-                            <option value="volunteer" ${user.role === 'volunteer' ? 'selected' : ''}>Volunteer</option>
-                            <option value="booth_admin" ${user.role === 'booth_admin' ? 'selected' : ''}>Booth Admin</option>
-                            <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+        onSnapshot(query(collection(db, 'users'), orderBy('createdAt', 'desc'), limit(100)), snap => {
+            const list = document.getElementById('usersList');
+            list.innerHTML = snap.docs.map(doc => {
+                const u = doc.data();
+                const roleBadge = `badge-${u.role || 'participant'}`;
+                return `<tr>
+                    <td><strong>${u.displayName || 'Explorer'}</strong></td>
+                    <td>${u.email}</td>
+                    <td><span class="badge ${roleBadge}">${u.role || 'participant'}</span></td>
+                    <td><strong class="text-red">${(u.points || 0).toLocaleString()}</strong></td>
+                    <td class="user-actions">
+                        <select onchange="window.updateUserRole('${doc.id}', this.value)" class="btn-outline btn-sm">
+                            <option value="participant" ${u.role==='participant'?'selected':''}>Participant</option>
+                            <option value="volunteer" ${u.role==='volunteer'?'selected':''}>Volunteer</option>
+                            <option value="booth_admin" ${u.role==='booth_admin'?'selected':''}>Booth Admin</option>
+                            <option value="admin" ${u.role==='admin'?'selected':''}>Admin</option>
                         </select>
-                        <button class="btn btn-primary btn-sm" onclick="awardPointsTo('${user.id}', 50)">+50</button>
-                    </div>
-                </div>
-            `).join('');
-        });
-    }
-
-    window.updateUserRole = async (userId, role) => {
-        try {
-            await updateDoc(doc(db, 'users', userId), { role });
-            alert(`User role updated to ${role}`);
-        } catch (error) {
-            alert('Error updating role: ' + error.message);
-        }
-    };
-
-    window.awardPointsTo = async (userId, points) => {
-        try {
-            await updateDoc(doc(db, 'users', userId), { points: increment(points) });
-            await addDoc(collection(db, 'notifications'), {
-                userId,
-                title: `💰 +${points} Liberty Coins!`,
-                message: `An admin awarded you ${points} Liberty Coins.`,
-                type: 'success',
-                read: false,
-                createdAt: serverTimestamp()
-            });
-            await addDoc(collection(db, 'pointTransactions'), {
-                userId, points, reason: 'Admin award',
-                awardedBy: currentUser?.uid || 'admin',
-                awardedAt: serverTimestamp()
-            });
-            alert(`Awarded ${points} points to user`);
-        } catch (error) {
-            alert('Error: ' + error.message);
-        }
-    };
-
-    function loadAnnouncements() {
-        onSnapshot(query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(20)), (snapshot) => {
-            const container = document.getElementById('announcementsList');
-            container.innerHTML = snapshot.docs.map(doc => {
-                const data = doc.data();
-                return `
-                    <div class="user-row">
-                        <div>
-                            <strong>${data.title}</strong>
-                            <p style="font-size: 0.75rem; color: #777;">${data.message}</p>
-                            <small>${data.createdAt?.toDate?.().toLocaleString() || 'Just now'}</small>
-                        </div>
-                    </div>
-                `;
+                    </td>
+                </tr>`;
             }).join('');
-        });
-    }
-
-    function loadPolls() {
-        onSnapshot(query(collection(db, 'polls'), orderBy('createdAt', 'desc')), (snapshot) => {
-            const container = document.getElementById('activePollsList');
-            const polls = [];
-            snapshot.forEach(doc => {
-                polls.push({ id: doc.id, ...doc.data() });
-            });
-
-            container.innerHTML = polls.map(poll => `
-                <div class="user-row">
-                    <div>
-                        <strong>${poll.title}</strong>
-                        <p>${poll.question}</p>
-                        <small>${poll.totalVotes || 0} votes • ${poll.options?.length || 0} options</small>
-                    </div>
-                </div>
-            `).join('');
-        });
-    }
-
-    function loadQuizzes() {
-        onSnapshot(query(collection(db, 'quizzes'), orderBy('createdAt', 'desc')), (snapshot) => {
-            const container = document.getElementById('quizzesList');
-            container.innerHTML = snapshot.docs.map(doc => {
-                const data = doc.data();
-                return `
-                    <div class="user-row">
-                        <div>
-                            <strong>${data.title}</strong>
-                            <p>${data.description || ''}</p>
-                            <small>${data.questions?.length || 0} questions • ${data.totalAttempts || 0} attempts</small>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        });
-    }
-
-    function loadRewards() {
-        onSnapshot(collection(db, 'rewards'), (snapshot) => {
-            const container = document.getElementById('rewardsList');
-            const rewards = [];
-            snapshot.forEach(doc => {
-                rewards.push({ id: doc.id, ...doc.data() });
-            });
-
-            container.innerHTML = rewards.map(reward => `
-                <div class="reward-item">
-                    <h4>${reward.name}</h4>
-                    <p style="font-size: 0.75rem; color: #777;">${reward.description || ''}</p>
-                    <div class="flex-between mt-4">
-                        <span class="text-red" style="font-weight: 800;">${reward.cost} pts</span>
-                        <span>${reward.stock - (reward.claimed?.length || 0)} left</span>
-                    </div>
-                </div>
-            `).join('');
         });
     }
 
     function loadBooths() {
-        onSnapshot(collection(db, 'booths'), (snapshot) => {
-            const container = document.getElementById('boothsList');
-            container.innerHTML = snapshot.docs.map(doc => {
-                const data = doc.data();
-                return `
-                    <div class="user-row">
-                        <div>
-                            <strong>${data.name}</strong>
-                            <p>${data.zone || 'No zone'} • ${data.points || 50} pts per scan</p>
-                            <small>${data.scans || 0} total scans</small>
-                        </div>
-                    </div>
-                `;
+        onSnapshot(collection(db, 'booths'), snap => {
+            const list = document.getElementById('boothsList');
+            list.innerHTML = snap.docs.map(doc => {
+                const b = doc.data();
+                return `<tr>
+                    <td><strong>${b.name}</strong></td>
+                    <td><span class="badge badge-booth">${b.zone}</span></td>
+                    <td>${b.points}</td>
+                    <td>${b.scans || 0}</td>
+                    <td>${b.operatorName || 'System'}</td>
+                    <td><button class="btn btn-outline btn-sm" onclick="window.deleteBooth('${doc.id}')"><i class="fas fa-trash"></i></button></td>
+                </tr>`;
             }).join('');
         });
     }
 
     function loadLeaderboard() {
-        const q = query(collection(db, 'users'), where('role', '==', 'participant'), orderBy('points', 'desc'), limit(50));
-        onSnapshot(q, (snapshot) => {
-            const container = document.getElementById('leaderboardTable');
+        onSnapshot(query(collection(db, 'users'), where('role', '==', 'participant'), orderBy('points', 'desc'), limit(10)), snap => {
+            const list = document.getElementById('leaderboardBody');
             let rank = 1;
-            container.innerHTML = `
-                <table>
-                    <thead><tr><th>Rank</th><th>Name</th><th>Email</th><th>Points</th><th>Level</th></tr></thead>
-                    <tbody>
-                        ${snapshot.docs.map(doc => {
-                            const user = doc.data();
-                            return `<tr>
-                                <td>${rank++}</td>
-                                <td>${user.displayName || user.email?.split('@')[0]}</td>
-                                <td>${user.email}</td>
-                                <td><strong class="text-red">${user.points || 0}</strong></td>
-                                <td>${user.level || 1}</td>
-                            </tr>`;
-                        }).join('')}
-                    </tbody>
-                </table>
-            `;
+            list.innerHTML = snap.docs.map(doc => {
+                const u = doc.data();
+                return `<tr>
+                    <td><strong>#${rank++}</strong></td>
+                    <td>${u.displayName || 'Explorer'}</td>
+                    <td>${Math.floor((u.points||0)/500)+1}</td>
+                    <td><span style="color:var(--red); font-weight:800">${(u.points||0).toLocaleString()}</span></td>
+                    <td>${(u.stamps||[]).length}</td>
+                </tr>`;
+            }).join('');
         });
     }
 
-    // Event Handlers
-    document.getElementById('sendBroadcastBtn').addEventListener('click', async () => {
-        const title = document.getElementById('broadcastTitle').value;
-        const message = document.getElementById('broadcastMessage').value;
-        const type = document.getElementById('broadcastType').value;
+    function loadActivityFeed() {
+        onSnapshot(query(collection(db, 'scans'), orderBy('scannedAt', 'desc'), limit(15)), snap => {
+            const feed = document.getElementById('liveActivityFeed');
+            if (snap.empty) return;
+            feed.innerHTML = snap.docs.map(doc => {
+                const s = doc.data();
+                return `<div class="activity-item">
+                    <div class="activity-icon" style="background:#e3f2fd; color:var(--info);"><i class="fas fa-bolt"></i></div>
+                    <div>
+                        <div style="font-size:0.85rem;"><strong>${s.userName || 'Someone'}</strong> checked into <strong>${s.boothName}</strong></div>
+                        <div style="font-size:0.7rem; color:#999;">${s.scannedAt?.toDate().toLocaleTimeString()} • +${s.pointsAwarded} Coins</div>
+                    </div>
+                </div>`;
+            }).join('');
+        });
+    }
 
-        if (!title || !message) {
-            alert('Please enter both title and message');
-            return;
+    function loadMissions() {
+        onSnapshot(collection(db, 'missions'), snap => {
+            const list = document.getElementById('activeMissionsList');
+            if (snap.empty) { list.innerHTML = '<p style="text-align:center; padding:20px; color:#999;">No missions active.</p>'; return; }
+            list.innerHTML = snap.docs.map(doc => {
+                const m = doc.data();
+                return `<div class="card" style="margin-bottom:10px; padding:15px; border-left:4px solid var(--red);">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h4 style="font-size:0.9rem;">${m.title}</h4>
+                        <span class="badge badge-admin">${m.points} XP</span>
+                    </div>
+                    <p style="font-size:0.75rem; color:#666; margin-top:5px;">${m.description}</p>
+                </div>`;
+            }).join('');
+        });
+    }
+
+    function loadRewards() {
+        onSnapshot(collection(db, 'rewards'), snap => {
+            const list = document.getElementById('rewardsList');
+            list.innerHTML = snap.docs.map(doc => {
+                const r = doc.data();
+                return `<div class="stat-card" style="padding:15px;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <strong>${r.name}</strong>
+                        <span class="text-red">${r.cost} pts</span>
+                    </div>
+                    <div style="font-size:0.75rem; color:#666; margin-top:10px;">Stock: ${r.stock || 0}</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: ${((r.stock||1)/50)*100}%"></div></div>
+                </div>`;
+            }).join('');
+        });
+    }
+
+    function loadPolls() {
+        onSnapshot(query(collection(db, 'polls'), orderBy('createdAt', 'desc'), limit(5)), snap => {
+            const list = document.getElementById('activePollsList');
+            list.innerHTML = snap.docs.map(doc => {
+                const p = doc.data();
+                return `<div class="card" style="margin-bottom:10px; padding:15px;">
+                    <div style="display:flex; justify-content:space-between;">
+                        <strong>${p.question}</strong>
+                        <span class="badge ${p.active?'badge-volunteer':'badge-participant'}">${p.active?'Live':'Closed'}</span>
+                    </div>
+                    <div style="font-size:0.75rem; color:#666; margin-top:8px;">${p.totalVotes || 0} participants voted</div>
+                </div>`;
+            }).join('');
+        });
+    }
+
+    function loadAuditLogs() {
+        onSnapshot(query(collection(db, 'auditLogs'), orderBy('timestamp', 'desc'), limit(20)), snap => {
+            const body = document.getElementById('auditLogsBody');
+            if (snap.empty) return;
+            body.innerHTML = snap.docs.map(doc => {
+                const log = doc.data();
+                return `<tr>
+                    <td style="font-size:0.75rem;">${log.timestamp?.toDate().toLocaleString()}</td>
+                    <td><strong>${log.adminName || 'System'}</strong></td>
+                    <td>${log.action}</td>
+                    <td>${log.target || '--'}</td>
+                    <td style="font-size:0.75rem; color:#666;">${log.details || ''}</td>
+                </tr>`;
+            }).join('');
+        });
+    }
+
+    // ── ACTIONS ──
+    window.updateUserRole = async (uid, role) => {
+        if (confirm(`Update user role to ${role}?`)) {
+            await updateDoc(doc(db, 'users', uid), { role });
+            await logAction('UPDATE_ROLE', uid, `Role changed to ${role}`);
+        }
+    };
+
+    window.deleteBooth = async (id) => {
+        if (confirm('Delete this booth?')) {
+            await deleteDoc(doc(db, 'booths', id));
+            await logAction('DELETE_BOOTH', id, 'Booth removed from venue');
+        }
+    };
+
+    async function logAction(action, target, details) {
+        await addDoc(collection(db, 'auditLogs'), {
+            adminId: currentUser.uid,
+            adminName: currentUser.displayName || currentUser.email,
+            action, target, details,
+            timestamp: serverTimestamp()
+        });
+    }
+
+    document.getElementById('awardPointsBtn').addEventListener('click', async () => {
+        const id = document.getElementById('awardUserId').value;
+        const pts = parseInt(document.getElementById('awardPoints').value);
+        const reason = document.getElementById('awardReason').value;
+        if (!id || !pts) return alert('Fill required fields');
+        
+        let targetId = id;
+        if (id.includes('@')) {
+            const s = await getDocs(query(collection(db, 'users'), where('email', '==', id)));
+            if (s.empty) return alert('User not found');
+            targetId = s.docs[0].id;
         }
 
-        const result = await broadcastNotification(title, message, type);
-        if (result.success) {
-            alert(`Broadcast sent to ${result.count} users`);
-            document.getElementById('broadcastTitle').value = '';
-            document.getElementById('broadcastMessage').value = '';
-        } else {
-            alert('Error: ' + result.error);
-        }
-    });
-
-    document.getElementById('createPollBtn').addEventListener('click', async () => {
-        const title = document.getElementById('pollTitle').value;
-        const question = document.getElementById('pollQuestion').value;
-        const optionsStr = document.getElementById('pollOptions').value;
-
-        if (!title || !question || !optionsStr) {
-            alert('Please fill all fields');
-            return;
-        }
-
-        const options = optionsStr.split(',').map(opt => opt.trim());
-        const result = await createPoll(title, question, options, currentUser?.uid);
-
-        if (result.success) {
-            alert('Poll created successfully!');
-            document.getElementById('pollTitle').value = '';
-            document.getElementById('pollQuestion').value = '';
-            document.getElementById('pollOptions').value = '';
-        } else {
-            alert('Error: ' + result.error);
-        }
-    });
-
-    document.getElementById('createQuizBtn').addEventListener('click', async () => {
-        const title = document.getElementById('quizTitle').value;
-        const description = document.getElementById('quizDesc').value;
-        const questionsStr = document.getElementById('quizQuestions').value;
-        const pointsPerQuestion = parseInt(document.getElementById('quizPoints').value);
-
-        if (!title || !questionsStr) {
-            alert('Please fill title and questions');
-            return;
-        }
-
-        try {
-            const questions = JSON.parse(questionsStr);
-            const result = await createQuiz(title, description, questions, pointsPerQuestion, currentUser?.uid);
-            if (result.success) {
-                alert('Quiz created successfully!');
-                document.getElementById('quizTitle').value = '';
-                document.getElementById('quizDesc').value = '';
-                document.getElementById('quizQuestions').value = '';
-            } else {
-                alert('Error: ' + result.error);
-            }
-        } catch (e) {
-            alert('Invalid JSON format for questions');
-        }
-    });
-
-    document.getElementById('createRewardBtn').addEventListener('click', async () => {
-        const name = document.getElementById('rewardName').value;
-        const description = document.getElementById('rewardDesc').value;
-        const cost = parseInt(document.getElementById('rewardCost').value);
-        const stock = parseInt(document.getElementById('rewardStock').value);
-        const imageUrl = document.getElementById('rewardImage').value;
-
-        if (!name) {
-            alert('Please enter reward name');
-            return;
-        }
-
-        const result = await createReward({ name, description, cost, stock, imageUrl });
-        if (result.success) {
-            alert('Reward added successfully!');
-            document.getElementById('rewardName').value = '';
-            document.getElementById('rewardDesc').value = '';
-            document.getElementById('rewardCost').value = '100';
-            document.getElementById('rewardStock').value = '50';
-            document.getElementById('rewardImage').value = '';
-        } else {
-            alert('Error: ' + result.error);
+        const res = await awardPointsToUser(targetId, pts, reason, currentUser.uid);
+        if (res.success) {
+            alert('Points awarded!');
+            await logAction('AWARD_POINTS', targetId, `${pts} coins: ${reason}`);
         }
     });
 
     document.getElementById('createBoothBtn').addEventListener('click', async () => {
-        const name = document.getElementById('boothName').value;
-        const zone = document.getElementById('boothZone').value;
-        const points = parseInt(document.getElementById('boothPoints').value);
+        const name = document.getElementById('newBoothName').value;
+        const zone = document.getElementById('newBoothZone').value;
+        const pts = parseInt(document.getElementById('newBoothPoints').value);
+        if (!name) return;
 
-        if (!name) {
-            alert('Please enter booth name');
-            return;
-        }
-
-        try {
-            await addDoc(collection(db, 'booths'), {
-                name,
-                zone,
-                points: points || 50,
-                scans: 0,
-                createdAt: serverTimestamp()
-            });
-            alert('Booth added successfully!');
-            document.getElementById('boothName').value = '';
-            document.getElementById('boothZone').value = '';
-            document.getElementById('boothPoints').value = '50';
-        } catch (error) {
-            alert('Error: ' + error.message);
-        }
-    });
-
-    document.getElementById('awardPointsBtn').addEventListener('click', async () => {
-        const userId = document.getElementById('awardUserId').value;
-        const points = parseInt(document.getElementById('awardPoints').value);
-        const reason = document.getElementById('awardReason').value;
-
-        if (!userId || !points) {
-            alert('Please enter user ID/email and points');
-            return;
-        }
-
-        // Find user by email or uid
-        let targetUserId = userId;
-        const usersSnapshot = await getDocs(collection(db, 'users'));
-        let found = false;
-        for (const doc of usersSnapshot.docs) {
-            const user = doc.data();
-            if (user.email === userId || doc.id === userId) {
-                targetUserId = doc.id;
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            alert('User not found');
-            return;
-        }
-
-        const result = await awardPointsToUser(targetUserId, points, reason, currentUser?.uid);
-        if (result.success) {
-            alert(`Awarded ${points} points to user!`);
-            document.getElementById('awardUserId').value = '';
-            document.getElementById('awardPoints').value = '';
-            document.getElementById('awardReason').value = '';
-        } else {
-            alert('Error: ' + result.error);
-        }
-    });
-
-    document.getElementById('exportUsersBtn').addEventListener('click', async () => {
-        const users = await getAllUsers();
-        let csv = 'Name,Email,Role,Points,Level,University\n';
-        users.forEach(u => {
-            csv += `"${u.displayName || ''}","${u.email}","${u.role}","${u.points || 0}","${u.level || 1}","${u.university || ''}"\n`;
+        await addDoc(collection(db, 'booths'), {
+            name, zone, points: pts, scans: 0, createdAt: serverTimestamp(), operatorId: null
         });
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'freedom250_users.csv';
-        a.click();
-        URL.revokeObjectURL(url);
+        alert('Booth added!');
+        await logAction('CREATE_BOOTH', name, `New booth in ${zone}`);
     });
 
-    document.getElementById('exportScansBtn').addEventListener('click', async () => {
-        const scansSnapshot = await getDocs(collection(db, 'scans'));
-        let csv = 'User,User Email,Booth,Points,Timestamp\n';
-        scansSnapshot.forEach(doc => {
-            const s = doc.data();
-            csv += `"${s.userName || ''}","${s.userEmail || ''}","${s.boothName || ''}","${s.pointsAwarded || 0}","${s.scannedAt?.toDate?.() || ''}"\n`;
+    document.getElementById('createMissionBtn').addEventListener('click', async () => {
+        const title = document.getElementById('missionTitle').value;
+        const desc = document.getElementById('missionDesc').value;
+        const pts = parseInt(document.getElementById('missionPoints').value);
+        const diff = document.getElementById('missionDiff').value;
+        if (!title) return;
+
+        await addDoc(collection(db, 'missions'), {
+            title, description: desc, points: pts, difficulty: diff, status: 'active', createdAt: serverTimestamp()
         });
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'freedom250_scans.csv';
-        a.click();
-        URL.revokeObjectURL(url);
+        alert('Mission deployed!');
+        await logAction('CREATE_MISSION', title, 'New challenge created');
     });
 
-    // Tab switching
+    document.getElementById('sendBroadcastBtn').addEventListener('click', async () => {
+        const title = document.getElementById('broadcastTitle').value;
+        const msg = document.getElementById('broadcastMessage').value;
+        const type = document.getElementById('broadcastType').value;
+        if (!title || !msg) return;
+
+        const res = await broadcastNotification(title, msg, type);
+        if (res.success) {
+            alert(`Sent to ${res.count} users`);
+            await logAction('BROADCAST', 'ALL', title);
+        }
+    });
+
+    // Tab Logic
     document.querySelectorAll('.admin-tab').forEach(tab => {
         tab.addEventListener('click', () => {
-            const tabId = tab.dataset.tab;
-            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            const t = tab.dataset.tab;
+            document.querySelectorAll('.admin-tab').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
             tab.classList.add('active');
-            document.getElementById(`tab-${tabId}`).classList.add('active');
+            document.getElementById(`tab-${t}`).classList.add('active');
+            window.scrollTo(0,0);
         });
     });
 
-    onAuthStateChange(async (user) => {
-        if (!user || (user.role !== 'admin' && user.role !== 'organizer')) {
-            window.location.replace('login.html');
-            return;
-        }
-        currentUser = user;
+    document.getElementById('logoutBtn').addEventListener('click', async () => { if(confirm('Logout?')) { await signOutUser(); window.location.replace('login.html'); } });
 
-        loadStats();
-        loadUsers();
-        loadAnnouncements();
-        loadPolls();
-        loadQuizzes();
-        loadRewards();
-        loadBooths();
-        loadLeaderboard();
-    });
-
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-        await signOutUser();
-        window.location.replace('login.html');
-    });
+    init();
 </script>
 </body>
 </html>
