@@ -57,7 +57,6 @@
         .btn-google .g-logo{width:18px}
         .btn-google:disabled{opacity:.6;cursor:not-allowed}
 
-        .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
         .field{margin-bottom:16px}
         .field label{display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:7px}
         .field .input-wrap{position:relative}
@@ -200,7 +199,7 @@
 </div>
 
 <script type="module">
-    import { initAuth, signUp, signInWithGoogle, ROLES } from './js/auth.js';
+    import { initAuth, signUp, signInWithGoogle, ROLES, getDashboardPath } from './js/auth.js';
     import pageNavigator from './js/page-navigator.js';
 
     await initAuth();
@@ -217,6 +216,7 @@
     const STAFF_CODES_MAP = {
         'F250ADMIN':     { role: ROLES.ADMIN,      name: 'Administrator', icon: '🛡️', desc: 'Full system access & oversight' },
         'F250ORG':       { role: ROLES.ADMIN,      name: 'Organizer',     icon: '📋', desc: 'Event planning & coordination' },
+        'F250VOL':       { role: ROLES.VOLUNTEER,  name: 'Volunteer',     icon: '🤝', desc: 'Event support & assistance' },
         'F250VOLUNTEER': { role: ROLES.VOLUNTEER,  name: 'Volunteer',     icon: '🤝', desc: 'Event support & assistance' },
         'F250BOOTH':     { role: ROLES.BOOTH_ADMIN, name: 'Booth Admin',   icon: '⛺', desc: 'Manage specific booth activities' }
     };
@@ -262,6 +262,8 @@
       try {
         const result = await signUp(email, password, name, currentRole);
         if (!result.success) throw new Error(result.error);
+        // Force redirect immediately after successful registration
+        window.location.href = getDashboardPath(result.user);
       } catch (err) {
         showError(err.message || 'Failed to create account.');
         setLoading(false);
@@ -274,6 +276,7 @@
       try {
         const result = await signInWithGoogle();
         if (!result.success) throw new Error(result.error);
+        // Google sign-in also triggers redirect
       } catch (err) {
         showError(err.message || 'Google sign-up failed.');
         googleBtn.disabled = false;

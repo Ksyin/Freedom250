@@ -18,8 +18,7 @@ export const ROLES = {
   PARTICIPANT: 'participant',
   VOLUNTEER:   'volunteer',
   BOOTH_ADMIN: 'booth_admin',
-  ADMIN:       'admin',
-  ORGANIZER:   'admin' // Consolidating Organizer into Admin
+  ADMIN:       'admin'
 };
 
 let currentUser = null;
@@ -32,8 +31,10 @@ let isInitialized = false;
 // ─────────────────────────────────────────────────────────────────────────────
 export function validateRoleAccess(userRole, allowedRoles) {
   if (!allowedRoles || allowedRoles.length === 0) return true;
-  const normalised = (userRole || 'participant').toLowerCase();
+  const normalised = (userRole || ROLES.PARTICIPANT).toLowerCase();
   const allowed = allowedRoles.map(r => r.toLowerCase());
+  // Organizer is always Admin
+  if (normalised === 'organizer' && allowed.includes('admin')) return true;
   return allowed.includes(normalised);
 }
 
@@ -197,7 +198,7 @@ export async function resetPassword(email) {
 // ─────────────────────────────────────────────────────────────────────────────
 //  GOOGLE SIGN-IN
 // ─────────────────────────────────────────────────────────────────────────────
-export async function signInWithGoogle() {
+export async function signInWithGoogle(defaultRole = ROLES.PARTICIPANT) {
   try {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
@@ -219,7 +220,7 @@ export async function signInWithGoogle() {
       userData = {
         uid: user.uid, email: user.email,
         displayName: user.displayName || user.email.split('@')[0],
-        role: ROLES.PARTICIPANT,
+        role: defaultRole,
         createdAt: new Date().toISOString(),
         points: 0, freedomId, qrCode,
         badges: [{ name: 'Freedom Starter', icon: 'fa-flag', unlockedAt: new Date().toISOString() }],
@@ -285,19 +286,15 @@ export function getDashboardPath(user) {
 }
 
 export async function guardDashboard(requiredRoles) {
-  // Wait for auth to initialize before making a decision
   const user = await initAuth();
   
   if (!user) {
-    console.warn('[Guard] No user found, redirecting to login');
     window.location.replace('login.html');
     return false;
   }
   
   if (requiredRoles && !validateRoleAccess(user.role, requiredRoles)) {
-    const correctPath = getDashboardPath(user);
-    console.warn(`[Guard] Role ${user.role} not allowed for this page. Redirecting to ${correctPath}`);
-    window.location.replace(correctPath);
+    window.location.replace(getDashboardPath(user));
     return false;
   }
   
