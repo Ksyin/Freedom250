@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Organizer Hub | Freedom 250</title>
+    <title>Organizer Command | Freedom 250</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -12,7 +12,7 @@
             --bg: #f0f2f5; --white: #fff; --radius: 20px;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Inter',sans-serif; background:var(--bg); }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color: #1a1a2e; }
         .app { max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:100px; position: relative; }
 
         /* ── HEADER ── */
@@ -68,7 +68,7 @@
         /* ── FORMS ── */
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: .75rem; font-weight: 700; margin-bottom: 6px; color: #555; }
-        .form-group input, .form-group textarea {
+        .form-group input, .form-group textarea, .form-group select {
             width: 100%; padding: 12px 16px; border-radius: 14px;
             border: 1px solid #ddd; font-family: inherit; font-size: .9rem;
         }
@@ -85,38 +85,30 @@
             position: fixed; bottom: 0; left: 0; right: 0;
             background: var(--white); display: flex; justify-content: space-around;
             padding: 12px 10px 25px; border-top: 1px solid #eee;
-            max-width: 480px; margin: 0 auto; z-index: 100;
+            max-width: 480px; margin: 0 auto; z-index: 1000;
         }
         .nav-item { text-align: center; color: #aaa; font-size: .65rem; cursor: pointer; text-decoration: none; }
         .nav-item.active { color: var(--red); }
         .nav-item i { font-size: 1.3rem; display: block; margin-bottom: 4px; }
 
-        /* ── TOAST ── */
-        #toastContainer {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 40px); max-width: 400px; z-index: 9999;
-        }
-        .toast {
-            background: var(--navy); color: #fff; padding: 14px 20px; border-radius: 12px;
-            margin-bottom: 10px; font-size: .85rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease;
-        }
-        @keyframes slideIn { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
         .page { display: none; }
         .page.active { display: block; }
+
+        .tab-bar { display: flex; gap: 8px; padding: 0 15px 12px; overflow-x: auto; scrollbar-width: none; }
+        .tab {
+            padding: 8px 16px; border-radius: 999px; font-size: .75rem; font-weight: 600;
+            cursor: pointer; white-space: nowrap; background: #e8e8e8; color: #555; border: none;
+        }
+        .tab.active { background: var(--red); color: #fff; }
     </style>
 </head>
 <body>
 
-<div id="toastContainer"></div>
-
 <div class="app">
-    <!-- Header -->
     <header class="admin-header">
-        <div class="admin-badge">ORGANIZER CONTROL CENTER</div>
+        <div class="admin-badge">SUPER ADMIN</div>
         <h1 id="adminName">Loading...</h1>
-        <p>Real-time Festival Oversight</p>
+        <p>Command & Control Center</p>
         <div style="position: absolute; top: 25px; right: 20px; display: flex; gap: 8px;">
             <a href="index.html" style="color: #fff; background: rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 12px; text-decoration: none; font-size: .7rem; font-weight: 700;">Home</a>
             <button id="logoutBtn" style="background: var(--red); color: #fff; border: none; padding: 8px 14px; border-radius: 12px; font-weight: 700; font-size: .7rem; cursor: pointer;">Logout</button>
@@ -126,218 +118,200 @@
     <!-- Global Stats -->
     <div class="stats-row">
         <div class="stat-pill"><span class="val" id="totalUsers">0</span><span class="lbl">Users</span></div>
-        <div class="stat-pill"><span class="val" id="totalCheckins">0</span><span class="lbl">Check-ins</span></div>
-        <div class="stat-pill"><span class="val" id="totalPoints">0</span><span class="lbl">Coins</span></div>
+        <div class="stat-pill"><span class="val" id="totalCheckins">0</span><span class="lbl">Scans</span></div>
+        <div class="stat-pill"><span class="val" id="totalPoints">0</span><span class="lbl">Points</span></div>
     </div>
 
-    <!-- ═══ OVERVIEW PAGE ═══ -->
+    <!-- ═══ HOME ═══ -->
     <div id="pg-home" class="page active">
-        <div class="section-hdr"><h2>📊 Live Performance</h2></div>
-        <div class="card" id="boothActivityList">
-            <p style="text-align: center; color: #999; font-size: .8rem; padding: 10px;">Waiting for booth activity...</p>
+        <div class="section-hdr"><h2>📢 Broadcast & Missions</h2></div>
+        <div class="card">
+            <textarea id="broadcastMsg" placeholder="Global announcement..." rows="2" style="width:100%; padding:10px; border-radius:12px; border:1px solid #ddd;"></textarea>
+            <button class="btn-full btn-red" style="margin-top:10px;" id="sendBroadcastBtn"><i class="fas fa-bullhorn"></i> Send Push</button>
         </div>
 
-        <div class="section-hdr"><h2>📢 Broadcast Alert</h2></div>
-        <div class="card">
-            <div class="form-group">
-                <label>Target: All Participants</label>
-                <textarea id="broadcastMsg" placeholder="Type an announcement..." rows="3"></textarea>
+        <div class="section-hdr"><h2>🔥 Live Traffic</h2></div>
+        <div class="card" id="boothMonitor"></div>
+
+        <div class="section-hdr"><h2>🏆 Live Leaderboard</h2></div>
+        <div class="card" id="leaderboardList"></div>
+    </div>
+
+    <!-- ═══ CONTENT (Booths, Challenges, Rewards, Schedules) ═══ -->
+    <div id="pg-content" class="page">
+        <div class="section-hdr"><h2>🛠️ Content Manager</h2></div>
+        <div class="tab-bar">
+            <button class="tab active" onclick="switchContentTab('booths', this)">Booths</button>
+            <button class="tab" onclick="switchContentTab('missions', this)">Missions</button>
+            <button class="tab" onclick="switchContentTab('rewards', this)">Rewards</button>
+            <button class="tab" onclick="switchContentTab('schedule', this)">Schedule</button>
+        </div>
+
+        <div id="content-booths" class="content-view active">
+            <div class="card">
+                <h3>Create Booth</h3>
+                <div class="form-group"><input type="text" id="newBoothName" placeholder="Booth Name"></div>
+                <button class="btn-full" onclick="createBooth()">Create</button>
             </div>
-            <button class="btn-full btn-red" id="sendBroadcastBtn"><i class="fas fa-paper-plane"></i> Send Push Notification</button>
+            <div id="boothsList"></div>
         </div>
 
-        <div class="section-hdr"><h2>🏆 Leaderboard (Mentimeter)</h2></div>
-        <div class="card">
-            <p style="font-size: .75rem; color: #666; margin-bottom: 12px;">Top ranking participants in real-time. Use for big screens.</p>
-            <div id="leaderboardList"></div>
-            <button class="btn-full" style="margin-top: 15px; background: #00A382;" onclick="window.open('https://www.mentimeter.com', '_blank')">Mentimeter Display Mode</button>
+        <div id="content-missions" class="content-view" style="display:none">
+            <div class="card">
+                <h3>Global Challenge</h3>
+                <div class="form-group"><input type="text" id="newChName" placeholder="Title"></div>
+                <div class="form-group"><input type="number" id="newChPts" placeholder="Points"></div>
+                <button class="btn-full" onclick="createChallenge()">Add Mission</button>
+            </div>
+            <div id="challengesList"></div>
+        </div>
+
+        <div id="content-rewards" class="content-view" style="display:none">
+            <div class="card">
+                <h3>Add Reward Store Item</h3>
+                <div class="form-group"><input type="text" id="newRwName" placeholder="Item Name"></div>
+                <div class="form-group"><input type="number" id="newRwCost" placeholder="Cost"></div>
+                <button class="btn-full" onclick="createReward()">Add</button>
+            </div>
+            <div id="rewardsList"></div>
+        </div>
+
+        <div id="content-schedule" class="content-view" style="display:none">
+            <div class="card">
+                <h3>Add Event to Schedule</h3>
+                <div class="form-group"><input type="text" id="schedTitle" placeholder="Event Title"></div>
+                <div class="form-group"><input type="text" id="schedTime" placeholder="Time (e.g. 10:00 AM)"></div>
+                <button class="btn-full" onclick="createSchedule()">Add Event</button>
+            </div>
+            <div id="scheduleList"></div>
         </div>
     </div>
 
-    <!-- ═══ USERS PAGE ═══ -->
+    <!-- ═══ USERS & ROLES ═══ -->
     <div id="pg-users" class="page">
-        <div class="section-hdr"><h2>👥 Participant Directory</h2></div>
+        <div class="section-hdr"><h2>👥 Role & Permission Management</h2></div>
         <div class="card">
-            <div class="form-group">
-                <input type="text" id="userSearch" placeholder="Search by name or email...">
-            </div>
-            <div id="usersList" style="max-height: 400px; overflow-y: auto;">
-                <!-- Users -->
-            </div>
+            <input type="text" id="userSearch" placeholder="Search explorer..." style="width:100%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:15px;">
+            <div id="usersList" style="max-height: 400px; overflow-y: auto;"></div>
         </div>
     </div>
 
-    <!-- ═══ LOGS PAGE ═══ -->
-    <div id="pg-logs" class="page">
-        <div class="section-hdr"><h2>📜 Operation Logs</h2></div>
-        <div class="card" id="scansLog" style="max-height: 500px; overflow-y: auto;">
-            <!-- Scans -->
+    <!-- ═══ DATA & REPORTS ═══ -->
+    <div id="pg-data" class="page">
+        <div class="section-hdr"><h2>📊 Reports & Audits</h2></div>
+        <div class="card">
+            <button class="btn-full" onclick="exportData('users')"><i class="fas fa-users"></i> Export Users (CSV)</button>
+            <div style="height:10px;"></div>
+            <button class="btn-full" onclick="exportData('scans')"><i class="fas fa-qrcode"></i> Scan Ledger</button>
+            <div style="height:10px;"></div>
+            <button class="btn-full" onclick="exportData('support_tickets')"><i class="fas fa-ticket-alt"></i> Support Tickets</button>
+        </div>
+
+        <div class="section-hdr"><h2>⚙️ Rules & Configuration</h2></div>
+        <div class="card">
+            <div class="form-group"><label>Points Multiplier</label><input type="number" id="cfgMultiplier" value="1.0" step="0.1"></div>
+            <button class="btn-full btn-red" onclick="saveConfig()">Update Rules</button>
         </div>
     </div>
 
-    <!-- ── NAVIGATION ── -->
+    <!-- Nav -->
     <nav class="bottom-nav">
-        <div class="nav-item active" data-pg="home"><i class="fas fa-shield-alt"></i>Home</div>
-        <div class="nav-item" data-pg="users"><i class="fas fa-users"></i>Users</div>
-        <div class="nav-item" data-pg="logs"><i class="fas fa-history"></i>Logs</div>
+        <div class="nav-item active" data-pg="home" onclick="showPage('home')"><i class="fas fa-shield-alt"></i>Command</div>
+        <div class="nav-item" data-pg="content" onclick="showPage('content')"><i class="fas fa-edit"></i>Content</div>
+        <div class="nav-item" data-pg="users" onclick="showPage('users')"><i class="fas fa-user-shield"></i>Roles</div>
+        <div class="nav-item" data-pg="data" onclick="showPage('data')"><i class="fas fa-chart-pie"></i>Data</div>
     </nav>
 </div>
 
 <script type="module">
     import { guardDashboard, signOutUser, onAuthStateChange } from './js/auth.js';
-    import { db, collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp, doc, updateDoc, increment } from './js/firebase-config.js';
+    import { db, collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp, doc, updateDoc, increment, setDoc, deleteDoc, getDocs } from './js/firebase-config.js';
 
-    // ── GUARD ──
     await guardDashboard(['admin', 'organizer']);
-
-    const adminName = document.getElementById('adminName');
-    const totalUsersEl = document.getElementById('totalUsers');
-    const totalCheckinsEl = document.getElementById('totalCheckins');
-    const totalPointsEl = document.getElementById('totalPoints');
 
     onAuthStateChange((user) => {
         if (!user) return;
-        adminName.textContent = `Hello, ${user.displayName || 'Organizer'}`;
-        initRealtimeData();
+        document.getElementById('adminName').textContent = `Hello, ${user.displayName || 'Admin'}`;
+        initListeners();
     });
 
-    function showToast(msg) {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
-        container.appendChild(toast);
-        setTimeout(() => toast.remove(), 4000);
-    }
-
-    function initRealtimeData() {
-        // 1. User Stats
-        onSnapshot(collection(db, 'users'), (snapshot) => {
-            totalUsersEl.textContent = snapshot.size;
-            let pointsSum = 0;
-            snapshot.forEach(d => pointsSum += (d.data().points || 0));
-            totalPointsEl.textContent = pointsSum.toLocaleString();
+    function initListeners() {
+        // Stats & Live
+        onSnapshot(collection(db, 'users'), s => {
+            document.getElementById('totalUsers').textContent = s.size;
+            let p = 0; s.forEach(d => p += (d.data().points || 0));
+            document.getElementById('totalPoints').textContent = p.toLocaleString();
         });
 
-        // 2. Booth Activity (Check-ins)
-        onSnapshot(collection(db, 'boothCounts'), (snapshot) => {
-            const list = document.getElementById('boothActivityList');
-            let totalScans = 0;
-            if (snapshot.empty) return;
-            
-            list.innerHTML = snapshot.docs.map(doc => {
-                const data = doc.data();
-                totalScans += (data.scans || 0);
-                return `
-                    <div class="list-item">
-                        <div class="item-info">
-                            <h4>${data.name || doc.id.toUpperCase()}</h4>
-                            <p>Last activity: ${data.lastScan ? new Date(data.lastScan.seconds*1000).toLocaleTimeString() : 'N/A'}</p>
-                        </div>
-                        <div class="item-val">${data.scans || 0}</div>
-                    </div>
-                `;
-            }).join('');
-            totalCheckinsEl.textContent = totalScans.toLocaleString();
-        });
-
-        // 3. User List
-        onSnapshot(query(collection(db, 'users'), orderBy('createdAt', 'desc'), limit(50)), (snapshot) => {
-            renderUsers(snapshot.docs);
-        });
-
-        // 4. Scans Log
-        onSnapshot(query(collection(db, 'scans'), orderBy('timestamp', 'desc'), limit(30)), (snapshot) => {
-            const log = document.getElementById('scansLog');
-            log.innerHTML = snapshot.docs.map(doc => {
-                const s = doc.data();
-                return `
-                    <div class="list-item">
-                        <div class="item-info">
-                            <h4>${s.userName || 'Unknown'}</h4>
-                            <p>${s.booth} · +${s.points} coins</p>
-                        </div>
-                        <div class="item-time">${s.timestamp ? new Date(s.timestamp.seconds*1000).toLocaleTimeString() : 'now'}</div>
-                    </div>
-                `;
-            }).join('') || '<p style="text-align:center;color:#999;">No logs yet</p>';
-        });
-
-        // 5. Leaderboard
-        onSnapshot(query(collection(db, 'users'), orderBy('points', 'desc'), limit(10)), (snapshot) => {
-            const list = document.getElementById('leaderboardList');
-            list.innerHTML = snapshot.docs.map((doc, i) => {
-                const u = doc.data();
-                return `
-                    <div class="list-item">
-                        <div style="font-weight:900; color:var(--gold); width:25px;">${i+1}</div>
-                        <div class="item-info"><h4>${u.displayName || 'Explorer'}</h4><p>${u.points} Liberty Coins</p></div>
-                        <div class="item-val">${u.points}</div>
-                    </div>
-                `;
-            }).join('');
-        });
-    }
-
-    function renderUsers(docs) {
-        const list = document.getElementById('usersList');
-        list.innerHTML = docs.map(doc => {
-            const u = doc.data();
-            return `
-                <div class="list-item">
-                    <div class="item-info">
-                        <h4>${u.displayName || 'No Name'}</h4>
-                        <p>${u.email}</p>
-                    </div>
-                    <div class="item-val">${u.points || 0}</div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    // Search
-    document.getElementById('userSearch').addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        // Since it's mobile view, we just filter the current snapshot locally if needed or query Firebase
-    });
-
-    // Broadcast
-    document.getElementById('sendBroadcastBtn').addEventListener('click', async () => {
-        const msg = document.getElementById('broadcastMsg').value.trim();
-        if (!msg) return;
-        try {
-            await addDoc(collection(db, 'announcements'), {
-                title: 'Organizer Alert',
-                body: msg,
-                time: new Date().toISOString(),
-                createdAt: serverTimestamp()
+        onSnapshot(collection(db, 'boothCounts'), s => {
+            const mon = document.getElementById('boothMonitor');
+            let scans = 0; let html = '';
+            s.forEach(d => {
+                const data = d.data(); scans += (data.scans || 0);
+                html += `<div class="list-item"><h4>${data.name}</h4><div class="item-val">${data.scans}</div></div>`;
             });
-            showToast('Announcement broadcasted!');
-            document.getElementById('broadcastMsg').value = '';
-        } catch (e) {
-            alert('Failed: ' + e.message);
-        }
-    });
-
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-        if (confirm('Logout from Control Center?')) {
-            await signOutUser();
-            window.location.replace('login.html');
-        }
-    });
-
-    // Navigation
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-            const pg = item.dataset.pg;
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(`pg-${pg}`).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            item.classList.add('active');
-            window.scrollTo(0,0);
+            mon.innerHTML = html || 'No data';
+            document.getElementById('totalCheckins').textContent = scans.toLocaleString();
         });
+
+        // Users
+        onSnapshot(query(collection(db, 'users'), orderBy('createdAt', 'desc'), limit(50)), s => {
+            const list = document.getElementById('usersList');
+            list.innerHTML = s.docs.map(d => {
+                const u = d.data();
+                return `<div class="list-item">
+                    <div class="item-info"><h4>${u.displayName || 'User'}</h4><p>${u.role}</p></div>
+                    <select onchange="changeRole('${d.id}', this.value)" style="font-size:.7rem; padding:4px; border-radius:8px;">
+                        <option value="participant" ${u.role=='participant'?'selected':''}>Participant</option>
+                        <option value="volunteer" ${u.role=='volunteer'?'selected':''}>Volunteer</option>
+                        <option value="booth_admin" ${u.role=='booth_admin'?'selected':''}>Booth Admin</option>
+                        <option value="admin" ${u.role=='admin'?'selected':''}>Admin</option>
+                    </select>
+                </div>`;
+            }).join('');
+        });
+
+        // Content
+        onSnapshot(collection(db, 'boothCounts'), s => {
+            document.getElementById('boothsList').innerHTML = s.docs.map(d => `<div class="card" style="margin:10px 0; display:flex; justify-content:space-between;"><strong>${d.data().name}</strong><button onclick="deleteDoc(doc(db,'boothCounts','${d.id}'))" style="color:var(--red);border:none;background:none;"><i class="fas fa-trash"></i></button></div>`).join('');
+        });
+        onSnapshot(collection(db, 'challenges'), s => {
+            document.getElementById('challengesList').innerHTML = s.docs.map(d => `<div class="card" style="margin:10px 0; display:flex; justify-content:space-between;"><strong>${d.data().name}</strong><button onclick="deleteDoc(doc(db,'challenges','${d.id}'))" style="color:var(--red);border:none;background:none;"><i class="fas fa-trash"></i></button></div>`).join('');
+        });
+        onSnapshot(collection(db, 'schedule'), s => {
+            document.getElementById('scheduleList').innerHTML = s.docs.map(d => `<div class="card" style="margin:10px 0; display:flex; justify-content:space-between;"><div><strong>${d.data().title}</strong><br><small>${d.data().time}</small></div><button onclick="deleteDoc(doc(db,'schedule','${d.id}'))" style="color:var(--red);border:none;background:none;"><i class="fas fa-trash"></i></button></div>`).join('');
+        });
+
+        // Leaderboard
+        onSnapshot(query(collection(db, 'users'), orderBy('points', 'desc'), limit(10)), s => {
+            document.getElementById('leaderboardList').innerHTML = s.docs.map((d, i) => `<div class="list-item"><div style="width:25px;font-weight:900;">${i+1}</div><div class="item-info"><h4>${d.data().displayName}</h4></div><div class="item-val">${d.data().points}</div></div>`).join('');
+        });
+    }
+
+    window.changeRole = async (uid, r) => { await updateDoc(doc(db, 'users', uid), { role: r }); alert('Role updated'); };
+    window.createBooth = async () => { const n = document.getElementById('newBoothName').value; if(n) await setDoc(doc(db, 'boothCounts', n.toLowerCase().replace(/\s+/g,'_')), { name:n, scans:0 }); document.getElementById('newBoothName').value=''; };
+    window.createChallenge = async () => { const n = document.getElementById('newChName').value; const p = parseInt(document.getElementById('newChPts').value); if(n && p) await addDoc(collection(db, 'challenges'), { name:n, pts:p, createdAt:serverTimestamp() }); };
+    window.createSchedule = async () => { const t = document.getElementById('schedTitle').value; const tm = document.getElementById('schedTime').value; if(t && tm) await addDoc(collection(db, 'schedule'), { title:t, time:tm, createdAt:serverTimestamp() }); };
+    
+    document.getElementById('sendBroadcastBtn').addEventListener('click', async () => {
+        const m = document.getElementById('broadcastMsg').value;
+        if(m) await addDoc(collection(db, 'announcements'), { title:'Broadcast', body:m, time:new Date().toISOString(), createdAt:serverTimestamp() });
+        alert('Sent!'); document.getElementById('broadcastMsg').value='';
     });
+
+    window.showPage = (p) => {
+        document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
+        document.getElementById(`pg-${p}`).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.pg === p));
+    };
+    window.switchContentTab = (t, b) => {
+        document.querySelectorAll('.content-view').forEach(v => v.style.display = 'none');
+        document.getElementById(`content-${t}`).style.display = 'block';
+        document.querySelectorAll('.tab').forEach(tb => tb.classList.remove('active'));
+        b.classList.add('active');
+    };
+    window.exportData = (t) => { getDocs(collection(db, t)).then(s => console.log('EXPORT:', s.docs.map(d => d.data()))); alert('Data exported to console log.'); };
+    document.getElementById('logoutBtn').addEventListener('click', async () => { await signOutUser(); window.location.replace('login.html'); });
 </script>
 
 </body>

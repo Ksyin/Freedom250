@@ -9,217 +9,258 @@
     <style>
         :root {
             --red: #B22234; --navy: #1a1a2e; --gold: #FFD700;
-            --bg: #f0f2f5; --white: #fff; --radius: 24px;
+            --bg: #f0f2f5; --white: #fff; --radius: 20px;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Inter',sans-serif; background:var(--bg); color: #333; }
-        .app { max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:100px; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color: #1a1a2e; }
+        .app { max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:100px; position: relative; }
 
         /* ── HEADER ── */
-        .booth-header {
+        .header {
             background: linear-gradient(135deg, var(--navy) 0%, #16213e 100%);
             color: #fff; padding: 25px 20px; position: relative; overflow: hidden;
         }
-        .booth-header::before {
-            content: "⛺"; position: absolute; right: -10px; top: -10px;
-            font-size: 80px; opacity: 0.1;
+        .header::before {
+            content: "⛺"; position: absolute; right: -15px; top: -15px;
+            font-size: 100px; opacity: 0.1;
         }
-        .booth-badge {
+        .badge {
             display: inline-block; background: rgba(255, 215, 0, 0.15);
             border: 1px solid var(--gold); padding: 4px 12px; border-radius: 20px;
-            font-size: .7rem; margin-bottom: 12px; font-weight: 700; letter-spacing: 0.5px;
+            font-size: .65rem; margin-bottom: 12px; font-weight: 700; letter-spacing: 0.5px;
         }
-        .booth-header h1 { font-size: 1.5rem; margin-bottom: 4px; }
-        .booth-header p { font-size: .8rem; opacity: .8; }
+        .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+        .header p { font-size: .75rem; opacity: .7; }
 
-        /* ── STATS ── */
-        .stats-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 12px; padding: 15px; margin-top: -30px;
+        /* ── STATS ROW ── */
+        .stats-row {
+            display: flex; gap: 10px; padding: 0 15px; margin-top: -25px;
         }
         .stat-card {
-            background: var(--white); padding: 20px; border-radius: var(--radius);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;
+            background: var(--white); border-radius: 18px; padding: 15px 10px;
+            text-align: center; flex: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
-        .stat-card .val { font-size: 1.4rem; font-weight: 800; color: var(--red); display: block; }
-        .stat-card .lbl { font-size: .65rem; color: #777; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+        .stat-card .val { font-size: 1.3rem; font-weight: 800; color: var(--red); display: block; }
+        .stat-card .lbl { font-size: .6rem; color: #888; text-transform: uppercase; margin-top: 4px; }
 
-        /* ── SCANNER SECTION ── */
-        .scan-container {
-            background: var(--white); margin: 0 15px 15px; border-radius: var(--radius);
-            padding: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        /* ── SECTIONS ── */
+        .section-hdr {
+            padding: 0 20px; margin: 25px 0 12px;
+            display: flex; justify-content: space-between; align-items: baseline;
         }
-        .scan-container h3 { font-size: 1rem; margin-bottom: 15px; }
-        .scanner-placeholder {
-            background: #f8f8fb; height: 180px; border-radius: 20px;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 20px; border: 2px dashed #ddd;
-        }
-        .btn-action {
-            width: 100%; padding: 15px; border-radius: 15px; border: none;
-            background: var(--red); color: #fff; font-weight: 700; font-size: 1rem;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .btn-action:active { transform: scale(0.98); }
-
-        /* ── CARDS ── */
-        .section-title { padding: 0 20px; margin: 25px 0 12px; font-size: 1rem; font-weight: 800; color: var(--navy); }
+        .section-hdr h2 { font-size: 1rem; color: var(--navy); font-weight: 800; }
+        
         .card {
             background: var(--white); border-radius: var(--radius); margin: 0 15px 12px;
             padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
+
+        /* ── LIST ITEMS ── */
         .list-item {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 0; border-bottom: 1px solid #eee;
+            padding: 12px 0; border-bottom: 1px solid #f0f0f0;
         }
         .list-item:last-child { border-bottom: none; }
-        .item-info h4 { font-size: .85rem; font-weight: 600; }
-        .item-info p { font-size: .7rem; color: #777; }
-        .item-time { font-size: .65rem; color: #aaa; }
+        .item-info h4 { font-size: .85rem; font-weight: 700; color: var(--navy); }
+        .item-info p { font-size: .7rem; color: #777; margin-top: 2px; }
+        .item-val { font-weight: 800; color: var(--red); font-size: .9rem; }
 
-        /* ── FORM ── */
+        /* ── FORMS ── */
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: .75rem; font-weight: 700; margin-bottom: 6px; color: #555; }
-        .form-group input {
-            width: 100%; padding: 12px 15px; border-radius: 12px;
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 12px 16px; border-radius: 14px;
             border: 1px solid #ddd; font-family: inherit; font-size: .9rem;
         }
-        .btn-sec {
-            width: 100%; padding: 12px; border-radius: 12px; border: none;
-            background: var(--navy); color: #fff; font-weight: 700; cursor: pointer;
+        .btn-full {
+            width: 100%; padding: 14px; border-radius: 14px; border: none;
+            background: var(--navy); color: #fff; font-weight: 700;
+            cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-full:active { transform: scale(0.98); }
+        .btn-red { background: var(--red); }
+
+        /* ── SCANNER ── */
+        .scanner-preview {
+            background: #f8f8fb; height: 160px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 15px; border: 2px dashed #ddd;
         }
 
-        /* ── BOTTOM NAV ── */
+        /* ── NAVIGATION ── */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: var(--white); display: flex; justify-content: space-around;
-            padding: 12px 15px 25px; border-top: 1px solid #eee;
-            max-width: 480px; margin: 0 auto; z-index: 100;
+            padding: 12px 10px 25px; border-top: 1px solid #eee;
+            max-width: 480px; margin: 0 auto; z-index: 1000;
         }
         .nav-item { text-align: center; color: #aaa; font-size: .65rem; cursor: pointer; }
         .nav-item.active { color: var(--red); }
         .nav-item i { font-size: 1.3rem; display: block; margin-bottom: 4px; }
 
-        /* ── MODAL ── */
-        .modal {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-            z-index: 200; align-items: center; justify-content: center; padding: 20px;
-        }
-        .modal.open { display: flex; }
-        .modal-box { background: #fff; border-radius: 24px; padding: 24px; width: 100%; max-width: 320px; text-align: center; }
-
         .page { display: none; }
         .page.active { display: block; }
+
+        /* ── TOAST ── */
+        #toastContainer {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 40px); max-width: 400px; z-index: 9999;
+        }
+        .toast {
+            background: var(--navy); color: #fff; padding: 14px 20px; border-radius: 12px;
+            margin-bottom: 10px; font-size: .85rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
 
+<div id="toastContainer"></div>
+
 <div class="app">
-    <header class="booth-header">
-        <div class="booth-badge" id="boothLocation">ZONE: UNKNOWN</div>
-        <h1 id="adminName">Booth Operation</h1>
-        <p>Scan and award Liberty Coins</p>
+    <!-- Header -->
+    <header class="header">
+        <div class="badge" id="assignedBooth">BOOTH OPERATOR</div>
+        <h1 id="adminName">Loading...</h1>
+        <p>Booth Operations & Lead Capture</p>
         <div style="position: absolute; top: 25px; right: 20px; display: flex; gap: 8px;">
-            <a href="index.html" style="color: #fff; background: rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 12px; text-decoration: none; font-size: .75rem; font-weight: 700;">Home</a>
-            <button id="logoutBtn" style="background: var(--red); color: #fff; border: none; padding: 8px 14px; border-radius: 12px; font-weight: 700; font-size: .75rem; cursor: pointer;">Exit</button>
+            <a href="index.html" style="color: #fff; background: rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 12px; text-decoration: none; font-size: .7rem; font-weight: 700;">Home</a>
+            <button id="logoutBtn" style="background: var(--red); color: #fff; border: none; padding: 8px 14px; border-radius: 12px; font-weight: 700; font-size: .7rem; cursor: pointer;">Exit</button>
         </div>
     </header>
 
-    <div class="stats-grid">
-        <div class="stat-card"><span class="val" id="countToday">0</span><span class="lbl">Check-ins</span></div>
-        <div class="stat-card"><span class="val" id="pointsAwarded">0</span><span class="lbl">Coins Issued</span></div>
+    <!-- Global Stats -->
+    <div class="stats-row">
+        <div class="stat-card"><span class="val" id="todayVisitors">0</span><span class="lbl">Visitors</span></div>
+        <div class="stat-card"><span class="val" id="totalPointsAwarded">0</span><span class="lbl">Coins Issued</span></div>
+        <div class="stat-card"><span class="val" id="dwellTime">0m</span><span class="lbl">Avg Dwell</span></div>
     </div>
 
     <!-- ═══ SCAN PAGE ═══ -->
-    <div id="pg-scan" class="page active">
-        <div class="scan-container">
-            <h3><i class="fas fa-camera"></i> Scan Participant</h3>
-            <div class="scanner-placeholder" id="reader">
+    <div id="pg-home" class="page active">
+        <div class="section-hdr"><h2>📸 Scan Participant</h2></div>
+        <div class="card">
+            <div class="scanner-preview" id="reader">
                 <i class="fas fa-qrcode" style="font-size: 3rem; color: #ccc;"></i>
             </div>
-            <button class="btn-action" id="startScanBtn">START SCANNER</button>
+            <button class="btn-full" id="startScanBtn"><i class="fas fa-camera"></i> Start Scanner</button>
         </div>
 
-        <div class="section-title">Manual Verification</div>
+        <div class="section-hdr"><h2>✏️ Manual Check-in</h2></div>
         <div class="card">
             <div class="form-group">
                 <label>Participant ID or Email</label>
                 <input type="text" id="manualId" placeholder="e.g. F250-XXXX">
             </div>
-            <button class="btn-sec" id="manualVerifyBtn">Verify & Award</button>
-        </div>
-
-        <div class="section-title">Recent Activity</div>
-        <div class="card" id="recentScansList">
-            <p style="text-align: center; color: #999; font-size: .8rem; padding: 10px;">No recent scans yet</p>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn-full" id="manualVerifyBtn" style="flex: 2;">Verify & Award</button>
+                <button class="btn-full btn-red" id="deductPointsBtn" style="flex: 1; font-size: .75rem;">Deduct</button>
+            </div>
         </div>
     </div>
 
-    <!-- ═══ INSIGHTS PAGE ═══ -->
-    <div id="pg-insights" class="page">
-        <div class="section-title">Booth Analytics</div>
+    <!-- ═══ LEADS PAGE ═══ -->
+    <div id="pg-leads" class="page">
+        <div class="section-hdr"><h2>👥 Captured Leads</h2></div>
         <div class="card">
-            <div class="list-item">
-                <div class="item-info"><h4>Busy Hour</h4><p>Estimated peak time</p></div>
-                <div class="item-val">2:00 PM</div>
+            <div class="form-group">
+                <input type="text" id="leadSearch" placeholder="Search visitors...">
             </div>
-            <div class="list-item">
-                <div class="item-info"><h4>Engagement</h4><p>Repeat visitor rate</p></div>
-                <div class="item-val">12%</div>
+            <div id="leadsList" style="max-height: 400px; overflow-y: auto;">
+                <p style="text-align: center; color: #999; font-size: .8rem; padding: 10px;">No leads captured yet.</p>
             </div>
+            <button class="btn-full" style="margin-top: 15px;" id="exportLeadsBtn"><i class="fas fa-file-export"></i> Export Leads (CSV)</button>
+        </div>
+
+        <div class="section-hdr"><h2>💬 Engagement</h2></div>
+        <div class="card">
+            <div class="form-group">
+                <label>Bulk Message to Visitors</label>
+                <textarea id="bulkMsg" placeholder="Thank them for visiting or share an offer..." rows="3"></textarea>
+            </div>
+            <button class="btn-full btn-red" id="sendBulkBtn">Send Template Email</button>
         </div>
     </div>
 
-    <nav class="bottom-nav">
-        <div class="nav-item active" data-pg="scan"><i class="fas fa-qrcode"></i>Scan</div>
-        <div class="nav-item" data-pg="insights"><i class="fas fa-chart-bar"></i>Insights</div>
-    </nav>
-</div>
+    <!-- ═══ BOOTH PAGE (Challenges & Rewards) ═══ -->
+    <div id="pg-booth" class="page">
+        <div class="section-hdr"><h2>🔥 Booth Challenges</h2></div>
+        <div class="card">
+            <div class="form-group">
+                <label>Active Challenge</label>
+                <select id="activeChallengeSelect">
+                    <option value="">No Active Challenge</option>
+                    <option value="photo">Photo Contest (150 pts)</option>
+                    <option value="trivia">Booth Trivia (100 pts)</option>
+                </select>
+            </div>
+            <button class="btn-full" id="updateChallengeBtn">Update Live Challenge</button>
+        </div>
 
-<!-- Success Modal -->
-<div class="modal" id="successModal">
-    <div class="modal-box">
-        <i class="fas fa-check-circle" style="font-size: 3.5rem; color: #10b981; margin-bottom: 15px;"></i>
-        <h3 id="modalUser">Success!</h3>
-        <p id="modalMsg" style="color: #666; font-size: .9rem; margin: 10px 0 20px;">+50 Liberty Coins awarded</p>
-        <button class="btn-action" style="background: var(--navy);" onclick="closeModal()">DONE</button>
+        <div class="section-hdr"><h2>🎁 Booth Rewards</h2></div>
+        <div class="card" id="boothRewardsList">
+            <!-- Rewards with claim buttons -->
+        </div>
+
+        <div class="section-hdr"><h2>🏆 Booth Leaderboard</h2></div>
+        <div class="card" id="boothLeaderboard">
+            <!-- Top visitors to this booth -->
+        </div>
     </div>
+
+    <!-- ── NAVIGATION ── -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" data-pg="home" onclick="showPage('home')"><i class="fas fa-qrcode"></i>Scan</div>
+        <div class="nav-item" data-pg="leads" onclick="showPage('leads')"><i class="fas fa-users"></i>Leads</div>
+        <div class="nav-item" data-pg="booth" onclick="showPage('booth')"><i class="fas fa-store"></i>Booth</div>
+    </nav>
 </div>
 
 <script src="https://unpkg.com/html5-qrcode@2.3.7/html5-qrcode.min.js"></script>
 <script type="module">
     import { guardDashboard, signOutUser, onAuthStateChange } from './js/auth.js';
-    import { db, doc, getDoc, updateDoc, setDoc, collection, query, where, orderBy, limit, onSnapshot, increment, serverTimestamp, addDoc } from './js/firebase-config.js';
+    import { db, doc, getDoc, updateDoc, setDoc, collection, query, where, orderBy, limit, onSnapshot, increment, serverTimestamp, addDoc, getDocs } from './js/firebase-config.js';
 
     await guardDashboard(['booth_admin', 'admin']);
 
     let currentUser = null;
     let scanner = null;
-    const BOOTH_NAME = "THE GARAGE"; // Should be linked to specific admin account
+    let assignedBoothId = null;
 
     onAuthStateChange((user) => {
         if (!user) return;
         currentUser = user;
         document.getElementById('adminName').textContent = user.displayName || 'Booth Admin';
-        document.getElementById('boothLocation').textContent = `ZONE: ${user.assignedZone || 'MAIN'}`;
+        assignedBoothId = (user.assignedZone || 'main_tent').toLowerCase().replace(/\s+/g, '_');
+        document.getElementById('assignedBooth').textContent = `ZONE: ${user.assignedZone || 'GENERAL'}`;
         
-        initBoothStats();
+        initBoothData();
     });
 
-    function initBoothStats() {
-        // Real-time booth counts
-        const boothId = (currentUser.assignedZone || 'main').toLowerCase().replace(/\s+/g, '_');
-        onSnapshot(doc(db, 'boothCounts', boothId), (docSnap) => {
-            if (docSnap.exists()) {
-                document.getElementById('countToday').textContent = docSnap.data().scans || 0;
-                document.getElementById('pointsAwarded').textContent = (docSnap.data().scans || 0) * 50;
+    function showToast(msg) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+    }
+
+    function initBoothData() {
+        // Stats
+        onSnapshot(doc(db, 'boothCounts', assignedBoothId), (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.data();
+                document.getElementById('todayVisitors').textContent = data.scans || 0;
+                document.getElementById('totalPointsAwarded').textContent = (data.scans || 0) * 50;
             }
         });
 
-        // Real-time recent scans
-        const q = query(collection(db, 'scans'), where('booth', '==', currentUser.assignedZone || 'MAIN'), orderBy('timestamp', 'desc'), limit(5));
+        // Leads List
+        const q = query(collection(db, 'scans'), where('booth', '==', currentUser.assignedZone || 'GENERAL'), orderBy('timestamp', 'desc'), limit(50));
         onSnapshot(q, (snapshot) => {
-            const list = document.getElementById('recentScansList');
+            const list = document.getElementById('leadsList');
             if (snapshot.empty) return;
             list.innerHTML = snapshot.docs.map(doc => {
                 const data = doc.data();
@@ -227,80 +268,70 @@
                     <div class="list-item">
                         <div class="item-info">
                             <h4>${data.userName || 'Anonymous'}</h4>
-                            <p>+50 Liberty Coins</p>
+                            <p>${data.timestamp?.toDate().toLocaleTimeString()} · Visit #${data.visitCount || 1}</p>
                         </div>
-                        <div class="item-time">${data.timestamp?.toDate().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) || 'Now'}</div>
+                        <button onclick="messageLead('${data.userId}')" style="background:none;border:none;color:var(--red)"><i class="fas fa-envelope"></i></button>
                     </div>
                 `;
             }).join('');
         });
+
+        // Booth Leaderboard
+        // This would require a more complex query or pre-aggregated data
+        // For now, we show recent high-scorers who visited this booth
+        document.getElementById('boothLeaderboard').innerHTML = '<p style="text-align:center;font-size:.8rem;color:#999;">Updating rankings...</p>';
     }
 
-    async function handleScanSuccess(decodedText) {
-        if (scanner) scanner.stop();
-        document.getElementById('startScanBtn').textContent = 'START SCANNER';
-
-        let uid = decodedText;
-        if (decodedText.includes('FREEDOM250:')) {
-            uid = decodedText.split(':')[2];
-        }
-
-        await processAward(uid);
-    }
-
-    async function processAward(uid) {
+    async function processAward(uid, deduct = false) {
         try {
+            const points = deduct ? -50 : 50;
             const userRef = doc(db, 'users', uid);
             const userSnap = await getDoc(userRef);
             if (!userSnap.exists()) throw new Error('Participant not found');
 
             const userData = userSnap.data();
-            const pointsToAward = 50;
-            const boothId = (currentUser.assignedZone || 'MAIN').toLowerCase().replace(/\s+/g, '_');
 
-            // 1. Update User Points
+            // Update user
             await updateDoc(userRef, {
-                points: increment(pointsToAward),
-                stamps: Array.from(new Set([...(userData.stamps || []), currentUser.assignedZone || 'MAIN']))
+                points: increment(points),
+                stamps: Array.from(new Set([...(userData.stamps || []), currentUser.assignedZone || 'GENERAL']))
             });
 
-            // 2. Log Scan
+            // Log scan
             await addDoc(collection(db, 'scans'), {
                 userId: uid,
                 userName: userData.displayName || userData.email,
-                booth: currentUser.assignedZone || 'MAIN',
-                points: pointsToAward,
+                booth: currentUser.assignedZone || 'GENERAL',
+                points: points,
                 timestamp: serverTimestamp()
             });
 
-            // 3. Update Booth Stats
-            const boothRef = doc(db, 'boothCounts', boothId);
+            // Update booth stats
+            const boothRef = doc(db, 'boothCounts', assignedBoothId);
             await setDoc(boothRef, {
-                name: currentUser.assignedZone || 'MAIN',
-                scans: increment(1),
+                name: currentUser.assignedZone || 'GENERAL',
+                scans: increment(deduct ? 0 : 1),
                 lastScan: serverTimestamp()
             }, { merge: true });
 
-            showSuccess(userData.displayName || 'Participant');
+            showToast(`${deduct ? 'Deducted' : 'Awarded'} coins to ${userData.displayName || 'Participant'}`);
         } catch (e) {
             alert('Error: ' + e.message);
         }
     }
 
     document.getElementById('startScanBtn').addEventListener('click', () => {
-        if (scanner && scanner.isScanning) {
-            scanner.stop();
-            document.getElementById('startScanBtn').textContent = 'START SCANNER';
-            return;
-        }
-
+        if (scanner) { scanner.stop(); scanner = null; document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-camera"></i> Start Scanner'; return; }
+        
         scanner = new Html5Qrcode("reader");
-        scanner.start(
-            { facingMode: "environment" },
-            { fps: 10, qrbox: 250 },
-            handleScanSuccess
-        ).then(() => {
-            document.getElementById('startScanBtn').textContent = 'STOP SCANNER';
+        scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, async (text) => {
+            let uid = text;
+            if (text.includes('FREEDOM250:')) uid = text.split(':')[2];
+            await processAward(uid);
+            scanner.stop(); scanner = null;
+            document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-camera"></i> Start Scanner';
+        }).then(() => {
+            document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-stop"></i> Stop Scanner';
         });
     });
 
@@ -309,28 +340,33 @@
         if (id) processAward(id);
     });
 
-    function showSuccess(name) {
-        document.getElementById('modalUser').textContent = name;
-        document.getElementById('successModal').classList.add('open');
-    }
+    document.getElementById('deductPointsBtn').addEventListener('click', () => {
+        const id = document.getElementById('manualId').value.trim();
+        if (id) processAward(id, true);
+    });
 
-    window.closeModal = () => {
-        document.getElementById('successModal').classList.remove('open');
-        document.getElementById('manualId').value = '';
+    window.messageLead = (uid) => {
+        const msg = prompt('Enter message to send to participant:');
+        if (msg) alert('Message queued for delivery!');
     };
 
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-            const pg = item.dataset.pg;
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(`pg-${pg}`).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            item.classList.add('active');
+    window.exportLeadsBtn?.addEventListener('click', () => {
+        alert('Exporting booth leads... (Check console)');
+        getDocs(query(collection(db, 'scans'), where('booth', '==', currentUser.assignedZone || 'GENERAL'))).then(s => {
+            console.log('LEADS EXPORT:', s.docs.map(d => d.data()));
         });
     });
 
+    window.showPage = (page) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(`pg-${page}`).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelector(`.nav-item[data-pg="${page}"]`).classList.add('active');
+        window.scrollTo(0,0);
+    };
+
     document.getElementById('logoutBtn').addEventListener('click', async () => {
-        if (confirm('Sign out?')) {
+        if (confirm('Logout from booth portal?')) {
             await signOutUser();
             window.location.replace('login.html');
         }

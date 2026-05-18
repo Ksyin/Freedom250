@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Volunteer Hub | Freedom 250</title>
+    <title>Staff Portal | Freedom 250</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --red: #B22234; --navy: #1a1a2e; --gold: #FFD700;
-            --bg: #f0f2f5; --white: #fff; --radius: 24px;
+            --bg: #f0f2f5; --white: #fff; --radius: 20px;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Inter',sans-serif; background:var(--bg); color: #333; }
-        .app { max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:100px; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color: #1a1a2e; }
+        .app { max-width:480px; margin:0 auto; min-height:100vh; padding-bottom:100px; position: relative; }
 
         /* ── HEADER ── */
         .header {
@@ -21,56 +21,64 @@
             color: #fff; padding: 25px 20px; position: relative; overflow: hidden;
         }
         .header::before {
-            content: "🤝"; position: absolute; right: -10px; top: -10px;
-            font-size: 80px; opacity: 0.1;
+            content: "🤝"; position: absolute; right: -15px; top: -15px;
+            font-size: 100px; opacity: 0.1;
         }
-        .role-badge {
+        .badge {
             display: inline-block; background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2); padding: 4px 12px; border-radius: 20px;
-            font-size: .7rem; margin-bottom: 12px; font-weight: 700; letter-spacing: 0.5px;
+            font-size: .65rem; margin-bottom: 12px; font-weight: 700; letter-spacing: 0.5px;
         }
         .header h1 { font-size: 1.5rem; margin-bottom: 4px; }
-        .header p { font-size: .8rem; opacity: .8; }
+        .header p { font-size: .75rem; opacity: .7; }
 
-        /* ── STATS ── */
-        .stats-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 10px; padding: 15px; margin-top: -30px;
+        /* ── STATS ROW ── */
+        .stats-row {
+            display: flex; gap: 10px; padding: 0 15px; margin-top: -25px;
         }
-        .stat-card {
-            background: var(--white); padding: 15px 10px; border-radius: var(--radius);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;
+        .stat-pill {
+            background: var(--white); border-radius: 18px; padding: 15px 10px;
+            text-align: center; flex: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
-        .stat-card .val { font-size: 1.2rem; font-weight: 800; color: var(--red); display: block; }
-        .stat-card .lbl { font-size: .6rem; color: #777; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+        .stat-pill .val { font-size: 1.3rem; font-weight: 800; color: var(--red); display: block; }
+        .stat-pill .lbl { font-size: .6rem; color: #888; text-transform: uppercase; margin-top: 4px; }
 
-        /* ── CARDS ── */
-        .section-title { padding: 0 20px; margin: 25px 0 12px; font-size: 1rem; font-weight: 800; color: var(--navy); }
+        /* ── SECTIONS ── */
+        .section-hdr {
+            padding: 0 20px; margin: 25px 0 12px;
+            display: flex; justify-content: space-between; align-items: baseline;
+        }
+        .section-hdr h2 { font-size: 1rem; color: var(--navy); font-weight: 800; }
+        
         .card {
             background: var(--white); border-radius: var(--radius); margin: 0 15px 12px;
             padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-        .card-header i { font-size: 1.2rem; color: var(--red); }
-        .card-header h3 { font-size: .95rem; font-weight: 700; }
 
+        /* ── LIST ITEMS ── */
         .list-item {
-            display: flex; gap: 14px; align-items: center;
-            padding: 12px 0; border-bottom: 1px solid #eee;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 0; border-bottom: 1px solid #f0f0f0;
         }
         .list-item:last-child { border-bottom: none; }
-        .item-icon {
-            width: 40px; height: 40px; border-radius: 12px; background: #f0f2f5;
-            display: flex; align-items: center; justify-content: center; color: var(--navy);
+        .item-info h4 { font-size: .85rem; font-weight: 700; color: var(--navy); }
+        .item-info p { font-size: .7rem; color: #777; margin-top: 2px; }
+        .item-val { font-weight: 800; color: var(--red); font-size: .9rem; }
+
+        /* ── FORMS ── */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: .75rem; font-weight: 700; margin-bottom: 6px; color: #555; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 12px 16px; border-radius: 14px;
+            border: 1px solid #ddd; font-family: inherit; font-size: .9rem;
         }
-        .item-info { flex: 1; }
-        .item-info h4 { font-size: .85rem; font-weight: 600; margin-bottom: 2px; }
-        .item-info p { font-size: .7rem; color: #777; }
-        .status-pill {
-            font-size: .6rem; font-weight: 700; padding: 4px 10px; border-radius: 20px;
-            background: #eee; color: #666;
+        .btn-full {
+            width: 100%; padding: 14px; border-radius: 14px; border: none;
+            background: var(--navy); color: #fff; font-weight: 700;
+            cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .status-active { background: #e8f5e9; color: #2e7d32; }
+        .btn-full:active { transform: scale(0.98); }
+        .btn-red { background: var(--red); }
 
         /* ── SCANNER ── */
         .scanner-preview {
@@ -78,18 +86,13 @@
             display: flex; align-items: center; justify-content: center;
             margin-bottom: 15px; border: 2px dashed #ddd;
         }
-        .btn-action {
-            width: 100%; padding: 14px; border-radius: 14px; border: none;
-            background: var(--red); color: #fff; font-weight: 700; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
 
         /* ── NAVIGATION ── */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: var(--white); display: flex; justify-content: space-around;
-            padding: 12px 15px 25px; border-top: 1px solid #eee;
-            max-width: 480px; margin: 0 auto; z-index: 100;
+            padding: 12px 10px 25px; border-top: 1px solid #eee;
+            max-width: 480px; margin: 0 auto; z-index: 1000;
         }
         .nav-item { text-align: center; color: #aaa; font-size: .65rem; cursor: pointer; }
         .nav-item.active { color: var(--red); }
@@ -97,70 +100,126 @@
 
         .page { display: none; }
         .page.active { display: block; }
+
+        /* ── TOAST ── */
+        #toastContainer {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 40px); max-width: 400px; z-index: 9999;
+        }
+        .toast {
+            background: var(--navy); color: #fff; padding: 14px 20px; border-radius: 12px;
+            margin-bottom: 10px; font-size: .85rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
 
+<div id="toastContainer"></div>
+
 <div class="app">
+    <!-- Header -->
     <header class="header">
-        <div class="role-badge">VOLUNTEER FORCE</div>
-        <h1 id="volunteerName">Hello, Volunteer</h1>
-        <p>Operations & Participant Support</p>
+        <div class="badge">VOLUNTEER FORCE</div>
+        <h1 id="userName">Loading...</h1>
+        <p>Operations & Support Portal</p>
         <div style="position: absolute; top: 25px; right: 20px; display: flex; gap: 8px;">
-            <a href="index.html" style="color: #fff; background: rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 12px; text-decoration: none; font-size: .75rem; font-weight: 700;">Home</a>
-            <button id="logoutBtn" style="background: var(--red); color: #fff; border: none; padding: 8px 14px; border-radius: 12px; font-weight: 700; font-size: .75rem; cursor: pointer;">Exit</button>
+            <a href="index.html" style="color: #fff; background: rgba(255,255,255,0.1); padding: 8px 14px; border-radius: 12px; text-decoration: none; font-size: .7rem; font-weight: 700;">Home</a>
+            <button id="logoutBtn" style="background: var(--red); color: #fff; border: none; padding: 8px 14px; border-radius: 12px; font-weight: 700; font-size: .7rem; cursor: pointer;">Exit</button>
         </div>
     </header>
 
-    <div class="stats-grid">
-        <div class="stat-card"><span class="val" id="shiftsDone">0</span><span class="lbl">Shifts</span></div>
-        <div class="stat-card"><span class="val" id="hoursLogged">0</span><span class="lbl">Hours</span></div>
-        <div class="stat-card"><span class="val" id="pointsEarned">0</span><span class="lbl">Incentives</span></div>
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat-pill"><span class="val" id="tasksDone">0</span><span class="lbl">Tasks</span></div>
+        <div class="stat-pill"><span class="val" id="shiftsLogged">0</span><span class="lbl">Shifts</span></div>
+        <div class="stat-pill"><span class="val" id="coinsEarned">0</span><span class="lbl">Points</span></div>
     </div>
 
     <!-- ═══ TASKS PAGE ═══ -->
-    <div id="pg-tasks" class="page active">
-        <div class="section-title">Active Assignments</div>
-        <div class="card" id="tasksList">
-            <p style="text-align:center; color:#999; padding:20px; font-size:.8rem;">Connecting to ops center...</p>
+    <div id="pg-home" class="page active">
+        <div class="section-hdr"><h2>📋 My Active Tasks</h2></div>
+        <div id="tasksList">
+            <p style="text-align: center; color: #999; font-size: .8rem; padding: 20px;">Fetching assigned tasks...</p>
         </div>
 
-        <div class="section-title">Quick Scanner</div>
+        <div class="section-hdr"><h2>🛡️ Operations Briefing</h2></div>
+        <div id="briefingList">
+            <!-- Announcements -->
+        </div>
+    </div>
+
+    <!-- ═══ SCANNER PAGE ═══ -->
+    <div id="pg-scan" class="page">
+        <div class="section-hdr"><h2>📸 Quick Scanner</h2></div>
         <div class="card">
-            <div class="scanner-preview" id="volunteerReader">
-                <i class="fas fa-qrcode" style="font-size: 2.5rem; color: #ccc;"></i>
+            <div class="scanner-preview" id="reader">
+                <i class="fas fa-qrcode" style="font-size: 3rem; color: #ccc;"></i>
             </div>
-            <button class="btn-action" id="startScanBtn">SCAN PARTICIPANT</button>
+            <button class="btn-full" id="startScanBtn"><i class="fas fa-camera"></i> SCAN PARTICIPANT</button>
+        </div>
+
+        <div class="section-hdr"><h2>✏️ Manual Check-in</h2></div>
+        <div class="card">
+            <div class="form-group">
+                <input type="text" id="manualId" placeholder="Participant Email or ID">
+            </div>
+            <button class="btn-full" id="manualVerifyBtn">Verify Participant</button>
+        </div>
+    </div>
+
+    <!-- ═══ SUPPORT PAGE ═══ -->
+    <div id="pg-support" class="page">
+        <div class="section-hdr"><h2>🆘 Ops Escalation</h2></div>
+        <div class="card">
+            <div class="form-group">
+                <label>Issue Type</label>
+                <select id="issueType">
+                    <option value="crowd">Crowd Control</option>
+                    <option value="technical">Technical Error</option>
+                    <option value="medical">Medical / First Aid</option>
+                    <option value="security">Security Incident</option>
+                    <option value="other">General Support</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Details</label>
+                <textarea id="issueDetails" rows="3" placeholder="Describe the situation..."></textarea>
+            </div>
+            <button class="btn-full btn-red" id="submitIssueBtn">Escalate to Organizer</button>
+        </div>
+
+        <div class="section-hdr"><h2>📍 Venue Heatmap</h2></div>
+        <div class="card" id="heatmapData">
+            <!-- Heatmap -->
         </div>
     </div>
 
     <!-- ═══ SCHEDULE PAGE ═══ -->
     <div id="pg-schedule" class="page">
-        <div class="section-title">My Schedule</div>
-        <div class="card" id="scheduleList">
-            <!-- Real schedule data -->
+        <div class="section-hdr"><h2>📅 My Shift Schedule</h2></div>
+        <div class="card">
+            <div id="scheduleList">
+                <p style="text-align:center; color:#999; font-size:.8rem;">No upcoming shifts found.</p>
+            </div>
         </div>
+        <button class="btn-full btn-red" style="margin: 0 15px 15px; width: calc(100% - 30px);" id="markShiftBtn">MARK SHIFT START</button>
     </div>
 
-    <!-- ═══ NOTIFICATIONS PAGE ═══ -->
-    <div id="pg-notifs" class="page">
-        <div class="section-title">Ops Briefings</div>
-        <div id="announcementsList">
-            <!-- Real-time announcements -->
-        </div>
-    </div>
-
+    <!-- Navigation -->
     <nav class="bottom-nav">
-        <div class="nav-item active" data-pg="tasks"><i class="fas fa-clipboard-list"></i>Tasks</div>
-        <div class="nav-item" data-pg="schedule"><i class="fas fa-calendar-alt"></i>Schedule</div>
-        <div class="nav-item" data-pg="notifs"><i class="fas fa-bell"></i>Briefs</div>
+        <div class="nav-item active" data-pg="home" onclick="showPage('home')"><i class="fas fa-tasks"></i>Tasks</div>
+        <div class="nav-item" data-pg="scan" onclick="showPage('scan')"><i class="fas fa-qrcode"></i>Verify</div>
+        <div class="nav-item" data-pg="schedule" onclick="showPage('schedule')"><i class="fas fa-calendar-alt"></i>Shift</div>
+        <div class="nav-item" data-pg="support" onclick="showPage('support')"><i class="fas fa-headset"></i>Support</div>
     </nav>
 </div>
 
 <script src="https://unpkg.com/html5-qrcode@2.3.7/html5-qrcode.min.js"></script>
 <script type="module">
     import { guardDashboard, signOutUser, onAuthStateChange } from './js/auth.js';
-    import { db, collection, query, orderBy, onSnapshot, doc, getDoc, updateDoc, increment, addDoc, serverTimestamp } from './js/firebase-config.js';
+    import { db, doc, getDoc, updateDoc, setDoc, collection, query, where, orderBy, limit, onSnapshot, increment, serverTimestamp, addDoc } from './js/firebase-config.js';
 
     await guardDashboard(['volunteer', 'admin']);
 
@@ -170,97 +229,165 @@
     onAuthStateChange((user) => {
         if (!user) return;
         currentUser = user;
-        document.getElementById('volunteerName').textContent = `Hello, ${user.displayName || 'Volunteer'}`;
+        document.getElementById('userName').textContent = `Hello, ${user.displayName || 'Staff'}`;
         
-        // Load Real Data
         initVolunteerData();
-        initAnnouncements();
     });
+
+    function showToast(msg) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+    }
 
     function initVolunteerData() {
         // Stats
-        const userRef = doc(db, 'users', currentUser.uid);
-        onSnapshot(userRef, (docSnap) => {
+        onSnapshot(doc(db, 'users', currentUser.uid), (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                document.getElementById('shiftsDone').textContent = data.shifts || 0;
-                document.getElementById('hoursLogged').textContent = data.hours || 0;
-                document.getElementById('pointsEarned').textContent = data.points || 0;
+                document.getElementById('tasksDone').textContent = data.tasksCompleted || 0;
+                document.getElementById('shiftsLogged').textContent = data.shiftsCount || 0;
+                document.getElementById('coinsEarned').textContent = data.points || 0;
             }
         });
 
-        // Tasks - Listening to a global tasks collection or assigned to this user
-        onSnapshot(collection(db, 'tasks'), (snapshot) => {
+        // Tasks
+        onSnapshot(query(collection(db, 'tasks'), where('assignedTo', '==', currentUser.uid)), (snapshot) => {
             const list = document.getElementById('tasksList');
             if (snapshot.empty) {
-                list.innerHTML = '<p style="text-align:center;color:#999;padding:10px;">No tasks assigned yet.</p>';
+                list.innerHTML = '<p style="text-align:center;color:#999;font-size:.8rem;padding:20px;">No tasks assigned yet.</p>';
                 return;
             }
             list.innerHTML = snapshot.docs.map(doc => {
                 const t = doc.data();
                 return `
-                    <div class="list-item">
-                        <div class="item-icon"><i class="fas fa-tasks"></i></div>
-                        <div class="item-info">
-                            <h4>${t.title}</h4>
-                            <p>${t.location} · ${t.time || 'All Day'}</p>
+                    <div class="card">
+                        <div class="list-item">
+                            <div class="item-info">
+                                <h4>${t.title}</h4>
+                                <p>${t.location} · ${t.priority || 'Normal'}</p>
+                            </div>
+                            <button onclick="completeTask('${doc.id}')" style="background:var(--navy);color:#fff;border:none;padding:6px 12px;border-radius:10px;font-size:.7rem;">DONE</button>
                         </div>
-                        <span class="status-pill ${t.status==='active'?'status-active':''}">${t.status.toUpperCase()}</span>
                     </div>
                 `;
             }).join('');
         });
-    }
 
-    function initAnnouncements() {
-        const q = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'));
-        onSnapshot(q, (snapshot) => {
-            const container = document.getElementById('announcementsList');
-            container.innerHTML = snapshot.docs.map(doc => {
+        // Announcements
+        onSnapshot(query(collection(db, 'announcements'), orderBy('createdAt', 'desc'), limit(5)), (snapshot) => {
+            const list = document.getElementById('briefingList');
+            list.innerHTML = snapshot.docs.map(doc => {
                 const n = doc.data();
                 return `
                     <div class="card">
-                        <div class="card-header"><i class="fas fa-info-circle"></i><h3>${n.title}</h3></div>
-                        <p style="font-size: .85rem; line-height: 1.5;">${n.body}</p>
-                        <p style="font-size: .65rem; color: #aaa; margin-top: 10px;">${new Date(n.time).toLocaleString()}</p>
+                        <h4 style="font-size:.85rem;margin-bottom:5px;">${n.title}</h4>
+                        <p style="font-size:.75rem;color:#555;line-height:1.4;">${n.body}</p>
+                        <p style="font-size:.6rem;color:#aaa;margin-top:8px;">${new Date(n.time).toLocaleTimeString()}</p>
+                    </div>
+                `;
+            }).join('');
+        });
+
+        // Heatmap for crowd control
+        onSnapshot(collection(db, 'boothCounts'), (snapshot) => {
+            const heatmap = document.getElementById('heatmapData');
+            heatmap.innerHTML = snapshot.docs.map(doc => {
+                const data = doc.data();
+                const density = Math.min(100, (data.scans / 500) * 100);
+                return `
+                    <div style="margin-bottom:8px">
+                        <div style="display:flex;justify-content:space-between;font-size:.7rem;margin-bottom:4px">
+                            <span>${data.name}</span><span>${Math.round(density)}%</span>
+                        </div>
+                        <div style="height:6px;background:#eee;border-radius:3px;overflow:hidden">
+                            <div style="height:100%;width:${density}%;background:${density > 80 ? 'var(--red)' : 'var(--navy)'}"></div>
+                        </div>
                     </div>
                 `;
             }).join('');
         });
     }
 
-    // Scanner Logic
-    document.getElementById('startScanBtn').addEventListener('click', () => {
-        if (scanner) { scanner.stop(); scanner = null; return; }
-        scanner = new Html5Qrcode("volunteerReader");
-        scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, async (text) => {
-            scanner.stop(); scanner = null;
-            let uid = text;
-            if (text.includes('FREEDOM250:')) uid = text.split(':')[2];
+    async function handleScanSuccess(text) {
+        if (scanner) { scanner.stop(); scanner = null; }
+        document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-camera"></i> SCAN PARTICIPANT';
+
+        let uid = text;
+        if (text.includes('FREEDOM250:')) uid = text.split(':')[2];
+
+        try {
+            const userSnap = await getDoc(doc(db, 'users', uid));
+            if (!userSnap.exists()) throw new Error('Invalid User');
+            const data = userSnap.data();
             
-            // Log interaction
+            // Log verification
             await addDoc(collection(db, 'interactions'), {
                 volunteerId: currentUser.uid,
                 participantId: uid,
-                type: 'assistance',
+                participantName: data.displayName || 'Anonymous',
+                type: 'verification',
                 timestamp: serverTimestamp()
             });
-            alert('Participant Verified!');
-        });
+
+            // Predefined reward for verification
+            await updateDoc(doc(db, 'users', uid), { points: increment(10) });
+            await updateDoc(doc(db, 'users', currentUser.uid), { points: increment(5) });
+
+            showToast(`Verified: ${data.displayName || uid}`);
+        } catch (e) {
+            alert('Error: ' + e.message);
+        }
+    }
+
+    document.getElementById('startScanBtn').addEventListener('click', () => {
+        if (scanner) { scanner.stop(); scanner = null; return; }
+        scanner = new Html5Qrcode("reader");
+        scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, handleScanSuccess);
+        document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-stop"></i> STOP SCANNER';
     });
 
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-            const pg = item.dataset.pg;
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(`pg-${pg}`).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            item.classList.add('active');
-        });
+    document.getElementById('manualVerifyBtn').addEventListener('click', () => {
+        const id = document.getElementById('manualId').value.trim();
+        if (id) handleScanSuccess(id);
     });
+
+    document.getElementById('submitIssueBtn').addEventListener('click', async () => {
+        const type = document.getElementById('issueType').value;
+        const details = document.getElementById('issueDetails').value.trim();
+        if (!details) return;
+
+        await addDoc(collection(db, 'support_tickets'), {
+            volunteerId: currentUser.uid,
+            volunteerName: currentUser.displayName,
+            type,
+            details,
+            status: 'open',
+            createdAt: serverTimestamp()
+        });
+        showToast('Escalated to Organizer!');
+        document.getElementById('issueDetails').value = '';
+    });
+
+    window.completeTask = async (taskId) => {
+        await updateDoc(doc(db, 'tasks', taskId), { status: 'completed', completedAt: serverTimestamp() });
+        await updateDoc(doc(db, 'users', currentUser.uid), { tasksCompleted: increment(1), points: increment(20) });
+        showToast('Task marked complete! +20 pts');
+    };
+
+    window.showPage = (page) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(`pg-${page}`).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelector(`.nav-item[data-pg="${page}"]`).classList.add('active');
+        window.scrollTo(0,0);
+    };
 
     document.getElementById('logoutBtn').addEventListener('click', async () => {
-        if (confirm('Exit volunteer hub?')) {
+        if (confirm('Logout?')) {
             await signOutUser();
             window.location.replace('login.html');
         }
