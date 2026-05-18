@@ -802,8 +802,10 @@
         setTimeout(() => toast.remove(), 4000);
     }
 
-    // Generate QR Code using QRCode.js library
+    // Generate QR Code using QRCode.js library - called once per session
+    let qrRendered = false;
     async function generateQRCodeForUser(user) {
+        if (qrRendered) return true; // prevent re-rendering on every snapshot update
         try {
             const qrData = JSON.stringify({
                 uid: user.uid,
@@ -821,18 +823,24 @@
             canvas.height = 200;
             qrContainer.appendChild(canvas);
 
-            QRCode.toCanvas(canvas, qrData, {
-                width: 200,
-                margin: 2,
-                color: {
-                    dark: '#1a1a2e',
-                    light: '#ffffff'
-                }
-            }, function(error) {
-                if (error) {
-                    console.error('QR Error:', error);
-                    qrContainer.innerHTML = '<i class="fas fa-qrcode" style="font-size: 2.5rem; color: #ccc;"></i>';
-                }
+            await new Promise((resolve, reject) => {
+                QRCode.toCanvas(canvas, qrData, {
+                    width: 200,
+                    margin: 2,
+                    color: {
+                        dark: '#1a1a2e',
+                        light: '#ffffff'
+                    }
+                }, function(error) {
+                    if (error) {
+                        console.error('QR Error:', error);
+                        qrContainer.innerHTML = '<i class="fas fa-qrcode" style="font-size: 2.5rem; color: #ccc;"></i>';
+                        reject(error);
+                    } else {
+                        qrRendered = true;
+                        resolve();
+                    }
+                });
             });
 
             return true;
@@ -868,13 +876,13 @@
                 document.getElementById('profileFreedomId').textContent = freedomId;
                 document.getElementById('userName').textContent = `Hello, ${data.displayName || 'Explorer'}`;
 
-                // Generate QR code if needed
-                if (!data.qrGenerated) {
-                    await generateQRCodeForUser({ ...currentUser, freedomId, displayName: data.displayName });
-                    await updateDoc(doc(db, 'users', currentUser.uid), { qrGenerated: true });
-                } else {
-                    await generateQRCodeForUser({ ...currentUser, freedomId, displayName: data.displayName });
-                }
+                // Generate QR code once — qrRendered flag prevents re-renders on subsequent snapshots
+                await generateQRCodeForUser({
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    displayName: data.displayName || currentUser.displayName || 'Explorer',
+                    freedomId
+                });
             }
         });
     }
@@ -1233,18 +1241,18 @@
         document.getElementById('overlay').classList.remove('active');
     };
 
-    // Award points for signup
+    // Show welcome toast for new users (points already awarded in auth.js at signup)
     async function awardSignupBonus() {
         try {
             const userRef = doc(db, 'users', currentUser.uid);
-            const user = await getDoc(userRef);
-            const hasReceivedBonus = user.data()?.signupBonusReceived;
+            const userSnap = await getDoc(userRef);
+            const data = userSnap.data() || {};
 
-            if (!hasReceivedBonus) {
-                await updateDoc(userRef, {
-                    points: increment(50),
-                    signupBonusReceived: true
-                });
+            // Only show the welcome toast once — use a separate flag so it
+            // doesn't fire again after the user logs out and back in
+            if (!data.welcomeToastShown) {
+                await updateDoc(userRef, { welcomeToastShown: true });
+                showToast('🎉 Welcome! You start with 50 Liberty Coins!', 'success');
 
                 await addDoc(collection(db, 'notifications'), {
                     userId: currentUser.uid,
@@ -1254,8 +1262,6 @@
                     read: false,
                     createdAt: serverTimestamp()
                 });
-
-                showToast('Welcome! +50 Liberty Coins', 'success');
             }
         } catch (error) {
             console.error('Signup bonus error:', error);

@@ -1,8 +1,8 @@
 // js/auth.js — Freedom 250 Authentication with Role-Based Access Control
 import { 
-  auth, db, doc, getDoc, setDoc, updateDoc 
+  auth, db, doc, getDoc, setDoc, updateDoc, increment, serverTimestamp, collection, query, where, getDocs
 } from './firebase-config.js';
-import { 
+import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -33,7 +33,6 @@ export function validateRoleAccess(userRole, allowedRoles) {
   if (!allowedRoles || allowedRoles.length === 0) return true;
   const normalised = (userRole || ROLES.PARTICIPANT).toLowerCase();
   const allowed = allowedRoles.map(r => r.toLowerCase());
-  // Organizer is always Admin
   if (normalised === 'organizer' && allowed.includes('admin')) return true;
   return allowed.includes(normalised);
 }
@@ -52,13 +51,32 @@ export async function initAuth() {
           const userDoc    = await getDoc(userDocRef);
 
           let userData = {
-            role: ROLES.PARTICIPANT, points: 0, badges: [], stamps: [],
-            level: 1, xp: 0, streak: 0, activityHistory: [],
+            role: ROLES.PARTICIPANT,
+            points: 50,  // SIGNUP BONUS - 50 Liberty Coins
+            badges: [{ name: 'Freedom Starter', icon: 'fa-flag', unlockedAt: new Date().toISOString() }],
+            stamps: [],
+            tasksCompleted: [],
+            level: 1,
+            xp: 50,
+            streak: 0,
+            scansCount: 0,
+            activityHistory: [],
             freedomId: generateFreedomId(user.uid)
           };
 
+          let isNewUser = false;
+
           if (userDoc.exists()) {
             userData = { ...userData, ...userDoc.data() };
+          } else {
+            // New user - award signup bonus and create initial data
+            isNewUser = true;
+            userData.signupBonusReceived = true;
+            userData.activityHistory = [{
+              label: 'Account Created',
+              time: new Date().toISOString(),
+              details: 'Welcome to Freedom 250! +50 Liberty Coins'
+            }];
           }
 
           if (!userData.qrCode) {
@@ -72,11 +90,16 @@ export async function initAuth() {
             }
           }
 
+          // Save or update user
+          if (isNewUser) {
+            await setDoc(userDocRef, userData);
+          }
+
           currentUser = {
             uid:         user.uid,
             email:       user.email,
             displayName: user.displayName || userData.displayName || user.email.split('@')[0],
-            role:        userData.role    || ROLES.PARTICIPANT,
+            role:        userData.role || ROLES.PARTICIPANT,
             ...userData
           };
 
@@ -88,7 +111,8 @@ export async function initAuth() {
           currentUser = {
             uid: user.uid, email: user.email,
             displayName: user.email.split('@')[0],
-            role: ROLES.PARTICIPANT, points: 0,
+            role: ROLES.PARTICIPANT,
+            points: 30,
             freedomId: generateFreedomId(user.uid)
           };
           isInitialized = true;
@@ -127,14 +151,23 @@ export async function signUp(email, password, displayName = '', role = ROLES.PAR
     try { qrCode = await generateQRCode(freedomId); } catch(e) { }
 
     const userData = {
-      uid: user.uid, email: user.email,
+      uid: user.uid,
+      email: user.email,
       displayName: displayName || email.split('@')[0],
       role,
-      createdAt: new Date().toISOString(),
-      points: 0, freedomId, qrCode,
+      createdAt: serverTimestamp(),
+      points: 50,
+      freedomId,
+      qrCode,
       badges: [{ name: 'Freedom Starter', icon: 'fa-flag', unlockedAt: new Date().toISOString() }],
-      stamps: [], level: 1, xp: 0, streak: 0,
-      activityHistory: [{ label: 'Account created', time: new Date().toISOString(), details: 'Welcome to Freedom 250!' }]
+      stamps: [],
+      tasksCompleted: [],
+      level: 1,
+      xp: 50,
+      streak: 0,
+      scansCount: 0,
+      signupBonusReceived: true,
+      activityHistory: [{ label: 'Account created', time: new Date().toISOString(), details: 'Welcome to Freedom 250! +50 Liberty Coins' }]
     };
 
     await setDoc(doc(db, 'users', user.uid), userData);
@@ -163,13 +196,15 @@ export async function signIn(email, password) {
     const userDocRef = doc(db, 'users', user.uid);
     const userDoc    = await getDoc(userDocRef);
     const storedRole = userDoc.exists() ? (userDoc.data().role || ROLES.PARTICIPANT) : ROLES.PARTICIPANT;
+    const userData = userDoc.exists() ? userDoc.data() : {};
 
     currentUser = {
       uid:         user.uid,
       email:       user.email,
-      displayName: user.displayName || (userDoc.exists() ? userDoc.data().displayName : user.email.split('@')[0]),
+      displayName: user.displayName || userData.displayName || user.email.split('@')[0],
       role:        storedRole,
-      ...((userDoc.exists() && userDoc.data()) || {})
+      points:      userData.points || 0,
+      ...userData
     };
     authCallbacks.forEach(cb => cb(currentUser, true));
     return { success: true, user: currentUser };
@@ -202,7 +237,7 @@ export async function signInWithGoogle(defaultRole = ROLES.PARTICIPANT) {
   try {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
-    
+
     const userCredential = await signInWithPopup(auth, provider);
     const user = userCredential.user;
 
@@ -218,14 +253,23 @@ export async function signInWithGoogle(defaultRole = ROLES.PARTICIPANT) {
       try { qrCode = await generateQRCode(freedomId); } catch(e) {}
 
       userData = {
-        uid: user.uid, email: user.email,
+        uid: user.uid,
+        email: user.email,
         displayName: user.displayName || user.email.split('@')[0],
         role: defaultRole,
-        createdAt: new Date().toISOString(),
-        points: 0, freedomId, qrCode,
+        createdAt: serverTimestamp(),
+        points: 50,
+        freedomId,
+        qrCode,
         badges: [{ name: 'Freedom Starter', icon: 'fa-flag', unlockedAt: new Date().toISOString() }],
-        stamps: [], level: 1, xp: 0, streak: 0,
-        activityHistory: [{ label: 'Signed in with Google', time: new Date().toISOString(), details: 'Welcome to Freedom 250!' }]
+        stamps: [],
+        tasksCompleted: [],
+        level: 1,
+        xp: 50,
+        streak: 0,
+        scansCount: 0,
+        signupBonusReceived: true,
+        activityHistory: [{ label: 'Signed in with Google', time: new Date().toISOString(), details: 'Welcome to Freedom 250! +50 Liberty Coins' }]
       };
       await setDoc(userDocRef, userData);
       isNewUser = true;
@@ -277,57 +321,26 @@ export function onAuthStateChange(callback) {
 export function getDashboardPath(user) {
   if (!user) return 'login.html';
   const role = (user.role || ROLES.PARTICIPANT).toLowerCase();
-  
+
   if (role === 'admin' || role === 'organizer') return 'dashboard-admin.html';
   if (role === 'booth_admin') return 'dashboard-booth-admin.html';
   if (role === 'volunteer')   return 'dashboard-volunteer.html';
-  
+
   return 'dashboard-participant.html';
 }
 
-
-// Add to js/auth.js - Add this function for booth admin role management
-
-export async function assignBoothToAdmin(userId, boothId, boothName) {
-  try {
-    const userRef = doc(db, 'users', userId);
-    await updateDoc(userRef, {
-      role: 'booth_admin',
-      assignedBoothId: boothId,
-      assignedBoothName: boothName,
-      updatedAt: serverTimestamp()
-    });
-    return { success: true };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
-}
-
-export async function getAllBoothAdmins() {
-  try {
-    const q = query(collection(db, 'users'), where('role', '==', 'booth_admin'));
-    const snapshot = await getDocs(q);
-    const admins = [];
-    snapshot.forEach(doc => {
-      admins.push({ id: doc.id, ...doc.data() });
-    });
-    return admins;
-  } catch (error) {
-    return [];
-  }
-}
 export async function guardDashboard(requiredRoles) {
   const user = await initAuth();
-  
+
   if (!user) {
     window.location.replace('login.html');
     return false;
   }
-  
+
   if (requiredRoles && !validateRoleAccess(user.role, requiredRoles)) {
     window.location.replace(getDashboardPath(user));
     return false;
   }
-  
+
   return true;
 }
